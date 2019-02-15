@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
 		9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C1F2214A2C200FC2327 /* AppDelegate.swift */; };
 		9F825C222214A2C200FC2327 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C212214A2C200FC2327 /* ViewController.swift */; };
 		9F825C252214A2C200FC2327 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F825C232214A2C200FC2327 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
 		9F825C1C2214A2C200FC2327 /* CannaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F825C1F2214A2C200FC2327 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F825C212214A2C200FC2327 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				9F825C322214A2F200FC2327 /* Strains.swift */,
 				9F825C212214A2C200FC2327 /* ViewController.swift */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
+				9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */,
 				9F825C262214A2C300FC2327 /* Assets.xcassets */,
 				9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */,
 				9F825C2B2214A2C300FC2327 /* Info.plist */,
@@ -143,6 +146,7 @@
 			files = (
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
 				9F825C222214A2C200FC2327 /* ViewController.swift in Sources */,
+				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 			);
