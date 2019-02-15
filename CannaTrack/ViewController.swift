@@ -24,6 +24,10 @@ class DetailViewConstroller: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		strainDescriptionLabel.numberOfLines = 0
+		strainDescriptionLabel.lineBreakMode = .byWordWrapping
+
 		// Do any additional setup after loading the view.
 	}
 
