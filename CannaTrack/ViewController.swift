@@ -70,8 +70,11 @@ class SearchViewController: UIViewController {
 	var strainSetsArray: [Set<BaseStrain>] = []
 	var baseStrainArray: [[BaseStrain]] = []
 	var intermediaryBaseStrainArray: [BaseStrain] = []
-	//IBOutlets
 
+	var finalStrainDatabase: [BaseStrain] = []
+
+
+	//IBOutlets
 	@IBOutlet var searchTextField: UITextField!
 
 	@IBOutlet var strainSearchTableView: UITableView!
@@ -217,6 +220,11 @@ class SearchViewController: UIViewController {
 	@IBAction func unionButtonClicked(_ sender: UIButton) {
 		let union = strainSetsArray[0].union(strainSetsArray[1]).union(strainSetsArray[2]).union(strainSetsArray[3]).union(strainSetsArray[4])
 		print(union)
+		if finalStrainDatabase.isEmpty {
+			for strain in union {
+				finalStrainDatabase.append(strain)
+			}
+		}
 	}
 
 
@@ -226,13 +234,15 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return strainsArray.count
+//		return strainsArray.count
+		return finalStrainDatabase.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! StrainsTableViewCell
 
-		let strainForIndex = strainsArray[indexPath.row]
+//		let strainForIndex = strainsArray[indexPath.row]
+		let strainForIndex = finalStrainDatabase[indexPath.row]
 
 		cell.strainNameLabel.text = strainForIndex.name
 
@@ -241,8 +251,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let strainForIndex = strainsArray[indexPath.row]
-
+//		let strainForIndex = strainsArray[indexPath.row]
+		let strainForIndex = finalStrainDatabase[indexPath.row]
 		selectedDetailStrain = strainForIndex
 		segueToDetailControllerWithStrain(strainToPass: strainForIndex)
 		//call segue method
