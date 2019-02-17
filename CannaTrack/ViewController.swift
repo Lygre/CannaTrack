@@ -67,7 +67,7 @@ class SearchViewController: UIViewController {
 	let urlForEffectsSearch = "https://strainapi.evanbusse.com/oJ5GvWc/searchdata/effects/"
 
 	var selectedDetailStrain: BaseStrain?
-	var strainSetsArray: [Set<BaseStrain>] = []
+	var strainSetsArray: Set<BaseStrain> = []
 	var baseStrainArray: [[BaseStrain]] = []
 	//IBOutlets
 
@@ -163,7 +163,13 @@ class SearchViewController: UIViewController {
 		return masterBasestrainArray
 	}
 
-	
+	func createStrainSetFromArray(using strainArray: [BaseStrain]) -> Set<BaseStrain> {
+		var baseStrainSet: Set<BaseStrain> = []
+		for strain in strainArray {
+			baseStrainSet.insert(strain)
+		}
+		return baseStrainSet
+	}
 
 
 
@@ -186,6 +192,12 @@ class SearchViewController: UIViewController {
 		baseStrainArray = generateBaseStrainsArray()
 		
 	}
+
+	@IBAction func generateSetFromArray(_ sender: UIButton) {
+
+		strainSetsArray = createStrainSetFromArray(using: strainsArray)
+	}
+
 
 
 }
