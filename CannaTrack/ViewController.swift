@@ -10,7 +10,7 @@ import UIKit
 
 class DetailViewConstroller: UIViewController {
 
-	var activeDetailStrain: Strain?
+	var activeDetailStrain: BaseStrain?
 
 
 	@IBOutlet var idLabel: UILabel!
@@ -60,14 +60,15 @@ class SearchViewController: UIViewController {
 	let cellIdentifier = "StrainsTableViewCell"
 	let segueIdentifierForDetail = "showStrainDetailSegue"
 
-	var strainsArray: [Strain] = []
+	var strainsArray: [BaseStrain] = []
 	var effectsArray: [Effects]?
 
 	var url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/"
 	let urlForEffectsSearch = "https://strainapi.evanbusse.com/oJ5GvWc/searchdata/effects/"
 
-	var selectedDetailStrain: Strain?
-
+	var selectedDetailStrain: BaseStrain?
+	var strainSetsArray: [Set<BaseStrain>] = []
+	var baseStrainArray: [[BaseStrain]] = []
 	//IBOutlets
 
 	@IBOutlet var searchTextField: UITextField!
@@ -100,15 +101,15 @@ class SearchViewController: UIViewController {
 
 	}
 
-	func searchWeed(using strainString: String) -> [Strain] {
-		var strainMatches: [Strain]?
+	func searchWeed(using strainString: String) -> [BaseStrain] {
+		var strainMatches: [BaseStrain]?
 
 
 
 		return strainMatches!
 	}
 
-	func segueToDetailControllerWithStrain(strainToPass: Strain) {
+	func segueToDetailControllerWithStrain(strainToPass: BaseStrain) {
 		performSegue(withIdentifier: "showStrainDetailSegue", sender: nil)
 
 	}
@@ -122,7 +123,7 @@ class SearchViewController: UIViewController {
 			guard let data = data else { return }
 
 			do {
-				self.strainsArray = try JSONDecoder().decode([Strain].self, from: data)
+				self.strainsArray = try JSONDecoder().decode([BaseStrain].self, from: data)
 				print("data parsed from strain database")
 			} catch let jsonError {
 				print("Error serializing json: ", jsonError)
@@ -131,6 +132,40 @@ class SearchViewController: UIViewController {
 			}.resume()
 		refreshUI()
 	}
+
+	func generateBaseStrainsArray() -> [[BaseStrain]] {
+		var vowelArray: [String] = ["a","e","i","o","u","y"]
+		var masterBasestrainArray: [[BaseStrain]] = []
+		var url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/"
+
+		for vowel in vowelArray {
+			var arrayForVowel: [BaseStrain] = []
+			url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
+			guard let urlObj = URL(string: url) else { return [] }
+
+			URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
+
+				guard let data = data else { return }
+
+				do {
+
+					arrayForVowel = try JSONDecoder().decode([BaseStrain].self, from: data)
+					print("data parsed from strain database")
+				} catch let jsonError {
+					print("Error serializing json: ", jsonError)
+				}
+
+				}.resume()
+			masterBasestrainArray.append(arrayForVowel)
+		}
+
+
+		return masterBasestrainArray
+	}
+
+	
+
+
 
 	func refreshUI() {
 		loadViewIfNeeded()
@@ -147,6 +182,10 @@ class SearchViewController: UIViewController {
 		refreshUI()
 	}
 
+	@IBAction func generateSetsClicked(_ sender: UIButton) {
+		baseStrainArray = generateBaseStrainsArray()
+		
+	}
 
 
 }
@@ -181,7 +220,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-struct Strain: Decodable {
+struct BaseStrain: Decodable, Hashable {
 
 	let id: Int
 	let name: String
@@ -201,3 +240,7 @@ struct Effects: Decodable {
 	let type: String
 }
 
+class Strain {
+
+
+}

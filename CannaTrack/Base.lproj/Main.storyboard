@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Zv-NDe">
-                                <rect key="frame" x="25" y="108" width="364" height="140"/>
+                                <rect key="frame" x="25" y="108" width="364" height="195"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cTV-eI-Qyf">
                                         <rect key="frame" x="0.0" y="0.0" width="364" height="30"/>
@@ -34,8 +34,15 @@
                                             <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="luv-bF-4CK"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTh-f0-u8f">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LfS-4W-Ch1">
                                         <rect key="frame" x="0.0" y="110" width="364" height="30"/>
+                                        <state key="normal" title="Generate Sets"/>
+                                        <connections>
+                                            <action selector="generateSetsClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CJJ-nC-DNe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTh-f0-u8f">
+                                        <rect key="frame" x="0.0" y="165" width="364" height="30"/>
                                         <state key="normal" title="Reload View"/>
                                         <connections>
                                             <action selector="reloadView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="in6-5u-cmk"/>
@@ -44,7 +51,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="40" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NrR-ao-EX0">
-                                <rect key="frame" x="25" y="293" width="364" height="569"/>
+                                <rect key="frame" x="25" y="348" width="364" height="514"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StrainsTableViewCell" rowHeight="40" id="JRj-5J-tAp" customClass="StrainsTableViewCell" customModule="CannaTrack" customModuleProvider="target">
