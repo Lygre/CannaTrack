@@ -34,18 +34,18 @@
                                             <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="luv-bF-4CK"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LfS-4W-Ch1">
-                                        <rect key="frame" x="0.0" y="110" width="364" height="30"/>
-                                        <state key="normal" title="Generate Sets"/>
-                                        <connections>
-                                            <action selector="generateSetsClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CJJ-nC-DNe"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayd-AF-73o">
-                                        <rect key="frame" x="0.0" y="165" width="364" height="30"/>
+                                        <rect key="frame" x="0.0" y="110" width="364" height="30"/>
                                         <state key="normal" title="Generate Set from Search Array"/>
                                         <connections>
                                             <action selector="generateSetFromArray:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hPa-Ux-Moz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLi-0s-BhW">
+                                        <rect key="frame" x="0.0" y="165" width="364" height="30"/>
+                                        <state key="normal" title="Show union"/>
+                                        <connections>
+                                            <action selector="unionButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i0U-Vk-sPW"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTh-f0-u8f">

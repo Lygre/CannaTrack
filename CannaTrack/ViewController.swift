@@ -67,8 +67,9 @@ class SearchViewController: UIViewController {
 	let urlForEffectsSearch = "https://strainapi.evanbusse.com/oJ5GvWc/searchdata/effects/"
 
 	var selectedDetailStrain: BaseStrain?
-	var strainSetsArray: Set<BaseStrain> = []
+	var strainSetsArray: [Set<BaseStrain>] = []
 	var baseStrainArray: [[BaseStrain]] = []
+	var intermediaryBaseStrainArray: [BaseStrain] = []
 	//IBOutlets
 
 	@IBOutlet var searchTextField: UITextField!
@@ -133,34 +134,48 @@ class SearchViewController: UIViewController {
 		refreshUI()
 	}
 
-	func generateBaseStrainsArray() -> [[BaseStrain]] {
-		var vowelArray: [String] = ["a","e","i","o","u","y"]
-		var masterBasestrainArray: [[BaseStrain]] = []
-		var url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/"
+	func sendRequest(using vowel: String, completion: @escaping (([BaseStrain]) -> Void)) {
+		var baseStrainsArrayForVowel: [BaseStrain] = []
+		let urlForVowel = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
+		guard let urlObj = URL(string: urlForVowel) else { return }
 
-		for vowel in vowelArray {
-			var arrayForVowel: [BaseStrain] = []
-			url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
-			guard let urlObj = URL(string: url) else { return [] }
+		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
 
-			URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
+			guard let data = data else { return }
 
-				guard let data = data else { return }
+			do {
+				let intermediateBasestrainArray = try JSONDecoder().decode([BaseStrain].self, from: data)
+				baseStrainsArrayForVowel = intermediateBasestrainArray
+				self.intermediaryBaseStrainArray = intermediateBasestrainArray
+				self.strainSetsArray.append(self.createStrainSetFromArray(using: intermediateBasestrainArray))
+				completion(self.intermediaryBaseStrainArray)
+				print("data parsed from strain database")
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
 
-				do {
+			}.resume()
+	}
 
-					arrayForVowel = try JSONDecoder().decode([BaseStrain].self, from: data)
-					print("data parsed from strain database")
-				} catch let jsonError {
-					print("Error serializing json: ", jsonError)
-				}
+	func searchStrainsByVowel(using vowel: String) -> [BaseStrain] {
+		var baseStrainsArrayForVowel: [BaseStrain] = []
+		let urlForVowel = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
+		guard let urlObj = URL(string: urlForVowel) else { return baseStrainsArrayForVowel}
 
-				}.resume()
-			masterBasestrainArray.append(arrayForVowel)
-		}
+		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
 
+			guard let data = data else { return }
 
-		return masterBasestrainArray
+			do {
+				let intermediateBasestrainArray = try JSONDecoder().decode([BaseStrain].self, from: data)
+				baseStrainsArrayForVowel = intermediateBasestrainArray
+				print("data parsed from strain database")
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
+
+			}.resume()
+		return baseStrainsArrayForVowel
 	}
 
 	func createStrainSetFromArray(using strainArray: [BaseStrain]) -> Set<BaseStrain> {
@@ -188,16 +203,21 @@ class SearchViewController: UIViewController {
 		refreshUI()
 	}
 
-	@IBAction func generateSetsClicked(_ sender: UIButton) {
-		baseStrainArray = generateBaseStrainsArray()
-		
-	}
-
 	@IBAction func generateSetFromArray(_ sender: UIButton) {
 
-		strainSetsArray = createStrainSetFromArray(using: strainsArray)
+//		strainSetsArray.append(createStrainSetFromArray(using: strainsArray))
+		let vowelArray: [String] = ["a", "e", "i", "o", "u"]
+
+		for vowel in vowelArray {
+			sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in self.createStrainSetFromArray(using: intermediaryBaseStrainArray)})
+		}
+
 	}
 
+	@IBAction func unionButtonClicked(_ sender: UIButton) {
+		let union = strainSetsArray[0].union(strainSetsArray[1]).union(strainSetsArray[2]).union(strainSetsArray[3]).union(strainSetsArray[4])
+		print(union)
+	}
 
 
 }
