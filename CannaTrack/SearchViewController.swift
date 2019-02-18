@@ -19,6 +19,8 @@ class SearchViewController: UIViewController {
 	var effectsArray: [Effects]?
 	var effectArrayEnumeration: [Effect]?
 
+	var strainDatabase: [Strain] = []
+
 	var url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/"
 	let urlForEffectsSearch = "https://strainapi.evanbusse.com/oJ5GvWc/searchdata/effects/"
 
@@ -171,7 +173,16 @@ class SearchViewController: UIViewController {
 		return baseStrainSet
 	}
 
+	func convertStrainDatabaseToClass(using structStrainDB: [BaseStrain]) -> [Strain] {
+		var finalStrainClassDatabase: [Strain] = []
 
+		for structStrain in structStrainDB {
+			let strainClassToAddToDB: Strain = Strain(id: structStrain.id, name: structStrain.name, race: structStrain.race, description: structStrain.desc)
+			finalStrainClassDatabase.append(strainClassToAddToDB)
+		}
+
+		return finalStrainClassDatabase
+	}
 
 	func refreshUI() {
 		loadViewIfNeeded()
@@ -197,16 +208,22 @@ class SearchViewController: UIViewController {
 			sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in self.createStrainSetFromArray(using: intermediaryBaseStrainArray)})
 		}
 
+//		makeUnion()
+
 	}
 
-	@IBAction func unionButtonClicked(_ sender: UIButton) {
+	fileprivate func makeUnion() {
 		let union = strainSetsArray[0].union(strainSetsArray[1]).union(strainSetsArray[2]).union(strainSetsArray[3]).union(strainSetsArray[4])
 		print(union)
 		if finalStrainDatabase.isEmpty {
 			for strain in union {
 				finalStrainDatabase.append(strain)
 			}
-		}
+		} else { print("final strain db is not empty") }
+	}
+
+	@IBAction func unionButtonClicked(_ sender: UIButton) {
+		makeUnion()
 	}
 
 	@IBAction func generateEffectsClicked(_ sender: UIButton) {
@@ -215,8 +232,27 @@ class SearchViewController: UIViewController {
 
 
 
+	@IBAction func strainsToClassesClicked(_ sender: UIButton) {
+		strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

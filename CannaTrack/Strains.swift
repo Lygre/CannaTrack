@@ -120,17 +120,18 @@ class Strain {
 	let race: String
 	let desc: String?
 	//	var flavors: ???
-	var effects: Effects
+	var effects: Effects?
 
 	init(id: Int, name: String, race: String, description: String?) {
 		self.id = id
 		self.name = name
 		self.race = race
 		self.desc = description
-		self.effects = { return sendRequestForEffects(forStrain: id, completion: { effectsParsed in
-			return
-			})
-		}
+		self.effects = nil
+		sendRequestForEffects(forStrain: id, completion: { effectParsed in
+		})
+
+
 	}
 
 
@@ -138,7 +139,8 @@ class Strain {
 
 
 
-	func sendRequestForEffects(forStrain id: Int, completion: @escaping ((Effects) ->Effects)) {
+
+	func sendRequestForEffects(forStrain id: Int, completion: @escaping ((Effects) ->Void)) {
 		let urlForId = "https://strainapi.evanbusse.com/oJ5GvWc/strains/data/effects/" + String("\(id)").trimmingCharacters(in: .whitespaces)
 		guard let urlObj = URL(string: urlForId) else { return }
 
@@ -149,7 +151,8 @@ class Strain {
 			do {
 				let effectsDictionary = try JSONDecoder().decode(Effects.self, from: data)
 				//				self.effects = intermediateBasestrainArray.effects
-				self.effects = completion(effectsDictionary)
+				self.effects = effectsDictionary
+				completion(effectsDictionary)
 				print("effect parsed from strain database")
 			} catch let jsonError {
 				print("Error serializing json: ", jsonError)
