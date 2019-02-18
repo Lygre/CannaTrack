@@ -50,6 +50,15 @@ class DetailViewConstroller: UIViewController {
 	}
 
 
+	@IBAction func loadEffects(_ sender: UIButton) {
+
+		guard let strain = activeDetailStrain else { fatalError("No strain set") }
+
+		var strainMutable: BaseStrain = strain
+		strainMutable.getDetails()
+
+
+	}
 
 
 }
@@ -118,6 +127,8 @@ class SearchViewController: UIViewController {
 
 	}
 
+
+
 	func searchStrains(using effect: String) {
 		url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(effect)").trimmingCharacters(in: .whitespaces)
 		guard let urlObj = URL(string: url) else { return }
@@ -159,6 +170,7 @@ class SearchViewController: UIViewController {
 
 			}.resume()
 	}
+
 
 	func searchStrainsByVowel(using vowel: String) -> [BaseStrain] {
 		var baseStrainsArrayForVowel: [BaseStrain] = []
@@ -262,27 +274,75 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+
+
+
 struct BaseStrain: Decodable, Hashable {
 
 	let id: Int
 	let name: String
 	let race: String
 	let desc: String?
-//	let flavors: String?
-//	let effects: [String: [String]]?
+	var flavors: String?
+	var effects: Effects?
 
-//	let strain: [String]
 
+	func sendRequestForEffects(forStrain id: Int, completion: @escaping ((Effects) ->Void)) {
+		let urlForId = "https://strainapi.evanbusse.com/oJ5GvWc/strains/data/effects/" + String("\(id)").trimmingCharacters(in: .whitespaces)
+		guard let urlObj = URL(string: urlForId) else { return }
+
+		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
+
+			guard let data = data else { return }
+
+			do {
+				let effectsDictionary = try JSONDecoder().decode(Effects.self, from: data)
+//				self.effects = intermediateBasestrainArray.effects
+				completion(effectsDictionary)
+				print("effect parsed from strain database")
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
+
+			}.resume()
+	}
+
+	mutating func getDetails() {
+		let strainID = self.id
+		var effectsToSet: Effects?
+		if self.effects == nil {
+			sendRequestForEffects(forStrain: strainID, completion: { effectsToSet in
+
+			})
+
+		}
+	}
 }
 
 
 
-struct Effects: Decodable {
-	let effect: String
-	let type: String
+
+struct Effects: Decodable, Hashable {
+	var positive: [String]?
+	var negative: [String]?
+	var medical: [String]?
+
 }
 
 class Strain {
+	let id: Int
+	let name: String
+	let race: String
+	let desc: String?
+//	var flavors: ???
+	var effects: Effects?
 
+	init(id: Int, name: String, race: String) {
+		self.id = id
+		self.name = name
+		self.race = race
+		self.desc = nil
+		self.effects = nil
+	}
 
 }
