@@ -312,7 +312,7 @@ struct BaseStrain: Decodable, Hashable {
 		var effectsToSet: Effects?
 		if self.effects == nil {
 			sendRequestForEffects(forStrain: strainID, completion: { effectsToSet in
-
+				print(effectsToSet)
 			})
 
 		}
