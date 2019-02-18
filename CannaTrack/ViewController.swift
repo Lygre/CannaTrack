@@ -71,9 +71,12 @@ class SearchViewController: UIViewController {
 
 	var strainsArray: [BaseStrain] = []
 	var effectsArray: [Effects]?
+	var effectArrayEnumeration: [Effect]?
 
 	var url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/"
 	let urlForEffectsSearch = "https://strainapi.evanbusse.com/oJ5GvWc/searchdata/effects/"
+
+
 
 	var selectedDetailStrain: BaseStrain?
 	var strainSetsArray: [Set<BaseStrain>] = []
@@ -172,6 +175,27 @@ class SearchViewController: UIViewController {
 	}
 
 
+	func generateEffectsSet(completion: @escaping (([Effect])->Void)) -> [Effect] {
+		var effectsArray: [Effect] = []
+
+		guard let urlObj = URL(string: urlForEffectsSearch) else { return effectsArray }
+
+		URLSession.shared.dataTask(with: urlObj) { (data, response, error) in
+			guard let data = data else { return }
+
+			do {
+				let tempEffectArrayParsed = try JSONDecoder().decode([Effect].self, from: data)
+				effectsArray = tempEffectArrayParsed
+				completion(effectsArray)
+				print(effectsArray)
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
+		}.resume()
+
+		return effectsArray
+	}
+
 	func searchStrainsByVowel(using vowel: String) -> [BaseStrain] {
 		var baseStrainsArrayForVowel: [BaseStrain] = []
 		let urlForVowel = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
@@ -238,6 +262,12 @@ class SearchViewController: UIViewController {
 			}
 		}
 	}
+
+	@IBAction func generateEffectsClicked(_ sender: UIButton) {
+		effectArrayEnumeration = generateEffectsSet(completion: { effects in })
+	}
+
+
 
 
 }
@@ -320,7 +350,54 @@ struct BaseStrain: Decodable, Hashable {
 }
 
 
+struct Effect: Decodable, Hashable {
 
+	enum EffectName: String, Decodable {
+		case relaxed = "Relaxed"
+		case dizzy = "Dizzy"
+		case hungry = "Hungry"
+		case euphoric = "Euphoric"
+		case happy = "Happy"
+		case depression = "Depression"
+		case insomnia = "Insomnia"
+		case pain = "Pain"
+		case stress = "Stress"
+		case cramps = "Cramps"
+		case creative = "Creative"
+		case energetic = "Energetic"
+		case talkative = "Talkative"
+		case lackOfApetite = "Lack of Appetite"
+		case nausea = "Nausea"
+		case dryMouth = "Dry Mouth"
+		case sleepy = "Sleepy"
+		case fatigue = "Fatigue"
+		case headaches = "Headaches"
+		case headache = "Headache"
+		case uplifted = "Uplifted"
+		case tingly = "Tingly"
+		case dryEyes = "Dry Eyes"
+		case paranoid = "Paranoid"
+		case focused = "Focused"
+		case eyePressure = "Eye Pressure"
+		case anxious = "Anxious"
+		case giggly = "Giggly"
+		case aroused = "Aroused"
+		case inflammation = "Inflammation"
+		case spasticity = "Spasticity"
+		case seizures = "Seizures"
+		case muscleSpasms = "Muscle Spasms"
+	}
+
+	enum EffectCategory: String, Decodable {
+		case positive = "positive"
+		case negative = "negative"
+		case medical = "medical"
+	}
+
+	var effect: EffectName
+	var type: EffectCategory
+
+}
 
 struct Effects: Decodable, Hashable {
 	var positive: [String]?
@@ -328,6 +405,8 @@ struct Effects: Decodable, Hashable {
 	var medical: [String]?
 
 }
+
+
 
 class Strain {
 	let id: Int
