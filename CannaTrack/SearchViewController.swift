@@ -119,9 +119,9 @@ class SearchViewController: UIViewController {
 			do {
 				let intermediateBasestrainArray = try JSONDecoder().decode([BaseStrain].self, from: data)
 				baseStrainsArrayForVowel = intermediateBasestrainArray
-				self.intermediaryBaseStrainArray = intermediateBasestrainArray
+//				self.intermediaryBaseStrainArray = intermediateBasestrainArray
 				self.strainSetsArray.append(self.createStrainSetFromArray(using: intermediateBasestrainArray))
-				completion(self.intermediaryBaseStrainArray)
+				completion(intermediateBasestrainArray)
 				print("data parsed from strain database")
 			} catch let jsonError {
 				print("Error serializing json: ", jsonError)
@@ -192,6 +192,34 @@ class SearchViewController: UIViewController {
 		return finalStrainClassDatabase
 	}
 
+	func generateUnionOfStrains(setArray: [Set<BaseStrain>]) -> Set<BaseStrain> {
+		let unionOfStrains: Set<BaseStrain> = {
+			let strainSetOne = setArray[0]
+			let strainSetTwo = setArray[1]
+			let strainSetThree = setArray[2]
+			let strainSetFour =  setArray[3]
+			let strainSetFive = setArray[4]
+			let babyUnion = strainSetOne.union(strainSetTwo).union(strainSetThree).union(strainSetFour).union(strainSetFive)
+			return babyUnion
+		}()
+		return unionOfStrains
+	}
+
+	func generateFinalStrainArray(baseStrainUnion: Set<BaseStrain>) -> [Strain] {
+		let finalStrainArray: [Strain] = {
+			var basestrainArray: [BaseStrain] = []
+
+			for strain in baseStrainUnion {
+				basestrainArray.append(strain)
+			}
+
+			let strainArray = convertStrainDatabaseToClass(using: basestrainArray)
+
+			return strainArray
+		}()
+		return finalStrainArray
+	}
+
 	func refreshUI() {
 		loadViewIfNeeded()
 //		print(strainsArray)
@@ -210,13 +238,47 @@ class SearchViewController: UIViewController {
 	@IBAction func generateSetFromArray(_ sender: UIButton) {
 
 //		strainSetsArray.append(createStrainSetFromArray(using: strainsArray))
-		let vowelArray: [String] = ["a", "e", "i", "o", "u"]
 
-		for vowel in vowelArray {
-			//this should probably be changed; but the send request is what would need to change.
-			sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in self.createStrainSetFromArray(using: intermediaryBaseStrainArray)})
+		var baseStrainSetArray: [Set<BaseStrain>] = [] {
+			willSet(newBaseStrainArray) {
+//				self.strainDatabase = generateFinalStrainArray(baseStrainUnion: generateUnionOfStrains(setArray: newBaseStrainArray))
+				print(newBaseStrainArray)
+			}
+			didSet {
+				print("database set")
+			}
+		}
+		var finalStrainArray: [Strain]?
+		var unionOfStrains: Set<BaseStrain>?
+		effectArrayEnumeration = generateEffectsSet(completion: { effects in })
+
+//		strainDatabase = {
+
+		func generateBaseStrainSetArray() -> [Set<BaseStrain>] {
+			let baseStrainSetArray: [Set<BaseStrain>] = {
+				var strainSetArray: [Set<BaseStrain>] = []
+
+				let vowelArray: [String] = ["a", "e", "i", "o", "u"]
+				for vowel in vowelArray {
+					//this should probably be changed; but the send request is what would need to change.
+					sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in strainSetArray.append(self.createStrainSetFromArray(using: intermediaryBaseStrainArray)) })
+				}
+
+				return strainSetArray
+			}()
+			return baseStrainSetArray
 		}
 
+
+
+
+
+		baseStrainSetArray = generateBaseStrainSetArray()
+
+//		guard let finalStrainDatabase = finalStrainArray else { return }
+//		strainDatabase = finalStrainDatabase
+//		masterStrainDatabase = strainDatabase
+		print("okay")
 //		makeUnion()
 
 	}
