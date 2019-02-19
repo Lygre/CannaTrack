@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="K2J-Zv-NDe">
-                                <rect key="frame" x="25" y="108" width="364" height="360"/>
+                                <rect key="frame" x="25" y="108" width="364" height="415"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cTV-eI-Qyf">
                                         <rect key="frame" x="0.0" y="0.0" width="364" height="30"/>
@@ -27,18 +27,18 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kj7-37-8MS">
-                                        <rect key="frame" x="0.0" y="55" width="364" height="30"/>
-                                        <state key="normal" title="Search By Name"/>
-                                        <connections>
-                                            <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="luv-bF-4CK"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ayd-AF-73o">
-                                        <rect key="frame" x="0.0" y="110" width="364" height="30"/>
+                                        <rect key="frame" x="0.0" y="55" width="364" height="30"/>
                                         <state key="normal" title="Generate Strain Database - Initial Pass"/>
                                         <connections>
                                             <action selector="generateSetFromArray:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hPa-Ux-Moz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50v-8L-b5k">
+                                        <rect key="frame" x="0.0" y="110" width="364" height="30"/>
+                                        <state key="normal" title="Generate Effects"/>
+                                        <connections>
+                                            <action selector="generateEffectsClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="575-nv-ePn"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLi-0s-BhW">
@@ -48,11 +48,11 @@
                                             <action selector="unionButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i0U-Vk-sPW"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50v-8L-b5k">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTh-f0-u8f">
                                         <rect key="frame" x="0.0" y="220" width="364" height="30"/>
-                                        <state key="normal" title="Generate Effects"/>
+                                        <state key="normal" title="Reload View"/>
                                         <connections>
-                                            <action selector="generateEffectsClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="575-nv-ePn"/>
+                                            <action selector="reloadView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="in6-5u-cmk"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYs-yS-2kl">
@@ -62,17 +62,24 @@
                                             <action selector="strainsToClassesClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hqz-IB-HWR"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTh-f0-u8f">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYv-Xq-GKx">
                                         <rect key="frame" x="0.0" y="330" width="364" height="30"/>
-                                        <state key="normal" title="Reload View"/>
+                                        <state key="normal" title="Go to CollectionView →"/>
                                         <connections>
-                                            <action selector="reloadView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="in6-5u-cmk"/>
+                                            <segue destination="woJ-6M-BYj" kind="show" id="LAD-u1-Lfv"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kj7-37-8MS">
+                                        <rect key="frame" x="0.0" y="385" width="364" height="30"/>
+                                        <state key="normal" title="Search By Name"/>
+                                        <connections>
+                                            <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="luv-bF-4CK"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="40" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NrR-ao-EX0">
-                                <rect key="frame" x="25" y="513" width="364" height="349"/>
+                                <rect key="frame" x="25" y="568" width="364" height="294"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StrainsTableViewCell" rowHeight="40" id="JRj-5J-tAp" customClass="StrainsTableViewCell" customModule="CannaTrack" customModuleProvider="target">
@@ -232,6 +239,69 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dV-o4-eqe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1857.9710144927537" y="138.61607142857142"/>
+        </scene>
+        <!--Strains Collection View Controller-->
+        <scene sceneID="nHN-9g-eW2">
+            <objects>
+                <collectionViewController id="woJ-6M-BYj" customClass="StrainsCollectionViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="XYd-vb-Zt0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="MHK-OQ-3Ng">
+                            <size key="itemSize" width="90" height="100"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StrainCell" id="uUN-jd-fAI" customClass="StrainCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="90" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="90" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeZ-UT-6sW">
+                                            <rect key="frame" x="8" y="7" width="27" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="25" id="eqd-Y2-ZSG"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Nm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQG-dd-LOv">
+                                            <rect key="frame" x="8" y="34" width="75" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="7"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="jQG-dd-LOv" firstAttribute="width" secondItem="uUN-jd-fAI" secondAttribute="width" constant="-15" id="BGi-kp-vJ5"/>
+                                    <constraint firstItem="LeZ-UT-6sW" firstAttribute="top" secondItem="uUN-jd-fAI" secondAttribute="top" constant="7" id="U9L-5s-yyu"/>
+                                    <constraint firstItem="jQG-dd-LOv" firstAttribute="top" secondItem="LeZ-UT-6sW" secondAttribute="bottom" constant="2" id="eCW-5x-1ZI"/>
+                                    <constraint firstItem="jQG-dd-LOv" firstAttribute="leading" secondItem="uUN-jd-fAI" secondAttribute="leadingMargin" id="o0D-4N-X5I"/>
+                                    <constraint firstItem="LeZ-UT-6sW" firstAttribute="leading" secondItem="uUN-jd-fAI" secondAttribute="leadingMargin" id="r3b-uh-1sG"/>
+                                </constraints>
+                                <size key="customSize" width="90" height="100"/>
+                                <connections>
+                                    <outlet property="strainAbbreviation" destination="LeZ-UT-6sW" id="lgZ-8S-VXL"/>
+                                    <outlet property="strainName" destination="jQG-dd-LOv" id="dOC-5A-ItK"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="woJ-6M-BYj" id="Yd6-1S-Nkm"/>
+                            <outlet property="delegate" destination="woJ-6M-BYj" id="qPF-s9-mTt"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yR3-yM-TRh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1857.9710144927537" y="827.67857142857144"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="eiK-ma-Lej">

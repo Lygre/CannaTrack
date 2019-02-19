@@ -58,6 +58,14 @@ class SearchViewController: UIViewController {
 		if segue.destination is DetailViewConstroller {
 			guard let detailVC = segue.destination as? DetailViewConstroller else { return }
 			detailVC.activeDetailStrain = selectedDetailStrain
+		} else if segue.destination is StrainsCollectionViewController {
+			guard let collectionVC = segue.destination as? StrainsCollectionViewController else { return }
+
+			if self.strainDatabase.isEmpty {
+				strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
+			} else {
+				collectionVC.strainDatabase = strainDatabase
+			}
 		}
 	}
 
@@ -235,6 +243,10 @@ class SearchViewController: UIViewController {
 	@IBAction func strainsToClassesClicked(_ sender: UIButton) {
 		strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
 	}
+
+
+
+
 
 }
 

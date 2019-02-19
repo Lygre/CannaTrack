@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
 		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
+		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
+		9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */; };
 		9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C1F2214A2C200FC2327 /* AppDelegate.swift */; };
 		9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C212214A2C200FC2327 /* SearchViewController.swift */; };
 		9F825C252214A2C200FC2327 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F825C232214A2C200FC2327 /* Main.storyboard */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
 		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
+		9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F825C1C2214A2C200FC2327 /* CannaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F825C1F2214A2C200FC2327 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F825C212214A2C200FC2327 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 				9F825C312214A2F200FC2327 /* Extensions.swift */,
 				9F825C322214A2F200FC2327 /* Strains.swift */,
 				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
+				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
+				9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
 				9F24BAE9221B654B0086B3AA /* DetailViewController.swift */,
 				9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */,
@@ -148,7 +154,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
+				9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */,
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
+				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
