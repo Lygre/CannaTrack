@@ -213,6 +213,7 @@ class SearchViewController: UIViewController {
 		let vowelArray: [String] = ["a", "e", "i", "o", "u"]
 
 		for vowel in vowelArray {
+			//this should probably be changed; but the send request is what would need to change.
 			sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in self.createStrainSetFromArray(using: intermediaryBaseStrainArray)})
 		}
 
