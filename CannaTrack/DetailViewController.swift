@@ -46,7 +46,7 @@ class DetailViewConstroller: UIViewController {
 		guard let currentStrain = activeDetailStrain else { fatalError("no current strain") }
 		idLabel.text = "\(currentStrain.id)"
 		strainNameLabel.text = currentStrain.name
-		strainRaceLabel.text = currentStrain.race
+		strainRaceLabel.text = currentStrain.race.rawValue
 		strainDescriptionLabel.text = currentStrain.desc ?? "No Description Available"
 	}
 

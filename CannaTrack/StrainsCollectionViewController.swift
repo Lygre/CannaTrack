@@ -64,7 +64,19 @@ class StrainsCollectionViewController: UICollectionViewController {
 		cell.strainAbbreviation.text = String(strainForIndexPath.name.first!)
 		cell.strainName.text = strainForIndexPath.name
         // Configure the cell
-    
+
+		cell.layer.cornerRadius = 12
+		cell.backgroundColor = {
+			switch strainForIndexPath.race {
+			case .indica:
+				return UIColor.purple
+			case .sativa:
+				return UIColor.yellow
+			case .hybrid:
+				return UIColor.green
+			}
+		}()
+
         return cell
     }
 

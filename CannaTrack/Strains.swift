@@ -15,7 +15,7 @@ struct BaseStrain: Decodable, Hashable {
 
 	let id: Int
 	let name: String
-	let race: String
+	let race: StrainVariety
 	let desc: String?
 	var flavors: String?
 	var effects: Effects?
@@ -112,17 +112,21 @@ struct Effects: Decodable, Hashable {
 
 }
 
-
+enum StrainVariety: String, Decodable {
+	case hybrid = "hybrid"
+	case indica = "indica"
+	case sativa = "sativa"
+}
 
 class Strain {
 	let id: Int
 	let name: String
-	let race: String
+	let race: StrainVariety
 	let desc: String?
 	//	var flavors: ???
 	var effects: Effects?
 
-	init(id: Int, name: String, race: String, description: String?) {
+	init(id: Int, name: String, race: StrainVariety, description: String?) {
 		self.id = id
 		self.name = name
 		self.race = race
