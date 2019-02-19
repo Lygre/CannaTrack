@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 
+var masterStrainDatabase: [Strain] = []
 
 struct BaseStrain: Decodable, Hashable {
 

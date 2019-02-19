@@ -242,6 +242,7 @@ class SearchViewController: UIViewController {
 
 	@IBAction func strainsToClassesClicked(_ sender: UIButton) {
 		strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
+		masterStrainDatabase = strainDatabase
 	}
 
 

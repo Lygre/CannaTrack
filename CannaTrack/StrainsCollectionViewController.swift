@@ -20,7 +20,9 @@ class StrainsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+		if strainDatabase == nil {
+			strainDatabase = masterStrainDatabase
+		}
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,7 +33,12 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-
+		if strainDatabase == nil {
+			strainDatabase = masterStrainDatabase
+		} else {
+			print("strain db isn't empty")
+			refreshUI()
+		}
 	}
     /*
     // MARK: - Navigation
