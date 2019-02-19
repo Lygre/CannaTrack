@@ -12,11 +12,15 @@ private let reuseIdentifier = "StrainCell"
 
 class StrainsCollectionViewController: UICollectionViewController {
 
+	let detailSegueIdentifier = "strainDetailSegue"
+
 	var strainDatabase: [Strain]? {
 		didSet {
 			refreshUI()
 		}
 	}
+
+	var strainToPassToDetail: Strain?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,15 +44,20 @@ class StrainsCollectionViewController: UICollectionViewController {
 			refreshUI()
 		}
 	}
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-    }
-    */
+
+		if segue.destination is StrainDetailViewController {
+			let detailVC = segue.destination as! StrainDetailViewController
+			detailVC.activeDetailStrain = strainToPassToDetail
+		}
+	}
+
 
     // MARK: UICollectionViewDataSource
 
@@ -87,6 +96,13 @@ class StrainsCollectionViewController: UICollectionViewController {
         return cell
     }
 
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		guard let strainForIndexPath = strainDatabase?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		strainToPassToDetail = getStrainForIndexPath(indexPath: indexPath)
+		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
+
+	}
+
     // MARK: UICollectionViewDelegate
 
     /*
@@ -118,6 +134,12 @@ class StrainsCollectionViewController: UICollectionViewController {
     }
     */
 
+
+	func getStrainForIndexPath(indexPath: IndexPath) -> Strain {
+		guard let strain = strainDatabase?[indexPath.item] else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
+
+		return strain
+	}
 
 	func refreshUI() {
 		loadViewIfNeeded()
