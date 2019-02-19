@@ -270,6 +270,38 @@ class SearchViewController: UIViewController {
 		}
 
 
+		func generateBaseStrainSetArrayAlternate() -> [Strain] {
+			var setArrayPassCount = 0
+			var baseStrainArray: [BaseStrain] = []
+			var baseStrainUnion: Set<BaseStrain>
+			let baseStrainSetArray: [Set<BaseStrain>] = {
+				var strainSetArray: [Set<BaseStrain>] = []
+
+
+				let vowelArray: [String] = ["a", "e", "i", "o", "u"]
+				for vowel in vowelArray {
+					//this should probably be changed; but the send request is what would need to change.
+					sendRequest(using: vowel, completion: {intermediaryBaseStrainArray in
+						strainSetArray.append(self.createStrainSetFromArray(using: intermediaryBaseStrainArray))
+						setArrayPassCount += 1
+
+					})
+				}
+
+				return strainSetArray
+			}()
+
+			if setArrayPassCount == 5 {
+				baseStrainUnion = baseStrainSetArray[0].union(baseStrainSetArray[1]).union(baseStrainSetArray[2]).union(baseStrainSetArray[3]).union(baseStrainSetArray[4])
+
+				for strain in baseStrainUnion {
+					baseStrainArray.append(strain)
+				}
+
+
+			}
+			return convertStrainDatabaseToClass(using: baseStrainArray)
+		}
 
 
 
