@@ -14,7 +14,11 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	let detailSegueIdentifier = "strainDetailSegue"
 
-	var strainDatabase: [Strain]? {
+	let searchController = UISearchController(searchResultsController: nil)
+	var searchActive: Bool = false
+
+
+	var strainsToDisplay: [Strain]? {
 		didSet {
 			refreshUI()
 		}
@@ -24,9 +28,25 @@ class StrainsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		if strainDatabase == nil {
-			strainDatabase = masterStrainDatabase
+		if strainsToDisplay == nil {
+			strainsToDisplay = masterStrainDatabase
 		}
+
+		self.searchController.searchResultsUpdater = self
+		self.searchController.delegate = self
+		self.searchController.searchBar.delegate = self
+
+		self.searchController.hidesNavigationBarDuringPresentation = false
+		self.searchController.dimsBackgroundDuringPresentation = false
+		self.searchController.obscuresBackgroundDuringPresentation = false
+
+		searchController.searchBar.placeholder = "Can search strain name"
+		searchController.searchBar.sizeToFit()
+		searchController.searchBar.becomeFirstResponder()
+		searchController.searchBar.showsCancelButton = true
+
+		self.navigationItem.titleView = searchController.searchBar
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -37,8 +57,8 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if strainDatabase == nil {
-			strainDatabase = masterStrainDatabase
+		if strainsToDisplay == nil {
+			strainsToDisplay = masterStrainDatabase
 		} else {
 			print("strain db isn't empty")
 			refreshUI()
@@ -69,13 +89,13 @@ class StrainsCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-		return strainDatabase?.count ?? 0
+		return strainsToDisplay?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? StrainCollectionViewCell else { fatalError("could not cast cell as StrainCollectionViewCell") }
 
-		guard let strainForIndexPath = strainDatabase?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		guard let strainForIndexPath = strainsToDisplay?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
 
 		cell.strainAbbreviation.text = String(strainForIndexPath.name.first!)
 		cell.strainName.text = strainForIndexPath.name
@@ -97,7 +117,7 @@ class StrainsCollectionViewController: UICollectionViewController {
     }
 
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		guard let strainForIndexPath = strainDatabase?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		guard let strainForIndexPath = strainsToDisplay?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
 		strainToPassToDetail = getStrainForIndexPath(indexPath: indexPath)
 		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
 
@@ -136,7 +156,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 
 	func getStrainForIndexPath(indexPath: IndexPath) -> Strain {
-		guard let strain = strainDatabase?[indexPath.item] else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
+		guard let strain = strainsToDisplay?[indexPath.item] else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
 
 		return strain
 	}
@@ -149,6 +169,26 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 
 
+
+
+}
+
+
+extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
+	func updateSearchResults(for searchController: UISearchController) {
+
+//		guard let searchString = searchController.searchBar.text else { return }
+		let searchString = searchController.searchBar.text
+		let searchResults = searchStrains(using: searchString!)
+//		print(searchResults)
+		strainsToDisplay = searchResults
+		print(searchString)
+		if (searchString == "") {
+			strainsToDisplay = masterStrainDatabase
+		}
+		print("Updating Search Results")
+		self.collectionView?.reloadData()
+	}
 
 
 }

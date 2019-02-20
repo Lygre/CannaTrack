@@ -64,7 +64,7 @@ class SearchViewController: UIViewController {
 			if self.strainDatabase.isEmpty {
 				strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
 			} else {
-				collectionVC.strainDatabase = strainDatabase
+				collectionVC.strainsToDisplay = strainDatabase
 			}
 		}
 	}

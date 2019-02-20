@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-var masterStrainDatabase: [Strain] = []
+var masterStrainDatabase: [Strain]?
 
 struct BaseStrain: Decodable, Hashable {
 
@@ -168,4 +168,18 @@ class Strain {
 
 
 
+}
+
+
+func searchStrains(using strainName: String) -> [Strain] {
+	var strainSearchResults: [Strain] = []
+	guard let strainDatabase = masterStrainDatabase else { return strainSearchResults }
+
+	for strain in strainDatabase {
+		if strain.name.lowercased().contains(strainName.lowercased()) {
+			strainSearchResults.append(strain)
+		}
+	}
+
+	return strainSearchResults
 }
