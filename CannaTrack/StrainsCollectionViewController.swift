@@ -99,6 +99,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 		cell.strainAbbreviation.text = String(strainForIndexPath.name.first!)
 		cell.strainName.text = strainForIndexPath.name
+		cell.varietyLabel.text = strainForIndexPath.race.rawValue
         // Configure the cell
 
 		cell.layer.cornerRadius = 12

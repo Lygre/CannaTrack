@@ -20,6 +20,8 @@ class StrainCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var strainName: UILabel!
 
+	@IBOutlet var varietyLabel: UILabel!
+
 
 
 }

@@ -400,19 +400,29 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Variety" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NgC-eM-zOQ">
+                                            <rect key="frame" x="37" y="78" width="45" height="11"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="jQG-dd-LOv" firstAttribute="width" secondItem="uUN-jd-fAI" secondAttribute="width" constant="-15" id="BGi-kp-vJ5"/>
+                                    <constraint firstItem="NgC-eM-zOQ" firstAttribute="width" secondItem="uUN-jd-fAI" secondAttribute="width" multiplier="0.5" id="SdY-ZD-nmk"/>
                                     <constraint firstItem="LeZ-UT-6sW" firstAttribute="top" secondItem="uUN-jd-fAI" secondAttribute="top" constant="7" id="U9L-5s-yyu"/>
                                     <constraint firstItem="jQG-dd-LOv" firstAttribute="top" secondItem="LeZ-UT-6sW" secondAttribute="bottom" constant="2" id="eCW-5x-1ZI"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="NgC-eM-zOQ" secondAttribute="trailing" id="hWH-Em-ssI"/>
                                     <constraint firstItem="jQG-dd-LOv" firstAttribute="leading" secondItem="uUN-jd-fAI" secondAttribute="leadingMargin" id="o0D-4N-X5I"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="NgC-eM-zOQ" secondAttribute="bottom" constant="3" id="pYE-Yt-wYl"/>
                                     <constraint firstItem="LeZ-UT-6sW" firstAttribute="leading" secondItem="uUN-jd-fAI" secondAttribute="leadingMargin" id="r3b-uh-1sG"/>
                                 </constraints>
                                 <size key="customSize" width="90" height="100"/>
                                 <connections>
                                     <outlet property="strainAbbreviation" destination="LeZ-UT-6sW" id="lgZ-8S-VXL"/>
                                     <outlet property="strainName" destination="jQG-dd-LOv" id="dOC-5A-ItK"/>
+                                    <outlet property="varietyLabel" destination="NgC-eM-zOQ" id="1iy-gF-eao"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -437,7 +447,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1039" y="1767"/>
+            <point key="canvasLocation" x="1037.68115942029" y="1766.5178571428571"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="eiK-ma-Lej">
