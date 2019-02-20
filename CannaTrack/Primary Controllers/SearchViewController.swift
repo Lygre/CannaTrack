@@ -40,6 +40,9 @@ class SearchViewController: UIViewController {
 	@IBOutlet var strainSearchTableView: UITableView!
 
 
+	@IBOutlet var processStatusImage: UIImageView!
+
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -86,6 +89,11 @@ class SearchViewController: UIViewController {
 
 	}
 
+
+	func updateProcessStatusImage() {
+		processStatusImage.image = UIImage(imageLiteralResourceName: "greenCheck.png")
+
+	}
 
 
 	func searchStrains(using effect: String) {
@@ -338,6 +346,7 @@ class SearchViewController: UIViewController {
 	@IBAction func strainsToClassesClicked(_ sender: UIButton) {
 		strainDatabase = convertStrainDatabaseToClass(using: finalStrainDatabase)
 		masterStrainDatabase = strainDatabase
+		updateProcessStatusImage()
 	}
 
 

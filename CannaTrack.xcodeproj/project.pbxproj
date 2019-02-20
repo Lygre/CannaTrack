@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
 		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
+		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
 		9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */; };
 		9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C1F2214A2C200FC2327 /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
 		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
 		9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F825C1C2214A2C200FC2327 /* CannaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +51,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F52F031221DC2BC007E6330 /* Primary Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
+				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
+				9F52F034221DC335007E6330 /* InventoryViewController.swift */,
+			);
+			path = "Primary Controllers";
+			sourceTree = "<group>";
+		};
+		9F52F032221DC2FA007E6330 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */,
+				9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		9F52F033221DC313007E6330 /* Other Views */ = {
+			isa = PBXGroup;
+			children = (
+				9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */,
+			);
+			path = "Other Views";
+			sourceTree = "<group>";
+		};
 		9F825C132214A2C200FC2327 = {
 			isa = PBXGroup;
 			children = (
@@ -68,16 +97,14 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
+				9F52F033221DC313007E6330 /* Other Views */,
+				9F52F032221DC2FA007E6330 /* Cells */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F825C312214A2F200FC2327 /* Extensions.swift */,
 				9F825C322214A2F200FC2327 /* Strains.swift */,
-				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
-				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
-				9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */,
-				9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */,
+				9F52F031221DC2BC007E6330 /* Primary Controllers */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
 				9F24BAE9221B654B0086B3AA /* DetailViewController.swift */,
-				9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */,
 				9F825C262214A2C300FC2327 /* Assets.xcassets */,
 				9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */,
 				9F825C2B2214A2C300FC2327 /* Info.plist */,
@@ -163,6 +190,7 @@
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
+				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 			);
