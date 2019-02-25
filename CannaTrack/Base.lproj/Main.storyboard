@@ -500,8 +500,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KZT-4n-qef">
-                                <rect key="frame" x="5" y="177" width="404" height="620"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KZT-4n-qef">
+                                <rect key="frame" x="5" y="138" width="404" height="665"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0AD-SA-ACt">
                                     <size key="itemSize" width="65" height="50"/>
@@ -510,14 +510,53 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCategoryCollectionViewCell" id="FzD-38-2Ni">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCategoryCollectionViewCell" id="FzD-38-2Ni" customClass="ProductCategoryCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vvz-ZL-74D">
+                                                    <rect key="frame" x="11.5" y="14.5" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="vvz-ZL-74D" firstAttribute="centerX" secondItem="FzD-38-2Ni" secondAttribute="centerX" id="jPE-36-nrx"/>
+                                            <constraint firstItem="vvz-ZL-74D" firstAttribute="centerY" secondItem="FzD-38-2Ni" secondAttribute="centerY" id="o1l-qU-TWZ"/>
+                                        </constraints>
                                         <size key="customSize" width="65" height="50"/>
+                                        <connections>
+                                            <outlet property="categoryLabel" destination="vvz-ZL-74D" id="emx-Mj-hwo"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="InventoryCollectionViewCell" id="xoa-2g-BQ6" customClass="InventoryCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
+                                        <rect key="frame" x="85" y="0.0" width="65" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="im1-K2-pyY">
+                                                    <rect key="frame" x="11.5" y="14.5" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="im1-K2-pyY" firstAttribute="centerY" secondItem="xoa-2g-BQ6" secondAttribute="centerY" id="Ts4-0r-pfE"/>
+                                            <constraint firstItem="im1-K2-pyY" firstAttribute="centerX" secondItem="xoa-2g-BQ6" secondAttribute="centerX" id="nQI-1B-jOo"/>
+                                        </constraints>
+                                        <size key="customSize" width="65" height="50"/>
+                                        <connections>
+                                            <outlet property="inventoryProductLabel" destination="im1-K2-pyY" id="SoZ-v2-F9l"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -526,11 +565,21 @@
                         <constraints>
                             <constraint firstItem="KZT-4n-qef" firstAttribute="leading" secondItem="k4E-R0-PJJ" secondAttribute="leading" constant="5" id="GBK-4g-gIL"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="bottom" secondItem="KZT-4n-qef" secondAttribute="bottom" constant="10" id="Lhg-E6-MOB"/>
+                            <constraint firstItem="KZT-4n-qef" firstAttribute="top" secondItem="k4E-R0-PJJ" secondAttribute="top" constant="50" id="lyv-zY-AgZ"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="trailing" secondItem="KZT-4n-qef" secondAttribute="trailing" constant="5" id="ycf-b1-hM4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="k4E-R0-PJJ"/>
                     </view>
-                    <navigationItem key="navigationItem" id="pFP-Bp-r1i"/>
+                    <navigationItem key="navigationItem" id="pFP-Bp-r1i">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="lTm-9X-i7P">
+                            <connections>
+                                <action selector="addProductToInventory:" destination="2sp-3f-4Lb" id="XP3-JS-dz7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="productsCollectionView" destination="KZT-4n-qef" id="gcC-sc-qqP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72h-jy-are" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -9,5 +9,9 @@
 import UIKit
 
 class ProductCategoryCollectionViewCell: UICollectionViewCell {
-    
+
+	@IBOutlet var categoryLabel: UILabel!
+
+
+	
 }

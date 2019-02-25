@@ -9,5 +9,8 @@
 import UIKit
 
 class InventoryCollectionViewCell: UICollectionViewCell {
-    
+
+	@IBOutlet var inventoryProductLabel: UILabel!
+	
+	
 }

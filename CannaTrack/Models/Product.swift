@@ -13,11 +13,13 @@ class Product {
 
 
 	let productType: ProductType
+	let strain: Strain
 	var mass: Double
 	var dateOpened: Date?
 
-	init(typeOfProduct: ProductType, inGrams massOfProduct: Double) {
+	init(typeOfProduct: ProductType, strainForProduct: Strain, inGrams massOfProduct: Double) {
 		self.productType = typeOfProduct
+		self.strain = strainForProduct
 		self.mass = massOfProduct
 	}
 
@@ -27,9 +29,22 @@ class Product {
 
 extension Product {
 
-	enum ProductType {
-		case truFlower, truCrmbl, truClear, truPod, truShatter
-		case vapePenCartridge, co2VapePenCartridge, oralSyringe, tinctureDropletBottle, capsuleBottle, topicalSunscreen, topicalLotion, rsoSyringe, topicalCream, nasalSpray
+	enum ProductType: String {
+		case truFlower = "truFlower"
+		case truCrmbl = "truCRMBL"
+		case truClear = "truClear"
+		case truPod = "truPod"
+		case truShatter = "truShatter"
+		case vapePenCartridge = "Vape Pen Cartridge"
+		case co2VapePenCartridge = "CO2 Vape Pen Cartridge"
+		case oralSyringe = "Oral Syringe"
+		case tinctureDropletBottle = "Tincture Droplet Bottle"
+		case capsuleBottle = "Capsule Bottle"
+		case topicalSunscreen = "Topical Sunscreen"
+		case topicalLotion = "Topical Lotion"
+		case rsoSyringe = "RSO Syringe"
+		case topicalCream = "Topical Cream"
+		case nasalSpray = "Nasal Spray"
 	}
 
 
