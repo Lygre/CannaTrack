@@ -18,7 +18,28 @@ class StrainsCollectionViewController: UICollectionViewController {
 	var searchActive: Bool = false
 
 
-	var strainsToDisplay: [Strain]? {
+	var allStrains: [String: StrainInformation] {
+		get {
+			var strainsDict: [String: StrainInformation] = [:]
+			sendRequestForAllStrains(completion: { strainsDictionary in
+				strainsDict = strainsDictionary
+				//				return strainsDict!
+			})
+			return strainsDict
+		}
+		set {
+			for (strainName, strainInformation) in newValue {
+				let strainToAppend = Strain(id: strainInformation.id, name: strainName, race: StrainVariety.init(rawValue: strainInformation.race)!, description: nil)
+				strainToAppend.flavors = strainInformation.flavors
+				//				strainToAppend.effects = strainInformation.effects
+
+				strainsToDisplay.append(strainToAppend)
+
+			}
+			masterStrainDatabase = strainsToDisplay
+		}
+	}
+	var strainsToDisplay: [Strain] = [] {
 		didSet {
 			refreshUI()
 		}
@@ -28,8 +49,11 @@ class StrainsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		if strainsToDisplay == nil {
-			strainsToDisplay = masterStrainDatabase
+		if strainsToDisplay.isEmpty {
+			sendRequestForAllStrains(completion: {allstrainsDict in
+				self.allStrains = allstrainsDict
+		})
+//			strainsToDisplay = masterStrainDatabase
 		}
 
 		self.searchController.searchResultsUpdater = self
@@ -57,8 +81,8 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if strainsToDisplay == nil {
-			strainsToDisplay = masterStrainDatabase
+		if strainsToDisplay.isEmpty {
+			strainsToDisplay = masterStrainDatabase ?? []
 		} else {
 			print("strain db isn't empty")
 			refreshUI()
@@ -89,13 +113,13 @@ class StrainsCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-		return strainsToDisplay?.count ?? 0
+		return strainsToDisplay.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? StrainCollectionViewCell else { fatalError("could not cast cell as StrainCollectionViewCell") }
 
-		guard let strainForIndexPath = strainsToDisplay?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
 
 		cell.strainAbbreviation.text = String(strainForIndexPath.name.first!)
 		cell.strainName.text = strainForIndexPath.name
@@ -118,7 +142,7 @@ class StrainsCollectionViewController: UICollectionViewController {
     }
 
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		guard let strainForIndexPath = strainsToDisplay?[indexPath.item] else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
 		strainToPassToDetail = getStrainForIndexPath(indexPath: indexPath)
 		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
 
@@ -157,7 +181,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 
 	func getStrainForIndexPath(indexPath: IndexPath) -> Strain {
-		guard let strain = strainsToDisplay?[indexPath.item] else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
+		guard let strain = strainsToDisplay[indexPath.item] as? Strain else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
 
 		return strain
 	}
@@ -185,11 +209,37 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 		strainsToDisplay = searchResults
 		print(searchString)
 		if (searchString == "") {
-			strainsToDisplay = masterStrainDatabase
+			strainsToDisplay = masterStrainDatabase ?? []
 		}
 		print("Updating Search Results")
 		self.collectionView?.reloadData()
 	}
 
 
+}
+
+
+extension StrainsCollectionViewController {
+
+	func sendRequestForAllStrains(completion: @escaping (([String: StrainInformation]) -> Void)) {
+		var baseStrainsArrayForVowel: [String: StrainInformation] = [:]
+		let url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/all"
+		guard let urlObj = URL(string: url) else { return }
+
+		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
+
+			guard let data = data else { return }
+
+			do {
+				let intermediateBasestrainArray = try JSONDecoder().decode([String: StrainInformation].self, from: data)
+				baseStrainsArrayForVowel = intermediateBasestrainArray
+
+				completion(baseStrainsArrayForVowel)
+				print("data parsed from strain database")
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
+
+			}.resume()
+	}
 }
