@@ -126,6 +126,7 @@ class Strain {
 	let desc: String?
 	//	var flavors: ???
 	var effects: Effects?
+	var flavors: [String]?
 
 	init(id: Int, name: String, race: StrainVariety, description: String?) {
 		self.id = id
@@ -182,4 +183,19 @@ func searchStrains(using strainName: String) -> [Strain] {
 	}
 
 	return strainSearchResults
+}
+
+
+//----playing around with something here
+
+struct StrainInformation: Codable {
+	var id: Int
+	var race: String
+	var flavors: [String]?
+	var effects: [String: [String]]?
+
+}
+
+struct StrainTestStruct: Codable {
+
 }

@@ -48,6 +48,7 @@ class InventoryViewController: UIViewController {
 	}
 
 
+
     /*
     // MARK: - Navigation
 
@@ -58,10 +59,6 @@ class InventoryViewController: UIViewController {
     }
     */
 
-
-	@IBAction func addProductToInventory(_ sender: Any) {
-
-	}
 
 
 }
@@ -128,5 +125,9 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 
 extension InventoryViewController {
+
+	func refreshUI() {
+		productsCollectionView.reloadData()
+	}
 
 }

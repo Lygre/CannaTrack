@@ -15,6 +15,21 @@ class SearchViewController: UIViewController {
 	let cellIdentifier = "StrainsTableViewCell"
 	let segueIdentifierForDetail = "showStrainDetailSegue"
 
+	var allStrainsClasses: [Strain]?
+	var allStrains: [String: StrainInformation] {
+		get {
+			var strainsDict: [String: StrainInformation]?
+			return sendRequestForAllStrains(completion: { strainsDictionary in
+				return strainsDictionary
+			})
+
+		}
+		set {
+			for (strainName, strainInformation) in newValue {
+
+			}
+		}
+	}
 	var strainsArray: [BaseStrain] = []
 	var effectsArray: [Effects]?
 	var effectArrayEnumeration: [Effect]?
@@ -338,7 +353,13 @@ class SearchViewController: UIViewController {
 	}
 
 	@IBAction func generateEffectsClicked(_ sender: UIButton) {
-		effectArrayEnumeration = generateEffectsSet(completion: { effects in })
+//		effectArrayEnumeration = generateEffectsSet(completion: { effects in })
+
+		sendRequestForAllStrains(completion: { strainDictionary in
+			self.allStrains = strainDictionary
+			print("all strains generated", self.allStrains)
+		})
+
 	}
 
 
@@ -363,7 +384,31 @@ class SearchViewController: UIViewController {
 
 
 
+extension SearchViewController {
 
+	func sendRequestForAllStrains(completion: @escaping (([String: StrainInformation]) -> Void)) {
+		var baseStrainsArrayForVowel: [String: StrainInformation] = [:]
+		let url = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/all"
+		guard let urlObj = URL(string: url) else { return }
+
+		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
+
+			guard let data = data else { return }
+
+			do {
+				let intermediateBasestrainArray = try JSONDecoder().decode([String: StrainInformation].self, from: data)
+				baseStrainsArrayForVowel = intermediateBasestrainArray
+
+				completion(baseStrainsArrayForVowel)
+				print("data parsed from strain database")
+			} catch let jsonError {
+				print("Error serializing json: ", jsonError)
+			}
+
+			}.resume()
+	}
+
+}
 
 
 
