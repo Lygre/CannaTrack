@@ -1,0 +1,6 @@
+framework module Pods_CannaTrack {
+  umbrella header "Pods-CannaTrack-umbrella.h"
+
+  export *
+  module * { export * }
+}
