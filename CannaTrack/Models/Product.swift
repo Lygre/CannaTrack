@@ -15,6 +15,7 @@ class Product {
 	let productType: ProductType
 	let strain: Strain
 
+	var productLabelImage: UIImage?
 	var currentProductImage: UIImage?
 	var mass: Double
 	var dateOpened: Date?

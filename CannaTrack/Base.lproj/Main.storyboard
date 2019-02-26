@@ -375,9 +375,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZo-7d-U5d">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cZo-7d-U5d">
                                 <rect key="frame" x="0.0" y="769" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem title="Save" id="Azy-eb-2zS">
                                         <connections>
@@ -387,39 +386,39 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Strain Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fd9-Rh-ypv">
-                                <rect key="frame" x="83.5" y="104" width="247" height="30"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hoR-FX-saw">
+                                <rect key="frame" x="15" y="224" width="384" height="530"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="247" id="7Fp-kA-Vgx"/>
-                                    <constraint firstAttribute="height" constant="30" id="Dk9-L7-32n"/>
+                                    <constraint firstAttribute="height" constant="530" id="phy-C9-QVI"/>
                                 </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jl5-SS-cKJ">
-                                <rect key="frame" x="190" y="172" width="35" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jl5-SS-cKJ">
+                                <rect key="frame" x="189.5" y="105" width="35" height="94"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="ERO-Kt-fJ6"/>
+                                </constraints>
                                 <state key="normal" title="Scan"/>
                                 <connections>
-                                    <action selector="scanToAddProductTapped:" destination="VoP-XI-VZI" eventType="touchUpInside" id="wuH-EZ-y81"/>
+                                    <action selector="scanToAddProductTapped:" destination="VoP-XI-VZI" eventType="touchUpInside" id="Ue2-te-MP8"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hoR-FX-saw">
-                                <rect key="frame" x="87" y="273" width="240" height="245"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Fd9-Rh-ypv" firstAttribute="top" secondItem="1ja-wh-aEI" secondAttribute="top" constant="16" id="LWf-CG-NhX"/>
-                            <constraint firstItem="Fd9-Rh-ypv" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="XON-aR-Twf"/>
+                            <constraint firstItem="Jl5-SS-cKJ" firstAttribute="top" secondItem="1ja-wh-aEI" secondAttribute="top" constant="17" id="9za-LI-hHH"/>
+                            <constraint firstItem="cZo-7d-U5d" firstAttribute="top" secondItem="hoR-FX-saw" secondAttribute="bottom" constant="15" id="M4X-3I-X6k"/>
+                            <constraint firstItem="Jl5-SS-cKJ" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="OHk-Pa-GmJ"/>
+                            <constraint firstItem="cZo-7d-U5d" firstAttribute="centerX" secondItem="hoR-FX-saw" secondAttribute="centerX" id="Yjf-p5-hI6"/>
+                            <constraint firstItem="hoR-FX-saw" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="b9y-ma-t33"/>
+                            <constraint firstItem="hoR-FX-saw" firstAttribute="top" secondItem="Jl5-SS-cKJ" secondAttribute="bottom" constant="25" id="gPj-qY-jn0"/>
+                            <constraint firstItem="cZo-7d-U5d" firstAttribute="bottom" secondItem="1ja-wh-aEI" secondAttribute="bottom" id="gst-Eb-8el"/>
+                            <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="hoR-FX-saw" secondAttribute="trailing" constant="15" id="nrd-LB-GvE"/>
+                            <constraint firstItem="cZo-7d-U5d" firstAttribute="leading" secondItem="c27-oA-Aeu" secondAttribute="leading" id="tr6-mk-1H2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1ja-wh-aEI"/>
                     </view>
                     <connections>
-                        <outlet property="productImageToAdd" destination="hoR-FX-saw" id="fjF-Da-e2I"/>
-                        <outlet property="strainNameTextField" destination="Fd9-Rh-ypv" id="lJt-9j-EHL"/>
+                        <outlet property="productImageToAdd" destination="hoR-FX-saw" id="1X9-dH-qxC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uNB-vI-l3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
