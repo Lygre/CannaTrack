@@ -181,7 +181,7 @@ class AddProductViewController: UIViewController {
 //		guard let uiImageForVision = productToAdd?.productLabelImage else { return }
 		guard let cgImageForVision = productToAdd?.productLabelImage?.cgImage else { return }
 
-		let imageRequestHandler = VNImageRequestHandler(cgImage: cgImageForVision, orientation: .up, options: [:])
+//		let imageRequestHandler = VNImageRequestHandler(cgImage: cgImageForVision, orientation: .up, options: [:])
 
 	}
 
@@ -226,22 +226,24 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 		show(originalImage)
 
 		// Convert from UIImageOrientation to CGImagePropertyOrientation.
-		let cgOrientation = CGImagePropertyOrientation(rawValue: UInt32(originalImage.imageOrientation.rawValue))
+		let cgOrientation = CGImagePropertyOrientation(originalImage.imageOrientation)
 
 		// Fire off request based on URL of chosen photo.
 		guard let cgImage = originalImage.cgImage else {
 			return
 		}
 		performVisionRequest(image: cgImage,
-							 orientation: cgOrientation ?? .up)
+							 orientation: cgOrientation)
 
 		// Dismiss the picker to return to original view controller.
-		dismiss(animated: true, completion: nil)
 
 		self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-		self.productToAdd?.currentProductImage = image
-		self.productToAdd?.productLabelImage = image
-		self.productImageToAdd.image = image
+		self.productToAdd?.currentProductImage = originalImage
+		self.productToAdd?.productLabelImage = originalImage
+//		self.productImageToAdd.image = originalImage
+
+		dismiss(animated: true, completion: nil)
+
 	}
 
 
@@ -347,7 +349,7 @@ extension AddProductViewController {
 		// Create an array to collect all desired requests.
 		var requests: [VNRequest] = []
 
-		requests.append(self.rectangleDetectionRequest)
+//		requests.append(self.rectangleDetectionRequest)
 		requests.append(self.textDetectionRequest)
 		// Return grouped requests as a single array.
 		return requests
@@ -534,6 +536,21 @@ extension CGMutablePath {
 
 		if closePath {
 			self.closeSubpath()
+		}
+	}
+}
+
+extension CGImagePropertyOrientation {
+	init(_ uiImageOrientation: UIImage.Orientation) {
+		switch uiImageOrientation {
+		case .up: self = .up
+		case .down: self = .down
+		case .left: self = .left
+		case .right: self = .right
+		case .upMirrored: self = .upMirrored
+		case .downMirrored: self = .downMirrored
+		case .leftMirrored: self = .leftMirrored
+		case .rightMirrored: self = .rightMirrored
 		}
 	}
 }
