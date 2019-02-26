@@ -15,18 +15,22 @@ class SearchViewController: UIViewController {
 	let cellIdentifier = "StrainsTableViewCell"
 	let segueIdentifierForDetail = "showStrainDetailSegue"
 
-	var allStrainsClasses: [Strain]?
+	var allStrainsClasses: [Strain] = []
 	var allStrains: [String: StrainInformation] {
 		get {
-			var strainsDict: [String: StrainInformation]?
-			return sendRequestForAllStrains(completion: { strainsDictionary in
-				return strainsDictionary
+			var strainsDict: [String: StrainInformation] = [:]
+			sendRequestForAllStrains(completion: { strainsDictionary in
+				strainsDict = strainsDictionary
+//				return strainsDict!
 			})
-
+			return strainsDict
 		}
 		set {
 			for (strainName, strainInformation) in newValue {
-
+				let strainToAppend = Strain(id: strainInformation.id, name: strainName, race: StrainVariety.init(rawValue: strainInformation.race)!, description: nil)
+				strainToAppend.flavors = strainInformation.flavors
+//				strainToAppend.effects = strainInformation.effects
+				allStrainsClasses.append(strainToAppend)
 			}
 		}
 	}
