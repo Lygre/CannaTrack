@@ -32,6 +32,7 @@ class SearchViewController: UIViewController {
 //				strainToAppend.effects = strainInformation.effects
 				allStrainsClasses.append(strainToAppend)
 			}
+			masterStrainDatabase = allStrainsClasses
 		}
 	}
 	var strainsArray: [BaseStrain] = []
