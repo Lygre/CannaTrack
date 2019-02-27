@@ -28,7 +28,8 @@ class AddProductViewController: UIViewController {
 
 		let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
 		self.productImageToAdd.addGestureRecognizer(photoTap)
-
+		let tesseract = G8Tesseract(language: "eng")
+		tesseract?.recognize()
 //		perform(#selector(promptPhoto), with: nil, afterDelay: 0.1)
 
         // Do any additional setup after loading the view.
