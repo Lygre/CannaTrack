@@ -11,7 +11,11 @@ import Vision
 import AVKit
 import TesseractOCR
 
-class AddProductViewController: UIViewController {
+class AddProductViewController: UIViewController, G8TesseractDelegate {
+
+
+
+	@IBOutlet var scannedProductTextField: UITextView!
 
 	@IBOutlet var productImageToAdd: UIImageView!
 
@@ -28,6 +32,10 @@ class AddProductViewController: UIViewController {
 
 		let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
 		self.productImageToAdd.addGestureRecognizer(photoTap)
+
+		if let tesseract = G8Tesseract(language: "eng") {
+
+		}
 
 //		perform(#selector(promptPhoto), with: nil, afterDelay: 0.1)
 
@@ -214,12 +222,6 @@ extension AddProductViewController {
 extension AddProductViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//		picker.dismiss(animated: true)
-
-//		guard let image = info[.editedImage] as? UIImage else {
-//			print("No image found")
-//			return
-//		}
 
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
 

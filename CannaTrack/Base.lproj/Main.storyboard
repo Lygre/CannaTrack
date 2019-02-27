@@ -13,7 +13,7 @@
         <!--Search View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SearchViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="SearchViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -82,7 +82,7 @@
                                 <rect key="frame" x="25" y="625" width="364" height="188"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StrainsTableViewCell" rowHeight="40" id="JRj-5J-tAp" customClass="StrainsTableViewCell" customModule="CannaTrack" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StrainsTableViewCell" rowHeight="40" id="JRj-5J-tAp" customClass="StrainsTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="364" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JRj-5J-tAp" id="43T-Ej-sp8">
@@ -135,7 +135,7 @@
         <!--Detail View Constroller-->
         <scene sceneID="AbK-kz-zrQ">
             <objects>
-                <viewController id="wSF-gk-knZ" customClass="DetailViewConstroller" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wSF-gk-knZ" customClass="DetailViewConstroller" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rYp-LF-kAG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -244,7 +244,7 @@
         <!--Strain Detail View Controller-->
         <scene sceneID="BXQ-3M-r7a">
             <objects>
-                <viewController id="uLF-r6-80q" customClass="StrainDetailViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="uLF-r6-80q" customClass="StrainDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gf4-6z-mm9" customClass="StrainD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -370,7 +370,7 @@
         <!--Add Product View Controller-->
         <scene sceneID="NOZ-Sr-M4b">
             <objects>
-                <viewController id="VoP-XI-VZI" customClass="AddProductViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="VoP-XI-VZI" customClass="AddProductViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c27-oA-Aeu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -387,13 +387,13 @@
                                 </items>
                             </toolbar>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hoR-FX-saw">
-                                <rect key="frame" x="15" y="224" width="384" height="530"/>
+                                <rect key="frame" x="15" y="414" width="384" height="340"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="530" id="phy-C9-QVI"/>
+                                    <constraint firstAttribute="height" constant="340" id="phy-C9-QVI"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jl5-SS-cKJ">
-                                <rect key="frame" x="189.5" y="105" width="35" height="94"/>
+                                <rect key="frame" x="189.5" y="105" width="35" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="ERO-Kt-fJ6"/>
                                 </constraints>
@@ -402,23 +402,34 @@
                                     <action selector="scanToAddProductTapped:" destination="VoP-XI-VZI" eventType="touchUpInside" id="Ue2-te-MP8"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Scanned Text Placeholder" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ba2-1x-sR7">
+                                <rect key="frame" x="15" y="160" width="384" height="229"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Jl5-SS-cKJ" firstAttribute="top" secondItem="1ja-wh-aEI" secondAttribute="top" constant="17" id="9za-LI-hHH"/>
+                            <constraint firstItem="ba2-1x-sR7" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="Ix1-FN-mUG"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="top" secondItem="hoR-FX-saw" secondAttribute="bottom" constant="15" id="M4X-3I-X6k"/>
                             <constraint firstItem="Jl5-SS-cKJ" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="OHk-Pa-GmJ"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="centerX" secondItem="hoR-FX-saw" secondAttribute="centerX" id="Yjf-p5-hI6"/>
                             <constraint firstItem="hoR-FX-saw" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="b9y-ma-t33"/>
-                            <constraint firstItem="hoR-FX-saw" firstAttribute="top" secondItem="Jl5-SS-cKJ" secondAttribute="bottom" constant="25" id="gPj-qY-jn0"/>
+                            <constraint firstItem="ba2-1x-sR7" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="bjP-JC-HTo"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="bottom" secondItem="1ja-wh-aEI" secondAttribute="bottom" id="gst-Eb-8el"/>
+                            <constraint firstItem="hoR-FX-saw" firstAttribute="top" secondItem="ba2-1x-sR7" secondAttribute="bottom" constant="25" id="lbQ-Sk-Jgd"/>
                             <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="hoR-FX-saw" secondAttribute="trailing" constant="15" id="nrd-LB-GvE"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="leading" secondItem="c27-oA-Aeu" secondAttribute="leading" id="tr6-mk-1H2"/>
+                            <constraint firstItem="ba2-1x-sR7" firstAttribute="top" secondItem="Jl5-SS-cKJ" secondAttribute="bottom" constant="25" id="x55-W5-Tk8"/>
+                            <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="ba2-1x-sR7" secondAttribute="trailing" constant="15" id="xaf-PY-2IP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1ja-wh-aEI"/>
                     </view>
                     <connections>
                         <outlet property="productImageToAdd" destination="hoR-FX-saw" id="1X9-dH-qxC"/>
+                        <outlet property="scannedProductTextField" destination="ba2-1x-sR7" id="XgN-UF-cY8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uNB-vI-l3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -429,7 +440,7 @@
         <!--Strains Collection View Controller-->
         <scene sceneID="nHN-9g-eW2">
             <objects>
-                <collectionViewController id="woJ-6M-BYj" customClass="StrainsCollectionViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="woJ-6M-BYj" customClass="StrainsCollectionViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="XYd-vb-Zt0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -441,7 +452,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StrainCell" id="uUN-jd-fAI" customClass="StrainCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StrainCell" id="uUN-jd-fAI" customClass="StrainCollectionViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="90" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -554,7 +565,7 @@
         <!--Inventory View Controller-->
         <scene sceneID="7Dw-hz-Gfi">
             <objects>
-                <viewController id="2sp-3f-4Lb" customClass="InventoryViewController" customModule="CannaTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2sp-3f-4Lb" customClass="InventoryViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tHn-6P-u27">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -569,7 +580,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCategoryCollectionViewCell" id="FzD-38-2Ni" customClass="ProductCategoryCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCategoryCollectionViewCell" id="FzD-38-2Ni" customClass="ProductCategoryCollectionViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -593,7 +604,7 @@
                                             <outlet property="categoryLabel" destination="vvz-ZL-74D" id="emx-Mj-hwo"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="InventoryCollectionViewCell" id="xoa-2g-BQ6" customClass="InventoryCollectionViewCell" customModule="CannaTrack" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="InventoryCollectionViewCell" id="xoa-2g-BQ6" customClass="InventoryCollectionViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
                                         <rect key="frame" x="85" y="0.0" width="65" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
