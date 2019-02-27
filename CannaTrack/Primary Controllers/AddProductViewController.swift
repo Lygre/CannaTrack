@@ -33,9 +33,6 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 		let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
 		self.productImageToAdd.addGestureRecognizer(photoTap)
 
-		if let tesseract = G8Tesseract(language: "eng") {
-
-		}
 
 //		perform(#selector(promptPhoto), with: nil, afterDelay: 0.1)
 
@@ -56,6 +53,11 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 		imagePicker.delegate = self
 
 		self.present(imagePicker, animated: true)
+	}
+
+	// MARK: - Tesseract Helpers
+	func progressImageRecognition(for tesseract: G8Tesseract!) {
+		print("Recognition progress for image \(tesseract.progress)")
 	}
 
 	// MARK: - Helper Methods
@@ -224,7 +226,7 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-
+		/*
 		// Display image on screen.
 		show(originalImage)
 
@@ -237,13 +239,24 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 		}
 		performVisionRequest(image: cgImage,
 							 orientation: cgOrientation)
-
+		*/
 		// Dismiss the picker to return to original view controller.
 
 		self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
 		self.productToAdd?.currentProductImage = originalImage
 		self.productToAdd?.productLabelImage = originalImage
-//		self.productImageToAdd.image = originalImage
+
+		if let tesseract = G8Tesseract(language: "eng") {
+			tesseract.delegate = self
+			tesseract.image = originalImage.g8_blackAndWhite()
+			tesseract.recognize()
+
+			self.productImageToAdd.image = originalImage
+			scannedProductTextField.text = tesseract.recognizedText
+
+		} else { print("not able to instantiate tesseract") }
+
+
 
 		dismiss(animated: true, completion: nil)
 
