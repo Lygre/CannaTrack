@@ -25,6 +25,9 @@ class InventoryViewController: UIViewController {
 			}
 			return Array(categories)
 		}
+		set {
+			print(newValue)
+		}
 
 	}
 
@@ -36,15 +39,16 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-
-		productsCollectionView.reloadData()
+		categoriesInInventory = [.truShatter, .truCrmbl, .truClear]
+		currentInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)]
         // Do any additional setup after loading the view.
     }
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
+		productsCollectionView.reloadData()
 		print(categoriesInInventory)
+		print(currentInventory)
 	}
 
 
@@ -71,15 +75,17 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 	}
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		switch section {
-		case 0:
-			return categoriesInInventory.count
-		case 1:
-			guard let inventory = currentInventory else { return 1 }
-			return inventory.count
-		default:
-			fatalError("non-existent section tried to load")
-		}
+//		switch section {
+//		case 0:
+//			return categoriesInInventory.count
+//		case 1:
+//			guard let inventory = currentInventory else { return 1 }
+//			return inventory.count
+//		default:
+//			fatalError("non-existent section tried to load")
+//		}
+		guard let inventory = currentInventory else { return 1 }
+		return (section == 0) ? categoriesInInventory.count : inventory.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -87,12 +93,16 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCategoryCellIdentifier, for: indexPath) as? ProductCategoryCollectionViewCell else { fatalError("could not instantiate category collection view cell") }
-			cell.categoryLabel.text = categoriesInInventory[indexPath.item].rawValue
+
+			let categoriesPresent = categoriesInInventory[indexPath.row].rawValue
+
+
+			cell.categoryLabel.text = categoriesPresent
 			return cell
 		case .product:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: inventoryCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not instantiate inventory collection view cell") }
 
-			guard let inventoryItem = currentInventory?[indexPath.item] else {
+			guard let inventoryItem = currentInventory?[indexPath.row] else {
 				cell.inventoryProductLabel.text = "No Inventory"
 				return cell
 			}
@@ -127,6 +137,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 extension InventoryViewController {
 
 	func refreshUI() {
+		loadViewIfNeeded()
 		productsCollectionView.reloadData()
 	}
 
