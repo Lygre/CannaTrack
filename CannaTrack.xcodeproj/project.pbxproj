@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */; };
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
+		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
+		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
 		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
@@ -24,13 +26,15 @@
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
-		9FBB0BBE2227026C00CC405C /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 9FBB0BBD2227026C00CC405C /* tessdata */; };
+		9FB1E6C42227A4010070603C /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 9FB1E6C32227A4010070603C /* tessdata */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E48B5F0937AEF405ACDD85B /* Pods-CannaTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.release.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.release.xcconfig"; sourceTree = "<group>"; };
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
+		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
@@ -48,7 +52,7 @@
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
-		9FBB0BBD2227026C00CC405C /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		9FB1E6C32227A4010070603C /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D6E5CC028FBD92F1FE745C /* Pods-CannaTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */,
+				9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */,
 				575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,6 +75,8 @@
 		246AAA7737260F44E7DA030C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9F1052D52227A02600658F62 /* TesseractOCR.framework */,
+				9F1052D32227A01800658F62 /* CoreImage.framework */,
 				D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */,
 			);
 			name = Frameworks;
@@ -126,6 +134,7 @@
 		9F825C132214A2C200FC2327 = {
 			isa = PBXGroup;
 			children = (
+				9FB1E6C32227A4010070603C /* tessdata */,
 				9F825C1E2214A2C200FC2327 /* CannaTrack */,
 				9F825C1D2214A2C200FC2327 /* Products */,
 				8F88183F5A4FB3E93F3F415D /* Pods */,
@@ -144,7 +153,6 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
-				9FBB0BBD2227026C00CC405C /* tessdata */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F3D5B14221F52ED00D7B705 /* Models */,
 				9F52F033221DC313007E6330 /* Other Views */,
@@ -220,7 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F825C2A2214A2C300FC2327 /* LaunchScreen.storyboard in Resources */,
-				9FBB0BBE2227026C00CC405C /* tessdata in Resources */,
+				9FB1E6C42227A4010070603C /* tessdata in Resources */,
 				9F825C272214A2C300FC2327 /* Assets.xcassets in Resources */,
 				9F825C252214A2C200FC2327 /* Main.storyboard in Resources */,
 			);

@@ -6,7 +6,7 @@ target 'CannaTrack' do
   use_frameworks!
 	
   # Pods for CannaTrack
-	pod 'TesseractOCRiOS', '4.0.0'
+	pod 'TesseractOCRiOS', '4.00'
 
 end
 

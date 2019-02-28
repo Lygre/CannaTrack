@@ -11,6 +11,7 @@ import Vision
 import AVKit
 import TesseractOCR
 
+
 class AddProductViewController: UIViewController, G8TesseractDelegate {
 
 
@@ -247,12 +248,13 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 		self.productToAdd?.productLabelImage = originalImage
 
 		if let tesseract = G8Tesseract(language: "eng") {
+			tesseract.engineMode = .tesseractCubeCombined
 			tesseract.delegate = self
 			tesseract.image = originalImage.g8_blackAndWhite()
 			tesseract.recognize()
 
 			self.productImageToAdd.image = originalImage
-			scannedProductTextField.text = tesseract.recognizedText
+			self.scannedProductTextField.text = tesseract.recognizedText
 
 		} else { print("not able to instantiate tesseract") }
 
