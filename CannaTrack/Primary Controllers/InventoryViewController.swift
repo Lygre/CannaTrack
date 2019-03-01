@@ -182,4 +182,23 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 			return CGSize(width: 100, height: 85)
 		}
 	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+	}
+
+//	override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//		self.productsCollectionView.collectionViewLayout.invalidateLayout()
+//		super.viewWillTransition(to: size, with: coordinator)
+//	}
 }
+
+
