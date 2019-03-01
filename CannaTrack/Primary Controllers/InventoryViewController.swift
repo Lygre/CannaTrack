@@ -48,7 +48,7 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.dataSource = self
 
 		categoriesInInventory = [.truShatter, .truCrmbl, .truClear]
-		currentInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)]
+		currentInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
         // Do any additional setup after loading the view.
     }
 
