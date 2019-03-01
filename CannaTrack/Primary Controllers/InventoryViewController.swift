@@ -22,12 +22,19 @@ class InventoryViewController: UIViewController {
 		}
 	}
 
-	var currentInventory: [Product]?
+	var currentInventory: [Product]? {
+		didSet {
+			self.productsCollectionView.performBatchUpdates({
+				self.productsCollectionView.reloadSections(NSIndexSet(index: 1) as IndexSet)
+			}, completion: nil)
+		}
+	}
 	var masterInventory: [Product]?
 
 	var categoriesInInventory: [Product.ProductType] {
 		get {
 			guard let inventory = masterInventory else { return [] }
+//			if self.categoriesInInventory == [] { }
 			var categories: Set<Product.ProductType> = []
 			for product in inventory {
 				categories.insert(product.productType)
@@ -48,7 +55,7 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-		categoriesInInventory = [.truShatter, .truCrmbl, .truClear]
+		categoriesInInventory = [.truShatter, .truCrmbl]
 		masterInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
 		currentInventory = masterInventory
         // Do any additional setup after loading the view.
