@@ -12,5 +12,9 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var inventoryProductLabel: UILabel!
 	
+	@IBOutlet var productStrainNameLabel: UILabel!
+
+	@IBOutlet var productMassRemainingLabel: UILabel!
 	
+
 }

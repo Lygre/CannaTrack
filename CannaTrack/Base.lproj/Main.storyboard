@@ -574,14 +574,14 @@
                                 <rect key="frame" x="5" y="138" width="404" height="665"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0AD-SA-ACt">
-                                    <size key="itemSize" width="65" height="50"/>
+                                    <size key="itemSize" width="100" height="85"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCategoryCollectionViewCell" id="FzD-38-2Ni" customClass="ProductCategoryCollectionViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
+                                        <rect key="frame" x="0.0" y="17.5" width="65" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
@@ -605,30 +605,74 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="InventoryCollectionViewCell" id="xoa-2g-BQ6" customClass="InventoryCollectionViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
-                                        <rect key="frame" x="85" y="0.0" width="65" height="50"/>
+                                        <rect key="frame" x="75" y="0.0" width="100" height="85"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="85"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="im1-K2-pyY">
-                                                    <rect key="frame" x="11.5" y="14.5" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" axis="vertical" distribution="equalSpacing" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-NP-09E" userLabel="inventoryProductInformationStackView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="139" height="94"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="im1-K2-pyY">
+                                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="98.5" id="8Vx-fN-7xk"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strain Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sk3-zi-bLJ">
+                                                            <rect key="frame" x="0.0" y="19" width="98.5" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="98.5" id="B8r-rE-hcJ"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass Remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsc-dH-EYb">
+                                                            <rect key="frame" x="0.0" y="38" width="98.5" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="98.5" id="xkg-3Z-r5a"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </view>
-                                        <constraints>
-                                            <constraint firstItem="im1-K2-pyY" firstAttribute="centerY" secondItem="xoa-2g-BQ6" secondAttribute="centerY" id="Ts4-0r-pfE"/>
-                                            <constraint firstItem="im1-K2-pyY" firstAttribute="centerX" secondItem="xoa-2g-BQ6" secondAttribute="centerX" id="nQI-1B-jOo"/>
-                                        </constraints>
-                                        <size key="customSize" width="65" height="50"/>
+                                        <size key="customSize" width="100" height="85"/>
                                         <connections>
                                             <outlet property="inventoryProductLabel" destination="im1-K2-pyY" id="SoZ-v2-F9l"/>
+                                            <outlet property="productMassRemainingLabel" destination="fsc-dH-EYb" id="EDH-DH-H0U"/>
+                                            <outlet property="productStrainNameLabel" destination="Sk3-zi-bLJ" id="kM9-Bs-Cz4"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductSectionHeaderView" id="QJf-LO-hdO" customClass="ProductHeaderCollectionReusableView" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="85" width="404" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Header Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5m-Ke-sVE">
+                                            <rect key="frame" x="151" y="14.5" width="102" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="F5m-Ke-sVE" firstAttribute="centerY" secondItem="QJf-LO-hdO" secondAttribute="centerY" id="WBo-kM-8zK"/>
+                                        <constraint firstItem="F5m-Ke-sVE" firstAttribute="centerX" secondItem="QJf-LO-hdO" secondAttribute="centerX" id="sP4-w5-6Xr"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="sectionHeaderLabel" destination="F5m-Ke-sVE" id="cMp-N7-Q49"/>
+                                    </connections>
+                                </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

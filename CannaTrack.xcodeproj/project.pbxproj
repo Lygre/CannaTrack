@@ -13,6 +13,7 @@
 		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
 		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
+		9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
 		9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */; };
@@ -37,6 +38,7 @@
 		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
 		9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */,
 				9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */,
 				9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */,
+				9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */,
 				9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -296,6 +299,7 @@
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
 				9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
+				9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */,
 				9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */,
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,

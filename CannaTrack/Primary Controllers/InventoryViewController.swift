@@ -12,7 +12,9 @@ class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
-	let headerIdentifier = "SectionHeader"
+	let headerIdentifier = "ProductSectionHeaderView"
+
+	var activeCategoryDisplayed: Product.ProductType?
 
 	var currentInventory: [Product]?
 
@@ -75,30 +77,34 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 	}
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//		switch section {
-//		case 0:
-//			return categoriesInInventory.count
-//		case 1:
-//			guard let inventory = currentInventory else { return 1 }
-//			return inventory.count
-//		default:
-//			fatalError("non-existent section tried to load")
-//		}
+
 		guard let inventory = currentInventory else { return 1 }
 		return (section == 0) ? categoriesInInventory.count : inventory.count
+
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
 		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
+
 		switch sectionForCell {
+
 		case .category:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCategoryCellIdentifier, for: indexPath) as? ProductCategoryCollectionViewCell else { fatalError("could not instantiate category collection view cell") }
+
 
 			let categoriesPresent = categoriesInInventory[indexPath.row].rawValue
 
 
 			cell.categoryLabel.text = categoriesPresent
+
+			//!MARK: - Generalized Cell Setup perform here
+			cell.backgroundColor = .lightGray
+			cell.layer.cornerRadius = 12
+			cell.layer.masksToBounds = true
+
 			return cell
+
 		case .product:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: inventoryCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not instantiate inventory collection view cell") }
 
@@ -107,14 +113,34 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 				return cell
 			}
 			cell.inventoryProductLabel.text = inventoryItem.productType.rawValue
+			cell.productStrainNameLabel.text = inventoryItem.strain.name
+			cell.productMassRemainingLabel.text = "\(inventoryItem.mass)"
+
+			//!MARK: - Generalized Cell Setup perform here
+			cell.backgroundColor = .lightGray
+			cell.layer.cornerRadius = 12
+			cell.layer.masksToBounds = true
+
 			return cell
+
 		}
-
-
-
-
-
 	}
+
+	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+		guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as? ProductHeaderCollectionReusableView else { fatalError("could not cast header as ProductHeaderCollectionReusableView")}
+
+		//!MARK: - Generalized Cell Setup perform here
+		supplementaryView.backgroundColor = .cyan
+		supplementaryView.layer.cornerRadius = 12
+		supplementaryView.layer.masksToBounds = true
+
+		//!MARK: - Specific view element Setup perform here
+
+		supplementaryView.sectionHeaderLabel.text = "HI"
+
+		return supplementaryView
+	}
+
 
 	enum InventoryCollectionSection: Int {
 		case category = 0
@@ -141,4 +167,19 @@ extension InventoryViewController {
 		productsCollectionView.reloadData()
 	}
 
+}
+
+
+extension InventoryViewController: UICollectionViewDelegateFlowLayout {
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
+
+		switch sectionForCell {
+		case .category:
+			return CGSize(width: 70, height: 50)
+		case .product:
+			return CGSize(width: 100, height: 85)
+		}
+	}
 }
