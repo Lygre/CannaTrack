@@ -78,7 +78,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-		guard let inventory = currentInventory else { return 1 }
+		guard let inventory = currentInventory else { return 0 }
 		return (section == 0) ? categoriesInInventory.count : inventory.count
 
 	}
@@ -145,6 +145,18 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 
 		return supplementaryView
+	}
+
+
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
+		switch sectionForCell {
+		case .category:
+			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
+		case .product:
+			print("do nothing")
+		}
+
 	}
 
 
