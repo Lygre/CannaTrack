@@ -23,10 +23,11 @@ class InventoryViewController: UIViewController {
 	}
 
 	var currentInventory: [Product]?
+	var masterInventory: [Product]?
 
 	var categoriesInInventory: [Product.ProductType] {
 		get {
-			guard let inventory = currentInventory else { return [] }
+			guard let inventory = masterInventory else { return [] }
 			var categories: Set<Product.ProductType> = []
 			for product in inventory {
 				categories.insert(product.productType)
@@ -48,7 +49,8 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.dataSource = self
 
 		categoriesInInventory = [.truShatter, .truCrmbl, .truClear]
-		currentInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
+		masterInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
+		currentInventory = masterInventory
         // Do any additional setup after loading the view.
     }
 
@@ -115,7 +117,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: inventoryCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not instantiate inventory collection view cell") }
 
 			guard let inventoryItem = currentInventory?[indexPath.row] else {
-				cell.inventoryProductLabel.text = "No Inventory"
+//				cell.inventoryProductLabel.text = "No Inventory"
 				return cell
 			}
 			cell.inventoryProductLabel.text = inventoryItem.productType.rawValue
@@ -146,7 +148,11 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		case .category:
 			supplementaryView.sectionHeaderLabel.text = "Product Types in Inventory"
 		case .product:
-			supplementaryView.sectionHeaderLabel.text = "\(activeCategoryDisplayed)"
+			guard let activeCategory = activeCategoryDisplayed else {
+				supplementaryView.sectionHeaderLabel.text = "No Category Selected"
+				return supplementaryView
+			}
+			supplementaryView.sectionHeaderLabel.text = activeCategoryDisplayed.map { $0.rawValue }
 		}
 
 
@@ -159,6 +165,13 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
+			guard let masterInventory = masterInventory else { return }
+
+			currentInventory = masterInventory.filter({ (productType) -> Bool in
+					productType.productType == activeCategoryDisplayed
+				})
+
+
 		case .product:
 			print("do nothing")
 		}
@@ -190,6 +203,12 @@ extension InventoryViewController {
 		loadViewIfNeeded()
 		productsCollectionView.reloadData()
 	}
+
+//	func filterVisibleInventoryByCategory(completion: ([Product],Product.ProductType)->[Product]) -> [Product] {
+////		var filteredProductArray: [Product] = []
+//		return completion(self.currentInventory, Product.ProductType(rawValue: "truShatter"))
+////		return filteredProductArray
+//	}
 
 }
 
