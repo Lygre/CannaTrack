@@ -14,7 +14,13 @@ class InventoryViewController: UIViewController {
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
 	let headerIdentifier = "ProductSectionHeaderView"
 
-	var activeCategoryDisplayed: Product.ProductType?
+	var activeCategoryDisplayed: Product.ProductType? {
+		didSet {
+			self.productsCollectionView.performBatchUpdates({
+				self.productsCollectionView.reloadSections(NSIndexSet(index: 1) as IndexSet)
+			}, completion: nil)
+		}
+	}
 
 	var currentInventory: [Product]?
 
