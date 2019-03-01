@@ -135,8 +135,14 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		supplementaryView.layer.masksToBounds = true
 
 		//!MARK: - Specific view element Setup perform here
+		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
+		switch sectionForCell {
+		case .category:
+			supplementaryView.sectionHeaderLabel.text = "Product Types in Inventory"
+		case .product:
+			supplementaryView.sectionHeaderLabel.text = "\(activeCategoryDisplayed)"
+		}
 
-		supplementaryView.sectionHeaderLabel.text = "HI"
 
 		return supplementaryView
 	}
@@ -177,9 +183,9 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 
 		switch sectionForCell {
 		case .category:
-			return CGSize(width: 70, height: 50)
+			return CGSize(width: 100, height: 50)
 		case .product:
-			return CGSize(width: 100, height: 85)
+			return CGSize(width: 120, height: 110)
 		}
 	}
 
