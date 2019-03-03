@@ -248,7 +248,7 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 		self.productToAdd?.productLabelImage = originalImage
 
 		if let tesseract = G8Tesseract(language: "eng") {
-			tesseract.engineMode = .tesseractCubeCombined
+			tesseract.engineMode = .tesseractOnly
 			tesseract.delegate = self
 			tesseract.image = originalImage.g8_blackAndWhite()
 			tesseract.recognize()

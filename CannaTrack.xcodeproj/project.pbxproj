@@ -13,6 +13,7 @@
 		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
 		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
+		9F4D2DA8222C40B0002EDA0A /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 9F4D2DA7222C40B0002EDA0A /* tessdata */; };
 		9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
@@ -27,7 +28,6 @@
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
-		9FB1E6C42227A4010070603C /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 9FB1E6C32227A4010070603C /* tessdata */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +38,7 @@
 		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		9F4D2DA7222C40B0002EDA0A /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
@@ -54,7 +55,6 @@
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
-		9FB1E6C32227A4010070603C /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D6E5CC028FBD92F1FE745C /* Pods-CannaTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -137,7 +137,6 @@
 		9F825C132214A2C200FC2327 = {
 			isa = PBXGroup;
 			children = (
-				9FB1E6C32227A4010070603C /* tessdata */,
 				9F825C1E2214A2C200FC2327 /* CannaTrack */,
 				9F825C1D2214A2C200FC2327 /* Products */,
 				8F88183F5A4FB3E93F3F415D /* Pods */,
@@ -156,6 +155,7 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
+				9F4D2DA7222C40B0002EDA0A /* tessdata */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F3D5B14221F52ED00D7B705 /* Models */,
 				9F52F033221DC313007E6330 /* Other Views */,
@@ -231,7 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F825C2A2214A2C300FC2327 /* LaunchScreen.storyboard in Resources */,
-				9FB1E6C42227A4010070603C /* tessdata in Resources */,
+				9F4D2DA8222C40B0002EDA0A /* tessdata in Resources */,
 				9F825C272214A2C300FC2327 /* Assets.xcassets in Resources */,
 				9F825C252214A2C200FC2327 /* Main.storyboard in Resources */,
 			);
