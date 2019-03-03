@@ -8,6 +8,8 @@
 
 import UIKit
 
+var globalMasterInventory: [Product] = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
+
 class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"
@@ -31,21 +33,15 @@ class InventoryViewController: UIViewController {
 	}
 	var masterInventory: [Product]?
 
-	var categoriesInInventory: [Product.ProductType] {
-		get {
-			guard let inventory = masterInventory else { return [] }
-//			if self.categoriesInInventory == [] { }
+	var categoriesInInventory: [Product.ProductType] = {
+
+			let inventory = globalMasterInventory
 			var categories: Set<Product.ProductType> = []
 			for product in inventory {
 				categories.insert(product.productType)
 			}
-			return Array(categories)
-		}
-		set {
-			print(newValue)
-		}
-
-	}
+		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
+	}()
 
 	@IBOutlet var productsCollectionView: UICollectionView!
 
@@ -55,8 +51,8 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-		categoriesInInventory = [.truShatter, .truCrmbl]
-		masterInventory = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
+//		categoriesInInventory = [.truShatter, .truCrmbl]
+		masterInventory = globalMasterInventory
 		currentInventory = masterInventory
         // Do any additional setup after loading the view.
     }
