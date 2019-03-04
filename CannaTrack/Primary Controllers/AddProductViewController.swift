@@ -234,23 +234,6 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-		/*
-		// Display image on screen.
-		show(originalImage)
-
-		// Convert from UIImageOrientation to CGImagePropertyOrientation.
-		let cgOrientation = CGImagePropertyOrientation(originalImage.imageOrientation)
-
-		// Fire off request based on URL of chosen photo.
-		guard let cgImage = originalImage.cgImage else {
-			return
-		}
-		performVisionRequest(image: cgImage,
-							 orientation: cgOrientation)
-		*/
-		// Dismiss the picker to return to original view controller.
-
-
 
 		if let tesseract = G8Tesseract(language: "eng") {
 			tesseract.engineMode = .tesseractOnly
@@ -266,6 +249,12 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 			} else if tesseract.recognizedText.lowercased().contains("truflower") {
 				self.productCategoryScanResultText.text = "truFlower"
 				self.productToAdd = Product(typeOfProduct: .truFlower, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+			} else if tesseract.recognizedText.lowercased().contains("trucrmbl") {
+				self.productCategoryScanResultText.text = "truCRMBL"
+				self.productToAdd = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+			} else if tesseract.recognizedText.lowercased().contains("truclear") {
+				self.productCategoryScanResultText.text = "truClear"
+				self.productToAdd = Product(typeOfProduct: .truClear, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
 			}
 
 		} else { print("not able to instantiate tesseract") }
