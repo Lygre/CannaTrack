@@ -408,19 +408,40 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Scanned Text Placeholder" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jVs-n9-WuG">
+                                <rect key="frame" x="15" y="88" width="161" height="61"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LJd-bP-xW2">
+                                <rect key="frame" x="151" y="762" width="112" height="7"/>
+                                <state key="normal" title="AddTo Inventory"/>
+                                <connections>
+                                    <action selector="addNewProductToInventory:" destination="VoP-XI-VZI" eventType="touchUpInside" id="cnQ-Jo-eyQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Jl5-SS-cKJ" firstAttribute="top" secondItem="1ja-wh-aEI" secondAttribute="top" constant="17" id="9za-LI-hHH"/>
                             <constraint firstItem="ba2-1x-sR7" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="Ix1-FN-mUG"/>
+                            <constraint firstItem="LJd-bP-xW2" firstAttribute="top" secondItem="hoR-FX-saw" secondAttribute="bottom" constant="8" id="LYo-dC-Ozk"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="top" secondItem="hoR-FX-saw" secondAttribute="bottom" constant="15" id="M4X-3I-X6k"/>
+                            <constraint firstItem="jVs-n9-WuG" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="Me9-cM-FWc"/>
                             <constraint firstItem="Jl5-SS-cKJ" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="OHk-Pa-GmJ"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="centerX" secondItem="hoR-FX-saw" secondAttribute="centerX" id="Yjf-p5-hI6"/>
+                            <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="LJd-bP-xW2" secondAttribute="trailing" constant="151" id="abP-rq-MrO"/>
                             <constraint firstItem="hoR-FX-saw" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="15" id="b9y-ma-t33"/>
                             <constraint firstItem="ba2-1x-sR7" firstAttribute="centerX" secondItem="c27-oA-Aeu" secondAttribute="centerX" id="bjP-JC-HTo"/>
+                            <constraint firstItem="LJd-bP-xW2" firstAttribute="leading" secondItem="1ja-wh-aEI" secondAttribute="leading" constant="151" id="c4a-B0-dFW"/>
+                            <constraint firstItem="Jl5-SS-cKJ" firstAttribute="leading" secondItem="jVs-n9-WuG" secondAttribute="trailing" constant="13.5" id="eGk-RE-OJQ"/>
+                            <constraint firstItem="cZo-7d-U5d" firstAttribute="top" secondItem="LJd-bP-xW2" secondAttribute="bottom" id="gmQ-r4-icG"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="bottom" secondItem="1ja-wh-aEI" secondAttribute="bottom" id="gst-Eb-8el"/>
                             <constraint firstItem="hoR-FX-saw" firstAttribute="top" secondItem="ba2-1x-sR7" secondAttribute="bottom" constant="25" id="lbQ-Sk-Jgd"/>
+                            <constraint firstItem="jVs-n9-WuG" firstAttribute="top" secondItem="1ja-wh-aEI" secondAttribute="top" id="m3y-IP-ipi"/>
                             <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="hoR-FX-saw" secondAttribute="trailing" constant="15" id="nrd-LB-GvE"/>
+                            <constraint firstItem="ba2-1x-sR7" firstAttribute="top" secondItem="jVs-n9-WuG" secondAttribute="bottom" constant="11" id="rac-q3-YNV"/>
                             <constraint firstItem="cZo-7d-U5d" firstAttribute="leading" secondItem="c27-oA-Aeu" secondAttribute="leading" id="tr6-mk-1H2"/>
                             <constraint firstItem="ba2-1x-sR7" firstAttribute="top" secondItem="Jl5-SS-cKJ" secondAttribute="bottom" constant="25" id="x55-W5-Tk8"/>
                             <constraint firstItem="1ja-wh-aEI" firstAttribute="trailing" secondItem="ba2-1x-sR7" secondAttribute="trailing" constant="15" id="xaf-PY-2IP"/>
@@ -428,6 +449,7 @@
                         <viewLayoutGuide key="safeArea" id="1ja-wh-aEI"/>
                     </view>
                     <connections>
+                        <outlet property="productCategoryScanResultText" destination="jVs-n9-WuG" id="hdI-eQ-ng4"/>
                         <outlet property="productImageToAdd" destination="hoR-FX-saw" id="1X9-dH-qxC"/>
                         <outlet property="scannedProductTextField" destination="ba2-1x-sR7" id="XgN-UF-cY8"/>
                     </connections>

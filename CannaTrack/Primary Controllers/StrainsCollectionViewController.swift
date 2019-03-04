@@ -188,7 +188,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	func refreshUI() {
 		loadViewIfNeeded()
-		self.collectionView.reloadData()
+//		self.collectionView.reloadData()
 	}
 
 

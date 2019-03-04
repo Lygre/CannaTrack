@@ -14,6 +14,7 @@ import TesseractOCR
 
 class AddProductViewController: UIViewController, G8TesseractDelegate {
 
+	@IBOutlet var productCategoryScanResultText: UITextView!
 
 
 	@IBOutlet var scannedProductTextField: UITextView!
@@ -204,6 +205,12 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 
 	}
 
+	@IBAction func addNewProductToInventory(_ sender: Any) {
+		guard let product = productToAdd else { return }
+		saveNewProductToInventory(newProduct: product)
+	}
+
+
 }
 
 
@@ -215,9 +222,9 @@ extension AddProductViewController {
 	}
 
 	func saveNewProductToInventory(newProduct: Product) {
-		guard let inventoryViewController = self.presentingViewController as? InventoryViewController else { fatalError("could not get presenting view controller as inventory view controller") }
-		inventoryViewController.currentInventory?.append(newProduct)
-		
+//		guard let inventoryViewController = self.presentingViewController as? InventoryViewController else { fatalError("could not get presenting view controller as inventory view controller") }
+//		inventoryViewController.currentInventory?.append(newProduct)
+		globalMasterInventory.append(newProduct)
 	}
 
 }
@@ -243,9 +250,7 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 		*/
 		// Dismiss the picker to return to original view controller.
 
-		self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-		self.productToAdd?.currentProductImage = originalImage
-		self.productToAdd?.productLabelImage = originalImage
+
 
 		if let tesseract = G8Tesseract(language: "eng") {
 			tesseract.engineMode = .tesseractOnly
@@ -255,10 +260,19 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 
 			self.productImageToAdd.image = originalImage
 			self.scannedProductTextField.text = tesseract.recognizedText
+			if tesseract.recognizedText.lowercased().contains("trushatter") {
+				self.productCategoryScanResultText.text = "truShatter"
+				self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+			} else if tesseract.recognizedText.lowercased().contains("truflower") {
+				self.productCategoryScanResultText.text = "truFlower"
+				self.productToAdd = Product(typeOfProduct: .truFlower, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+			}
 
 		} else { print("not able to instantiate tesseract") }
 
 
+		self.productToAdd?.currentProductImage = originalImage
+		self.productToAdd?.productLabelImage = originalImage
 
 		dismiss(animated: true, completion: nil)
 

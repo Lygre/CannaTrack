@@ -41,7 +41,9 @@ class InventoryViewController: UIViewController {
 				categories.insert(product.productType)
 			}
 		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
-	}()
+		}()
+
+
 
 	@IBOutlet var productsCollectionView: UICollectionView!
 
@@ -59,11 +61,26 @@ class InventoryViewController: UIViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.categoriesInInventory = updateCurrentInventory()
 		productsCollectionView.reloadData()
+		self.productsCollectionView.performBatchUpdates({
+			self.currentInventory = globalMasterInventory
+			self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+		}, completion: nil)
 		print(categoriesInInventory)
 		print(currentInventory)
 	}
 
+	func updateCurrentInventory() -> [Product.ProductType] {
+		self.masterInventory = globalMasterInventory
+		self.currentInventory = globalMasterInventory
+		let inventory = globalMasterInventory
+		var categories: Set<Product.ProductType> = []
+		for product in inventory {
+			categories.insert(product.productType)
+		}
+		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
+	}
 
 
     /*
