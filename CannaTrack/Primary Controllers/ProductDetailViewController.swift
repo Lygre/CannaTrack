@@ -10,6 +10,8 @@ import UIKit
 
 class ProductDetailViewController: UIViewController {
 
+	var activeDetailProduct: Product!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,14 +19,21 @@ class ProductDetailViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+		view.backgroundColor = {
+			switch self.activeDetailProduct.strain.race {
+			case .hybrid:
+				return .green
+			case .indica:
+				return .purple
+			case .sativa:
+				return .yellow
+			}
+		}()
+
+	}
+
 
 }

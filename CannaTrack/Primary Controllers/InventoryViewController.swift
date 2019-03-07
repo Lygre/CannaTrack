@@ -10,6 +10,7 @@ import UIKit
 
 var globalMasterInventory: [Product] = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
 
+
 class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"
@@ -83,15 +84,24 @@ class InventoryViewController: UIViewController {
 	}
 
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		guard let selectedCollectionViewCell = sender as? InventoryCollectionViewCell,
+			let indexPath = productsCollectionView.indexPath(for: selectedCollectionViewCell)
+			else { preconditionFailure("Expected sender to be a valid table view cell") }
+
+		guard let productDetailViewController = segue.destination as? ProductDetailViewController
+			else { preconditionFailure("Expected a ColorItemViewController") }
+
+		// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
+
+		productDetailViewController.activeDetailProduct = currentInventory?[indexPath.row]
+
+	}
+
 
 
 
