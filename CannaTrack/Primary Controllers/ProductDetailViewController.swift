@@ -84,4 +84,5 @@ class ProductDetailViewController: UIViewController {
 		return [ doseAction, openProductAction, deleteAction ]
 	}
 
+
 }

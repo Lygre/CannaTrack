@@ -29,6 +29,7 @@
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
+		9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
+		9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseOptionsPopupViewController.swift; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D6E5CC028FBD92F1FE745C /* Pods-CannaTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */,
+				9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */,
 			);
 			path = "Other Views";
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */,
 				9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */,
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
+				9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */,
 				9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */,
