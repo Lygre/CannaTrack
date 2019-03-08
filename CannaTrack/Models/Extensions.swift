@@ -9,59 +9,7 @@
 import Foundation
 import UIKit
 
-struct Dose {
-	//this is an array for to allow for the possibility of different types within a single dose
-//	var composition: [Composition]?
+let testProduct1 = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)
+let testProduct2 = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)
 
-}
-/*
-enum Strain {
-	case columbianGold
-	case gilznilz
-	case ninePoundHammer
-	case grandDaddyPurp
-	case chemdawg
-	case jackHerrer
-	case mandarinDream
-	case blueDream
-	case lemonTree
-	case oregonLemons
-//	case
-}
-*/
-
-/*
-struct Composition {
-	enum THCChemicalComposition {
-		case shatter, wax, flower, oil, rso, tincture
-		init?(compositionString: String?) {
-			switch compositionString {
-			case "Shatter":
-				self = .shatter
-			case "Wax":
-				self = .wax
-			case "Flower":
-				self = .flower
-			case "Oil":
-				self = .oil
-			case "RSO":
-				self = .rso
-			case "Tincture":
-				self = .tincture
-			default:
-				return nil
-			}
-		}
-	}
-//	enum TypeOfWeed: concentrates, flower, edibles
-
-	var strainName: String
-
-	var structure: (THCChemicalComposition?, String)
-
-	var volume: Float
-
-
-
-}
-*/
+var globalMasterInventory: [Product] = [testProduct1, testProduct2]

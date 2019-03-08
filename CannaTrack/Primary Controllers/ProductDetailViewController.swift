@@ -18,6 +18,7 @@ class ProductDetailViewController: UIViewController {
 	@IBOutlet var dateOpenedLabel: UILabel!
 	@IBOutlet var doseCountLabel: UILabel!
 
+	@IBOutlet var productLabelImageView: UIImageView!
 
 
     override func viewDidLoad() {
@@ -45,6 +46,7 @@ class ProductDetailViewController: UIViewController {
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
 		dateOpenedLabel.text = "\(activeDetailProduct.dateOpened)"
 		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
+		productLabelImageView.image = activeDetailProduct.productLabelImage
 
 	}
 

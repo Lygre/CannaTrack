@@ -8,7 +8,6 @@
 
 import UIKit
 
-var globalMasterInventory: [Product] = [Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5), Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)]
 
 
 class InventoryViewController: UIViewController {
@@ -55,6 +54,17 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.dataSource = self
 
 //		categoriesInInventory = [.truShatter, .truCrmbl]
+		for product in globalMasterInventory {
+			switch product.productType {
+			case .truShatter:
+				product.productLabelImage = UIImage(named: "shatter1.jpeg")
+			case .truCrmbl:
+				product.productLabelImage = UIImage(named: "crmbl1.jpeg")
+			default:
+				product.productLabelImage = UIImage(named: "cannaleaf.png")
+			}
+
+		}
 		masterInventory = globalMasterInventory
 		currentInventory = masterInventory
         // Do any additional setup after loading the view.
