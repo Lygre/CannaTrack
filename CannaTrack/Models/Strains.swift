@@ -172,6 +172,14 @@ class Strain {
 }
 
 
+extension Strain: Equatable {
+
+	static func == (lhs: Strain, rhs: Strain) -> Bool {
+		return lhs.id == rhs.id && lhs.name == rhs.name && lhs.race == rhs.race
+	}
+
+}
+
 func searchStrains(using strainName: String) -> [Strain] {
 	var strainSearchResults: [Strain] = []
 	guard let strainDatabase = masterStrainDatabase else { return strainSearchResults }

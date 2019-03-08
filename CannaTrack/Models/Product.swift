@@ -19,11 +19,13 @@ class Product {
 	var currentProductImage: UIImage?
 	var mass: Double
 	var dateOpened: Date?
+	var numberOfDosesTakenFromProduct: Int
 
 	init(typeOfProduct: ProductType, strainForProduct: Strain, inGrams massOfProduct: Double) {
 		self.productType = typeOfProduct
 		self.strain = strainForProduct
 		self.mass = massOfProduct
+		self.numberOfDosesTakenFromProduct = 0
 	}
 
 }
@@ -60,6 +62,14 @@ extension Product {
 
 	func openProduct() {
 		self.dateOpened = Date()
+	}
+
+}
+
+extension Product: Equatable {
+
+	static func == (lhs: Product, rhs: Product) -> Bool {
+		return lhs.dateOpened == rhs.dateOpened && lhs.productLabelImage == rhs.productLabelImage && lhs.strain == rhs.strain && lhs.productType == rhs.productType
 	}
 
 }

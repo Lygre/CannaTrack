@@ -12,6 +12,14 @@ class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
 
+
+	@IBOutlet var productTypeLabel: UILabel!
+	@IBOutlet var massRemainingLabel: UILabel!
+	@IBOutlet var dateOpenedLabel: UILabel!
+	@IBOutlet var doseCountLabel: UILabel!
+
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +41,45 @@ class ProductDetailViewController: UIViewController {
 			}
 		}()
 
+		productTypeLabel.text = activeDetailProduct.productType.rawValue
+		massRemainingLabel.text = "\(activeDetailProduct.mass)"
+		dateOpenedLabel.text = "\(activeDetailProduct.dateOpened)"
+		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
+
 	}
 
+
+	// MARK: - Supporting Peek Quick Actions
+
+	/// - Tag: PreviewActionItems
+	override var previewActionItems: [UIPreviewActionItem] {
+		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
+			guard let product = self.activeDetailProduct
+				else { preconditionFailure("Expected a product item") }
+
+			//perform action to detail item in quick action
+			product.numberOfDosesTakenFromProduct += 1
+		})
+
+		let openProductAction = UIPreviewAction(title: "Open Product", style: .default, handler: { [unowned self] (_, _) in
+			guard let product = self.activeDetailProduct
+				else { preconditionFailure("Expected a product item") }
+
+			//perform action to detail item in quick action
+			product.openProduct()
+			print("product opened via quick preview action")
+		})
+
+
+		let deleteAction = UIPreviewAction(title: "Delete", style: .destructive) { [unowned self] (_, _) in
+			guard let product = self.activeDetailProduct
+				else { preconditionFailure("Expected a reference to the product data container") }
+			guard let productToDeleteIndex = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
+			globalMasterInventory.remove(at: productToDeleteIndex)
+
+		}
+
+		return [ doseAction, openProductAction, deleteAction ]
+	}
 
 }

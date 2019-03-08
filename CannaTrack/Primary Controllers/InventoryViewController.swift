@@ -60,14 +60,20 @@ class InventoryViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.categoriesInInventory = updateCurrentInventory()
-		productsCollectionView.reloadData()
+	fileprivate func updateInventoryCollectionView() {
 		self.productsCollectionView.performBatchUpdates({
-			self.currentInventory = globalMasterInventory
+			self.categoriesInInventory = updateCurrentInventory()
+			self.productsCollectionView.reloadData()
 			self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
 		}, completion: nil)
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+
+
+		updateInventoryCollectionView()
+//		refreshUI()
 		print(categoriesInInventory)
 		print(currentInventory)
 	}
@@ -82,6 +88,12 @@ class InventoryViewController: UIViewController {
 		}
 		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
 	}
+
+
+
+
+
+
 
 
 
@@ -106,6 +118,9 @@ class InventoryViewController: UIViewController {
 
 
 }
+
+
+
 
 extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -153,6 +168,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			cell.inventoryProductLabel.text = inventoryItem.productType.rawValue
 			cell.productStrainNameLabel.text = inventoryItem.strain.name
 			cell.productMassRemainingLabel.text = "\(inventoryItem.mass)"
+			cell.doseCountLabel.text = "\(inventoryItem.numberOfDosesTakenFromProduct)"
 
 			//!MARK: - Generalized Cell Setup perform here
 			cell.backgroundColor = .lightGray
@@ -275,3 +291,16 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
+/*
+extension InventoryViewController: UIViewControllerPreviewingDelegate {
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		<#code#>
+	}
+
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+		<#code#>
+	}
+
+
+}
+*/

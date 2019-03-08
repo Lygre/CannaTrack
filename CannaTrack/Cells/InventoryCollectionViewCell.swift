@@ -16,5 +16,6 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var productMassRemainingLabel: UILabel!
 	
+	@IBOutlet var doseCountLabel: UILabel!
 
 }
