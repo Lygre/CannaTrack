@@ -11,7 +11,7 @@ import UIKit
 class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
-
+	var dateFormatter: DateFormatter?
 
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var massRemainingLabel: UILabel!
@@ -23,7 +23,11 @@ class ProductDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+		dateFormatter = DateFormatter()
+		guard let dateFormatter = dateFormatter else { return }
+		dateFormatter.dateStyle = .medium
+		dateFormatter.timeStyle = .short
+		dateFormatter.locale = Locale(identifier: "en_US")
         // Do any additional setup after loading the view.
     }
     
@@ -41,15 +45,33 @@ class ProductDetailViewController: UIViewController {
 				return .yellow
 			}
 		}()
+		navigationItem.titleView?.backgroundColor = {
+			switch self.activeDetailProduct.strain.race {
+			case .hybrid:
+				return .green
+			case .indica:
+				return .purple
+			case .sativa:
+				return .yellow
+			}
+		}()
 
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
-		dateOpenedLabel.text = "\(activeDetailProduct.dateOpened)"
+
+		dateOpenedLabel.text = dateFormatter?.string(from: activeDetailProduct.dateOpened ?? Date())
 		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
 		productLabelImageView.image = activeDetailProduct.productLabelImage
 
 	}
 
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.destination is DoseViewController {
+			guard let doseViewController = segue.destination as? DoseViewController else { return }
+			doseViewController.productForDose = activeDetailProduct
+		}
+	}
 
 	// MARK: - Supporting Peek Quick Actions
 

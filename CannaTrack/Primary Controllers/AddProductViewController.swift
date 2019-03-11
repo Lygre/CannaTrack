@@ -51,7 +51,7 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 	@objc func promptPhoto() {
 		let imagePicker = UIImagePickerController()
 		imagePicker.sourceType = .camera
-//		imagePicker.allowsEditing = true
+		imagePicker.allowsEditing = true
 		imagePicker.delegate = self
 
 		self.present(imagePicker, animated: true)
