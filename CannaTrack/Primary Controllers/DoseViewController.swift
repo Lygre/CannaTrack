@@ -13,7 +13,13 @@ class DoseViewController: UIViewController {
 	var delegate: SaveDoseDelegate?
 
 	var productForDose: Product!
+
+	var doseMassToUpdate: Double?
+
+
 	var dateFormatter: DateFormatter?
+
+
 
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var productStrainLabel: UILabel!
@@ -70,15 +76,21 @@ class DoseViewController: UIViewController {
 
 	}
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+		if segue.destination is ProductDetailViewController {
+			guard let productVC = segue.destination as? ProductDetailViewController else { fatalError("bad") }
+			print(productVC.debugDescription)
+
+		}
+
     }
-    */
+
 
 
 	// MARK: - objc Methods
@@ -99,9 +111,9 @@ class DoseViewController: UIViewController {
 
 	@IBAction func saveDoseClicked(_ sender: Any) {
 
+		saveDoseInformation(product: productForDose, doseDate: Date(), updatedMass: doseMassToUpdate, updatedProductImage: productDoseImage.image)
 
-
-		print("dose saved, but not really")
+		print("dose saved")
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -134,9 +146,13 @@ extension DoseViewController: SaveDoseDelegate {
 	func saveDoseInformation(product: Product, doseDate: Date, updatedMass: Double?, updatedProductImage: UIImage?) {
 		guard let indexForProductInGlobalDB = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
 		let productInGlobal = globalMasterInventory[indexForProductInGlobalDB]
-		productInGlobal.currentProductImage = productInGlobal.currentProductImage ?? productDoseImage.image
-		productInGlobal.mass = updatedMass ?? productInGlobal.mass
-		
+
+		globalMasterInventory[indexForProductInGlobalDB].currentProductImage = productDoseImage.image ?? productInGlobal.currentProductImage
+		globalMasterInventory[indexForProductInGlobalDB].mass = updatedMass ?? productInGlobal.mass
+		globalMasterInventory[indexForProductInGlobalDB].numberOfDosesTakenFromProduct += 1
+
+
+
 	}
 
 

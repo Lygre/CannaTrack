@@ -75,6 +75,8 @@ class ProductDetailViewController: UIViewController {
 		}
 	}
 
+
+
 	// MARK: - Supporting Peek Quick Actions
 
 	/// - Tag: PreviewActionItems
@@ -107,6 +109,12 @@ class ProductDetailViewController: UIViewController {
 
 		return [ doseAction, openProductAction, deleteAction ]
 	}
+
+
+	@IBAction func unwindToProduct(unwindSegue: UIStoryboardSegue) {
+
+	}
+
 
 
 }

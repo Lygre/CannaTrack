@@ -514,7 +514,7 @@
         <scene sceneID="w3t-lj-QAi">
             <objects>
                 <viewController id="EV4-ts-PP5" customClass="DoseViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="m8j-Fr-bzq">
+                    <view key="view" contentMode="scaleAspectFit" id="m8j-Fr-bzq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
