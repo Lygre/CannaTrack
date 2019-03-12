@@ -460,12 +460,21 @@
                                                     <constraint firstAttribute="height" constant="187" id="bEE-Vt-8YW"/>
                                                 </constraints>
                                             </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="eIB-8k-tGv">
+                                                <rect key="frame" x="92" y="386" width="230" height="187"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="230" id="oWW-mS-35K"/>
+                                                    <constraint firstAttribute="height" constant="187" id="t57-hF-3b0"/>
+                                                </constraints>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="fTB-3c-DG9" firstAttribute="top" secondItem="qsF-bO-Xaw" secondAttribute="bottom" constant="49" id="G59-jX-ex7"/>
+                                            <constraint firstItem="eIB-8k-tGv" firstAttribute="top" secondItem="fTB-3c-DG9" secondAttribute="bottom" constant="8" id="Iie-YZ-88E"/>
                                             <constraint firstAttribute="height" constant="1200" id="KJh-hT-Hs4"/>
                                             <constraint firstItem="qsF-bO-Xaw" firstAttribute="top" secondItem="HS9-MJ-52v" secondAttribute="top" constant="15" id="aES-Ub-WY6"/>
+                                            <constraint firstItem="eIB-8k-tGv" firstAttribute="centerX" secondItem="HS9-MJ-52v" secondAttribute="centerX" id="cNI-BX-Sa0"/>
                                             <constraint firstItem="l3E-aN-j11" firstAttribute="top" secondItem="qsF-bO-Xaw" secondAttribute="top" id="hhf-1X-inm"/>
                                             <constraint firstItem="qsF-bO-Xaw" firstAttribute="centerX" secondItem="HS9-MJ-52v" secondAttribute="centerX" constant="-64" id="pLX-s0-3vf"/>
                                             <constraint firstItem="l3E-aN-j11" firstAttribute="leading" secondItem="qsF-bO-Xaw" secondAttribute="trailing" constant="50" id="qbd-Pf-WQI"/>
@@ -499,6 +508,7 @@
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <size key="freeformSize" width="414" height="1450"/>
                     <connections>
+                        <outlet property="currentProductImageView" destination="eIB-8k-tGv" id="MWD-ec-JR9"/>
                         <outlet property="dateOpenedLabel" destination="VsS-ir-pXn" id="F2d-yU-Eun"/>
                         <outlet property="doseCountLabel" destination="vey-qx-agN" id="2Be-xv-emM"/>
                         <outlet property="massRemainingLabel" destination="YRn-oT-ppL" id="QZ3-wB-q21"/>

@@ -55,6 +55,7 @@ class InventoryViewController: UIViewController {
 
 //		categoriesInInventory = [.truShatter, .truCrmbl]
 		for product in globalMasterInventory {
+//			if product.productLabelImage
 			switch product.productType {
 			case .truShatter:
 				product.productLabelImage = UIImage(named: "shatter1.jpeg")
