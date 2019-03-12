@@ -10,6 +10,8 @@ import UIKit
 
 class DoseViewController: UIViewController {
 
+	var delegate: SaveDoseDelegate?
+
 	var productForDose: Product!
 	var dateFormatter: DateFormatter?
 
@@ -21,6 +23,7 @@ class DoseViewController: UIViewController {
 	@IBOutlet var lastDoseLabel: UILabel!
 	@IBOutlet var productDoseImage: UIImageView!
 
+	@IBOutlet var updateMassButton: UIButton!
 
 
 
@@ -34,6 +37,9 @@ class DoseViewController: UIViewController {
 		let tap = UITapGestureRecognizer(target: self, action: #selector(photoPrompt2))
 		self.productDoseImage.addGestureRecognizer(tap)
         // Do any additional setup after loading the view.
+
+		self.delegate = self
+
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +63,10 @@ class DoseViewController: UIViewController {
 		productDoseCountLabel.text = "\(productForDose.numberOfDosesTakenFromProduct)"
 //		lastDoseLabel.text =
 //		productDoseImage.image =
+
+		updateMassButton.layer.cornerRadius = updateMassButton.frame.width / 2
+		updateMassButton.layer.masksToBounds = true
+
 
 	}
 
@@ -88,10 +98,16 @@ class DoseViewController: UIViewController {
 	}
 
 	@IBAction func saveDoseClicked(_ sender: Any) {
+
+
+
 		print("dose saved, but not really")
 		dismiss(animated: true, completion: nil)
 	}
 
+	@IBAction func updateMassButtonClicked(_ sender: Any) {
+		print("update mass clicked")
+	}
 
 
 }
@@ -111,4 +127,19 @@ extension DoseViewController: UINavigationControllerDelegate, UIImagePickerContr
 		dismiss(animated: true, completion: nil)
 
 	}
+}
+
+
+extension DoseViewController: SaveDoseDelegate {
+	func saveDoseInformation(product: Product, doseDate: Date, updatedMass: Double?, updatedProductImage: UIImage?) {
+		guard let indexForProductInGlobalDB = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
+		let productInGlobal = globalMasterInventory[indexForProductInGlobalDB]
+		productInGlobal.currentProductImage = productInGlobal.currentProductImage ?? productDoseImage.image
+		productInGlobal.mass = updatedMass ?? productInGlobal.mass
+		
+	}
+
+
+	
+
 }

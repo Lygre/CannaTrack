@@ -13,6 +13,8 @@ class ProductDetailViewController: UIViewController {
 	var activeDetailProduct: Product!
 	var dateFormatter: DateFormatter?
 
+
+
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var massRemainingLabel: UILabel!
 	@IBOutlet var dateOpenedLabel: UILabel!
