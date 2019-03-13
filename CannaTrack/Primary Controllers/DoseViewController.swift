@@ -72,7 +72,7 @@ class DoseViewController: UIViewController {
 
 		updateMassButton.layer.cornerRadius = updateMassButton.frame.width / 2
 		updateMassButton.layer.masksToBounds = true
-
+		productDoseImage.clipsToBounds = true
 
 	}
 
