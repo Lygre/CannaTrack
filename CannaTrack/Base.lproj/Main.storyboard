@@ -528,8 +528,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="THv-Ob-lJf" userLabel="Product Info Stack View">
-                                <rect key="frame" x="25" y="113" width="364" height="552.5"/>
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="THv-Ob-lJf" userLabel="Product Info Stack View">
+                                <rect key="frame" x="25" y="113" width="364" height="656"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="9cU-4d-eg8" userLabel="Product Type Stack">
                                         <rect key="frame" x="68" y="0.0" width="228" height="20.5"/>
@@ -549,7 +549,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="iS7-ha-x27" userLabel="Strain Stack">
-                                        <rect key="frame" x="68" y="47.5" width="228" height="20.5"/>
+                                        <rect key="frame" x="68" y="65" width="228" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJr-WK-Z6J">
                                                 <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
@@ -566,7 +566,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="GxM-Wu-vXG" userLabel="Date Opened Stack">
-                                        <rect key="frame" x="68" y="95" width="228" height="20.5"/>
+                                        <rect key="frame" x="68" y="129.5" width="228" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Opened" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybV-IJ-lIc">
                                                 <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
@@ -583,7 +583,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="Bcq-Cu-Ei5" userLabel="Last Dose Stack">
-                                        <rect key="frame" x="68" y="142.5" width="228" height="20.5"/>
+                                        <rect key="frame" x="68" y="194.5" width="228" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Last Dose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPX-L6-859">
                                                 <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
@@ -600,7 +600,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="yha-gs-RIx" userLabel="Mass Stack">
-                                        <rect key="frame" x="68" y="190" width="228" height="48"/>
+                                        <rect key="frame" x="68" y="259" width="228" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Baa-LJ-7EL">
                                                 <rect key="frame" x="0.0" y="0.0" width="60.5" height="48"/>
@@ -624,7 +624,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="CUc-s1-ydv" userLabel="Dose Count Stack">
-                                        <rect key="frame" x="68" y="265" width="228" height="20.5"/>
+                                        <rect key="frame" x="68" y="351.5" width="228" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Dose Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T9x-V6-Uro">
                                                 <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
@@ -640,8 +640,8 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="0O3-vb-s81">
-                                        <rect key="frame" x="62" y="312.5" width="240" height="240"/>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="0O3-vb-s81">
+                                        <rect key="frame" x="62" y="416" width="240" height="240"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="240" id="Gyv-pC-Gzg"/>
                                             <constraint firstAttribute="width" constant="240" id="qjb-aO-9Bt"/>
@@ -685,6 +685,7 @@
                             <constraint firstItem="THv-Ob-lJf" firstAttribute="top" secondItem="BZG-zS-fHQ" secondAttribute="top" constant="25" id="R55-Xa-7Bn"/>
                             <constraint firstItem="BZG-zS-fHQ" firstAttribute="trailing" secondItem="THv-Ob-lJf" secondAttribute="trailing" constant="25" id="UBY-zL-jC2"/>
                             <constraint firstItem="THv-Ob-lJf" firstAttribute="centerX" secondItem="m8j-Fr-bzq" secondAttribute="centerX" id="YDm-5u-5yE"/>
+                            <constraint firstItem="Mz8-ZH-b9w" firstAttribute="top" secondItem="THv-Ob-lJf" secondAttribute="bottom" id="nR4-It-a9B"/>
                             <constraint firstItem="THv-Ob-lJf" firstAttribute="leading" secondItem="BZG-zS-fHQ" secondAttribute="leading" constant="25" id="pkO-3H-m33"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BZG-zS-fHQ"/>
