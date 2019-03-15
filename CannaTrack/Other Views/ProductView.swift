@@ -20,8 +20,9 @@ class ProductView: UIView {
         // Drawing code
     }
     */
-	override init(frame: CGRect) {
+	init(frame: CGRect, product: Product) {
 		super.init(frame: frame)
+		self.productForView = product
 		switch self.productForView.strain.race {
 		case .hybrid:
 			self.backgroundColor = .green

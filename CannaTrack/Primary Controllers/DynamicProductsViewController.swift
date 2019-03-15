@@ -19,17 +19,23 @@ class DynamicProductsViewController: UIViewController {
         super.viewDidLoad()
 		animator = UIDynamicAnimator(referenceView: view)
 		self.view.layoutIfNeeded()
+		productViewArray = []
 
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
-			var productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 50, height: 50))
-			productView.productForView = product
+			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 50, height: 50), product: product)
 			view.addSubview(productView)
 			productView.center = CGPoint(x: self.view.frame.width / 2, y: -productView.frame.height)
 			let origPos = view.center
 			snap = UISnapBehavior(item: productView, snapTo: origPos)
 			productViewArray.append(productView)
 			animator.addBehavior(snap)
+		}
+
+		for productView in productViewArray {
+			let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForProductView(recognizer:)))
+			productView.addGestureRecognizer(pan)
+			productView.isUserInteractionEnabled = true
 		}
 
         // Do any additional setup after loading the view.
@@ -56,6 +62,19 @@ extension DynamicProductsViewController {
 
 	func refreshUI() {
 		view.layoutSubviews()
+	}
+
+
+	@objc func handlePanForProductView(recognizer: UIPanGestureRecognizer) {
+		switch recognizer.state {
+		case .changed:
+			let translation = recognizer.translation(in: view)
+			guard let productViewToTranslate = recognizer.view else { return }
+			productViewToTranslate.center = CGPoint(x: productViewToTranslate.center.x + translation.x, y: productViewToTranslate.center.y + translation.y)
+			recognizer.setTranslation(.zero, in: view)
+		default:
+			break
+		}
 	}
 
 }
