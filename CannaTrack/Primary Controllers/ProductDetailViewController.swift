@@ -62,7 +62,13 @@ class ProductDetailViewController: UIViewController {
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
 
-		dateOpenedLabel.text = dateFormatter?.string(from: activeDetailProduct.dateOpened ?? Date())
+		dateOpenedLabel.text = {
+			var dateOpened: String?
+			if let date = self.activeDetailProduct.dateOpened {
+				dateOpened = dateFormatter?.string(from: date)
+			} else { dateOpened = "Unopened" }
+			return dateOpened
+		}()
 		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
 		productLabelImageView.image = activeDetailProduct.productLabelImage
 		currentProductImageView.image = activeDetailProduct.currentProductImage

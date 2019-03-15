@@ -65,7 +65,13 @@ class DoseViewController: UIViewController {
 		productTypeLabel.text = productForDose.productType.rawValue
 		productStrainLabel.text = productForDose.strain.name
 		productMassLabel.text = "\(productForDose.mass)g"
-		productDateOpenedLabel.text = dateFormatter?.string(from: productForDose.dateOpened ?? Date())
+		productDateOpenedLabel.text = {
+			var dateOpened: String?
+			if let date = self.productForDose.dateOpened {
+				dateOpened = dateFormatter?.string(from: date)
+			} else { dateOpened = "Unopened" }
+			return dateOpened
+		}()
 		productDoseCountLabel.text = "\(productForDose.numberOfDosesTakenFromProduct)"
 //		lastDoseLabel.text =
 //		productDoseImage.image =

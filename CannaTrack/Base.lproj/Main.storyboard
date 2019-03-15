@@ -574,7 +574,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4M-9t-JPP">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unopened" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4M-9t-JPP">
                                                 <rect key="frame" x="125.5" y="0.0" width="102.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -916,6 +916,7 @@
                         <segue destination="tpR-Er-6ib" kind="relationship" relationship="viewControllers" id="X0t-qi-k33"/>
                         <segue destination="mD5-Z1-JOT" kind="relationship" relationship="viewControllers" id="MGA-EC-Spx"/>
                         <segue destination="5bV-5a-mpT" kind="relationship" relationship="viewControllers" id="UaG-6O-hfB"/>
+                        <segue destination="2xC-yw-4yc" kind="relationship" relationship="viewControllers" id="3wL-n6-uDO"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4r-xL-fAt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -996,7 +997,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THZ-Rj-sGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3623" y="2758"/>
+            <point key="canvasLocation" x="2726" y="2995"/>
         </scene>
         <!--Inventory View Controller-->
         <scene sceneID="7Dw-hz-Gfi">
@@ -1186,6 +1187,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lvA-b8-U43" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1540.5797101449277" y="945.53571428571422"/>
+        </scene>
+        <!--Dynamic Products View Controller-->
+        <scene sceneID="O37-Hf-Lqm">
+            <objects>
+                <viewController id="NQG-sD-xTF" customClass="DynamicProductsViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Jo-he-jnz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEc-eW-2gL">
+                                <rect key="frame" x="184" y="760" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="3yP-o7-ZsB"/>
+                                </constraints>
+                                <state key="normal" title="Refresh"/>
+                                <connections>
+                                    <action selector="refreshViewClicked:" destination="NQG-sD-xTF" eventType="touchUpInside" id="DI0-QH-mDZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cEc-eW-2gL" firstAttribute="centerX" secondItem="0Jo-he-jnz" secondAttribute="centerX" id="Flb-jT-wDp"/>
+                            <constraint firstItem="G6u-zn-zDM" firstAttribute="bottom" secondItem="cEc-eW-2gL" secondAttribute="bottom" constant="23" id="JcI-7S-Wm9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="G6u-zn-zDM"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="zpd-5u-hOs"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="edG-5o-XJv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3332" y="1767"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="Yt2-Jx-hJh">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xC-yw-4yc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="lEP-QM-04N"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VAG-1J-e70">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NQG-sD-xTF" kind="relationship" relationship="rootViewController" id="WRk-Yc-PhW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LbD-fO-uF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3331.884057971015" y="945.53571428571422"/>
         </scene>
     </scenes>
     <resources>
