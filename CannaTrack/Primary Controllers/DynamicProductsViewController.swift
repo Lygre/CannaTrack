@@ -86,10 +86,34 @@ extension DynamicProductsViewController {
 
 	}
 
+	//the behavior has to be added and removed so as to not interfere with the normal pan gesture functionality
+	//noted******
 	@objc func handlePanForProductView(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let locationCenterView = view.center
-//		let boxLocation = recognizer.location(in: self.)
+		guard let productViewToTranslate = recognizer.view else { return }
+
+		switch recognizer.state {
+		case .changed:
+			let translation = recognizer.translation(in: view)
+
+			productViewToTranslate.center = CGPoint(x: productViewToTranslate.center.x + translation.x, y: productViewToTranslate.center.y + translation.y)
+			recognizer.setTranslation(.zero, in: view)
+
+		case .began:
+			animator.removeBehavior(snap)
+		case .ended, .cancelled, .failed:
+			animator.addBehavior(snap)
+		case .possible:
+			break
+		}
+
+	}
+
+	@objc func handleOldPanForProductView(recognizer: UIPanGestureRecognizer) {
+		let location = recognizer.location(in: self.view)
+		let locationCenterView = view.center
+		//		let boxLocation = recognizer.location(in: self.)
 		guard let productViewToTranslate = recognizer.view else { return }
 
 		switch recognizer.state {
@@ -106,7 +130,7 @@ extension DynamicProductsViewController {
 
 			attachment = UIAttachmentBehavior(item: productViewToTranslate, offsetFromCenter: centerOffset, attachedToAnchor: locationCenterView)
 
-//			productViewToTranslate.center = attachment.anchorPoint
+			//			productViewToTranslate.center = attachment.anchorPoint
 			animator.addBehavior(attachment)
 
 		case .ended:
@@ -127,10 +151,10 @@ extension DynamicProductsViewController {
 				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
 				animator.addBehavior(itemBehavior)
 			}
-//			else { resetViews() }
+		//			else { resetViews() }
 		default:
 			attachment.anchorPoint = location
-			productViewToTranslate.center = attachment.anchorPoint
+			//			productViewToTranslate.center = attachment.anchorPoint
 		}
 
 	}
