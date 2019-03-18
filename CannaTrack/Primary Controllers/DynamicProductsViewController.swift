@@ -16,10 +16,12 @@ class DynamicProductsViewController: UIViewController {
 	var originalBounds = CGRect.zero
 	var originalCenter = CGPoint.zero
 
+	var previousTouchPoint: CGPoint = .zero
 	var snap: UISnapBehavior!
 	var attachment: UIAttachmentBehavior!
 	var pushBehavior: UIPushBehavior!
 	var itemBehavior: UIDynamicItemBehavior!
+	var itemBehavior2: UIDynamicItemBehavior!
 	var animator: UIDynamicAnimator!
 	var gravity: UIGravityBehavior!
 	var collision: UICollisionBehavior!
@@ -130,13 +132,10 @@ extension DynamicProductsViewController {
 
 		switch recognizer.state {
 		case .changed:
+
+
+			itemBehavior.isAnchored = false
 			let translation = recognizer.translation(in: view)
-
-			productViewToTranslate.center = CGPoint(x: productViewToTranslate.center.x + translation.x, y: productViewToTranslate.center.y + translation.y)
-			recognizer.setTranslation(.zero, in: view)
-
-		case .began:
-			animator.removeBehavior(snap)
 			let velocity = recognizer.velocity(in: view)
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
 			let pushBehavior = UIPushBehavior(items: [productViewToTranslate], mode: .instantaneous)
@@ -144,18 +143,42 @@ extension DynamicProductsViewController {
 			pushBehavior.magnitude = magnitude / ThrowingVelocityPadding
 			self.pushBehavior = pushBehavior
 			animator.addBehavior(pushBehavior)
-			pushBehavior.active = true
+
+			pushBehavior.active = false
+
+//			productViewToTranslate.center = CGPoint(x: productViewToTranslate.center.x + translation.x, y: productViewToTranslate.center.y + translation.y)
+			productViewToTranslate.center = location
+			previousTouchPoint = location
+			animator.updateItem(usingCurrentState: productViewToTranslate)
+
+
+		case .began:
+			recognizer.setTranslation(.zero, in: view)
+//			let dragStartPoint = recognizer.location(in: productViewToTranslate)
+			previousTouchPoint = location
+
+			animator.removeBehavior(snap)
+			productViewToTranslate.center = location
 
 			print(collision.items.debugDescription)
+			guard let push = pushBehavior else { return }
+			animator.removeBehavior(push)
 
-//			animator.addBehavior(snap)
+			let itemCurrentVelocity = itemBehavior.linearVelocity(for: productViewToTranslate)
+			print(itemCurrentVelocity)
+			itemBehavior.addLinearVelocity(CGPoint(x: -itemCurrentVelocity.x, y: -itemCurrentVelocity.y), for: productViewToTranslate)
+
+
 //			animator.removeBehavior(snap)
 		case .cancelled, .failed:
 //			recognizer.setTranslation(.zero, in: view)
 			animator.addBehavior(snap)
 		case .ended:
+//			animator.updateItem(usingCurrentState: productViewToTranslate)
+			itemBehavior.isAnchored = false
 			let velocity = recognizer.velocity(in: view)
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+			pushBehavior.active = true
 			if magnitude > ThrowingThreshold {
 				let pushBehavior = UIPushBehavior(items: productViewArray, mode: .instantaneous)
 				pushBehavior.pushDirection = CGVector(dx: velocity.x / 10, dy: velocity.y / 10)
@@ -167,6 +190,7 @@ extension DynamicProductsViewController {
 
 
 			}
+//			self.pushBehavior.active = true
 
 		case .possible:
 			break
