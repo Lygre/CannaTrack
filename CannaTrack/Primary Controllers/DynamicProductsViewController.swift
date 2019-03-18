@@ -202,15 +202,26 @@ extension DynamicProductsViewController {
 	@objc func handleTapForProductView(recognizer: UITapGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let locationCenterView = view.center
-		guard let productViewToTranslate = recognizer.view else { return }
-		print("tap recognized")
-		UIView.animate(withDuration: 0.4) {
-			productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
+		guard let productViewToTranslate = recognizer.view as? ProductView else { return }
+		print("tap recognized in \(productViewToTranslate)")
+
+		if productViewToTranslate.isFocusedForDetailsMin == false {
+			UIView.animate(withDuration: 0.4) {
+				productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
+				productViewToTranslate.transform = CGAffineTransform(scaleX: 2, y: 2)
+
+				productViewToTranslate.isFocusedForDetailsMin = true
+				productViewToTranslate.contentMode = .scaleAspectFit
+				self.view.layoutIfNeeded()
+			}
+			animator.updateItem(usingCurrentState: productViewToTranslate)
+		} else { UIView.animate(withDuration: 0.4) {
+			productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width / 2, height: productViewToTranslate.frame.height / 2)
+			productViewToTranslate.transform = .identity
+			productViewToTranslate.isFocusedForDetailsMin = false
 			self.view.layoutIfNeeded()
+			} }
 
-
-		}
-		animator.updateItem(usingCurrentState: productViewToTranslate)
 
 	}
 

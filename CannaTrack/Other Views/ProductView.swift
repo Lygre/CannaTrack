@@ -11,7 +11,7 @@ import UIKit
 class ProductView: UIView {
 
 	var productForView: Product!
-
+	var isFocusedForDetailsMin: Bool = false
 
     /*
     // Only override draw() if you perform custom drawing.
