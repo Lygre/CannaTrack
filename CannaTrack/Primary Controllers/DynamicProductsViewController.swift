@@ -51,13 +51,14 @@ class DynamicProductsViewController: UIViewController {
 
 		for productView in productViewArray {
 			let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForProductView(recognizer:)))
+			let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapForProductView(recognizer:)))
 			productView.addGestureRecognizer(pan)
+			productView.addGestureRecognizer(tap)
 			productView.isUserInteractionEnabled = true
 		}
 		//add collision
 		collision = UICollisionBehavior(items: productViewArray)
 		collision.collisionDelegate = self
-//		collision.setTranslatesReferenceBoundsIntoBoundary(with: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
 		collision.translatesReferenceBoundsIntoBoundary = true
 		collision.collisionMode = .everything
 		animator.addBehavior(collision)
@@ -197,6 +198,23 @@ extension DynamicProductsViewController {
 		}
 
 	}
+
+	@objc func handleTapForProductView(recognizer: UITapGestureRecognizer) {
+		let location = recognizer.location(in: self.view)
+		let locationCenterView = view.center
+		guard let productViewToTranslate = recognizer.view else { return }
+		print("tap recognized")
+		UIView.animate(withDuration: 0.4) {
+			productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
+			self.view.layoutIfNeeded()
+
+
+		}
+		animator.updateItem(usingCurrentState: productViewToTranslate)
+
+	}
+
+
 
 	@objc func handleOldPanForProductView(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
