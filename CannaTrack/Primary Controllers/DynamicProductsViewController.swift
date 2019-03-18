@@ -44,7 +44,7 @@ class DynamicProductsViewController: UIViewController {
 			snap = UISnapBehavior(item: productView, snapTo: origPos)
 			snap.damping = 0.8
 			productViewArray.append(productView)
-			animator.addBehavior(snap)
+//			animator.addBehavior(snap)
 		}
 
 		for productView in productViewArray {
@@ -63,15 +63,21 @@ class DynamicProductsViewController: UIViewController {
 		gravity = UIGravityBehavior(items: productViewArray)
 //		animator.addBehavior(gravity)
 
+		itemBehavior = UIDynamicItemBehavior(items: productViewArray)
+		itemBehavior.friction = 0.2
+		itemBehavior.elasticity = 0.5
+		itemBehavior.allowsRotation = false
+		//				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
+		animator.addBehavior(itemBehavior)
 
-		pushBehavior = UIPushBehavior(items: productViewArray, mode: .continuous)
-		for view in pushBehavior.items {
-			pushBehavior.setTargetOffsetFromCenter(UIOffset(horizontal: 50, vertical: 50), for: view)
-		}
+//		pushBehavior = UIPushBehavior(items: productViewArray, mode: .instantaneous)
+//		for view in pushBehavior.items {
+//			pushBehavior.setTargetOffsetFromCenter(UIOffset(horizontal: 50, vertical: 50), for: view)
+//		}
 //		pushBehavior.magnitude = 1.0
 //		pushBehavior.angle = .pi
-		animator.addBehavior(pushBehavior)
-		pushBehavior.active = true
+//		animator.addBehavior(pushBehavior)
+//		pushBehavior.active = true
 
 
 
@@ -131,8 +137,17 @@ extension DynamicProductsViewController {
 
 		case .began:
 			animator.removeBehavior(snap)
+			let velocity = recognizer.velocity(in: view)
+			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+			let pushBehavior = UIPushBehavior(items: [productViewToTranslate], mode: .instantaneous)
+			pushBehavior.pushDirection = CGVector(dx: velocity.x / 10, dy: velocity.y / 10)
+			pushBehavior.magnitude = magnitude / ThrowingVelocityPadding
+			self.pushBehavior = pushBehavior
+			animator.addBehavior(pushBehavior)
 			pushBehavior.active = true
+
 			print(collision.items.debugDescription)
+
 //			animator.addBehavior(snap)
 //			animator.removeBehavior(snap)
 		case .cancelled, .failed:
@@ -148,15 +163,11 @@ extension DynamicProductsViewController {
 				self.pushBehavior = pushBehavior
 				animator.addBehavior(pushBehavior)
 
-				let angle = Int(arc4random_uniform(20)) - 10
+//				let angle = Int(arc4random_uniform(20)) - 10
 
-				itemBehavior = UIDynamicItemBehavior(items: productViewArray)
-				itemBehavior.friction = 0.2
-				itemBehavior.elasticity = 0.5
-				itemBehavior.allowsRotation = false
-//				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
-				animator.addBehavior(itemBehavior)
+
 			}
+
 		case .possible:
 			break
 		}
