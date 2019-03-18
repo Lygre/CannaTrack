@@ -11,7 +11,7 @@ import UIKit
 class DynamicProductsViewController: UIViewController {
 
 	let ThrowingThreshold: CGFloat = 900
-	let ThrowingVelocityPadding: CGFloat = 35
+	let ThrowingVelocityPadding: CGFloat = 50
 
 	var originalBounds = CGRect.zero
 	var originalCenter = CGPoint.zero
@@ -21,6 +21,10 @@ class DynamicProductsViewController: UIViewController {
 	var pushBehavior: UIPushBehavior!
 	var itemBehavior: UIDynamicItemBehavior!
 	var animator: UIDynamicAnimator!
+	var gravity: UIGravityBehavior!
+	var collision: UICollisionBehavior!
+	var fieldBehavior: UIFieldBehavior!
+//	var collisionDelegate: UICollisionBehaviorDelegate!
 	var productViewArray: [ProductView]!
 
     override func viewDidLoad() {
@@ -28,14 +32,17 @@ class DynamicProductsViewController: UIViewController {
 		animator = UIDynamicAnimator(referenceView: view)
 		self.view.layoutIfNeeded()
 		productViewArray = []
-
+		var countForViews: Int = 0
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
-			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 50, height: 50), product: product)
+			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 100, height: 100), product: product)
+			productView.layer.cornerRadius = productView.frame.width / 2
 			view.addSubview(productView)
-			productView.center = CGPoint(x: self.view.frame.width / 2, y: -productView.frame.height)
+			productView.center = CGPoint(x: self.view.frame.width / 2, y: (10 + (productView.bounds.height * CGFloat(countForViews))))
+			countForViews += 1
 			let origPos = view.center
 			snap = UISnapBehavior(item: productView, snapTo: origPos)
+			snap.damping = 0.8
 			productViewArray.append(productView)
 			animator.addBehavior(snap)
 		}
@@ -45,6 +52,28 @@ class DynamicProductsViewController: UIViewController {
 			productView.addGestureRecognizer(pan)
 			productView.isUserInteractionEnabled = true
 		}
+		//add collision
+		collision = UICollisionBehavior(items: productViewArray)
+		collision.collisionDelegate = self
+//		collision.setTranslatesReferenceBoundsIntoBoundary(with: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+		collision.translatesReferenceBoundsIntoBoundary = true
+		collision.collisionMode = .everything
+		animator.addBehavior(collision)
+		//add gravity
+		gravity = UIGravityBehavior(items: productViewArray)
+//		animator.addBehavior(gravity)
+
+
+		pushBehavior = UIPushBehavior(items: productViewArray, mode: .continuous)
+		for view in pushBehavior.items {
+			pushBehavior.setTargetOffsetFromCenter(UIOffset(horizontal: 50, vertical: 50), for: view)
+		}
+//		pushBehavior.magnitude = 1.0
+//		pushBehavior.angle = .pi
+		animator.addBehavior(pushBehavior)
+		pushBehavior.active = true
+
+
 
         // Do any additional setup after loading the view.
     }
@@ -102,8 +131,32 @@ extension DynamicProductsViewController {
 
 		case .began:
 			animator.removeBehavior(snap)
-		case .ended, .cancelled, .failed:
+			pushBehavior.active = true
+			print(collision.items.debugDescription)
+//			animator.addBehavior(snap)
+//			animator.removeBehavior(snap)
+		case .cancelled, .failed:
+//			recognizer.setTranslation(.zero, in: view)
 			animator.addBehavior(snap)
+		case .ended:
+			let velocity = recognizer.velocity(in: view)
+			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+			if magnitude > ThrowingThreshold {
+				let pushBehavior = UIPushBehavior(items: productViewArray, mode: .instantaneous)
+				pushBehavior.pushDirection = CGVector(dx: velocity.x / 10, dy: velocity.y / 10)
+				pushBehavior.magnitude = magnitude / ThrowingVelocityPadding
+				self.pushBehavior = pushBehavior
+				animator.addBehavior(pushBehavior)
+
+				let angle = Int(arc4random_uniform(20)) - 10
+
+				itemBehavior = UIDynamicItemBehavior(items: productViewArray)
+				itemBehavior.friction = 0.2
+				itemBehavior.elasticity = 0.5
+				itemBehavior.allowsRotation = false
+//				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
+				animator.addBehavior(itemBehavior)
+			}
 		case .possible:
 			break
 		}
@@ -158,5 +211,12 @@ extension DynamicProductsViewController {
 		}
 
 	}
+
+}
+
+
+extension DynamicProductsViewController: UICollisionBehaviorDelegate {
+
+
 
 }
