@@ -37,7 +37,7 @@ class DynamicProductsViewController: UIViewController {
 		var countForViews: Int = 0
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
-			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 100, height: 100), product: product)
+			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 150, height: 150), product: product)
 			productView.layer.cornerRadius = productView.frame.width / 2
 			view.addSubview(productView)
 			productView.center = CGPoint(x: self.view.frame.width / 2, y: (10 + (productView.bounds.height * CGFloat(countForViews))))
@@ -210,14 +210,10 @@ extension DynamicProductsViewController {
 				productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
 				productViewToTranslate.transform = CGAffineTransform(scaleX: 2, y: 2)
 
-				let textView = UILabel()
-				productViewToTranslate.addSubview(textView)
-				textView.text = "Hi"
-				textView.translatesAutoresizingMaskIntoConstraints = false
-				textView.centerXAnchor.constraint(equalTo: productViewToTranslate.centerXAnchor).isActive = true
-				textView.centerYAnchor.constraint(equalTo: productViewToTranslate.centerYAnchor).isActive = true
-				textView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-				textView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//				let textView = UILabel()
+//				productViewToTranslate.addSubview(textView)
+//				textView.text = "Hi"
+
 
 				productViewToTranslate.isFocusedForDetailsMin = true
 				productViewToTranslate.contentMode = .scaleAspectFit

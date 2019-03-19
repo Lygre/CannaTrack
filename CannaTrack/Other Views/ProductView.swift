@@ -14,6 +14,12 @@ class ProductView: UIView {
 	var isFocusedForDetailsMin: Bool = false
 	var focusTransform: CGAffineTransform?
 
+	//create all of the interface elements here
+	var minimumLabelStackView:UIStackView!
+	var productLabel:UILabel!
+	var strainLabel:UILabel!
+
+
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -32,6 +38,22 @@ class ProductView: UIView {
 		case .sativa:
 			self.backgroundColor = .yellow
 		}
+		self.productLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/2))
+		self.strainLabel = UILabel(frame: CGRect(x: 0, y: self.frame.height/2, width: self.frame.width, height: self.frame.height/2))
+		self.productLabel.text = product.productType.rawValue
+		self.strainLabel.text = product.strain.name
+		self.minimumLabelStackView = UIStackView(arrangedSubviews: [self.productLabel, self.strainLabel])
+		self.minimumLabelStackView.axis = .vertical
+		self.minimumLabelStackView.alignment = .fill
+		self.minimumLabelStackView.spacing = 2
+		self.minimumLabelStackView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+		self.addSubview(self.minimumLabelStackView)
+		self.minimumLabelStackView.translatesAutoresizingMaskIntoConstraints = false
+		self.minimumLabelStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+		self.minimumLabelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+		self.minimumLabelStackView.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
+		self.minimumLabelStackView.heightAnchor.constraint(equalToConstant: self.frame.height).isActive = true
+
 	}
 
 	required init?(coder aDecoder: NSCoder) {
