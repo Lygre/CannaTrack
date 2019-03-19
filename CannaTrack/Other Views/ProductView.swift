@@ -12,6 +12,7 @@ class ProductView: UIView {
 
 	var productForView: Product!
 	var isFocusedForDetailsMin: Bool = false
+	var focusTransform: CGAffineTransform?
 
     /*
     // Only override draw() if you perform custom drawing.

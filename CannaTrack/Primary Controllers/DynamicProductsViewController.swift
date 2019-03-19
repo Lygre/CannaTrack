@@ -210,6 +210,15 @@ extension DynamicProductsViewController {
 				productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
 				productViewToTranslate.transform = CGAffineTransform(scaleX: 2, y: 2)
 
+				let textView = UILabel()
+				productViewToTranslate.addSubview(textView)
+				textView.text = "Hi"
+				textView.translatesAutoresizingMaskIntoConstraints = false
+				textView.centerXAnchor.constraint(equalTo: productViewToTranslate.centerXAnchor).isActive = true
+				textView.centerYAnchor.constraint(equalTo: productViewToTranslate.centerYAnchor).isActive = true
+				textView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+				textView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
 				productViewToTranslate.isFocusedForDetailsMin = true
 				productViewToTranslate.contentMode = .scaleAspectFit
 				self.view.layoutIfNeeded()
@@ -217,7 +226,7 @@ extension DynamicProductsViewController {
 			animator.updateItem(usingCurrentState: productViewToTranslate)
 		} else { UIView.animate(withDuration: 0.4) {
 			productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width / 2, height: productViewToTranslate.frame.height / 2)
-			productViewToTranslate.transform = .identity
+			productViewToTranslate.transform = CGAffineTransform.identity
 			productViewToTranslate.isFocusedForDetailsMin = false
 			self.view.layoutIfNeeded()
 			} }
