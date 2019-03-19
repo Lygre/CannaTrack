@@ -42,17 +42,20 @@ class ProductView: UIView {
 		self.strainLabel = UILabel(frame: CGRect(x: 0, y: self.frame.height/2, width: self.frame.width, height: self.frame.height/2))
 		self.productLabel.text = product.productType.rawValue
 		self.strainLabel.text = product.strain.name
+		self.productLabel.textAlignment = .center
+		self.strainLabel.textAlignment = .center
+
 		self.minimumLabelStackView = UIStackView(arrangedSubviews: [self.productLabel, self.strainLabel])
 		self.minimumLabelStackView.axis = .vertical
-		self.minimumLabelStackView.alignment = .fill
+		self.minimumLabelStackView.alignment = .center
 		self.minimumLabelStackView.spacing = 2
 		self.minimumLabelStackView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
 		self.addSubview(self.minimumLabelStackView)
 		self.minimumLabelStackView.translatesAutoresizingMaskIntoConstraints = false
 		self.minimumLabelStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 		self.minimumLabelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-		self.minimumLabelStackView.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
-		self.minimumLabelStackView.heightAnchor.constraint(equalToConstant: self.frame.height).isActive = true
+		self.minimumLabelStackView.widthAnchor.constraint(equalToConstant: self.frame.width - 10).isActive = true
+		self.minimumLabelStackView.heightAnchor.constraint(equalToConstant: self.frame.height - 10).isActive = true
 
 	}
 

@@ -181,7 +181,7 @@ extension DynamicProductsViewController {
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
 			pushBehavior.active = true
 			if magnitude > ThrowingThreshold {
-				let pushBehavior = UIPushBehavior(items: productViewArray, mode: .instantaneous)
+				let pushBehavior = UIPushBehavior(items: [productViewToTranslate], mode: .instantaneous)
 				pushBehavior.pushDirection = CGVector(dx: velocity.x / 10, dy: velocity.y / 10)
 				pushBehavior.magnitude = magnitude / ThrowingVelocityPadding
 				self.pushBehavior = pushBehavior
