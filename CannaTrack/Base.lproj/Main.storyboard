@@ -367,10 +367,10 @@
             </objects>
             <point key="canvasLocation" x="648" y="2592"/>
         </scene>
-        <!--Product Detail View Controller-->
+        <!--ProductDetailViewController-->
         <scene sceneID="9N8-aK-d1I">
             <objects>
-                <viewController id="ZKP-z6-ymb" customClass="ProductDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProductDetailViewController" title="ProductDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZKP-z6-ymb" customClass="ProductDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="peX-rB-UCc" userLabel="master view">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1450"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

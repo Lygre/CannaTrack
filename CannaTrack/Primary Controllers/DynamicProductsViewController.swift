@@ -26,6 +26,12 @@ class DynamicProductsViewController: UIViewController {
 	var gravity: UIGravityBehavior!
 	var collision: UICollisionBehavior!
 	var fieldBehavior: UIFieldBehavior!
+
+
+	var forceTouchPreviewProduct:ProductView?
+
+	lazy var forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
+
 //	var collisionDelegate: UICollisionBehaviorDelegate!
 	var productViewArray: [ProductView]!
 
@@ -54,7 +60,10 @@ class DynamicProductsViewController: UIViewController {
 			let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapForProductView(recognizer:)))
 			productView.addGestureRecognizer(pan)
 			productView.addGestureRecognizer(tap)
+			productView.addGestureRecognizer(forceTouchGestureRecognizer)
 			productView.isUserInteractionEnabled = true
+
+			registerForPreviewing(with: self, sourceView: productView)
 		}
 		//add collision
 		collision = UICollisionBehavior(items: productViewArray)
@@ -73,30 +82,44 @@ class DynamicProductsViewController: UIViewController {
 		//				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
 		animator.addBehavior(itemBehavior)
 
-//		pushBehavior = UIPushBehavior(items: productViewArray, mode: .instantaneous)
-//		for view in pushBehavior.items {
-//			pushBehavior.setTargetOffsetFromCenter(UIOffset(horizontal: 50, vertical: 50), for: view)
-//		}
-//		pushBehavior.magnitude = 1.0
-//		pushBehavior.angle = .pi
-//		animator.addBehavior(pushBehavior)
-//		pushBehavior.active = true
-
-
-
         // Do any additional setup after loading the view.
-    }
-    
 
-    /*
+		
+    }
+
+
+
+//	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//		super.traitCollectionDidChange(previousTraitCollection)
+//
+//		if traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+//			for view in productViewArray {
+//				view.addGestureRecognizer(forceTouchGestureRecognizer)
+//			}
+//		} else  {
+//			// When force touch is not available, remove force touch gesture recognizer.
+//			// Also implement a fallback if necessary (e.g. a long press gesture recognizer)
+//			for view in productViewArray {
+//				view.removeGestureRecognizer(forceTouchGestureRecognizer)
+//			}
+//		}
+//	}
+
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-    }
-    */
+		if segue.destination is ProductDetailViewController {
+			guard let destinationVC = segue.destination as? ProductDetailViewController else { preconditionFailure("could not get destination as Product Detail VC")}
+			guard let ftProduct = forceTouchPreviewProduct else { fatalError("no force touch product set in initial vc")}
+			destinationVC.activeDetailProduct = ftProduct.productForView
+			print("view destination product set")
+		}
+	}
+
 	@IBAction func refreshViewClicked(_ sender: Any) {
 		refreshUI()
 	}
@@ -147,7 +170,6 @@ extension DynamicProductsViewController {
 
 			pushBehavior.active = false
 
-//			productViewToTranslate.center = CGPoint(x: productViewToTranslate.center.x + translation.x, y: productViewToTranslate.center.y + translation.y)
 			productViewToTranslate.center = location
 			previousTouchPoint = location
 			animator.updateItem(usingCurrentState: productViewToTranslate)
@@ -155,7 +177,6 @@ extension DynamicProductsViewController {
 
 		case .began:
 			recognizer.setTranslation(.zero, in: view)
-//			let dragStartPoint = recognizer.location(in: productViewToTranslate)
 			previousTouchPoint = location
 
 			animator.removeBehavior(snap)
@@ -170,12 +191,9 @@ extension DynamicProductsViewController {
 			itemBehavior.addLinearVelocity(CGPoint(x: -itemCurrentVelocity.x, y: -itemCurrentVelocity.y), for: productViewToTranslate)
 
 
-//			animator.removeBehavior(snap)
 		case .cancelled, .failed:
-//			recognizer.setTranslation(.zero, in: view)
 			animator.addBehavior(snap)
 		case .ended:
-//			animator.updateItem(usingCurrentState: productViewToTranslate)
 			itemBehavior.isAnchored = false
 			let velocity = recognizer.velocity(in: view)
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
@@ -187,11 +205,7 @@ extension DynamicProductsViewController {
 				self.pushBehavior = pushBehavior
 				animator.addBehavior(pushBehavior)
 
-//				let angle = Int(arc4random_uniform(20)) - 10
-
-
 			}
-//			self.pushBehavior.active = true
 
 		case .possible:
 			break
@@ -210,11 +224,6 @@ extension DynamicProductsViewController {
 				productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
 				productViewToTranslate.transform = CGAffineTransform(scaleX: 2, y: 2)
 
-//				let textView = UILabel()
-//				productViewToTranslate.addSubview(textView)
-//				textView.text = "Hi"
-
-
 				productViewToTranslate.isFocusedForDetailsMin = true
 				productViewToTranslate.contentMode = .scaleAspectFit
 				self.view.layoutIfNeeded()
@@ -229,6 +238,16 @@ extension DynamicProductsViewController {
 
 
 	}
+
+
+
+	@objc func forceTouchHandler(_ sender: ForceTouchGestureRecognizer) {
+		print("force touch triggered")
+		guard let productTouchView = sender.view as? ProductView else { preconditionFailure("No view from force touch gesture") }
+
+		forceTouchPreviewProduct = productTouchView
+	}
+
 
 
 
@@ -285,6 +304,30 @@ extension DynamicProductsViewController {
 
 
 extension DynamicProductsViewController: UICollisionBehaviorDelegate {
+
+
+
+}
+
+
+extension DynamicProductsViewController: UIViewControllerPreviewingDelegate {
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+//		guard let sourceProductView = forceTouchPreviewProduct else { fatalError("couldn't get source product view") }
+		guard let previewProductView = forceTouchPreviewProduct else { return nil }
+		previewingContext.sourceRect = previewProductView.frame
+		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { preconditionFailure("Expected a ProductDetailViewController") }
+		viewController.activeDetailProduct = previewProductView.productForView
+		print("active detail product for 3d peek pop set")
+		return viewController
+	}
+
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+		guard let ftProduct = forceTouchPreviewProduct else { fatalError("noProduct") }
+		guard let ProductViewController = viewControllerToCommit as? ProductDetailViewController else { fatalError("could not create product detail view controller") }
+		ProductViewController.activeDetailProduct = ftProduct.productForView
+		navigationController?.pushViewController(ProductViewController, animated: true)
+		print("commiting and pushing to new view")
+	}
 
 
 
