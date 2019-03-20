@@ -10,7 +10,7 @@ import UIKit
 
 class ForceTouchGestureRecognizer: UIGestureRecognizer {
 
-	private let threshold: CGFloat = 0.75
+	private let threshold: CGFloat = 0.2
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
 		super.touchesBegan(touches, with: event)

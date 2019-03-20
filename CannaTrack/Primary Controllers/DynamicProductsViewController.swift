@@ -30,7 +30,6 @@ class DynamicProductsViewController: UIViewController {
 
 	var forceTouchPreviewProduct:ProductView?
 
-	lazy var forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
 
 //	var collisionDelegate: UICollisionBehaviorDelegate!
 	var productViewArray: [ProductView]!
@@ -58,9 +57,10 @@ class DynamicProductsViewController: UIViewController {
 		for productView in productViewArray {
 			let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForProductView(recognizer:)))
 			let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapForProductView(recognizer:)))
+			let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
 			productView.addGestureRecognizer(pan)
 			productView.addGestureRecognizer(tap)
-			productView.addGestureRecognizer(forceTouchGestureRecognizer)
+//			productView.addGestureRecognizer(forceTouchGestureRecognizer)
 			productView.isUserInteractionEnabled = true
 
 			registerForPreviewing(with: self, sourceView: productView)
@@ -218,7 +218,7 @@ extension DynamicProductsViewController {
 		let locationCenterView = view.center
 		guard let productViewToTranslate = recognizer.view as? ProductView else { return }
 		print("tap recognized in \(productViewToTranslate)")
-
+		forceTouchPreviewProduct = productViewToTranslate
 		if productViewToTranslate.isFocusedForDetailsMin == false {
 			UIView.animate(withDuration: 0.4) {
 				productViewToTranslate.frame.size = CGSize(width: productViewToTranslate.frame.width * 2, height: productViewToTranslate.frame.height * 2)
@@ -242,10 +242,13 @@ extension DynamicProductsViewController {
 
 
 	@objc func forceTouchHandler(_ sender: ForceTouchGestureRecognizer) {
-		print("force touch triggered")
+
+
 		guard let productTouchView = sender.view as? ProductView else { preconditionFailure("No view from force touch gesture") }
 
 		forceTouchPreviewProduct = productTouchView
+		UINotificationFeedbackGenerator().notificationOccurred(.success)
+		print("force touch triggered")
 	}
 
 
@@ -315,8 +318,9 @@ extension DynamicProductsViewController: UIViewControllerPreviewingDelegate {
 //		guard let sourceProductView = forceTouchPreviewProduct else { fatalError("couldn't get source product view") }
 		guard let previewProductView = forceTouchPreviewProduct else { return nil }
 		previewingContext.sourceRect = previewProductView.frame
-		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { preconditionFailure("Expected a ProductDetailViewController") }
+		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
 		viewController.activeDetailProduct = previewProductView.productForView
+
 		print("active detail product for 3d peek pop set")
 		return viewController
 	}
