@@ -72,9 +72,10 @@ class InventoryViewController: UIViewController {
     }
 
 	fileprivate func updateInventoryCollectionView() {
+		self.productsCollectionView.collectionViewLayout.invalidateLayout()
 		self.productsCollectionView.performBatchUpdates({
 			self.categoriesInInventory = updateCurrentInventory()
-			self.productsCollectionView.reloadData()
+
 			self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
 		}, completion: nil)
 	}
