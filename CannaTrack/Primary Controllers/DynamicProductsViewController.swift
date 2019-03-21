@@ -28,7 +28,21 @@ class DynamicProductsViewController: UIViewController {
 	var fieldBehavior: UIFieldBehavior!
 
 
+	var location = CGPoint(x: 0, y: 0)
+
 	var forceTouchPreviewProduct:ProductView?
+
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		let touch: UITouch! = touches.first
+
+		location = touch.location(in: self.view)
+
+		guard let viewForTouch = view.hitTest(location, with: event) as? ProductView else { return }
+//		print(viewForTouch.debugDescription)
+		forceTouchPreviewProduct = viewForTouch
+
+		//need to get the view if it falls within it somehow
+	}
 
 
 //	var collisionDelegate: UICollisionBehaviorDelegate!
@@ -153,11 +167,11 @@ extension DynamicProductsViewController {
 		let location = recognizer.location(in: self.view)
 		let locationCenterView = view.center
 		guard let productViewToTranslate = recognizer.view else { return }
-
+		guard let productView = recognizer.view as? ProductView else { return }
 		switch recognizer.state {
 		case .changed:
 
-
+			forceTouchPreviewProduct = productView
 			itemBehavior.isAnchored = false
 			let translation = recognizer.translation(in: view)
 			let velocity = recognizer.velocity(in: view)
@@ -176,6 +190,7 @@ extension DynamicProductsViewController {
 
 
 		case .began:
+			forceTouchPreviewProduct = productView
 			recognizer.setTranslation(.zero, in: view)
 			previousTouchPoint = location
 
@@ -194,6 +209,7 @@ extension DynamicProductsViewController {
 		case .cancelled, .failed:
 			animator.addBehavior(snap)
 		case .ended:
+			forceTouchPreviewProduct = productView
 			itemBehavior.isAnchored = false
 			let velocity = recognizer.velocity(in: view)
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
@@ -208,7 +224,8 @@ extension DynamicProductsViewController {
 			}
 
 		case .possible:
-			break
+			forceTouchPreviewProduct = productView
+			print("possible pan case")
 		}
 
 	}

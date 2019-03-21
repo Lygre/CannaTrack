@@ -46,3 +46,34 @@ class ForceTouchGestureRecognizer: UIGestureRecognizer {
 
 
 }
+
+
+class DynamicProductGestureRecognizer: UIGestureRecognizer {
+
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+		super.touchesBegan(touches, with: event)
+		if let touch = touches.first {
+			handleTouch(touch)
+		}
+	}
+
+	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+		super.touchesMoved(touches, with: event)
+		state = UIGestureRecognizer.State.ended
+	}
+
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+		super.touchesEnded(touches, with: event)
+		state = UIGestureRecognizer.State.ended
+	}
+
+	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+		super.touchesCancelled(touches, with: event)
+		state = UIGestureRecognizer.State.ended
+	}
+
+	private func handleTouch(_ touch: UITouch) {
+		state = UIGestureRecognizer.State.began
+	}
+
+}

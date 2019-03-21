@@ -57,6 +57,10 @@ class ProductView: UIView {
 		self.minimumLabelStackView.widthAnchor.constraint(equalToConstant: self.frame.width - 10).isActive = true
 		self.minimumLabelStackView.heightAnchor.constraint(equalToConstant: self.frame.height - 10).isActive = true
 
+		self.productLabel.isUserInteractionEnabled = false
+		self.strainLabel.isUserInteractionEnabled = false
+		self.minimumLabelStackView.isUserInteractionEnabled = false
+
 	}
 
 	required init?(coder aDecoder: NSCoder) {
