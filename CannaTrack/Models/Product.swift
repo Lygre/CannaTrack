@@ -34,10 +34,12 @@ class Product: Codable {
 		productType = try values.decode(ProductType.self, forKey: .productType)
 		strain = try values.decode(Strain.self, forKey: .strain)
 
-		productLabelImage = UIImage(data: try values.decode(Data.self, forKey: .productLabelImage))
-		currentProductImage = UIImage(data: try values.decode(Data.self, forKey: .currentProductImage))
+		productLabelImage = nil
+//			UIImage(data: try values.decode(Data.self, forKey: .productLabelImage))
+		currentProductImage = nil
+//			UIImage(data: try values.decode(Data.self, forKey: .currentProductImage))
 		mass = try values.decode(Double.self, forKey: .mass)
-		dateOpened = try values.decode(Date.self, forKey: .dateOpened)
+		dateOpened = try? values.decode(Date.self, forKey: .dateOpened)
 		numberOfDosesTakenFromProduct = try values.decode(Int.self, forKey: .numberOfDosesTakenFromProduct)
 
 
