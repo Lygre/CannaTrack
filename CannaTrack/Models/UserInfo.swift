@@ -20,3 +20,6 @@ var savedUserInfo: [Product] = {
 	print("returning saved user info")
 	return existingUserInfo
 }()
+
+let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+let archiveURL = documentsDirectory.appendingPathComponent("product_inventory").appendingPathExtension("plist")

@@ -106,20 +106,20 @@ struct Effect: Decodable, Hashable {
 
 }
 
-struct Effects: Decodable, Hashable {
+struct Effects: Encodable, Decodable, Hashable {
 	var positive: [String]?
 	var negative: [String]?
 	var medical: [String]?
 
 }
 
-enum StrainVariety: String, Decodable {
+enum StrainVariety: String, Encodable, Decodable {
 	case hybrid = "hybrid"
 	case indica = "indica"
 	case sativa = "sativa"
 }
 
-class Strain {
+class Strain: Codable {
 	let id: Int
 	let name: String
 	let race: StrainVariety
