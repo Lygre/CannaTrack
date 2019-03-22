@@ -1197,13 +1197,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEc-eW-2gL">
-                                <rect key="frame" x="184" y="760" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="3yP-o7-ZsB"/>
-                                </constraints>
-                                <state key="normal" title="Refresh"/>
+                                <rect key="frame" x="145" y="760" width="124" height="30"/>
+                                <state key="normal" title="Print UserInfo"/>
                                 <connections>
                                     <action selector="refreshViewClicked:" destination="NQG-sD-xTF" eventType="touchUpInside" id="DI0-QH-mDZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KJx-w9-XTe">
+                                <rect key="frame" x="145" y="722" width="124" height="30"/>
+                                <state key="normal" title="Save UserInfo"/>
+                                <connections>
+                                    <action selector="saveUserInfoClicked:" destination="NQG-sD-xTF" eventType="touchUpInside" id="mEa-T7-5UY"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1211,6 +1215,10 @@
                         <constraints>
                             <constraint firstItem="cEc-eW-2gL" firstAttribute="centerX" secondItem="0Jo-he-jnz" secondAttribute="centerX" id="Flb-jT-wDp"/>
                             <constraint firstItem="G6u-zn-zDM" firstAttribute="bottom" secondItem="cEc-eW-2gL" secondAttribute="bottom" constant="23" id="JcI-7S-Wm9"/>
+                            <constraint firstItem="cEc-eW-2gL" firstAttribute="top" secondItem="KJx-w9-XTe" secondAttribute="bottom" constant="8" id="hoO-j2-Jld"/>
+                            <constraint firstItem="KJx-w9-XTe" firstAttribute="width" secondItem="0Jo-he-jnz" secondAttribute="width" multiplier="0.3" id="o9I-Wi-lUg"/>
+                            <constraint firstItem="KJx-w9-XTe" firstAttribute="centerX" secondItem="0Jo-he-jnz" secondAttribute="centerX" id="q0f-xg-qMK"/>
+                            <constraint firstItem="cEc-eW-2gL" firstAttribute="width" secondItem="0Jo-he-jnz" secondAttribute="width" multiplier="0.3" id="t4r-Ut-Qsd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="G6u-zn-zDM"/>
                     </view>

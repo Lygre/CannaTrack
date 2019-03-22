@@ -135,8 +135,16 @@ class DynamicProductsViewController: UIViewController {
 	}
 
 	@IBAction func refreshViewClicked(_ sender: Any) {
-		refreshUI()
+//		refreshUI()
+		printUserInfo()
 	}
+
+
+	@IBAction func saveUserInfoClicked(_ sender: Any) {
+		saveUserInfo()
+	}
+
+
 
 }
 
@@ -147,6 +155,15 @@ extension DynamicProductsViewController {
 		view.layoutSubviews()
 	}
 
+	func printUserInfo() {
+		let savedProducts = UserDefaults.standard.object(forKey: "ProductInventory") as? [Product]
+		print(savedProducts.debugDescription)
+	}
+
+	func saveUserInfo() {
+		//this causes crash at the moment and is where the next commit's changes will be
+		UserDefaults.standard.set(globalMasterInventory, forKey: "ProductInventory")
+	}
 
 	func resetViews() {
 		animator.removeAllBehaviors()
