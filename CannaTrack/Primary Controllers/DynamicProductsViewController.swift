@@ -48,7 +48,26 @@ class DynamicProductsViewController: UIViewController {
 //	var collisionDelegate: UICollisionBehaviorDelegate!
 	var productViewArray: [ProductView]!
 
-    override func viewDidLoad() {
+	fileprivate func setupCollisionBehavior() {
+		//add collision
+		collision = UICollisionBehavior(items: productViewArray)
+		collision.collisionDelegate = self
+		collision.translatesReferenceBoundsIntoBoundary = true
+		collision.collisionMode = .everything
+		animator.addBehavior(collision)
+	}
+
+	fileprivate func setupItemBehavior() {
+		//		animator.addBehavior(gravity)
+
+		itemBehavior = UIDynamicItemBehavior(items: productViewArray)
+		itemBehavior.friction = 0.2
+		itemBehavior.elasticity = 0.5
+		itemBehavior.allowsRotation = false
+		animator.addBehavior(itemBehavior)
+	}
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 		animator = UIDynamicAnimator(referenceView: view)
 		self.view.layoutIfNeeded()
@@ -72,32 +91,23 @@ class DynamicProductsViewController: UIViewController {
 		}
 
 		for productView in productViewArray {
+			//setup gesture recognizers
 			let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForProductView(recognizer:)))
 			let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapForProductView(recognizer:)))
 			let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
+
+			//make any modifications needed
+			tap.numberOfTapsRequired = 2
 			productView.addGestureRecognizer(pan)
 			productView.addGestureRecognizer(tap)
-//			productView.addGestureRecognizer(forceTouchGestureRecognizer)
 			productView.isUserInteractionEnabled = true
 
 			registerForPreviewing(with: self, sourceView: productView)
 		}
-		//add collision
-		collision = UICollisionBehavior(items: productViewArray)
-		collision.collisionDelegate = self
-		collision.translatesReferenceBoundsIntoBoundary = true
-		collision.collisionMode = .everything
-		animator.addBehavior(collision)
+		setupCollisionBehavior()
 		//add gravity
 		gravity = UIGravityBehavior(items: productViewArray)
-//		animator.addBehavior(gravity)
-
-		itemBehavior = UIDynamicItemBehavior(items: productViewArray)
-		itemBehavior.friction = 0.2
-		itemBehavior.elasticity = 0.5
-		itemBehavior.allowsRotation = false
-		//				itemBehavior.addAngularVelocity(CGFloat(angle), for: productViewToTranslate)
-		animator.addBehavior(itemBehavior)
+		setupItemBehavior()
 
         // Do any additional setup after loading the view.
 

@@ -11,7 +11,6 @@
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
 		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
-		9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24BAE9221B654B0086B3AA /* DetailViewController.swift */; };
 		9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDB223C092E00EF644D /* ProductView.swift */; };
 		9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
@@ -44,7 +43,6 @@
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
 		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F24BAE9221B654B0086B3AA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9F27EEDB223C092E00EF644D /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProductsViewController.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 		9F52F031221DC2BC007E6330 /* Primary Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
 				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
 				9F52F034221DC335007E6330 /* InventoryViewController.swift */,
 				9F922A4F2224B584001407D8 /* AddProductViewController.swift */,
@@ -193,13 +190,21 @@
 				9F52F033221DC313007E6330 /* Other Views */,
 				9F52F032221DC2FA007E6330 /* Cells */,
 				9F52F031221DC2BC007E6330 /* Primary Controllers */,
+				9FB6F307224983B200C18BD3 /* Deprecated Objects */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
-				9F24BAE9221B654B0086B3AA /* DetailViewController.swift */,
 				9F825C262214A2C300FC2327 /* Assets.xcassets */,
 				9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */,
 				9F825C2B2214A2C300FC2327 /* Info.plist */,
 			);
 			path = CannaTrack;
+			sourceTree = "<group>";
+		};
+		9FB6F307224983B200C18BD3 /* Deprecated Objects */ = {
+			isa = PBXGroup;
+			children = (
+				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
+			);
+			path = "Deprecated Objects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,7 +336,6 @@
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F563EC422452BB9003F557A /* UserInfo.swift in Sources */,
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
-				9F24BAEA221B654B0086B3AA /* DetailViewController.swift in Sources */,
 				9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */,
 				9F5658652241598A0032902E /* ForceTouchGestureRecognizer.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
