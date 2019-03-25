@@ -113,16 +113,18 @@ class InventoryViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		guard let selectedCollectionViewCell = sender as? InventoryCollectionViewCell,
-			let indexPath = productsCollectionView.indexPath(for: selectedCollectionViewCell)
-			else { preconditionFailure("Expected sender to be a valid table view cell") }
+		if segue.destination is ProductDetailViewController {
+			guard let selectedCollectionViewCell = sender as? InventoryCollectionViewCell,
+				let indexPath = productsCollectionView.indexPath(for: selectedCollectionViewCell)
+				else { preconditionFailure("Expected sender to be a valid table view cell") }
 
-		guard let productDetailViewController = segue.destination as? ProductDetailViewController
-			else { preconditionFailure("Expected a ColorItemViewController") }
+			guard let productDetailViewController = segue.destination as? ProductDetailViewController
+				else { preconditionFailure("Expected a ColorItemViewController") }
 
-		// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
+			// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
 
-		productDetailViewController.activeDetailProduct = currentInventory?[indexPath.row]
+			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.row]
+		}
 
 	}
 

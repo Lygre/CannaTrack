@@ -54,6 +54,9 @@ class DynamicProductsViewController: UIViewController {
 		self.view.layoutIfNeeded()
 		productViewArray = []
 		var countForViews: Int = 0
+
+		printUserInfo()
+
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
 			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 100, height: 100), product: product)
@@ -179,6 +182,7 @@ extension DynamicProductsViewController {
 			if let da = UserDefaults.standard.data(forKey: "data") {
 				let stored = try propertyListDecoder.decode([Product].self, from: da)
 				print(stored)
+				globalMasterInventory = stored
 			}
 		}
 		catch {
