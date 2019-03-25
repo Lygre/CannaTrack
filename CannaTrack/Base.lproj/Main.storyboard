@@ -666,6 +666,7 @@
                         <segue destination="mD5-Z1-JOT" kind="relationship" relationship="viewControllers" id="MGA-EC-Spx"/>
                         <segue destination="5bV-5a-mpT" kind="relationship" relationship="viewControllers" id="UaG-6O-hfB"/>
                         <segue destination="2xC-yw-4yc" kind="relationship" relationship="viewControllers" id="3wL-n6-uDO"/>
+                        <segue destination="6py-qD-mwn" kind="relationship" relationship="viewControllers" id="8fc-wP-kP2"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4r-xL-fAt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -995,6 +996,65 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LbD-fO-uF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2143" y="981"/>
+        </scene>
+        <!--Dose Calendar View Controller-->
+        <scene sceneID="q1d-YZ-lU2">
+            <objects>
+                <viewController id="agT-kp-NMb" customClass="DoseCalendarViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VGY-We-t6C">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7g-qk-roq" customClass="CVCalendarMenuView" customModule="CVCalendar">
+                                <rect key="frame" x="0.0" y="88" width="414" height="62.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c5j-KT-c3L" customClass="CVCalendarView" customModule="CVCalendar">
+                                <rect key="frame" x="0.0" y="150.5" width="414" height="662.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="R7g-qk-roq" firstAttribute="height" secondItem="VGY-We-t6C" secondAttribute="height" multiplier="0.07" id="E2j-g4-vzq"/>
+                            <constraint firstItem="c5j-KT-c3L" firstAttribute="top" secondItem="R7g-qk-roq" secondAttribute="bottom" id="K53-b8-08x"/>
+                            <constraint firstItem="R7g-qk-roq" firstAttribute="leading" secondItem="cR0-be-ePe" secondAttribute="leading" id="RwI-f6-qEx"/>
+                            <constraint firstItem="R7g-qk-roq" firstAttribute="width" secondItem="VGY-We-t6C" secondAttribute="width" id="SDl-Eq-kST"/>
+                            <constraint firstItem="R7g-qk-roq" firstAttribute="top" secondItem="cR0-be-ePe" secondAttribute="top" id="c5n-BK-Ez7"/>
+                            <constraint firstItem="c5j-KT-c3L" firstAttribute="leading" secondItem="cR0-be-ePe" secondAttribute="leading" id="fAp-Fk-9y5"/>
+                            <constraint firstItem="c5j-KT-c3L" firstAttribute="width" secondItem="VGY-We-t6C" secondAttribute="width" id="gSb-kE-KPp"/>
+                            <constraint firstItem="cR0-be-ePe" firstAttribute="bottom" secondItem="c5j-KT-c3L" secondAttribute="bottom" id="hVX-lh-rvZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="cR0-be-ePe"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oft-NG-FX1"/>
+                    <connections>
+                        <outlet property="calendarView" destination="c5j-KT-c3L" id="1yM-F3-QRL"/>
+                        <outlet property="menuView" destination="R7g-qk-roq" id="oRv-yG-Kyn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q5s-8o-Evk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3656.521739130435" y="1800.6696428571427"/>
+        </scene>
+        <!--Log-->
+        <scene sceneID="jYa-yh-c9w">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6py-qD-mwn" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Log" id="u0y-0a-VMF"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NEH-gV-w9z">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="agT-kp-NMb" kind="relationship" relationship="rootViewController" id="dKi-hb-fIT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Xq-nX-xyk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3657" y="980"/>
         </scene>
     </scenes>
     <resources>

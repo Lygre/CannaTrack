@@ -31,6 +31,7 @@
 		9F825C342214A2F200FC2327 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C312214A2F200FC2327 /* Extensions.swift */; };
 		9F825C352214A2F200FC2327 /* Strains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C322214A2F200FC2327 /* Strains.swift */; };
 		9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */; };
+		9F8A716322498B420063E434 /* DoseCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A716222498B420063E434 /* DoseCalendarViewController.swift */; };
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
@@ -65,6 +66,7 @@
 		9F825C312214A2F200FC2327 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9F825C322214A2F200FC2327 /* Strains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strains.swift; sourceTree = "<group>"; };
 		9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		9F8A716222498B420063E434 /* DoseCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarViewController.swift; sourceTree = "<group>"; };
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */,
 				9F7207BA2236C6AC009D6375 /* DoseViewController.swift */,
 				9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */,
+				9F8A716222498B420063E434 /* DoseCalendarViewController.swift */,
 			);
 			path = "Primary Controllers";
 			sourceTree = "<group>";
@@ -308,12 +311,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CVCalendar/CVCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CVCalendar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,6 +335,7 @@
 			files = (
 				9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */,
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
+				9F8A716322498B420063E434 /* DoseCalendarViewController.swift in Sources */,
 				9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */,
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
