@@ -37,11 +37,16 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 			}
 			masterStrainDatabase = strainsToDisplay
+			DispatchQueue.main.async {
+				self.loadViewIfNeeded()
+				self.collectionViewLayout.invalidateLayout()
+				self.collectionView.reloadData()
+			}
 		}
 	}
 	var strainsToDisplay: [Strain] = [] {
 		didSet {
-			refreshUI()
+//			refreshUI()
 		}
 	}
 
@@ -188,6 +193,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	func refreshUI() {
 		loadViewIfNeeded()
+		self.collectionView.collectionViewLayout.invalidateLayout()
 		self.collectionView.reloadData()
 	}
 
