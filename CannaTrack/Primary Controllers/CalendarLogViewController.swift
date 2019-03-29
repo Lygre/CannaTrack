@@ -12,7 +12,15 @@ import JTAppleCalendar
 
 class CalendarLogViewController: UIViewController {
 
-	@IBOutlet var calendarCollectionView: JTAppleCalendarView!
+	@IBOutlet weak var calendarCollectionView: JTAppleCalendarView!
+	@IBOutlet weak var year: UILabel!
+	@IBOutlet weak var month: UILabel!
+
+
+	let outsideMonthColor = UIColor.lightGray
+
+	let monthColor = UIColor.purple
+	let selectedMonthColor = UIColor.white
 
 	let formatter = DateFormatter()
 
@@ -32,6 +40,13 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
+			self.calendarCollectionView.selectDates([Date()])
+		}
+
+	}
 
     /*
     // MARK: - Navigation
@@ -59,7 +74,9 @@ extension CalendarLogViewController: JTAppleCalendarViewDataSource {
 		let endDate = formatter.date(from: "2022 01 01")!
 
 
-		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 4, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
+		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forFirstMonthOnly, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
+
+//		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate)
 
 		return configs
 	}
@@ -76,21 +93,45 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
 
 		handleCellSelected(cell: cell, cellState: cellState)
-
+		handleCellTextColor(cell: cell, cellState: cellState)
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
 		handleCellSelected(cell: cell, cellState: cellState)
+		handleCellTextColor(cell: cell, cellState: cellState)
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
 		let myCustomCell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
 		myCustomCell.dateLabel.text = cellState.text
 		//shared method to configure cell after this comment
-
+		handleCellSelected(cell: myCustomCell, cellState: cellState)
+		handleCellTextColor(cell: myCustomCell, cellState: cellState)
 		//return cell
 		return myCustomCell
 	}
+
+	/*
+	func calendar(_ calendar: JTAppleCalendarView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTAppleCollectionReusableView {
+		<#code#>
+	}
+	*/
+
+	func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
+		let date = visibleDates.monthDates.first!.date
+
+		formatter.dateFormat = "yyyy"
+		year.text = formatter.string(from: date)
+
+		formatter.dateFormat = "MMMM"
+		month.text = formatter.string(from: date)
+
+	}
+
+
+
+
+
 }
 
 
@@ -110,6 +151,43 @@ extension CalendarLogViewController {
 		} else {
 			validCell.selectedView.isHidden = true
 		}
+	}
+
+	func handleCellTextColor(cell: JTAppleCell?, cellState: CellState) {
+		guard let validCell = cell as? CustomCell else { return }
+		if cellState.isSelected {
+			validCell.dateLabel.textColor = selectedMonthColor
+		} else {
+			if cellState.dateBelongsTo == .thisMonth {
+				validCell.dateLabel.textColor = monthColor
+				validCell.backgroundColor = UIColor(named: "indicaColor")
+			} else {
+				validCell.dateLabel.textColor = outsideMonthColor
+				validCell.backgroundColor = UIColor.white
+			}
+		}
+	}
+
+
+
+	func setupCalendarView() {
+		calendarCollectionView.minimumLineSpacing = 0
+		calendarCollectionView.minimumInteritemSpacing = 0
+
+		calendarCollectionView.visibleDates { visibleDates in
+			self.setupViewsOfCalendar(from: visibleDates)
+		}
+	}
+
+	func setupViewsOfCalendar(from visibleDates: DateSegmentInfo) {
+		let date = visibleDates.monthDates.first!.date
+
+		formatter.dateFormat = "yyyy"
+		year.text = formatter.string(from: date)
+
+		formatter.dateFormat = "MMMM"
+		month.text = formatter.string(from: date)
+
 	}
 
 }
