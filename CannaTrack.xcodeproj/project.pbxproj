@@ -11,6 +11,8 @@
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
 		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
+		9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */; };
+		9F22F122224D458700C67D69 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F121224D458700C67D69 /* CustomCell.swift */; };
 		9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDB223C092E00EF644D /* ProductView.swift */; };
 		9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
@@ -44,6 +46,9 @@
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
 		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLogViewController.swift; sourceTree = "<group>"; };
+		9F22F120224D10FA00C67D69 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9F22F121224D458700C67D69 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		9F27EEDB223C092E00EF644D /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProductsViewController.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -130,6 +135,7 @@
 				9F7207BA2236C6AC009D6375 /* DoseViewController.swift */,
 				9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */,
 				9F8A716222498B420063E434 /* DoseCalendarViewController.swift */,
+				9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */,
 			);
 			path = "Primary Controllers";
 			sourceTree = "<group>";
@@ -142,6 +148,7 @@
 				9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */,
 				9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */,
 				9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */,
+				9F22F121224D458700C67D69 /* CustomCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -168,6 +175,7 @@
 		9F825C132214A2C200FC2327 = {
 			isa = PBXGroup;
 			children = (
+				9F22F120224D10FA00C67D69 /* MyPlayground.playground */,
 				9F825C1E2214A2C200FC2327 /* CannaTrack */,
 				9F825C1D2214A2C200FC2327 /* Products */,
 				8F88183F5A4FB3E93F3F415D /* Pods */,
@@ -312,6 +320,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CVCalendar/CVCalendar.framework",
+				"${BUILT_PRODUCTS_DIR}/JTAppleCalendar/JTAppleCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -319,6 +328,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CVCalendar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JTAppleCalendar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +350,7 @@
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
+				9F22F122224D458700C67D69 /* CustomCell.swift in Sources */,
 				9F563EC422452BB9003F557A /* UserInfo.swift in Sources */,
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
 				9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */,
@@ -354,6 +365,7 @@
 				9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */,
 				9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */,
 				9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */,
+				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 			);

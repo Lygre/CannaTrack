@@ -1,0 +1,115 @@
+//
+//  CalendarLogViewController.swift
+//  CannaTrack
+//
+//  Created by Hugh Broome on 3/28/19.
+//  Copyright © 2019 Lygre. All rights reserved.
+//
+
+import UIKit
+import JTAppleCalendar
+
+
+class CalendarLogViewController: UIViewController {
+
+	@IBOutlet var calendarCollectionView: JTAppleCalendarView!
+
+	let formatter = DateFormatter()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+//		self.calendarCollectionView.calendarDataSource = self
+//		self.calendarCollectionView.calendarDelegate = self
+
+        // Do any additional setup after loading the view.
+    }
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		calendarCollectionView.collectionViewLayout.invalidateLayout()
+		calendarCollectionView.reloadData()
+
+	}
+
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+
+
+extension CalendarLogViewController: JTAppleCalendarViewDataSource {
+
+
+	func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
+
+		formatter.dateFormat = "yyy MM dd"
+		formatter.timeZone = Calendar.current.timeZone
+		formatter.locale = Calendar.current.locale
+
+		let startDate = formatter.date(from: "2017 01 01")!
+		let endDate = formatter.date(from: "2022 01 01")!
+
+
+		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 4, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
+
+		return configs
+	}
+
+
+}
+
+
+extension CalendarLogViewController: JTAppleCalendarViewDelegate {
+	func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
+
+	}
+
+	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
+
+		handleCellSelected(cell: cell, cellState: cellState)
+
+	}
+
+	func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
+		handleCellSelected(cell: cell, cellState: cellState)
+	}
+
+	func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
+		let myCustomCell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
+		myCustomCell.dateLabel.text = cellState.text
+		//shared method to configure cell after this comment
+
+		//return cell
+		return myCustomCell
+	}
+}
+
+
+
+extension CalendarLogViewController {
+
+	func sharedFunctionToConfigureCell(cell: JTAppleCell, cellState: CellState, date: Date) {
+		print("do nothing; not implemented")
+
+	}
+
+
+	func handleCellSelected(cell: JTAppleCell?, cellState: CellState) {
+		guard let validCell = cell as? CustomCell else { return }
+		if cellState.isSelected {
+			validCell.selectedView.isHidden = false
+		} else {
+			validCell.selectedView.isHidden = true
+		}
+	}
+
+}

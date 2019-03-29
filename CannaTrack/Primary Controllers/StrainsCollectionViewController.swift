@@ -23,7 +23,6 @@ class StrainsCollectionViewController: UICollectionViewController {
 			var strainsDict: [String: StrainInformation] = [:]
 			sendRequestForAllStrains(completion: { strainsDictionary in
 				strainsDict = strainsDictionary
-				//				return strainsDict!
 			})
 			return strainsDict
 		}

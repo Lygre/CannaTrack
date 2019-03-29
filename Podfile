@@ -8,7 +8,7 @@ target 'CannaTrack' do
   # Pods for CannaTrack
 	pod 'TesseractOCRiOS', '4.00'
 	pod 'CVCalendar', '~> 1.6.2'
-
+	pod 'JTAppleCalendar', '~> 7.0'
 end
 
 post_install do |installer|
