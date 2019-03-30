@@ -10,6 +10,8 @@ import UIKit
 import JTAppleCalendar
 
 
+var doseLogDictionaryGLOBAL: [DateComponents]?
+
 class CalendarLogViewController: UIViewController {
 
 	@IBOutlet weak var doseTableView: UITableView!
@@ -20,6 +22,7 @@ class CalendarLogViewController: UIViewController {
 
 	let tableCellIdentifier: String = "DoseCell"
 
+	//!!!!TODO -- need to provide getter and setters for these two properties
 	var selectedDate: Date?
 
 	var dosesForDate: [Dose]?
@@ -31,16 +34,22 @@ class CalendarLogViewController: UIViewController {
 
 	let formatter = DateFormatter()
 
-    override func viewDidLoad() {
+	let logFormatter = DateFormatter()
+
+
+
+
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
 
-//		self.calendarCollectionView.calendarDataSource = self
-//		self.calendarCollectionView.calendarDelegate = self
 
-        // Do any additional setup after loading the view.
+		// Do any additional setup after loading the view.
+		setupDoseLoggingDateFormatter()
+
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -102,7 +111,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
-
+		selectedDate = date
 		handleCellSelected(cell: cell, cellState: cellState)
 		handleCellTextColor(cell: cell, cellState: cellState)
 	}
@@ -122,11 +131,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 		return myCustomCell
 	}
 
-	/*
-	func calendar(_ calendar: JTAppleCalendarView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTAppleCollectionReusableView {
-		<#code#>
-	}
-	*/
+
 
 	func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
 		let date = visibleDates.monthDates.first!.date
@@ -214,6 +219,19 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 	}
 
 
+
+
+}
+
+
+extension CalendarLogViewController {
+
+	fileprivate func setupDoseLoggingDateFormatter() {
+		logFormatter.locale = .current
+		logFormatter.timeZone = .current
+		logFormatter.calendar = .current
+		logFormatter.dateFormat = "yyy-MM-dd"
+	}
 
 
 }
