@@ -12,10 +12,17 @@ import JTAppleCalendar
 
 class CalendarLogViewController: UIViewController {
 
+	@IBOutlet weak var doseTableView: UITableView!
+
 	@IBOutlet weak var calendarCollectionView: JTAppleCalendarView!
 	@IBOutlet weak var year: UILabel!
 	@IBOutlet weak var month: UILabel!
 
+	let tableCellIdentifier: String = "DoseCell"
+
+	var selectedDate: Date?
+
+	var dosesForDate: [Dose]?
 
 	let outsideMonthColor = UIColor.lightGray
 
@@ -26,6 +33,9 @@ class CalendarLogViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+		self.doseTableView.delegate = self
+		self.doseTableView.dataSource = self
 
 //		self.calendarCollectionView.calendarDataSource = self
 //		self.calendarCollectionView.calendarDelegate = self
@@ -42,6 +52,7 @@ class CalendarLogViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		selectedDate = Date()
 		calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
 			self.calendarCollectionView.selectDates([Date()])
 		}
@@ -189,5 +200,20 @@ extension CalendarLogViewController {
 		month.text = formatter.string(from: date)
 
 	}
+
+}
+
+
+extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		<#code#>
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		<#code#>
+	}
+
+
+
 
 }

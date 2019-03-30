@@ -1180,19 +1180,37 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-xj-qr0">
+                                <rect key="frame" x="0.0" y="587" width="414" height="226"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DoseCell" id="env-Ub-SUz" customClass="DoseCalendarTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="env-Ub-SUz" id="ZIT-OV-oAK">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="top" secondItem="RQH-vf-3YV" secondAttribute="top" id="0tp-NA-hWZ"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="top" secondItem="9gZ-UB-B7s" secondAttribute="bottom" id="8Pf-Li-shI"/>
+                            <constraint firstItem="wyH-xj-qr0" firstAttribute="leading" secondItem="LyD-gB-HQ3" secondAttribute="leading" id="AgM-r9-sVA"/>
+                            <constraint firstItem="wyH-xj-qr0" firstAttribute="top" secondItem="LyD-gB-HQ3" secondAttribute="bottom" id="F5e-mz-RAW"/>
                             <constraint firstItem="RQH-vf-3YV" firstAttribute="trailing" secondItem="LyD-gB-HQ3" secondAttribute="trailing" id="Jex-Qa-e5L"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="bottom" secondItem="9gZ-UB-B7s" secondAttribute="top" constant="-10" id="KJb-Db-dJc"/>
+                            <constraint firstItem="wyH-xj-qr0" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" id="PIM-KR-vTJ"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="trailing" secondItem="RQH-vf-3YV" secondAttribute="trailing" id="Q2h-qP-ZmO"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" id="QUg-Y9-JXB"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="height" secondItem="VXG-G1-bQi" secondAttribute="height" multiplier="0.5" id="bkF-rR-If3"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="diD-pA-BZJ"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.66" id="kjZ-L8-foa"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="n40-26-xhW"/>
+                            <constraint firstItem="wyH-xj-qr0" firstAttribute="trailing" secondItem="LyD-gB-HQ3" secondAttribute="trailing" id="us5-I1-ULX"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="centerX" secondItem="VXG-G1-bQi" secondAttribute="centerX" id="x0M-ae-KtQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
@@ -1200,6 +1218,7 @@
                     <navigationItem key="navigationItem" id="tNb-gC-NIf"/>
                     <connections>
                         <outlet property="calendarCollectionView" destination="LyD-gB-HQ3" id="qHM-mQ-iRS"/>
+                        <outlet property="doseTableView" destination="wyH-xj-qr0" id="Qdt-K9-0yo"/>
                         <outlet property="month" destination="Ebn-38-Adq" id="avK-gJ-uvd"/>
                         <outlet property="year" destination="gop-3r-fIL" id="1QT-oS-Hzf"/>
                     </connections>
