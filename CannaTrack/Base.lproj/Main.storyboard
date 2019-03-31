@@ -1190,7 +1190,19 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="env-Ub-SUz" id="ZIT-OV-oAK">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzm-iP-QXI">
+                                                    <rect key="frame" x="46" y="11" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="timeLabel" destination="Bzm-iP-QXI" id="D5u-un-kx8"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -1215,7 +1227,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tNb-gC-NIf"/>
+                    <navigationItem key="navigationItem" id="tNb-gC-NIf">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="save" id="sDr-BV-U6J">
+                                <connections>
+                                    <action selector="saveDoseLogClicked:" destination="2LI-yC-dew" id="MBE-K3-s85"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Print" id="LAm-x7-ziC">
+                                <connections>
+                                    <action selector="printDoseLogClicked:" destination="2LI-yC-dew" id="sqh-jY-01p"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="calendarCollectionView" destination="LyD-gB-HQ3" id="qHM-mQ-iRS"/>
                         <outlet property="doseTableView" destination="wyH-xj-qr0" id="Qdt-K9-0yo"/>

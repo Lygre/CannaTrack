@@ -157,7 +157,8 @@ extension DoseViewController: SaveDoseDelegate {
 		globalMasterInventory[indexForProductInGlobalDB].mass = updatedMass ?? productInGlobal.mass
 		globalMasterInventory[indexForProductInGlobalDB].numberOfDosesTakenFromProduct += 1
 
-
+		let dose = Dose(timestamp: doseDate, product: product, mass: updatedMass ?? 0.0, route: .inhalation)
+		dose.logDoseToCalendar(dose)
 
 	}
 

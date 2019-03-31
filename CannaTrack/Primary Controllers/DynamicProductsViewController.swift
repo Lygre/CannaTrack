@@ -169,25 +169,7 @@ extension DynamicProductsViewController {
 	}
 
 	func printUserInfo() {
-
-//		let propertyListDecoder = PropertyListDecoder()
-//
-//		if let retrievedProductData = try? Data(contentsOf: archiveURL),
-//			let decodedProduct = try? propertyListDecoder.decode(Product.self, from: retrievedProductData) {
-//			print(decodedProduct)
-//		}
-
-
-		//Mark! -- Testing
-
 		let propertyListDecoder = PropertyListDecoder()
-//		if let retrievedProductData = try? Data(contentsOf: archiveURL),
-//			let decodedProducts = try? propertyListDecoder.decode([Product].self, from: retrievedProductData) {
-//			print(decodedProducts)
-//		} else {
-//			print("no product data retrieved")
-//		}
-
 		do {
 			if let da = UserDefaults.standard.data(forKey: "data") {
 				let stored = try propertyListDecoder.decode([Product].self, from: da)
@@ -198,38 +180,18 @@ extension DynamicProductsViewController {
 		catch {
 			print(error)
 		}
-
 	}
 
 	func saveUserInfo() {
-		//this causes crash at the moment and is where the next commit's changes will be
-
-		let archiveURLForArray = archiveURL
-
-
-//
 		let propertyListEncoder = PropertyListEncoder()
-//		let encodedProducts = try? propertyListEncoder.encode(globalMasterInventory)
-//		print(encodedProducts)
-//
-//		try? encodedProducts?.write(to: archiveURLForArray, options: .noFileProtection)
 		do {
-			var products: [Product] = globalMasterInventory
+			let products: [Product] = globalMasterInventory
 			let data = try propertyListEncoder.encode(products)
 			UserDefaults.standard.set(data, forKey: "data")
 		}
 		catch {
 			print(error)
 		}
-//		for product in globalMasterInventory {
-//			let encodedProduct = try? propertyListEncoder.encode(product)
-//			try? encodedProduct?.write(to: archiveURL, options: .noFileProtection)
-//			print(encodedProduct)
-//		}
-
-
-
-//		UserDefaults.standard.set(globalMasterInventory, forKey: "ProductInventory")
 	}
 
 	func resetViews() {

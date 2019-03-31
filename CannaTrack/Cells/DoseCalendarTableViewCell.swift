@@ -10,6 +10,11 @@ import UIKit
 
 class DoseCalendarTableViewCell: UITableViewCell {
 
+
+	@IBOutlet var timeLabel: UILabel!
+
+
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

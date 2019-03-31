@@ -10,7 +10,12 @@ import UIKit
 import JTAppleCalendar
 
 
-var doseLogDictionaryGLOBAL: [DateComponents]?
+var doseLogDictionaryGLOBAL: [Dose] = []
+
+
+
+
+
 
 class CalendarLogViewController: UIViewController {
 
@@ -23,9 +28,26 @@ class CalendarLogViewController: UIViewController {
 	let tableCellIdentifier: String = "DoseCell"
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
-	var selectedDate: Date?
+	var selectedDate: Date? {
+		didSet {
+			self.dosesForDate = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
+				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
+				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
+				return dateFromDose == currentDate
 
-	var dosesForDate: [Dose]?
+			})
+			print("doses for date set")
+		}
+	}
+
+	var dosesForDate: [Dose]? {
+		didSet {
+			print(self.dosesForDate?.debugDescription)
+			DispatchQueue.main.async {
+				self.doseTableView.reloadData()
+			}
+		}
+	}
 
 	let outsideMonthColor = UIColor.lightGray
 
@@ -77,6 +99,20 @@ class CalendarLogViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+	@IBAction func saveDoseLogClicked(_ sender: Any) {
+		saveDoseCalendarInfo()
+	}
+
+
+	@IBAction func printDoseLogClicked(_ sender: Any) {
+		print(doseLogDictionaryGLOBAL.debugDescription)
+		printDoseCalendarInfo()
+
+	}
+
+
+
 
 }
 
@@ -211,11 +247,18 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		<#code#>
+		return dosesForDate?.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		<#code#>
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier) as? DoseCalendarTableViewCell else { fatalError("could not cast a calendar table view cell") }
+		guard let doseArray = dosesForDate else { return cell }
+		let formatter = DateFormatter()
+		formatter.dateStyle = .none
+		formatter.timeStyle = .medium
+		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
+
+		return cell
 	}
 
 
@@ -231,6 +274,37 @@ extension CalendarLogViewController {
 		logFormatter.timeZone = .current
 		logFormatter.calendar = .current
 		logFormatter.dateFormat = "yyy-MM-dd"
+	}
+
+
+}
+
+extension CalendarLogViewController {
+
+	func printDoseCalendarInfo() {
+		let propertyListDecoder = PropertyListDecoder()
+		do {
+			if let da = UserDefaults.standard.data(forKey: "doseLogData") {
+				let stored = try propertyListDecoder.decode([Dose].self, from: da)
+				print(stored)
+				doseLogDictionaryGLOBAL = stored
+			}
+		}
+		catch {
+			print(error)
+		}
+	}
+
+	func saveDoseCalendarInfo() {
+		let propertyListEncoder = PropertyListEncoder()
+		do {
+			let doseLogData: [Dose] = doseLogDictionaryGLOBAL
+			let data = try propertyListEncoder.encode(doseLogData)
+			UserDefaults.standard.set(data, forKey: "doseLogData")
+		}
+		catch {
+			print(error)
+		}
 	}
 
 
