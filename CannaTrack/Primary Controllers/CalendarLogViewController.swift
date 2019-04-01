@@ -130,7 +130,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDataSource {
 		let endDate = formatter.date(from: "2022 01 01")!
 
 
-		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: false)
+		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
 
 //		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate)
 
@@ -160,6 +160,8 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
 		let myCustomCell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
 		myCustomCell.dateLabel.text = cellState.text
+		myCustomCell.layer.cornerRadius = myCustomCell.frame.width / 2
+		myCustomCell.layer.masksToBounds = true
 		//shared method to configure cell after this comment
 		handleCellSelected(cell: myCustomCell, cellState: cellState)
 		handleCellTextColor(cell: myCustomCell, cellState: cellState)
