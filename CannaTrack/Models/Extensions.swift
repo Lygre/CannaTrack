@@ -101,3 +101,31 @@ func saveDoseCalendarInfo() {
 		print(error)
 	}
 }
+
+func saveProductToInventory(product: Product) {
+	globalMasterInventory.append(product)
+
+	let propertyListEncoder = PropertyListEncoder()
+	do {
+		let inventoryData: [Product] = globalMasterInventory
+		let data = try propertyListEncoder.encode(inventoryData)
+		UserDefaults.standard.set(data, forKey: "data")
+	}
+	catch {
+		print(error)
+	}
+
+
+}
+
+func saveCurrentInventory() {
+	let propertyListEncoder = PropertyListEncoder()
+	do {
+		let inventoryData: [Product] = globalMasterInventory
+		let data = try propertyListEncoder.encode(inventoryData)
+		UserDefaults.standard.set(data, forKey: "data")
+	}
+	catch {
+		print(error)
+	}
+}
