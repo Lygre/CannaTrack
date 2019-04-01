@@ -12,6 +12,8 @@ class DoseCalendarTableViewCell: UITableViewCell {
 
 
 	@IBOutlet var timeLabel: UILabel!
+	@IBOutlet var productLabel: UILabel!
+	@IBOutlet var strainLabel: UILabel!
 
 
 

@@ -92,7 +92,8 @@ class ProductDetailViewController: UIViewController {
 		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a product item") }
-
+			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
+			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
 		})

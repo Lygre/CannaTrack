@@ -1191,16 +1191,48 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzm-iP-QXI">
-                                                    <rect key="frame" x="46" y="11" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="52" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-2Y-dPq">
+                                                    <rect key="frame" x="20" y="11.5" width="374" height="20.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzm-iP-QXI">
+                                                            <rect key="frame" x="0.0" y="0.0" width="90" height="20.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="P3O-IO-foh"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aET-e3-fo0">
+                                                            <rect key="frame" x="142" y="0.0" width="90" height="20.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="ref-oE-Ggp"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BmZ-rh-Vnm">
+                                                            <rect key="frame" x="284" y="0.0" width="90" height="20.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="nD5-Rx-KSU"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="7DC-2Y-dPq" firstAttribute="centerY" secondItem="ZIT-OV-oAK" secondAttribute="centerY" id="LRI-Qq-1IN"/>
+                                                <constraint firstItem="7DC-2Y-dPq" firstAttribute="trailing" secondItem="ZIT-OV-oAK" secondAttribute="trailingMargin" id="WKL-FA-6YR"/>
+                                                <constraint firstItem="7DC-2Y-dPq" firstAttribute="leading" secondItem="ZIT-OV-oAK" secondAttribute="leadingMargin" id="wKm-IF-GAj"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="productLabel" destination="aET-e3-fo0" id="VPM-su-9RE"/>
+                                            <outlet property="strainLabel" destination="BmZ-rh-Vnm" id="Bz1-pB-VLt"/>
                                             <outlet property="timeLabel" destination="Bzm-iP-QXI" id="D5u-un-kx8"/>
                                         </connections>
                                     </tableViewCell>

@@ -76,7 +76,7 @@ extension Dose {
 		guard let constructedDateKey: Date = userCalendar.date(from: componentsForDateKey) else { return }
 
 		doseLogDictionaryGLOBAL.append(dose)
-
+		saveDoseCalendarInfo()
 //		if doseLogDictionaryGLOBAL.index(forKey: constructedDateKey) != nil {
 //			//add to doseLog master global dictionary
 //			doseLogDictionaryGLOBAL[constructedDateKey]?.append(dose)

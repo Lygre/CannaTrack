@@ -68,7 +68,7 @@ class CalendarLogViewController: UIViewController {
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
 
-
+		loadDoseCalendarInfo()
 		// Do any additional setup after loading the view.
 		setupDoseLoggingDateFormatter()
 
@@ -107,7 +107,7 @@ class CalendarLogViewController: UIViewController {
 
 	@IBAction func printDoseLogClicked(_ sender: Any) {
 		print(doseLogDictionaryGLOBAL.debugDescription)
-		printDoseCalendarInfo()
+		loadLocalDoseCalendarInfo()
 
 	}
 
@@ -257,6 +257,17 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 		formatter.dateStyle = .none
 		formatter.timeStyle = .medium
 		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
+		cell.productLabel.text = doseArray[indexPath.row].product.productType.rawValue
+		cell.strainLabel.text = doseArray[indexPath.row].product.strain.name
+
+		switch doseArray[indexPath.row].product.strain.race {
+		case .hybrid:
+			cell.backgroundColor = .green
+		case .sativa:
+			cell.backgroundColor = .yellow
+		case .indica:
+			cell.backgroundColor = .purple
+		}
 
 		return cell
 	}
@@ -281,7 +292,7 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController {
 
-	func printDoseCalendarInfo() {
+	func loadLocalDoseCalendarInfo() {
 		let propertyListDecoder = PropertyListDecoder()
 		do {
 			if let da = UserDefaults.standard.data(forKey: "doseLogData") {

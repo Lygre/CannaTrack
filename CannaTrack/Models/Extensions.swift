@@ -74,3 +74,30 @@ extension UIFont {
 		return UIFont(descriptor: fontDescriptor, size: bestSize)
 	}
 }
+
+
+func loadDoseCalendarInfo() {
+	let propertyListDecoder = PropertyListDecoder()
+	do {
+		if let da = UserDefaults.standard.data(forKey: "doseLogData") {
+			let stored = try propertyListDecoder.decode([Dose].self, from: da)
+			print(stored)
+			doseLogDictionaryGLOBAL = stored
+		}
+	}
+	catch {
+		print(error)
+	}
+}
+
+func saveDoseCalendarInfo() {
+	let propertyListEncoder = PropertyListEncoder()
+	do {
+		let doseLogData: [Dose] = doseLogDictionaryGLOBAL
+		let data = try propertyListEncoder.encode(doseLogData)
+		UserDefaults.standard.set(data, forKey: "doseLogData")
+	}
+	catch {
+		print(error)
+	}
+}
