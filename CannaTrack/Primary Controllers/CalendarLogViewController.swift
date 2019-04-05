@@ -27,6 +27,8 @@ class CalendarLogViewController: UIViewController {
 
 	let tableCellIdentifier: String = "DoseCell"
 
+	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
+
 	//!!!!TODO -- need to provide getter and setters for these two properties
 	var selectedDate: Date? {
 		didSet {
@@ -90,6 +92,10 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
+	@IBAction func unwindToDoseCalendar(unwindSegue: UIStoryboardSegue) {
+
+	}
+
     /*
     // MARK: - Navigation
 
@@ -108,6 +114,10 @@ class CalendarLogViewController: UIViewController {
 	@IBAction func printDoseLogClicked(_ sender: Any) {
 		print(doseLogDictionaryGLOBAL.debugDescription)
 		loadLocalDoseCalendarInfo()
+
+	}
+
+	@IBAction func logNewDose(_ sender: Any) {
 
 	}
 
@@ -319,6 +329,9 @@ extension CalendarLogViewController {
 			print(error)
 		}
 	}
+
+
+
 
 
 }
