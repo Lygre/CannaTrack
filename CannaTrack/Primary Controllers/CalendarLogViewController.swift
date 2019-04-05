@@ -130,7 +130,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDataSource {
 		let endDate = formatter.date(from: "2022 01 01")!
 
 
-		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfGrid, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
+		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfRow, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
 
 //		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate)
 

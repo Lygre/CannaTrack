@@ -1101,7 +1101,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LyD-gB-HQ3" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
-                                <rect key="frame" x="0.0" y="139" width="414" height="448"/>
+                                <rect key="frame" x="0.0" y="139" width="414" height="358.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GNK-pl-V6e">
                                     <size key="itemSize" width="66" height="50"/>
@@ -1221,7 +1221,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-xj-qr0">
-                                <rect key="frame" x="0.0" y="587" width="414" height="226"/>
+                                <rect key="frame" x="0.0" y="497.5" width="414" height="315.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DoseCell" id="env-Ub-SUz" customClass="DoseCalendarTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
@@ -1290,7 +1290,7 @@
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" id="PIM-KR-vTJ"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="trailing" secondItem="RQH-vf-3YV" secondAttribute="trailing" id="Q2h-qP-ZmO"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" id="QUg-Y9-JXB"/>
-                            <constraint firstItem="LyD-gB-HQ3" firstAttribute="height" secondItem="VXG-G1-bQi" secondAttribute="height" multiplier="0.5" id="bkF-rR-If3"/>
+                            <constraint firstItem="LyD-gB-HQ3" firstAttribute="height" secondItem="VXG-G1-bQi" secondAttribute="height" multiplier="0.4" id="bkF-rR-If3"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="diD-pA-BZJ"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.66" id="kjZ-L8-foa"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="n40-26-xhW"/>
