@@ -1421,6 +1421,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tmg-c9-Dzv"/>
                     </view>
+                    <connections>
+                        <outlet property="productsCollectionView" destination="6qQ-mm-o6Y" id="mDC-dN-OEP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s6e-Dk-Lve" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="D88-9k-eks" userLabel="Exit" sceneMemberID="exit"/>

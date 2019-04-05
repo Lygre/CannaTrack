@@ -12,13 +12,19 @@ class LogDoseFromCalendarViewController: UIViewController {
 
 	let cellIdentifier = "InventoryCollectionViewCell"
 
+	@IBOutlet var productsCollectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-    
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		productsCollectionView.collectionViewLayout.invalidateLayout()
+		productsCollectionView.reloadData()
+	}
 
     /*
     // MARK: - Navigation
@@ -68,7 +74,7 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 			cell.backgroundColor = .yellow
 		}
 
-		cell.layer.cornerRadius = cell.frame.width / 2
+		cell.layer.cornerRadius = cell.frame.width / 5
 		cell.layer.masksToBounds = true
 
 		return cell
@@ -78,8 +84,33 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 }
 
 
+
+
+extension LogDoseFromCalendarViewController: UICollectionViewDelegateFlowLayout {
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		return CGSize(width: 120, height: 120)
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+	}
+
+}
+
+
+
+
 extension LogDoseFromCalendarViewController {
 
-	
+
 
 }

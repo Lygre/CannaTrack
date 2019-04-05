@@ -12,7 +12,16 @@ import UIKit
 let testProduct1 = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)
 let testProduct2 = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)
 
-var globalMasterInventory: [Product] = [testProduct1, testProduct2]
+var globalMasterInventory: [Product] {
+	get {
+		return loadProductInventoryFromUserData()
+	}
+	set {
+		if newValue != globalMasterInventory {
+			saveCurrentProductInventoryToUserData()
+		}
+	}
+}
 
 
 
@@ -118,11 +127,41 @@ func saveProductToInventory(product: Product) {
 
 }
 
-func saveCurrentInventory() {
+func saveCurrentProductInventoryToUserData() {
 	let propertyListEncoder = PropertyListEncoder()
 	do {
 		let inventoryData: [Product] = globalMasterInventory
 		let data = try propertyListEncoder.encode(inventoryData)
+		UserDefaults.standard.set(data, forKey: "data")
+	}
+	catch {
+		print(error)
+	}
+}
+
+func loadProductInventoryFromUserData() -> [Product] {
+	let propertyListDecoder = PropertyListDecoder()
+	var storedCopy: [Product] = []
+	do {
+		if let da = UserDefaults.standard.data(forKey: "data") {
+			let stored = try propertyListDecoder.decode([Product].self, from: da)
+			print(stored)
+//			globalMasterInventory = stored
+			storedCopy = stored
+		}
+	}
+	catch {
+		print(error)
+	}
+
+	return storedCopy
+}
+
+func saveProductInventoryToUserData() {
+	let propertyListEncoder = PropertyListEncoder()
+	do {
+		let products: [Product] = globalMasterInventory
+		let data = try propertyListEncoder.encode(products)
 		UserDefaults.standard.set(data, forKey: "data")
 	}
 	catch {
