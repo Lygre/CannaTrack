@@ -76,7 +76,7 @@ extension Product {
 
 extension Product {
 
-	enum ProductType: String, Codable {
+	enum ProductType: String, Codable, CaseIterable {
 		case truFlower = "truFlower"
 		case truCrmbl = "truCRMBL"
 		case truClear = "truClear"

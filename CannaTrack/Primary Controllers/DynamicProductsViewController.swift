@@ -157,6 +157,9 @@ class DynamicProductsViewController: UIViewController {
 		saveUserInfo()
 	}
 
+	@IBAction func addProductTapped(_ sender: Any) {
+
+	}
 
 
 }

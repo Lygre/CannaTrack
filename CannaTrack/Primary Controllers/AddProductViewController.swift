@@ -182,11 +182,6 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 	}
 
 	@IBAction func scanToAddProductTapped(_ sender: Any) {
-//		let vc = UIImagePickerController()
-//		vc.sourceType = .camera
-//		vc.allowsEditing = true
-//		vc.delegate = self
-//		present(vc, animated: true)
 		promptPhoto()
 	}
 
@@ -201,14 +196,16 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 
 	@IBAction func saveNewProductTapped(_ sender: UIBarButtonItem) {
 		guard let product = productToAdd else { return }
-		saveNewProductToInventory(newProduct: product)
-
+		saveProductToInventory(product: product)
 	}
 
 	@IBAction func addNewProductToInventory(_ sender: Any) {
 		guard let product = productToAdd else { return }
-		saveNewProductToInventory(newProduct: product)
+		saveProductToInventory(product: product)
 	}
+
+
+
 
 
 }
@@ -221,11 +218,7 @@ extension AddProductViewController {
 		productImageToAdd.image = image
 	}
 
-	func saveNewProductToInventory(newProduct: Product) {
-//		guard let inventoryViewController = self.presentingViewController as? InventoryViewController else { fatalError("could not get presenting view controller as inventory view controller") }
-//		inventoryViewController.currentInventory?.append(newProduct)
-		globalMasterInventory.append(newProduct)
-	}
+
 
 }
 

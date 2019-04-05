@@ -290,6 +290,87 @@
             </objects>
             <point key="canvasLocation" x="352" y="2812"/>
         </scene>
+        <!--Add Product Using Text View Controller-->
+        <scene sceneID="RXr-gJ-6BL">
+            <objects>
+                <viewController id="7ZB-Uv-nsT" customClass="AddProductUsingTextViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5Dg-2l-ydB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="oTz-E1-erO">
+                                <rect key="frame" x="41.5" y="103" width="331" height="29"/>
+                                <segments>
+                                    <segment title="Indica"/>
+                                    <segment title="Sativa"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="strainVarietyControlChanged:" destination="7ZB-Uv-nsT" eventType="valueChanged" id="2Fj-5V-khw"/>
+                                </connections>
+                            </segmentedControl>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Strain" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1bk-tK-VNG">
+                                <rect key="frame" x="103.5" y="151" width="207" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Product Type" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-5h-S14">
+                                <rect key="frame" x="103.5" y="201" width="207" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mass (Optional)" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="P9h-TD-YkL">
+                                <rect key="frame" x="103.5" y="251" width="207" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-BZ-1VW">
+                                <rect key="frame" x="0.0" y="725" width="414" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="save" id="yXs-bs-QIG">
+                                        <connections>
+                                            <action selector="saveProductTapped:" destination="7ZB-Uv-nsT" id="16H-lN-KkY"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="oTz-E1-erO" firstAttribute="centerX" secondItem="5Dg-2l-ydB" secondAttribute="centerX" id="0f0-hF-Jor"/>
+                            <constraint firstItem="P9h-TD-YkL" firstAttribute="centerX" secondItem="5Dg-2l-ydB" secondAttribute="centerX" id="Dti-6C-9Va"/>
+                            <constraint firstItem="Rpz-5h-S14" firstAttribute="centerX" secondItem="5Dg-2l-ydB" secondAttribute="centerX" id="LGf-jM-2fV"/>
+                            <constraint firstItem="r8c-BZ-1VW" firstAttribute="centerX" secondItem="5Dg-2l-ydB" secondAttribute="centerX" id="MhU-bm-Lev"/>
+                            <constraint firstItem="P9h-TD-YkL" firstAttribute="width" secondItem="Rpz-5h-S14" secondAttribute="width" id="TQX-dr-s3t"/>
+                            <constraint firstItem="1bk-tK-VNG" firstAttribute="width" secondItem="5Dg-2l-ydB" secondAttribute="width" multiplier="0.5" id="XUU-SV-4JC"/>
+                            <constraint firstItem="oTz-E1-erO" firstAttribute="top" secondItem="WZs-KF-62X" secondAttribute="top" constant="15" id="aCv-y7-VXx"/>
+                            <constraint firstItem="Rpz-5h-S14" firstAttribute="width" secondItem="1bk-tK-VNG" secondAttribute="width" id="bca-Z5-7te"/>
+                            <constraint firstItem="1bk-tK-VNG" firstAttribute="centerX" secondItem="5Dg-2l-ydB" secondAttribute="centerX" id="dCK-gT-IQF"/>
+                            <constraint firstItem="Rpz-5h-S14" firstAttribute="top" secondItem="1bk-tK-VNG" secondAttribute="bottom" constant="20" id="dgU-BK-wBx"/>
+                            <constraint firstItem="r8c-BZ-1VW" firstAttribute="bottom" secondItem="WZs-KF-62X" secondAttribute="bottom" id="n9W-sO-7f7"/>
+                            <constraint firstItem="P9h-TD-YkL" firstAttribute="top" secondItem="Rpz-5h-S14" secondAttribute="bottom" constant="20" id="okL-Pn-0qa"/>
+                            <constraint firstItem="1bk-tK-VNG" firstAttribute="top" secondItem="oTz-E1-erO" secondAttribute="bottom" constant="20" id="pS7-iq-0K1"/>
+                            <constraint firstItem="r8c-BZ-1VW" firstAttribute="width" secondItem="5Dg-2l-ydB" secondAttribute="width" id="yEp-nD-Uze"/>
+                            <constraint firstItem="oTz-E1-erO" firstAttribute="width" secondItem="5Dg-2l-ydB" secondAttribute="width" multiplier="0.8" id="zPq-xd-3RF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WZs-KF-62X"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="productMassTextField" destination="P9h-TD-YkL" id="gju-Nx-NqK"/>
+                        <outlet property="productTypeTextField" destination="Rpz-5h-S14" id="7Ha-4M-mie"/>
+                        <outlet property="strainNameTextField" destination="1bk-tK-VNG" id="z4V-01-xNY"/>
+                        <outlet property="strainVarietyControl" destination="oTz-E1-erO" id="akR-mK-HAh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xr1-K1-nWb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1298.5507246376812" y="2625.6696428571427"/>
+        </scene>
         <!--Dose View Controller-->
         <scene sceneID="w3t-lj-QAi">
             <objects>
@@ -748,7 +829,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THZ-Rj-sGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1536" y="3030"/>
+            <point key="canvasLocation" x="2196" y="3693"/>
         </scene>
         <!--Inventory View Controller-->
         <scene sceneID="7Dw-hz-Gfi">
@@ -887,11 +968,18 @@
                         <viewLayoutGuide key="safeArea" id="k4E-R0-PJJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="pFP-Bp-r1i">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="lTm-9X-i7P">
-                            <connections>
-                                <segue destination="VoP-XI-VZI" kind="show" id="431-lk-jh9"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="camera" id="lTm-9X-i7P">
+                                <connections>
+                                    <segue destination="VoP-XI-VZI" kind="show" id="431-lk-jh9"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="compose" id="4IK-gw-stj">
+                                <connections>
+                                    <segue destination="7ZB-Uv-nsT" kind="show" id="LXp-UK-pAl"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="productsCollectionView" destination="KZT-4n-qef" id="gcC-sc-qqP"/>
@@ -901,11 +989,11 @@
             </objects>
             <point key="canvasLocation" x="352" y="1802"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Strains-->
         <scene sceneID="532-ig-wss">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mD5-Z1-JOT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="contacts" id="WdL-KN-aTY"/>
+                    <tabBarItem key="tabBarItem" title="Strains" selectedImage="greenCheck" id="WdL-KN-aTY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="z3e-a9-4bH">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -920,11 +1008,11 @@
             </objects>
             <point key="canvasLocation" x="-541" y="981"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Inventory-->
         <scene sceneID="TYd-pg-2Yv">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5bV-5a-mpT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="AKj-zf-Tim"/>
+                    <tabBarItem key="tabBarItem" title="Inventory" selectedImage="unknown" id="AKj-zf-Tim"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dMt-ZE-Yec">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -973,7 +1061,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="G6u-zn-zDM"/>
                     </view>
-                    <navigationItem key="navigationItem" id="zpd-5u-hOs"/>
+                    <navigationItem key="navigationItem" id="zpd-5u-hOs">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="6UJ-bO-tBM">
+                            <connections>
+                                <action selector="addProductTapped:" destination="NQG-sD-xTF" id="DXD-Nu-0To"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edG-5o-XJv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1241,6 +1335,7 @@
     </scenes>
     <resources>
         <image name="cannaleaf" width="72" height="72"/>
+        <image name="greenCheck" width="32" height="32"/>
         <image name="unknown" width="48" height="48"/>
         <namedColor name="indicaColor">
             <color red="0.96470588235294119" green="0.24313725490196078" blue="0.27843137254901962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
