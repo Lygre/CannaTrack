@@ -14,6 +14,8 @@ class Inventory: Codable {
 	var productArray: [Product] {
 		didSet {
 		//implement writing user data here
+			print("value set; writing to user data")
+			writeInventoryToUserData()
 		}
 	}
 
@@ -43,6 +45,52 @@ extension Inventory: Equatable {
 
 	static func == (lhs: Inventory, rhs: Inventory) -> Bool {
 		return lhs.productArray == rhs.productArray
+	}
+
+}
+
+extension Inventory {
+
+	func writeInventoryToUserData() {
+		let propertyListEncoder = PropertyListEncoder()
+		do {
+			let inventoryData: [Product] = self.productArray
+			let data = try propertyListEncoder.encode(inventoryData)
+			UserDefaults.standard.set(data, forKey: "data")
+		}
+		catch {
+			print(error)
+		}
+	}
+
+	func removeProductFromInventoryMaster(product: Product) {
+		guard let indexOfProduct = self.productArray.firstIndex(of: product) else { return }
+		self.productArray.remove(at: indexOfProduct)
+
+		let propertyListEncoder = PropertyListEncoder()
+		do {
+//			let inventory: Inventory = self
+			let products: [Product] = self.productArray
+			let data = try propertyListEncoder.encode(products)
+			UserDefaults.standard.set(data, forKey: "data")
+		}
+		catch {
+			print(error)
+		}
+
+	}
+
+	func addProductToInventoryMaster(product: Product) {
+		self.productArray.append(product)
+		let propertyListEncoder = PropertyListEncoder()
+		do {
+			let inventoryData: [Product] = self.productArray
+			let data = try propertyListEncoder.encode(inventoryData)
+			UserDefaults.standard.set(data, forKey: "data")
+		}
+		catch {
+			print(error)
+		}
 	}
 
 }

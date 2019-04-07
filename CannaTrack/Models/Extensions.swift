@@ -12,13 +12,17 @@ import UIKit
 let testProduct1 = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)
 let testProduct2 = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)
 
+
+let masterInventory = Inventory()
+
 var globalMasterInventory: [Product] {
 	get {
-		return loadProductInventoryFromUserData()
+		return masterInventory.productArray
 	}
-	set {
+	set(newValue) {
 		//not this. this works
-		saveCurrentProductInventoryToUserData()
+		masterInventory.productArray = newValue
+//		saveCurrentProductInventoryToUserData()
 	}
 }
 
@@ -123,13 +127,11 @@ func saveDoseCalendarInfo() {
 func saveProductToInventory(product: Product) {
 //	globalMasterInventory.append(product)
 
-	var tempInventory: [Product] = globalMasterInventory
-
-	tempInventory.append(product)
+	masterInventory.productArray.append(product)
 
 	let propertyListEncoder = PropertyListEncoder()
 	do {
-		let inventoryData: [Product] = tempInventory
+		let inventoryData: [Product] = masterInventory.productArray
 		let data = try propertyListEncoder.encode(inventoryData)
 		UserDefaults.standard.set(data, forKey: "data")
 	}
@@ -143,7 +145,7 @@ func saveProductToInventory(product: Product) {
 func saveCurrentProductInventoryToUserData() {
 	let propertyListEncoder = PropertyListEncoder()
 	do {
-		let inventoryData: [Product] = globalMasterInventory
+		let inventoryData: [Product] = masterInventory.productArray
 		let data = try propertyListEncoder.encode(inventoryData)
 		UserDefaults.standard.set(data, forKey: "data")
 	}
@@ -172,7 +174,7 @@ func loadProductInventoryFromUserData() -> [Product] {
 
 func removeProductFromInventory(product: Product) {
 
-	var tempInventory: [Product] = globalMasterInventory
+	var tempInventory: [Product] = masterInventory.productArray
 	guard let indexOfProduct = tempInventory.firstIndex(of: product) else { return }
 	tempInventory.remove(at: indexOfProduct)
 
