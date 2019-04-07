@@ -28,7 +28,7 @@ class ProductDetailViewController: UIViewController {
         super.viewDidLoad()
 		dateFormatter = DateFormatter()
 		guard let dateFormatter = dateFormatter else { return }
-		dateFormatter.dateStyle = .medium
+		dateFormatter.dateStyle = .short
 		dateFormatter.timeStyle = .short
 		dateFormatter.locale = Locale(identifier: "en_US")
         // Do any additional setup after loading the view.
@@ -114,7 +114,7 @@ class ProductDetailViewController: UIViewController {
 				else { preconditionFailure("Expected a reference to the product data container") }
 			guard let productToDeleteIndex = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
 //			globalMasterInventory.remove(at: productToDeleteIndex)
-			removeProductFromInventory(product: product)
+//			removeProductFromInventory(product: product)
 			masterInventory.removeProductFromInventoryMaster(product: product)
 
 		}

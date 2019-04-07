@@ -18,4 +18,17 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 	
 	@IBOutlet var doseCountLabel: UILabel!
 
+
+	override var isSelected: Bool {
+		didSet {
+			self.layer.borderWidth = isSelected ? 2 : 0
+		}
+	}
+
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		isSelected = false
+		self.layer.borderColor = UIColor.red.cgColor
+	}
+
 }

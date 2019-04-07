@@ -1321,7 +1321,7 @@
             </objects>
             <point key="canvasLocation" x="3303" y="1762"/>
         </scene>
-        <!--Choose Product-->
+        <!--Choose Product(s)-->
         <scene sceneID="tkX-oq-IfB">
             <objects>
                 <viewController id="3jN-sN-5Gw" customClass="LogDoseFromCalendarViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
@@ -1346,45 +1346,44 @@
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-mS-gMH">
+                                                <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" axis="vertical" distribution="equalCentering" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-mS-gMH">
                                                     <rect key="frame" x="11" y="4" width="99" height="112"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYt-XK-huU">
-                                                            <rect key="frame" x="33" y="0.0" width="33" height="16"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="XYt-XK-huU">
+                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAe-KV-K3s">
-                                                            <rect key="frame" x="33" y="26.5" width="33" height="16"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="MAe-KV-K3s">
+                                                            <rect key="frame" x="0.0" y="34.5" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-0U-VKS">
-                                                            <rect key="frame" x="33" y="53.5" width="33" height="16"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-0U-VKS">
+                                                            <rect key="frame" x="0.0" y="69.5" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJo-an-yDc">
-                                                            <rect key="frame" x="33" y="80" width="33" height="16"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="cJo-an-yDc">
+                                                            <rect key="frame" x="0.0" y="104" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="99" id="CpP-yQ-kpE"/>
-                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="112" id="sMC-nC-3Hh"/>
-                                                    </constraints>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </stackView>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="Vdv-mS-gMH" firstAttribute="top" secondItem="76d-Ea-QoB" secondAttribute="topMargin" constant="-40" id="CWe-p7-DSJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vdv-mS-gMH" secondAttribute="bottom" id="C6j-ZM-DRd"/>
+                                            <constraint firstItem="Vdv-mS-gMH" firstAttribute="centerX" secondItem="76d-Ea-QoB" secondAttribute="centerX" id="IXk-om-0vG"/>
+                                            <constraint firstItem="Vdv-mS-gMH" firstAttribute="top" secondItem="76d-Ea-QoB" secondAttribute="top" id="dHO-tS-fuD"/>
                                             <constraint firstItem="Vdv-mS-gMH" firstAttribute="centerY" secondItem="76d-Ea-QoB" secondAttribute="centerY" id="jQY-rI-Zts"/>
-                                            <constraint firstItem="Vdv-mS-gMH" firstAttribute="centerX" secondItem="76d-Ea-QoB" secondAttribute="centerX" id="tH4-wU-E5I"/>
                                         </constraints>
                                         <size key="customSize" width="120" height="120"/>
                                         <connections>
@@ -1392,7 +1391,6 @@
                                             <outlet property="inventoryProductLabel" destination="XYt-XK-huU" id="ACN-tb-mZA"/>
                                             <outlet property="productMassRemainingLabel" destination="cJo-an-yDc" id="xjD-Bw-8HQ"/>
                                             <outlet property="productStrainNameLabel" destination="MAe-KV-K3s" id="OhX-O4-6wP"/>
-                                            <segue destination="VT6-8W-HKF" kind="show" id="nIO-Vm-gjf"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -1411,13 +1409,17 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tmg-c9-Dzv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose Product" prompt="Choose Product to dose from" id="IJ5-Bh-IgT">
+                    <navigationItem key="navigationItem" title="Choose Product(s)" prompt="Choose one or more Products to dose from" id="IJ5-Bh-IgT">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dZ0-e3-DGV">
                             <connections>
                                 <segue destination="D88-9k-eks" kind="unwind" unwindAction="unwindToDoseCalendarWithUnwindSegue:" id="iex-V7-T7L"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="save" id="q2G-Ya-Obv"/>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="q2G-Ya-Obv">
+                            <connections>
+                                <segue destination="VT6-8W-HKF" kind="show" id="9PQ-dG-0Tv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="productsCollectionView" destination="6qQ-mm-o6Y" id="mDC-dN-OEP"/>
