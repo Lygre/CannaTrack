@@ -96,6 +96,7 @@ class ProductDetailViewController: UIViewController {
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
+			masterInventory.writeInventoryToUserData()
 		})
 
 		let openProductAction = UIPreviewAction(title: "Open Product", style: .default, handler: { [unowned self] (_, _) in
@@ -114,6 +115,7 @@ class ProductDetailViewController: UIViewController {
 			guard let productToDeleteIndex = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
 //			globalMasterInventory.remove(at: productToDeleteIndex)
 			removeProductFromInventory(product: product)
+			masterInventory.removeProductFromInventoryMaster(product: product)
 
 		}
 
