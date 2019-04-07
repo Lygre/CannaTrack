@@ -112,7 +112,8 @@ class ProductDetailViewController: UIViewController {
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a reference to the product data container") }
 			guard let productToDeleteIndex = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
-			globalMasterInventory.remove(at: productToDeleteIndex)
+//			globalMasterInventory.remove(at: productToDeleteIndex)
+			removeProductFromInventory(product: product)
 
 		}
 

@@ -17,9 +17,13 @@ var globalMasterInventory: [Product] {
 		return loadProductInventoryFromUserData()
 	}
 	set {
+		//pretty sure this is fucked, just remove it
 		if newValue != globalMasterInventory {
 			saveCurrentProductInventoryToUserData()
 		}
+
+		//not this. this works
+		saveCurrentProductInventoryToUserData()
 	}
 }
 
@@ -85,6 +89,9 @@ extension UIFont {
 }
 
 
+
+//!! MARK -- Saving Dose Data
+
 func loadDoseCalendarInfo() {
 	let propertyListDecoder = PropertyListDecoder()
 	do {
@@ -111,12 +118,20 @@ func saveDoseCalendarInfo() {
 	}
 }
 
+
+
+//!! MARK -- Saving Product and INventory Data
+
 func saveProductToInventory(product: Product) {
-	globalMasterInventory.append(product)
+//	globalMasterInventory.append(product)
+
+	var tempInventory: [Product] = globalMasterInventory
+
+	tempInventory.append(product)
 
 	let propertyListEncoder = PropertyListEncoder()
 	do {
-		let inventoryData: [Product] = globalMasterInventory
+		let inventoryData: [Product] = tempInventory
 		let data = try propertyListEncoder.encode(inventoryData)
 		UserDefaults.standard.set(data, forKey: "data")
 	}
@@ -157,10 +172,15 @@ func loadProductInventoryFromUserData() -> [Product] {
 	return storedCopy
 }
 
-func saveProductInventoryToUserData() {
+func removeProductFromInventory(product: Product) {
+
+	var tempInventory: [Product] = globalMasterInventory
+	guard let indexOfProduct = tempInventory.firstIndex(of: product) else { return }
+	tempInventory.remove(at: indexOfProduct)
+
 	let propertyListEncoder = PropertyListEncoder()
 	do {
-		let products: [Product] = globalMasterInventory
+		let products: [Product] = tempInventory
 		let data = try propertyListEncoder.encode(products)
 		UserDefaults.standard.set(data, forKey: "data")
 	}
