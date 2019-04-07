@@ -19,6 +19,26 @@ class AddProductUsingTextViewController: UIViewController {
 	@IBOutlet var productMassTextField: UITextField!
 
 
+	var selectedVariety: StrainVariety! {
+		get {
+			let varietyArray: [StrainVariety] = [.indica, .sativa, .hybrid]
+			let selectionIndex = strainVarietyControl.selectedSegmentIndex
+			return varietyArray[selectionIndex]
+		}
+		set(newVarietyValue) {
+			switch newVarietyValue {
+			case .hybrid?:
+				self.view.backgroundColor = .green
+			case .indica?:
+				self.view.backgroundColor = .purple
+			case .sativa?:
+				self.view.backgroundColor = .yellow
+			case .none:
+				self.view.backgroundColor = .magenta
+			}
+		}
+	}
+
 	var productToAdd: Product?
 
 	var productComponentsDictionary: [String: AnyObject] = [:]
@@ -29,7 +49,12 @@ class AddProductUsingTextViewController: UIViewController {
 	//view related things
 	var location = CGPoint(x: 0, y: 0)
 
-    override func viewDidLoad() {
+	fileprivate func setupView() {
+		let varietyArray: [StrainVariety] = [.indica, .sativa, .hybrid]
+		selectedVariety = varietyArray[strainVarietyControl.selectedSegmentIndex]
+	}
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 
 		let productTypePickerView = UIPickerView()
@@ -41,6 +66,7 @@ class AddProductUsingTextViewController: UIViewController {
 		//setup strain text field
 		self.strainNameTextField.delegate = self
 
+		setupView()
         // Do any additional setup after loading the view.
     }
 
@@ -53,6 +79,7 @@ class AddProductUsingTextViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+
 	}
 
     /*
