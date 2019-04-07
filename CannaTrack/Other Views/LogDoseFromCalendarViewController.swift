@@ -10,9 +10,12 @@ import UIKit
 
 class LogDoseFromCalendarViewController: UIViewController {
 
-	let cellIdentifier = "InventoryCollectionViewCell"
+	let collectionCellIdentifier = "InventoryCollectionViewCell"
+	let tableViewCellIdentifier = "ProductTableViewCell"
 
 	@IBOutlet var productsCollectionView: UICollectionView!
+
+	@IBOutlet var nextButton: UIBarButtonItem!
 
 	let sectionInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 
@@ -50,15 +53,20 @@ class LogDoseFromCalendarViewController: UIViewController {
 		productsCollectionView.reloadData()
 	}
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+
+		if segue.destination is ProductsTableViewController {
+			guard let productsTableVC = segue.destination as? ProductsTableViewController else { return }
+			productsTableVC.selectedProductsForDose = selectedProductsForDose
+			productsTableVC.loadViewIfNeeded()
+		}
+
     }
-    */
+
 
 
 }
@@ -68,9 +76,10 @@ extension LogDoseFromCalendarViewController: UICollectionViewDelegate {
 
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let productForDose = globalMasterInventory[indexPath.item]
+
 		selectedProductIndexPathArray.append(indexPath)
 		selectedProductsForDose.append(productForDose)
-
+		nextButton.isEnabled = selectedProductsForDose.isEmpty ? false : true
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -79,6 +88,7 @@ extension LogDoseFromCalendarViewController: UICollectionViewDelegate {
 		guard let indexOfProduct = selectedProductsForDose.firstIndex(of: productForDose) else { return }
 		selectedProductsForDose.remove(at: indexOfProduct)
 		selectedProductIndexPathArray.remove(at: index)
+		nextButton.isEnabled = selectedProductsForDose.isEmpty ? false : true
 	}
 
 //	func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
@@ -102,7 +112,7 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not cast as Inventory Collection View Cell") }
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not cast as Inventory Collection View Cell") }
 
 		cell.inventoryProductLabel.text = globalMasterInventory[indexPath.row].productType.rawValue
 		cell.productStrainNameLabel.text = globalMasterInventory[indexPath.row].strain.name
@@ -193,3 +203,6 @@ extension LogDoseFromCalendarViewController {
 	}
 
 }
+
+
+

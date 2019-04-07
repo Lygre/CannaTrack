@@ -1330,7 +1330,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6qQ-mm-o6Y">
-                                <rect key="frame" x="0.0" y="122" width="414" height="600.5"/>
+                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5AL-HW-yyc">
                                     <size key="itemSize" width="120" height="120"/>
@@ -1402,9 +1402,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6qQ-mm-o6Y" firstAttribute="height" secondItem="RJJ-nc-ezX" secondAttribute="height" multiplier="0.67" id="Ecz-qN-F8h"/>
                             <constraint firstItem="6qQ-mm-o6Y" firstAttribute="top" secondItem="Tmg-c9-Dzv" secondAttribute="top" id="F4o-s9-37d"/>
                             <constraint firstItem="6qQ-mm-o6Y" firstAttribute="width" secondItem="RJJ-nc-ezX" secondAttribute="width" id="jh9-Xf-mCV"/>
+                            <constraint firstItem="6qQ-mm-o6Y" firstAttribute="bottom" secondItem="Tmg-c9-Dzv" secondAttribute="bottom" id="nHn-Mj-JKJ"/>
                             <constraint firstItem="6qQ-mm-o6Y" firstAttribute="leading" secondItem="Tmg-c9-Dzv" secondAttribute="leading" id="sdi-9h-k0o"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tmg-c9-Dzv"/>
@@ -1422,6 +1422,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="nextButton" destination="q2G-Ya-Obv" id="B1g-yM-wAg"/>
                         <outlet property="productsCollectionView" destination="6qQ-mm-o6Y" id="mDC-dN-OEP"/>
                     </connections>
                 </viewController>
@@ -1430,20 +1431,85 @@
             </objects>
             <point key="canvasLocation" x="4161" y="2484"/>
         </scene>
-        <!--View Controller-->
+        <!--Log Mass-->
         <scene sceneID="Uqx-Eu-0lU">
             <objects>
-                <viewController id="VT6-8W-HKF" sceneMemberID="viewController">
+                <viewController restorationIdentifier="ProductTableViewController" id="VT6-8W-HKF" customClass="ProductsTableViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nmz-6D-UAg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DoseProductsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XAw-4y-TcJ" customClass="DoseProductsTableView" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductTableViewCell" id="qxD-HS-udO" customClass="ProductTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qxD-HS-udO" id="GXt-IP-QL7">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxT-P8-QY3">
+                                                    <rect key="frame" x="72.5" y="0.0" width="45" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khe-5w-ecn">
+                                                    <rect key="frame" x="394" y="0.0" width="15" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWt-vn-1Mk">
+                                                    <rect key="frame" x="5" y="0.0" width="37.5" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Khe-5w-ecn" secondAttribute="bottom" id="1DF-bu-YBO"/>
+                                                <constraint firstAttribute="trailing" secondItem="Khe-5w-ecn" secondAttribute="trailing" constant="5" id="BKI-yn-KbN"/>
+                                                <constraint firstAttribute="bottom" secondItem="ZWt-vn-1Mk" secondAttribute="bottom" id="FuC-Zb-chk"/>
+                                                <constraint firstAttribute="bottom" secondItem="mxT-P8-QY3" secondAttribute="bottom" id="NQY-Ra-I9o"/>
+                                                <constraint firstItem="ZWt-vn-1Mk" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="TYf-Gj-Nom"/>
+                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="mxT-P8-QY3" secondAttribute="trailing" priority="250" constant="30" id="YUv-jE-NcJ"/>
+                                                <constraint firstItem="mxT-P8-QY3" firstAttribute="leading" secondItem="ZWt-vn-1Mk" secondAttribute="trailing" constant="30" id="gPG-me-Qd4"/>
+                                                <constraint firstItem="mxT-P8-QY3" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="ogl-oc-rzb"/>
+                                                <constraint firstItem="ZWt-vn-1Mk" firstAttribute="leading" secondItem="GXt-IP-QL7" secondAttribute="leading" constant="5" id="wfc-IV-gw5"/>
+                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="zm1-aD-ffJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="productDoseCountLabel" destination="Khe-5w-ecn" id="hbq-vP-gLM"/>
+                                            <outlet property="productStrainLabel" destination="mxT-P8-QY3" id="zUs-9I-41G"/>
+                                            <outlet property="productTypeLabel" destination="ZWt-vn-1Mk" id="tfW-XX-TIm"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XAw-4y-TcJ" firstAttribute="centerX" secondItem="Nmz-6D-UAg" secondAttribute="centerX" id="5Lb-x5-hAD"/>
+                            <constraint firstItem="XAw-4y-TcJ" firstAttribute="width" secondItem="Nmz-6D-UAg" secondAttribute="width" id="6BL-dR-3kf"/>
+                            <constraint firstItem="XAw-4y-TcJ" firstAttribute="bottom" secondItem="r4o-XO-TFM" secondAttribute="bottom" id="SBB-gl-r9K"/>
+                            <constraint firstItem="XAw-4y-TcJ" firstAttribute="top" secondItem="r4o-XO-TFM" secondAttribute="top" id="bAj-eH-qUV"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="r4o-XO-TFM"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Log Mass" prompt="Add mass of Products used" id="Jsx-fq-j6G">
+                        <barButtonItem key="backBarButtonItem" title="Choose Products" id="br3-hz-rH4"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="doseProductsTableView" destination="XAw-4y-TcJ" id="8uc-al-PME"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsL-yT-Yyl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4161" y="3206"/>
+            <point key="canvasLocation" x="4160.8695652173919" y="3205.5803571428569"/>
         </scene>
         <!--JTCal-->
         <scene sceneID="NWS-fX-43d">
