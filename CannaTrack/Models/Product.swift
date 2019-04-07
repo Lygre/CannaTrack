@@ -104,6 +104,7 @@ extension Product {
 
 	func openProduct() {
 		self.dateOpened = Date()
+		saveCurrentProductInventoryToUserData()
 	}
 
 }

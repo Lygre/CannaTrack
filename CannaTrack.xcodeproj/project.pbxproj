@@ -16,6 +16,7 @@
 		9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDB223C092E00EF644D /* ProductView.swift */; };
 		9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */; };
 		9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */; };
+		9F2C2A4D225A4AB900237D4B /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2C2A4C225A4AB900237D4B /* Inventory.swift */; };
 		9F3B809B224E77AB0059294B /* CustomCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809A224E77AB0059294B /* CustomCollectionReusableView.swift */; };
 		9F3B809D224E96610059294B /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809C224E96610059294B /* Dose.swift */; };
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
@@ -56,6 +57,7 @@
 		9F27EEDB223C092E00EF644D /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProductsViewController.swift; sourceTree = "<group>"; };
 		9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductUsingTextViewController.swift; sourceTree = "<group>"; };
+		9F2C2A4C225A4AB900237D4B /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		9F3B809A224E77AB0059294B /* CustomCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F3B809C224E96610059294B /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				9F3D5B12221F52E500D7B705 /* Product.swift */,
 				9F563EC322452BB9003F557A /* UserInfo.swift */,
 				9F3B809C224E96610059294B /* Dose.swift */,
+				9F2C2A4C225A4AB900237D4B /* Inventory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
 				9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */,
 				9F5658652241598A0032902E /* ForceTouchGestureRecognizer.swift in Sources */,
+				9F2C2A4D225A4AB900237D4B /* Inventory.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
 				9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */,
 				9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */,

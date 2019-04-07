@@ -17,15 +17,13 @@ var globalMasterInventory: [Product] {
 		return loadProductInventoryFromUserData()
 	}
 	set {
-		//pretty sure this is fucked, just remove it
-		if newValue != globalMasterInventory {
-			saveCurrentProductInventoryToUserData()
-		}
-
 		//not this. this works
 		saveCurrentProductInventoryToUserData()
 	}
 }
+
+
+
 
 
 

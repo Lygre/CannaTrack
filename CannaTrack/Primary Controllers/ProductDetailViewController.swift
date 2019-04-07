@@ -127,4 +127,19 @@ class ProductDetailViewController: UIViewController {
 
 
 
+	@IBAction func openProductTapped(_ sender: Any) {
+		openDetailProduct()
+	}
+
+
+}
+
+
+extension ProductDetailViewController {
+
+	func openDetailProduct() {
+		activeDetailProduct.openProduct()
+		print(activeDetailProduct.dateOpened)
+	}
+
 }
