@@ -18,6 +18,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 	
 	@IBOutlet var doseCountLabel: UILabel!
 
+	@IBOutlet var dateOpenedLabel: UILabel!
+
 
 	override var isSelected: Bool {
 		didSet {

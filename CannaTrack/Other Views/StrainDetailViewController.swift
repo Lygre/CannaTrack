@@ -51,13 +51,13 @@ class StrainDetailViewController: UIViewController {
 		switch strain.race {
 		case .hybrid:
 			varietyLabel.text = "Hybrid"
-			view.backgroundColor = UIColor.green
+			view.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
 			varietyLabel.text = "Indica"
-			view.backgroundColor = UIColor.purple
+			view.backgroundColor = UIColor(named: "indicaColor")
 		case .sativa:
 			varietyLabel.text = "Sativa"
-			view.backgroundColor = UIColor.yellow
+			view.backgroundColor = UIColor(named: "sativaColor")
 		}
 		if let effects = strain.effects {
 			if let medical = effects.medical {

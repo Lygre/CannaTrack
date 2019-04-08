@@ -20,6 +20,7 @@
 		9F2FDF6B225A802200ECC26B /* DoseProductsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF6A225A802200ECC26B /* DoseProductsTableView.swift */; };
 		9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF6C225A82FC00ECC26B /* ProductTableViewCell.swift */; };
 		9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */; };
+		9F2FDF71225AC82900ECC26B /* UnknownCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF70225AC82900ECC26B /* UnknownCollectionViewController.swift */; };
 		9F3B809B224E77AB0059294B /* CustomCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809A224E77AB0059294B /* CustomCollectionReusableView.swift */; };
 		9F3B809D224E96610059294B /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809C224E96610059294B /* Dose.swift */; };
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
@@ -64,6 +65,7 @@
 		9F2FDF6A225A802200ECC26B /* DoseProductsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseProductsTableView.swift; sourceTree = "<group>"; };
 		9F2FDF6C225A82FC00ECC26B /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsTableViewController.swift; sourceTree = "<group>"; };
+		9F2FDF70225AC82900ECC26B /* UnknownCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownCollectionViewController.swift; sourceTree = "<group>"; };
 		9F3B809A224E77AB0059294B /* CustomCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F3B809C224E96610059294B /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */,
 				9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */,
 				9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */,
+				9F2FDF70225AC82900ECC26B /* UnknownCollectionViewController.swift */,
 			);
 			path = "Other Views";
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */,
 				9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */,
 				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
+				9F2FDF71225AC82900ECC26B /* UnknownCollectionViewController.swift in Sources */,
 				9F3B809D224E96610059294B /* Dose.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 				9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */,

@@ -16,6 +16,9 @@ class InventoryViewController: UIViewController {
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
 	let headerIdentifier = "ProductSectionHeaderView"
 
+
+	var dateFormatter = DateFormatter()
+
 	var activeCategoryDisplayed: Product.ProductType? {
 		didSet {
 			self.productsCollectionView.performBatchUpdates({
@@ -184,8 +187,25 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			cell.productMassRemainingLabel.text = "\(inventoryItem.mass)"
 			cell.doseCountLabel.text = "\(inventoryItem.numberOfDosesTakenFromProduct)"
 
+			let dateString: String = {
+				dateFormatter.timeStyle = .short
+				dateFormatter.dateStyle = .short
+				guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
+					return "Unopened"
+				}
+				return dateFormatter.string(from: openedProductDate)
+			}()
+			cell.dateOpenedLabel.text = dateString
+
 			//!MARK: - Generalized Cell Setup perform here
-			cell.backgroundColor = .lightGray
+			switch inventoryItem.strain.race {
+			case .hybrid:
+				cell.backgroundColor = UIColor(named: "hybridColor")
+			case .sativa:
+				cell.backgroundColor = UIColor(named: "sativaColor")
+			case .indica:
+				cell.backgroundColor = UIColor(named: "indicaColor")
+			}
 			cell.layer.cornerRadius = 12
 			cell.layer.masksToBounds = true
 
@@ -282,7 +302,7 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 		case .category:
 			return CGSize(width: 100, height: 50)
 		case .product:
-			return CGSize(width: 120, height: 110)
+			return CGSize(width: 120, height: 120)
 		}
 	}
 

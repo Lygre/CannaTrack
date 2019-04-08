@@ -54,11 +54,11 @@ class DoseViewController: UIViewController {
 		view.backgroundColor = {
 			switch self.productForDose.strain.race {
 			case .hybrid:
-				return .green
+				return UIColor(named: "hybridColor")
 			case .indica:
-				return .purple
+				return UIColor(named: "indicaColor")
 			case .sativa:
-				return .yellow
+				return UIColor(named: "sativaColor")
 			}
 		}()
 

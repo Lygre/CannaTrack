@@ -274,11 +274,11 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 		switch doseArray[indexPath.row].product.strain.race {
 		case .hybrid:
-			cell.backgroundColor = .green
-		case .sativa:
-			cell.backgroundColor = .yellow
+			cell.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
-			cell.backgroundColor = .purple
+			cell.backgroundColor = UIColor(named: "indicaColor")
+		case .sativa:
+			cell.backgroundColor = UIColor(named: "sativaColor")
 		}
 
 		return cell

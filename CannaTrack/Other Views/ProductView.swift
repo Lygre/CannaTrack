@@ -32,11 +32,11 @@ class ProductView: UIView {
 		self.productForView = product
 		switch self.productForView.strain.race {
 		case .hybrid:
-			self.backgroundColor = .green
+			self.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
-			self.backgroundColor = .purple
+			self.backgroundColor = UIColor(named: "indicaColor")
 		case .sativa:
-			self.backgroundColor = .yellow
+			self.backgroundColor = UIColor(named: "sativaColor")
 		}
 		self.productLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/2))
 		self.strainLabel = UILabel(frame: CGRect(x: 0, y: self.frame.height/2, width: self.frame.width, height: self.frame.height/2))

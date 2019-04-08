@@ -13,7 +13,11 @@ class ProductDetailViewController: UIViewController {
 	var activeDetailProduct: Product!
 	var dateFormatter: DateFormatter?
 
+	@IBOutlet var productDoseLogTableView: UITableView!
 
+	let tableCellIdentifier = "DoseCell"
+
+	var doseArray: [Dose] = []
 
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var massRemainingLabel: UILabel!
@@ -26,12 +30,19 @@ class ProductDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		loadDoseCalendarInfo()
+		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
+			return someDose.product == activeDetailProduct
+		})
 		dateFormatter = DateFormatter()
 		guard let dateFormatter = dateFormatter else { return }
 		dateFormatter.dateStyle = .short
 		dateFormatter.timeStyle = .short
 		dateFormatter.locale = Locale(identifier: "en_US")
         // Do any additional setup after loading the view.
+
+		productDoseLogTableView.delegate = self
+		productDoseLogTableView.dataSource = self
     }
     
 
@@ -41,21 +52,21 @@ class ProductDetailViewController: UIViewController {
 		view.backgroundColor = {
 			switch self.activeDetailProduct.strain.race {
 			case .hybrid:
-				return .green
+				return UIColor(named: "hybridColor")
 			case .indica:
-				return .purple
+				return UIColor(named: "indicaColor")
 			case .sativa:
-				return .yellow
+				return UIColor(named: "sativaColor")
 			}
 		}()
 		navigationItem.titleView?.backgroundColor = {
 			switch self.activeDetailProduct.strain.race {
 			case .hybrid:
-				return .green
+				return UIColor(named: "hybridColor")
 			case .indica:
-				return .purple
+				return UIColor(named: "indicaColor")
 			case .sativa:
-				return .yellow
+				return UIColor(named: "sativaColor")
 			}
 		}()
 
@@ -73,6 +84,7 @@ class ProductDetailViewController: UIViewController {
 		productLabelImageView.image = activeDetailProduct.productLabelImage
 		currentProductImageView.image = activeDetailProduct.currentProductImage
 
+		productDoseLogTableView.reloadData()
 	}
 
 
@@ -112,9 +124,7 @@ class ProductDetailViewController: UIViewController {
 		let deleteAction = UIPreviewAction(title: "Delete", style: .destructive) { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a reference to the product data container") }
-			guard let productToDeleteIndex = globalMasterInventory.firstIndex(of: product) else { preconditionFailure("Expected a reference to the product data container") }
-//			globalMasterInventory.remove(at: productToDeleteIndex)
-//			removeProductFromInventory(product: product)
+
 			masterInventory.removeProductFromInventoryMaster(product: product)
 
 		}
@@ -134,6 +144,11 @@ class ProductDetailViewController: UIViewController {
 	}
 
 
+	@IBAction func editProductTapped(_ sender: Any) {
+		editProduct()
+	}
+
+
 }
 
 
@@ -143,5 +158,40 @@ extension ProductDetailViewController {
 		activeDetailProduct.openProduct()
 		print(activeDetailProduct.dateOpened)
 	}
+
+	func editProduct() {
+
+	}
+
+}
+
+extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegate {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return doseArray.count
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier, for: indexPath) as? DoseCalendarTableViewCell else { fatalError("could not cast correctly") }
+
+		let formatter = DateFormatter()
+		formatter.dateStyle = .short
+		formatter.timeStyle = .short
+		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
+
+		cell.productLabel.text = activeDetailProduct.productType.rawValue
+		cell.strainLabel.text = activeDetailProduct.strain.name
+		switch activeDetailProduct.strain.race {
+		case .hybrid:
+			cell.backgroundColor = UIColor(named: "hybridColor")
+		case .indica:
+			cell.backgroundColor = UIColor(named: "indicaColor")
+		case .sativa:
+			cell.backgroundColor = UIColor(named: "sativaColor")
+		}
+
+		return cell
+	}
+
+
 
 }

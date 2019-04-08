@@ -134,11 +134,11 @@ class StrainsCollectionViewController: UICollectionViewController {
 		cell.backgroundColor = {
 			switch strainForIndexPath.race {
 			case .indica:
-				return UIColor.purple
+				return UIColor(named: "indicaColor")
 			case .sativa:
-				return UIColor.yellow
+				return UIColor(named: "sativaColor")
 			case .hybrid:
-				return UIColor.green
+				return UIColor(named: "hybridColor")
 			}
 		}()
 

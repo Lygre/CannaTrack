@@ -28,13 +28,13 @@ class AddProductUsingTextViewController: UIViewController {
 		set(newVarietyValue) {
 			switch newVarietyValue {
 			case .hybrid?:
-				self.view.backgroundColor = .green
+				self.view.backgroundColor = UIColor(named: "hybridColor")
 			case .indica?:
-				self.view.backgroundColor = .purple
+				self.view.backgroundColor = UIColor(named: "indicaColor")
 			case .sativa?:
-				self.view.backgroundColor = .yellow
+				self.view.backgroundColor = UIColor(named: "sativaColor")
 			case .none:
-				self.view.backgroundColor = .magenta
+				self.view.backgroundColor = UIColor(named: "hybridColor")
 			}
 		}
 	}
@@ -100,11 +100,11 @@ class AddProductUsingTextViewController: UIViewController {
 		productComponentsDictionary["strainVariety"] = strainVariety as AnyObject
 		switch strainVariety {
 		case .hybrid:
-			view.backgroundColor = .green
+			view.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
-			view.backgroundColor = .purple
+			view.backgroundColor = UIColor(named: "indicaColor")
 		case .sativa:
-			view.backgroundColor = .yellow
+			view.backgroundColor = UIColor(named: "sativaColor")
 		}
 	}
 

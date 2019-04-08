@@ -22,6 +22,8 @@ class LogDoseFromCalendarViewController: UIViewController {
 	var selectedProductIndexPathArray: [IndexPath] = []
 	var selectedProductsForDose: [Product] = []
 
+	var dateFormatter = DateFormatter()
+
 	var largeProductIndexPath: IndexPath? {
 		didSet {
 			var indexPaths = [IndexPath]()
@@ -44,6 +46,9 @@ class LogDoseFromCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		productsCollectionView.allowsMultipleSelection = true
+		dateFormatter.dateStyle = .short
+		dateFormatter.timeStyle = .short
+
         // Do any additional setup after loading the view.
     }
 
@@ -118,6 +123,13 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 		cell.productStrainNameLabel.text = globalMasterInventory[indexPath.row].strain.name
 		cell.productMassRemainingLabel.text = "\(globalMasterInventory[indexPath.row].mass)"
 		cell.doseCountLabel.text = "\(globalMasterInventory[indexPath.row].numberOfDosesTakenFromProduct)"
+		let dateString: String = {
+			guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
+				return "Unopened"
+			}
+			return dateFormatter.string(from: openedProductDate)
+		}()
+		cell.dateOpenedLabel.text = dateString
 
 		for view in cell.subviews {
 			view.backgroundColor = .clear
@@ -125,11 +137,11 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 
 		switch globalMasterInventory[indexPath.row].strain.race {
 		case .hybrid:
-			cell.backgroundColor = .green
+			cell.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
-			cell.backgroundColor = .purple
+			cell.backgroundColor = UIColor(named: "indicaColor")
 		case .sativa:
-			cell.backgroundColor = .yellow
+			cell.backgroundColor = UIColor(named: "indicaColor")
 		}
 
 		cell.layer.cornerRadius = cell.frame.width / 5
