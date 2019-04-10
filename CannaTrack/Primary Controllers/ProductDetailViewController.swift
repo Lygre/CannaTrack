@@ -20,7 +20,7 @@ class ProductDetailViewController: UIViewController {
 	var doseArray: [Dose] = []
 
 	@IBOutlet var productTypeLabel: UILabel!
-	@IBOutlet var massRemainingLabel: UILabel!
+	@IBOutlet var massRemainingLabel: UITextField!
 	@IBOutlet var dateOpenedLabel: UILabel!
 	@IBOutlet var doseCountLabel: UILabel!
 
@@ -40,6 +40,9 @@ class ProductDetailViewController: UIViewController {
 		dateFormatter.timeStyle = .short
 		dateFormatter.locale = Locale(identifier: "en_US")
         // Do any additional setup after loading the view.
+
+		massRemainingLabel.keyboardType = .numbersAndPunctuation
+		massRemainingLabel.delegate = self
 
 		productDoseLogTableView.delegate = self
 		productDoseLogTableView.dataSource = self
@@ -96,6 +99,10 @@ class ProductDetailViewController: UIViewController {
 	}
 
 
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		view.endEditing(true)
+		print(activeDetailProduct)
+	}
 
 	// MARK: - Supporting Peek Quick Actions
 
@@ -161,6 +168,19 @@ extension ProductDetailViewController {
 
 	func editProduct() {
 
+	}
+
+}
+
+extension ProductDetailViewController: UITextFieldDelegate {
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		let formatter = NumberFormatter()
+		formatter.locale = .current
+		formatter.numberStyle = .decimal
+		guard let textToConvertToDouble = textField.text else { return }
+		guard let number = formatter.number(from: textToConvertToDouble) else { return }
+		activeDetailProduct.mass = Double(truncating: number)
+		saveCurrentProductInventoryToUserData()
 	}
 
 }

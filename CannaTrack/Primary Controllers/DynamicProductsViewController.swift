@@ -78,7 +78,18 @@ class DynamicProductsViewController: UIViewController {
 
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
-			let productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 100, height: 100), product: product)
+			let radiusConstant: Double = 100
+			let productMass = product.mass
+
+			var productView: ProductView!
+
+			if productMass == 0.0 {
+				productView = ProductView(frame: CGRect(x: self.view.frame.width / 2, y: 10, width: 100, height: 100), product: product)
+			} else {
+				productView = ProductView(frame: CGRect(x: 20, y: 10, width: radiusConstant * productMass, height: radiusConstant * productMass), product: product)
+			}
+
+
 			productView.layer.cornerRadius = productView.frame.width / 2
 			view.addSubview(productView)
 			productView.center = CGPoint(x: self.view.frame.width / 2, y: (10 + (productView.bounds.height * CGFloat(countForViews))))
