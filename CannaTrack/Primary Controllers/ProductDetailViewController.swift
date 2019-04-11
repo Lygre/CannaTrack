@@ -11,7 +11,7 @@ import UIKit
 class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
-	var dateFormatter: DateFormatter?
+	var dateFormatter: DateFormatter = DateFormatter()
 
 	@IBOutlet var productDoseLogTableView: UITableView!
 
@@ -24,39 +24,70 @@ class ProductDetailViewController: UIViewController {
 
 	@IBOutlet var productTypeLabel: UITextField!
 	@IBOutlet var massRemainingLabel: UITextField!
-	@IBOutlet var dateOpenedLabel: UILabel!
+	@IBOutlet var dateOpenedLabel: UITextField!
 	@IBOutlet var doseCountLabel: UILabel!
 
 	@IBOutlet var productLabelImageView: UIImageView!
 
 	@IBOutlet var currentProductImageView: UIImageView!
 
-    override func viewDidLoad() {
+	fileprivate func setupDateFormatter(_ dateFormatter: DateFormatter) {
+		dateFormatter.dateStyle = .short
+		dateFormatter.timeStyle = .none
+		dateFormatter.locale = Locale(identifier: "en_US")
+	}
+
+	fileprivate func setupTextFieldDelegates() {
+		//setup text field delegates and assign to self
+		self.massRemainingLabel.delegate = self
+		self.productTypeLabel.delegate = self
+		self.dateOpenedLabel.delegate = self
+	}
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 		loadDoseCalendarInfo()
 		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
-		dateFormatter = DateFormatter()
-		guard let dateFormatter = dateFormatter else { return }
-		dateFormatter.dateStyle = .short
-		dateFormatter.timeStyle = .short
-		dateFormatter.locale = Locale(identifier: "en_US")
-        // Do any additional setup after loading the view.
+		//dateFormatter setup
 
+		setupDateFormatter(dateFormatter)
+
+		// Do any additional setup after loading the view.
+
+		//Picker view setup
 		let pickerView = UIPickerView()
 		pickerView.delegate = self
 		pickerView.dataSource = self
+
+
+		let datePickerView = UIDatePicker()
+		datePickerView.calendar = .current
+		datePickerView.locale = .current
+		datePickerView.timeZone = .current
+		datePickerView.date = activeDetailProduct.dateOpened ?? Date()
+		datePickerView.datePickerMode = .date
+
+		datePickerView.addTarget(self, action: #selector(dateSelectedFromPicker(_:forEvent:)), for: .valueChanged)
+
+		//setup text fields for use with pickerview
+		//assign text field tags
+		productTypeLabel.tag = 1
+		massRemainingLabel.tag = 2
+		dateOpenedLabel.tag = 3
+		//setup text field input views and keyboards
 		self.productTypeLabel.inputView = pickerView
-		self.massRemainingLabel.keyboardType = .numberPad
-		self.massRemainingLabel.delegate = self
-		self.productTypeLabel.delegate = self
+		self.massRemainingLabel.keyboardType = .numbersAndPunctuation
+		self.dateOpenedLabel.inputView = datePickerView
+		setupTextFieldDelegates()
+
+		//tableview setup
 		self.productDoseLogTableView.delegate = self
 		self.productDoseLogTableView.dataSource = self
 
 
-		productTypeLabel.tag = 1
-		massRemainingLabel.tag = 2
+
 
     }
     
@@ -91,7 +122,7 @@ class ProductDetailViewController: UIViewController {
 		dateOpenedLabel.text = {
 			var dateOpened: String?
 			if let date = self.activeDetailProduct.dateOpened {
-				dateOpened = dateFormatter?.string(from: date)
+				dateOpened = dateFormatter.string(from: date)
 			} else { dateOpened = "Unopened" }
 			return dateOpened
 		}()
@@ -158,6 +189,13 @@ class ProductDetailViewController: UIViewController {
 
 	}
 
+	@objc func dateSelectedFromPicker(_ sender: UIDatePicker, forEvent event: UIEvent) {
+		setupDateFormatter(dateFormatter)
+
+		let dateString: String = dateFormatter.string(from: sender.date)
+		dateOpenedLabel.text = dateString
+
+	}
 
 
 	@IBAction func openProductTapped(_ sender: Any) {
@@ -197,6 +235,12 @@ extension ProductDetailViewController: UITextFieldDelegate {
 			activeDetailProduct.mass = Double(truncating: number)
 			saveCurrentProductInventoryToUserData()
 		} else if textField.tag == 1 {
+			saveCurrentProductInventoryToUserData()
+		} else if textField.tag == 3 {
+
+			guard let dateTextFieldText = textField.text, let dateToSave = dateFormatter.date(from: dateTextFieldText) else { return }
+
+			activeDetailProduct.dateOpened = dateToSave
 			saveCurrentProductInventoryToUserData()
 		}
 	}

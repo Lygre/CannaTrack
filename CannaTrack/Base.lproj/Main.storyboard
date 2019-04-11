@@ -282,12 +282,12 @@
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                     </textField>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsS-ir-pXn">
-                                                                        <rect key="frame" x="0.0" y="91" width="165.5" height="30.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AbD-UV-Vcp">
+                                                                        <rect key="frame" x="0.0" y="91" width="132.5" height="30.5"/>
                                                                         <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                        <textInputTraits key="textInputTraits"/>
+                                                                    </textField>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vey-qx-agN">
                                                                         <rect key="frame" x="0.0" y="136.5" width="42" height="30.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -296,6 +296,7 @@
                                                                     </label>
                                                                 </subviews>
                                                                 <constraints>
+                                                                    <constraint firstItem="AbD-UV-Vcp" firstAttribute="width" secondItem="l3E-aN-j11" secondAttribute="width" multiplier="0.8" id="Vo3-KH-mOb"/>
                                                                     <constraint firstItem="i0i-YH-MUN" firstAttribute="width" secondItem="l3E-aN-j11" secondAttribute="width" multiplier="0.8" id="k7k-ic-W9o"/>
                                                                 </constraints>
                                                             </stackView>
@@ -308,7 +309,6 @@
                                                     <constraint firstAttribute="height" constant="167" id="3Kw-Th-lqa"/>
                                                     <constraint firstAttribute="bottom" secondItem="maU-xK-O1T" secondAttribute="bottom" id="J0i-Ls-m5T"/>
                                                     <constraint firstAttribute="trailing" secondItem="maU-xK-O1T" secondAttribute="trailing" id="J8J-cI-NSm"/>
-                                                    <constraint firstItem="VsS-ir-pXn" firstAttribute="width" secondItem="c4j-mZ-Die" secondAttribute="width" multiplier="0.4" id="Mbz-id-wBY"/>
                                                     <constraint firstItem="l3E-aN-j11" firstAttribute="width" secondItem="c4j-mZ-Die" secondAttribute="width" multiplier="0.4" id="PTW-lP-lxG"/>
                                                     <constraint firstItem="maU-xK-O1T" firstAttribute="leading" secondItem="c4j-mZ-Die" secondAttribute="leading" id="agh-rH-J8E"/>
                                                 </constraints>
@@ -363,7 +363,7 @@
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <size key="freeformSize" width="414" height="1450"/>
                     <connections>
-                        <outlet property="dateOpenedLabel" destination="VsS-ir-pXn" id="F2d-yU-Eun"/>
+                        <outlet property="dateOpenedLabel" destination="AbD-UV-Vcp" id="11e-SX-0ln"/>
                         <outlet property="doseCountLabel" destination="vey-qx-agN" id="2Be-xv-emM"/>
                         <outlet property="massRemainingLabel" destination="ArB-6b-daU" id="F4P-7h-YJW"/>
                         <outlet property="productDoseLogTableView" destination="zZF-Lt-sNk" id="ZS9-FQ-xc2"/>
@@ -831,10 +831,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="mD5-Z1-JOT" kind="relationship" relationship="viewControllers" id="MGA-EC-Spx"/>
                         <segue destination="5bV-5a-mpT" kind="relationship" relationship="viewControllers" id="UaG-6O-hfB"/>
                         <segue destination="2xC-yw-4yc" kind="relationship" relationship="viewControllers" id="3wL-n6-uDO"/>
                         <segue destination="dtm-Pu-caa" kind="relationship" relationship="viewControllers" id="atX-ns-sHe"/>
+                        <segue destination="mD5-Z1-JOT" kind="relationship" relationship="viewControllers" id="qqf-ef-aQI"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4r-xL-fAt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1099,7 +1099,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bDB-ds-TSF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-541" y="981"/>
+            <point key="canvasLocation" x="-542" y="980"/>
         </scene>
         <!--Inventory-->
         <scene sceneID="TYd-pg-2Yv">
