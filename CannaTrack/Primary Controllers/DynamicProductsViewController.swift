@@ -67,14 +67,22 @@ class DynamicProductsViewController: UIViewController {
 		animator.addBehavior(itemBehavior)
 	}
 
-	override func viewDidLoad() {
-        super.viewDidLoad()
-		animator = UIDynamicAnimator(referenceView: view)
+	fileprivate func removeDynamicProductViewsFromSuperView() {
+		let subviews = self.view.subviews
+		for view in subviews {
+			view.removeFromSuperview()
+		}
 		self.view.layoutIfNeeded()
+	}
+
+	fileprivate func setupDynamicPropertyAnimatorViews() {
+		animator = UIDynamicAnimator(referenceView: view)
+
+		removeDynamicProductViewsFromSuperView()
 		productViewArray = []
 		var countForViews: Int = 0
 
-		printUserInfo()
+		loadUserInfo()
 
 		//execute for loop here to iterate over inventory and create ProductView for each product and add it to the view hierarchy
 		for product in globalMasterInventory {
@@ -98,7 +106,6 @@ class DynamicProductsViewController: UIViewController {
 			snap = UISnapBehavior(item: productView, snapTo: origPos)
 			snap.damping = 0.8
 			productViewArray.append(productView)
-//			animator.addBehavior(snap)
 		}
 
 		for productView in productViewArray {
@@ -119,12 +126,21 @@ class DynamicProductsViewController: UIViewController {
 		//add gravity
 		gravity = UIGravityBehavior(items: productViewArray)
 		setupItemBehavior()
+	}
+
+	override func viewDidLoad() {
+        super.viewDidLoad()
 
         // Do any additional setup after loading the view.
 
 		
     }
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+
+		setupDynamicPropertyAnimatorViews()
+	}
 
 
 //	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -158,15 +174,12 @@ class DynamicProductsViewController: UIViewController {
 		}
 	}
 
-	@IBAction func refreshViewClicked(_ sender: Any) {
+	@IBAction func printInfoClicked(_ sender: Any) {
 //		refreshUI()
-		printUserInfo()
+		loadUserInfo()
 	}
 
 
-	@IBAction func saveUserInfoClicked(_ sender: Any) {
-		saveUserInfo()
-	}
 
 	@IBAction func addProductTapped(_ sender: Any) {
 
@@ -182,7 +195,7 @@ extension DynamicProductsViewController {
 		view.layoutSubviews()
 	}
 
-	func printUserInfo() {
+	func loadUserInfo() {
 		let propertyListDecoder = PropertyListDecoder()
 		do {
 			if let da = UserDefaults.standard.data(forKey: "data") {

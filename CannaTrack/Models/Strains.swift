@@ -10,7 +10,43 @@ import Foundation
 import UIKit
 
 
-var masterStrainDatabase: [Strain]?
+var masterStrainDatabase: [Strain] = [] {
+	didSet(updatedDatabase) {
+		saveStrainDatabaseData(strainDB: updatedDatabase)
+	}
+}
+
+func saveStrainDatabaseData(strainDB: [Strain]) {
+
+	let propertyListEncoder = PropertyListEncoder()
+
+	do {
+		let strainData: [Strain] = masterStrainDatabase
+		let data = try propertyListEncoder.encode(strainData)
+		UserDefaults.standard.set(data, forKey: "strainDatabase")
+	}
+	catch {
+		print(error)
+	}
+
+}
+
+func loadSavedStrainDatabase() {
+
+	let propertyListDecoder = PropertyListDecoder()
+
+	do {
+		if let da = UserDefaults.standard.data(forKey: "strainDatabase") {
+			let stored = try propertyListDecoder.decode([Strain].self, from: da)
+			masterStrainDatabase = stored
+		}
+	}
+	catch {
+		print(error)
+	}
+
+
+}
 
 struct BaseStrain: Decodable, Hashable {
 
@@ -182,13 +218,14 @@ extension Strain: Equatable {
 
 func searchStrains(using strainName: String) -> [Strain] {
 	var strainSearchResults: [Strain] = []
-	guard let strainDatabase = masterStrainDatabase else { return strainSearchResults }
 
+	let strainDatabase = masterStrainDatabase
 	for strain in strainDatabase {
 		if strain.name.lowercased().contains(strainName.lowercased()) {
 			strainSearchResults.append(strain)
 		}
 	}
+
 
 	return strainSearchResults
 }

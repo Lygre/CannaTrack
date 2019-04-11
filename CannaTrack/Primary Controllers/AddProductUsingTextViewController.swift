@@ -110,13 +110,22 @@ class AddProductUsingTextViewController: UIViewController {
 
 
 	@IBAction func saveProductTapped(_ sender: UIBarButtonItem) {
-		guard let globalStrainCount = masterStrainDatabase?.count else { return }
-		let strain = Strain(id: (globalStrainCount + 1), name: productComponentsDictionary["strain"] as! String, race: productComponentsDictionary["strainVariety"] as! StrainVariety, description: nil)
 
-		let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
-		saveProductToInventory(product: product)
-		print(globalMasterInventory)
+		let strainNameResults = searchStrains(using: productComponentsDictionary["strain"] as! String)
+		if strainNameResults.isEmpty {
+			loadSavedStrainDatabase()
+			let globalStrainCount = masterStrainDatabase.count
+			let strain = Strain(id: (globalStrainCount + 1), name: productComponentsDictionary["strain"] as! String, race: productComponentsDictionary["strainVariety"] as! StrainVariety, description: nil)
 
+			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
+			saveProductToInventory(product: product)
+			print(globalMasterInventory)
+		} else {
+			let strain = strainNameResults[0]
+			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
+			saveProductToInventory(product: product)
+			print(globalMasterInventory)
+		}
 	}
 
 
