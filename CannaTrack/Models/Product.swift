@@ -13,8 +13,8 @@ class Product: Codable {
 
 	
 
-	let productType: ProductType
-	let strain: Strain
+	var productType: ProductType
+	var strain: Strain
 
 	var productLabelImage: UIImage?
 	var currentProductImage: UIImage?

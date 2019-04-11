@@ -15,11 +15,14 @@ class ProductDetailViewController: UIViewController {
 
 	@IBOutlet var productDoseLogTableView: UITableView!
 
+	@IBOutlet var productInfoSubview: UIView!
+
 	let tableCellIdentifier = "DoseCell"
 
 	var doseArray: [Dose] = []
+	let typeCases: [Product.ProductType] = [.capsuleBottle, .co2VapePenCartridge, .nasalSpray, .oralSyringe, .rsoSyringe, .tinctureDropletBottle, .topicalCream, .topicalLotion, .topicalSunscreen, .truClear, .truCrmbl, .truFlower, .truPod, .truShatter, .vapePenCartridge]
 
-	@IBOutlet var productTypeLabel: UILabel!
+	@IBOutlet var productTypeLabel: UITextField!
 	@IBOutlet var massRemainingLabel: UITextField!
 	@IBOutlet var dateOpenedLabel: UILabel!
 	@IBOutlet var doseCountLabel: UILabel!
@@ -32,7 +35,7 @@ class ProductDetailViewController: UIViewController {
         super.viewDidLoad()
 		loadDoseCalendarInfo()
 		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
-			return someDose.product == activeDetailProduct
+			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
 		dateFormatter = DateFormatter()
 		guard let dateFormatter = dateFormatter else { return }
@@ -41,11 +44,20 @@ class ProductDetailViewController: UIViewController {
 		dateFormatter.locale = Locale(identifier: "en_US")
         // Do any additional setup after loading the view.
 
-		massRemainingLabel.keyboardType = .numbersAndPunctuation
-		massRemainingLabel.delegate = self
+		let pickerView = UIPickerView()
+		pickerView.delegate = self
+		pickerView.dataSource = self
+		self.productTypeLabel.inputView = pickerView
+		self.massRemainingLabel.keyboardType = .numberPad
+		self.massRemainingLabel.delegate = self
+		self.productTypeLabel.delegate = self
+		self.productDoseLogTableView.delegate = self
+		self.productDoseLogTableView.dataSource = self
 
-		productDoseLogTableView.delegate = self
-		productDoseLogTableView.dataSource = self
+
+		productTypeLabel.tag = 1
+		massRemainingLabel.tag = 2
+
     }
     
 
@@ -85,7 +97,7 @@ class ProductDetailViewController: UIViewController {
 		}()
 		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
 		productLabelImageView.image = activeDetailProduct.productLabelImage
-		currentProductImageView.image = activeDetailProduct.currentProductImage
+//		currentProductImageView.image = activeDetailProduct.currentProductImage
 
 		productDoseLogTableView.reloadData()
 	}
@@ -100,7 +112,9 @@ class ProductDetailViewController: UIViewController {
 
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		view.endEditing(true)
+		self.view.endEditing(true)
+
+		self.productInfoSubview.endEditing(true)
 		print(activeDetailProduct)
 	}
 
@@ -174,13 +188,17 @@ extension ProductDetailViewController {
 
 extension ProductDetailViewController: UITextFieldDelegate {
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		let formatter = NumberFormatter()
-		formatter.locale = .current
-		formatter.numberStyle = .decimal
-		guard let textToConvertToDouble = textField.text else { return }
-		guard let number = formatter.number(from: textToConvertToDouble) else { return }
-		activeDetailProduct.mass = Double(truncating: number)
-		saveCurrentProductInventoryToUserData()
+		if textField.tag == 2 {
+			let formatter = NumberFormatter()
+			formatter.locale = .current
+			formatter.numberStyle = .decimal
+			guard let textToConvertToDouble = textField.text else { return }
+			guard let number = formatter.number(from: textToConvertToDouble) else { return }
+			activeDetailProduct.mass = Double(truncating: number)
+			saveCurrentProductInventoryToUserData()
+		} else if textField.tag == 1 {
+			saveCurrentProductInventoryToUserData()
+		}
 	}
 
 }
@@ -213,5 +231,26 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 	}
 
 
+
+}
+
+
+extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
+		return 1
+	}
+
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		return typeCases.count
+	}
+
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		return typeCases[row].rawValue
+	}
+
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		productTypeLabel.text = typeCases[row].rawValue
+		activeDetailProduct.productType = typeCases[row]
+	}
 
 }
