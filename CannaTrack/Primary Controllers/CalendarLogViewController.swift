@@ -254,6 +254,25 @@ extension CalendarLogViewController {
 
 	}
 
+	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
+
+		let dose = dosesForDate?[indexPath.row]
+		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
+				return doseCompletion === dose })
+			self.dosesForDate?.remove(at: indexPath.row)
+			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
+
+			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
+		}
+		action.backgroundColor = .red
+		return action
+
+
+
+
+	}
+
 }
 
 
@@ -285,7 +304,10 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 	}
 
 
-
+	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let delete = deleteAction(at: indexPath)
+		return UISwipeActionsConfiguration(actions: [delete])
+	}
 
 }
 
