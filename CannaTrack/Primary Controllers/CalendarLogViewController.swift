@@ -113,7 +113,7 @@ class CalendarLogViewController: UIViewController {
 
 	@IBAction func printDoseLogClicked(_ sender: Any) {
 		print(doseLogDictionaryGLOBAL.debugDescription)
-		loadLocalDoseCalendarInfo()
+		loadDoseCalendarInfo()
 
 	}
 
@@ -262,15 +262,11 @@ extension CalendarLogViewController {
 				return doseCompletion === dose })
 			self.dosesForDate?.remove(at: indexPath.row)
 			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
-
+			saveDoseCalendarInfo()
 			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
 		}
 		action.backgroundColor = .red
 		return action
-
-
-
-
 	}
 
 }
@@ -326,31 +322,7 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController {
 
-	func loadLocalDoseCalendarInfo() {
-		let propertyListDecoder = PropertyListDecoder()
-		do {
-			if let da = UserDefaults.standard.data(forKey: "doseLogData") {
-				let stored = try propertyListDecoder.decode([Dose].self, from: da)
-				print(stored)
-				doseLogDictionaryGLOBAL = stored
-			}
-		}
-		catch {
-			print(error)
-		}
-	}
 
-	func saveDoseCalendarInfo() {
-		let propertyListEncoder = PropertyListEncoder()
-		do {
-			let doseLogData: [Dose] = doseLogDictionaryGLOBAL
-			let data = try propertyListEncoder.encode(doseLogData)
-			UserDefaults.standard.set(data, forKey: "doseLogData")
-		}
-		catch {
-			print(error)
-		}
-	}
 
 
 

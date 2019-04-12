@@ -33,3 +33,43 @@ dateComponents.day = dateTimeComponents.day
 
 let someDateTime = userCalendar.date(from: dateComponents)
 
+func saveUserData(with dataToWrite: [String]) {
+	let propertyListEncoder = PropertyListEncoder()
+	do {
+		let data = try propertyListEncoder.encode(dataToWrite)
+		UserDefaults.standard.set(data, forKey: "data")
+	}
+	catch {
+		print(error)
+	}
+}
+
+func loadProductInventoryFromUserData() -> [String] {
+	let propertyListDecoder = PropertyListDecoder()
+	var storedData: [String] = []
+	do {
+		if let da = UserDefaults.standard.data(forKey: "data") {
+			let stored = try propertyListDecoder.decode([String].self, from: da)
+			storedData = stored
+		}
+	}
+	catch {
+		print(error)
+	}
+	return storedData
+}
+
+func saveUserDataTextField(with dataToWriteFromTextField: String) {
+	let propertyListEncoder = PropertyListEncoder()
+	var savedData: [String] = loadProductInventoryFromUserData()
+
+	savedData.append(dataToWriteFromTextField)
+
+	do {
+		let data = try propertyListEncoder.encode(savedData)
+		UserDefaults.standard.set(data, forKey: "data")
+	}
+	catch {
+		print(error)
+	}
+}

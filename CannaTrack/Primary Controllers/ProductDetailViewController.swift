@@ -222,6 +222,21 @@ extension ProductDetailViewController {
 
 	}
 
+	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
+
+		let dose = doseArray[indexPath.row]
+		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
+				return doseCompletion === dose })
+			self.doseArray.remove(at: indexPath.row)
+			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
+			saveDoseCalendarInfo()
+			self.productDoseLogTableView.deleteRows(at: [indexPath], with: .automatic)
+		}
+		action.backgroundColor = .red
+		return action
+	}
+
 }
 
 extension ProductDetailViewController: UITextFieldDelegate {
@@ -274,7 +289,10 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 		return cell
 	}
 
-
+	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let delete = deleteAction(at: indexPath)
+		return UISwipeActionsConfiguration(actions: [delete])
+	}
 
 }
 
