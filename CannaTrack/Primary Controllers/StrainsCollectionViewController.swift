@@ -99,12 +99,13 @@ class StrainsCollectionViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
+		guard let selectedCollectionViewCell = sender as? StrainCollectionViewCell, let indexPath = collectionView.indexPath(for: selectedCollectionViewCell) else { preconditionFailure("could not get selected cell and indexPath")}
+		guard let detailVC = segue.destination as? StrainDetailViewController else { preconditionFailure("could not get segue destination as StrainDetailVC")}
 
-		if segue.destination is StrainDetailViewController {
-			let detailVC = segue.destination as! StrainDetailViewController
-			detailVC.activeDetailStrain = strainToPassToDetail
-		}
+		detailVC.activeDetailStrain = strainsToDisplay[indexPath.item]
+
 	}
+
 
 
     // MARK: UICollectionViewDataSource
@@ -148,7 +149,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
 		strainToPassToDetail = getStrainForIndexPath(indexPath: indexPath)
-		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
+//		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
 
 	}
 

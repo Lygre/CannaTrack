@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Strain Detail View Controller-->
+        <!--StrainDetailVC-->
         <scene sceneID="BXQ-3M-r7a">
             <objects>
-                <viewController id="uLF-r6-80q" customClass="StrainDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="StrainDetailVC" id="uLF-r6-80q" customClass="StrainDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gf4-6z-mm9" customClass="StrainD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -124,6 +124,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SJU-Xp-u8x"/>
                     </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <connections>
                         <outlet property="medicalEffectsLabel" destination="XzW-WR-b0s" id="dqb-7h-540"/>
                         <outlet property="negativeEffectsLabel" destination="YmJ-qQ-x50" id="yZG-qm-yKX"/>
@@ -258,7 +259,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="l3E-aN-j11">
-                                                                <rect key="frame" x="145" y="0.0" width="165.5" height="167"/>
+                                                                <rect key="frame" x="150" y="0.0" width="166" height="167"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i0i-YH-MUN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="132.5" height="30.5"/>
@@ -294,7 +295,7 @@
                                                                 </constraints>
                                                             </stackView>
                                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="fTB-3c-DG9">
-                                                                <rect key="frame" x="342" y="0.0" width="72" height="167"/>
+                                                                <rect key="frame" x="398" y="0.0" width="16" height="167"/>
                                                             </imageView>
                                                         </subviews>
                                                     </stackView>
@@ -789,6 +790,10 @@
                                     <outlet property="strainAbbreviation" destination="LeZ-UT-6sW" id="lgZ-8S-VXL"/>
                                     <outlet property="strainName" destination="jQG-dd-LOv" id="dOC-5A-ItK"/>
                                     <outlet property="varietyLabel" destination="NgC-eM-zOQ" id="1iy-gF-eao"/>
+                                    <segue destination="uLF-r6-80q" kind="show" id="Yn3-p8-KVM">
+                                        <segue key="commit" inheritsFrom="parent" id="U68-6r-Gl1"/>
+                                        <segue key="preview" inheritsFrom="commit" id="Sf6-JO-dEj"/>
+                                    </segue>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -800,7 +805,6 @@
                     <navigationItem key="navigationItem" id="mKQ-lw-Jkr"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="5hv-qE-TOa" id="RYy-Jl-Xc3"/>
-                        <segue destination="uLF-r6-80q" kind="show" identifier="strainDetailSegue" id="4pB-7a-xym"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yR3-yM-TRh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1646,5 +1650,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tx6-PA-Bt3"/>
+        <segue reference="Yn3-p8-KVM"/>
     </inferredMetricsTieBreakers>
 </document>
