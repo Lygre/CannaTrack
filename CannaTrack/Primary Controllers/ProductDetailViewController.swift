@@ -44,13 +44,28 @@ class ProductDetailViewController: UIViewController {
 		self.dateOpenedLabel.delegate = self
 	}
 
+	@objc func handleTapOnProductImage() {
+		let imagePicker = UIImagePickerController()
+		imagePicker.sourceType = .camera
+		imagePicker.allowsEditing = true
+		imagePicker.delegate = self
+
+		self.present(imagePicker, animated: true)
+
+	}
+
+	fileprivate func setupProductImageTapRecognizer() {
+		let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapOnProductImage))
+		productLabelImageView.addGestureRecognizer(tap)
+	}
+
 	override func viewDidLoad() {
         super.viewDidLoad()
 		loadDoseCalendarInfo()
 		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
-		//dateFormatter setup
+		setupProductImageTapRecognizer()
 
 		setupDateFormatter(dateFormatter)
 
@@ -127,7 +142,15 @@ class ProductDetailViewController: UIViewController {
 			return dateOpened
 		}()
 		doseCountLabel.text = "\(activeDetailProduct.numberOfDosesTakenFromProduct)"
-		productLabelImageView.image = activeDetailProduct.productLabelImage
+		productLabelImageView.image = {
+			var imageToReturn: UIImage?
+			if let productImage = self.activeDetailProduct.productLabelImage {
+				imageToReturn = productImage
+			} else {
+				imageToReturn = UIImage(imageLiteralResourceName: "cannaleaf")
+			}
+			return imageToReturn
+		}()
 //		currentProductImageView.image = activeDetailProduct.currentProductImage
 
 		productDoseLogTableView.reloadData()
@@ -313,6 +336,22 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		productTypeLabel.text = typeCases[row].rawValue
 		activeDetailProduct.productType = typeCases[row]
+	}
+
+}
+
+extension ProductDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+
+//		self.productLabelImageView.image = originalImage
+		self.activeDetailProduct.productLabelImage = originalImage
+
+		dismiss(animated: true, completion: {
+			saveCurrentProductInventoryToUserData()
+		})
+
 	}
 
 }

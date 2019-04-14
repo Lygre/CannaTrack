@@ -34,7 +34,9 @@ class Product: Codable {
 		productType = try values.decode(ProductType.self, forKey: .productType)
 		strain = try values.decode(Strain.self, forKey: .strain)
 
-		productLabelImage = nil
+		let strBase64: String = try values.decode(String.self, forKey: .productLabelImage)
+		let dataDecoded: Data = Data(base64Encoded: strBase64, options: .ignoreUnknownCharacters)!
+		productLabelImage = UIImage(data: dataDecoded)
 //			UIImage(data: try values.decode(Data.self, forKey: .productLabelImage))
 		currentProductImage = nil
 //			UIImage(data: try values.decode(Data.self, forKey: .currentProductImage))
@@ -49,8 +51,13 @@ class Product: Codable {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(productType, forKey: .productType)
 		try container.encode(strain, forKey: .strain)
-		try container.encode(productLabelImage?.jpegData(compressionQuality: 0.5), forKey: .productLabelImage)
-		try container.encode(currentProductImage?.jpegData(compressionQuality: 0.5), forKey: .currentProductImage)
+		var strBase64: String = String()
+		if let imageToEncode = productLabelImage {
+			let imageData: Data = imageToEncode.pngData()!
+			strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
+		}
+		try container.encode(strBase64, forKey: .productLabelImage)
+		try container.encode(currentProductImage?.pngData(), forKey: .currentProductImage)
 		try container.encode(mass, forKey: .mass)
 		try container.encode(dateOpened, forKey: .dateOpened)
 		try container.encode(numberOfDosesTakenFromProduct, forKey: .numberOfDosesTakenFromProduct)

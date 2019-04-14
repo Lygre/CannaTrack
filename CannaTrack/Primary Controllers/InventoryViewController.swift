@@ -56,19 +56,17 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-//		categoriesInInventory = [.truShatter, .truCrmbl]
-		for product in globalMasterInventory {
-//			if product.productLabelImage
-			switch product.productType {
-			case .truShatter:
-				product.productLabelImage = UIImage(named: "shatter1.jpeg")
-			case .truCrmbl:
-				product.productLabelImage = UIImage(named: "crmbl1.jpeg")
-			default:
-				product.productLabelImage = UIImage(named: "cannaleaf.png")
-			}
-
-		}
+//		for product in globalMasterInventory {
+//			switch product.productType {
+//			case .truShatter:
+//				product.productLabelImage = UIImage(named: "shatter1.jpeg")
+//			case .truCrmbl:
+//				product.productLabelImage = UIImage(named: "crmbl1.jpeg")
+//			default:
+//				product.productLabelImage = UIImage(named: "cannaleaf.png")
+//			}
+//
+//		}
 		masterInventory = globalMasterInventory
 		currentInventory = masterInventory
         // Do any additional setup after loading the view.
@@ -188,7 +186,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			cell.doseCountLabel.text = "\(inventoryItem.numberOfDosesTakenFromProduct)"
 
 			let dateString: String = {
-				dateFormatter.timeStyle = .short
+				dateFormatter.timeStyle = .none
 				dateFormatter.dateStyle = .short
 				guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
 					return "Unopened"
