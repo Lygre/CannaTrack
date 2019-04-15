@@ -154,6 +154,8 @@ extension CalendarLogViewController: JTAppleCalendarViewDataSource {
 extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
 
+		let myCustomCell = cell as! CustomCell
+		sharedFunctionToConfigureCell(cell: myCustomCell, cellState: cellState, date: date)
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
@@ -170,15 +172,21 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
 		let myCustomCell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
 		myCustomCell.dateLabel.text = cellState.text
-		myCustomCell.layer.cornerRadius = myCustomCell.frame.width / 2
-		myCustomCell.layer.masksToBounds = true
 		//shared method to configure cell after this comment
+		sharedFunctionToConfigureCell(cell: myCustomCell, cellState: cellState, date: date)
 		handleCellSelected(cell: myCustomCell, cellState: cellState)
 		handleCellTextColor(cell: myCustomCell, cellState: cellState)
 		//return cell
 		return myCustomCell
 	}
 
+	func calendar(_ calendar: JTAppleCalendarView, shouldSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) -> Bool {
+		if cellState.dateBelongsTo != .thisMonth {
+			return false
+		} else {
+			return true
+		}
+	}
 
 
 	func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
@@ -193,7 +201,11 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	}
 
 
-
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		calendarCollectionView.collectionViewLayout.invalidateLayout()
+		calendarCollectionView.reloadData()
+	}
 
 
 }
@@ -204,6 +216,9 @@ extension CalendarLogViewController {
 
 	func sharedFunctionToConfigureCell(cell: JTAppleCell, cellState: CellState, date: Date) {
 		print("do nothing; not implemented")
+//		cell.layer.cornerRadius = cell.frame.width / 2
+//		cell.layer.masksToBounds = true
+
 
 	}
 
@@ -237,6 +252,8 @@ extension CalendarLogViewController {
 	func setupCalendarView() {
 		calendarCollectionView.minimumLineSpacing = 0
 		calendarCollectionView.minimumInteritemSpacing = 0
+		calendarCollectionView.scrollingMode = .stopAtEachSection
+		calendarCollectionView.allowsDateCellStretching = false
 
 		calendarCollectionView.visibleDates { visibleDates in
 			self.setupViewsOfCalendar(from: visibleDates)
@@ -320,7 +337,11 @@ extension CalendarLogViewController {
 
 }
 
-extension CalendarLogViewController {
+extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
+
+//	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//		return CGSize(width: (self.calendarCollectionView.frame.size.width/3)-10, height: (self.calendarCollectionView.frame.size.height/4)-10)
+//	}
 
 
 
