@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 let testProduct1 = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 1, name: "dick", race: .hybrid, description: "no"), inGrams: 0.5)
 let testProduct2 = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "not dick", race: .indica, description: "yes"), inGrams: 0.8)
@@ -26,10 +27,44 @@ var globalMasterInventory: [Product] {
 	}
 }
 
+let database = CKContainer.default().privateCloudDatabase
+
+func saveInventoryToCloud(inventory: Inventory) {
+	let encoder = PropertyListEncoder()
+	do {
+
+		let inventoryData = inventory.productArray
+
+		let dataEncodedForCloud = try encoder.encode(inventoryData)
+
+		let newInventoryForCloud = CKRecord(recordType: "Inventory")
+
+		newInventoryForCloud.setValue(dataEncodedForCloud, forKey: "inventoryData")
+
+		database.save(newInventoryForCloud) { (record, error) in
+			guard record != nil else { return }
+			print("saved inventory to cloud \(record.debugDescription)")
+		}
+	}
+	catch {
+		print(error)
+	}
+
+}
+
+func saveProductToCloud(product: Product) {
+	let newProduct = CKRecord(recordType: "Product")
+	newProduct.setValue(product.dateOpened, forKey: "productTestDate")
+
+
+	database.save(newProduct) { (record, _) in
+		guard record != nil else { return }
+		print("saved record with product \(record?.object(forKey: "productTestDate"))")
+	}
 
 
 
-
+}
 
 
 

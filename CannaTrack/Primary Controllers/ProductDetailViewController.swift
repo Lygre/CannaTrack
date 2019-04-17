@@ -230,6 +230,11 @@ class ProductDetailViewController: UIViewController {
 		editProduct()
 	}
 
+	@IBAction func saveProductToCloudClicked(_ sender: Any) {
+		saveProductToCloud(product: activeDetailProduct)
+	}
+
+
 
 }
 

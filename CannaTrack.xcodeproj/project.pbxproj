@@ -46,6 +46,7 @@
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
+		9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FAB54D3226611180012248F /* CloudKit.framework */; };
 		9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -93,6 +94,8 @@
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
+		9FAB54D2226610D20012248F /* CannaTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CannaTrack.entitlements; sourceTree = "<group>"; };
+		9FAB54D3226611180012248F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseOptionsPopupViewController.swift; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */,
+				9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */,
 				9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */,
 				575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */,
 			);
@@ -116,6 +120,7 @@
 		246AAA7737260F44E7DA030C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9FAB54D3226611180012248F /* CloudKit.framework */,
 				9F1052D52227A02600658F62 /* TesseractOCR.framework */,
 				9F1052D32227A01800658F62 /* CoreImage.framework */,
 				D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */,
@@ -228,6 +233,7 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
+				9FAB54D2226610D20012248F /* CannaTrack.entitlements */,
 				9F4D2DA7222C40B0002EDA0A /* tessdata */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F7207BC22372D96009D6375 /* Protocols */,
@@ -287,6 +293,14 @@
 				TargetAttributes = {
 					9F825C1B2214A2C200FC2327 = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -560,6 +574,7 @@
 			baseConfigurationReference = E0D6E5CC028FBD92F1FE745C /* Pods-CannaTrack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CannaTrack/CannaTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F54NBB76Q7;
@@ -583,6 +598,7 @@
 			baseConfigurationReference = 4E48B5F0937AEF405ACDD85B /* Pods-CannaTrack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CannaTrack/CannaTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F54NBB76Q7;

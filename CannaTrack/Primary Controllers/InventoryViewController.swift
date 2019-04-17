@@ -34,7 +34,7 @@ class InventoryViewController: UIViewController {
 			}, completion: nil)
 		}
 	}
-	var masterInventory: [Product]?
+	var masterProductArray: [Product]?
 
 	var categoriesInInventory: [Product.ProductType] = {
 
@@ -67,8 +67,8 @@ class InventoryViewController: UIViewController {
 //			}
 //
 //		}
-		masterInventory = globalMasterInventory
-		currentInventory = masterInventory
+		masterProductArray = globalMasterInventory
+		currentInventory = masterProductArray
         // Do any additional setup after loading the view.
     }
 
@@ -92,7 +92,7 @@ class InventoryViewController: UIViewController {
 	}
 
 	func updateCurrentInventory() -> [Product.ProductType] {
-		self.masterInventory = globalMasterInventory
+		self.masterProductArray = globalMasterInventory
 		self.currentInventory = globalMasterInventory
 		let inventory = globalMasterInventory
 		var categories: Set<Product.ProductType> = []
@@ -130,6 +130,10 @@ class InventoryViewController: UIViewController {
 	}
 
 
+
+	@IBAction func saveInventoryToCloudClicked(_ sender: Any) {
+		saveInventoryToCloud(inventory: masterInventory)
+	}
 
 
 }
@@ -243,7 +247,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
-			guard let masterInventory = masterInventory else { return }
+			guard let masterInventory = masterProductArray else { return }
 
 			currentInventory = masterInventory.filter({ (productType) -> Bool in
 					productType.productType == activeCategoryDisplayed
