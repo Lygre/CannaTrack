@@ -43,7 +43,7 @@ func saveInventoryToCloud(inventory: Inventory) {
 
 		database.save(newInventoryForCloud) { (record, error) in
 			guard record != nil else { return }
-			print("saved inventory to cloud \(record.debugDescription)")
+			print("saved inventory to cloud \(record.debugDescription)", error)
 		}
 	}
 	catch {
@@ -61,12 +61,37 @@ func saveProductToCloud(product: Product) {
 		guard record != nil else { return }
 		print("saved record with product \(record?.object(forKey: "productTestDate"))")
 	}
-
-
-
 }
 
 
+func queryCloudDatabase() {
+	let query = CKQuery(recordType: "Inventory", predicate: NSPredicate(value: true))
+	database.perform(query, inZoneWith: nil) { (recordsCompletion, _) in
+		guard let records = recordsCompletion else { return }
+
+		let properyListDecoder = PropertyListDecoder()
+
+//		var intermediaryProductArray: [Product] = []
+//		records.
+		do {
+			if let recordData = records.first?.value(forKey: "inventoryData") as? Data {
+				let retrievedInventory = try properyListDecoder.decode([Product].self, from: recordData)
+//				intermediaryProductArray = retrievedInventory
+//				print(retrievedInventory)
+				DispatchQueue.main.async {
+					masterInventory.productArray = retrievedInventory
+				}
+			}
+		}
+		catch {
+			print(error)
+		}
+
+		//DispatchQueue.main.async for anything done here after loading
+
+
+	}
+}
 
 
 extension UILabel {

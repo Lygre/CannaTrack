@@ -135,6 +135,9 @@ class InventoryViewController: UIViewController {
 		saveInventoryToCloud(inventory: masterInventory)
 	}
 
+	@IBAction func loadInventoryFromCloudClicked(_ sender: Any) {
+		queryCloudDatabase()
+	}
 
 }
 
