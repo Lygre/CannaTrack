@@ -8,18 +8,22 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 class Inventory: Codable {
 
 	var productArray: [Product] {
-		didSet {
+		didSet(newValue) {
 		//implement writing user data here
 			print("value set; writing to user data")
+			saveInventoryToCloud()
 			writeInventoryToUserData()
 		}
+
 	}
 
 	init() {
+
 		self.productArray = loadProductInventoryFromUserData()
 	}
 
@@ -91,6 +95,32 @@ extension Inventory {
 		catch {
 			print(error)
 		}
+	}
+
+}
+
+extension Inventory {
+	func saveInventoryToCloud() {
+		let encoder = PropertyListEncoder()
+		do {
+
+			let inventoryData = self.productArray
+
+			let dataEncodedForCloud = try encoder.encode(inventoryData)
+
+			let newInventoryForCloud = CKRecord(recordType: "Inventory", recordID: CKRecord.ID(recordName: "InventoryData"))
+
+			newInventoryForCloud.setValue(dataEncodedForCloud, forKey: "inventoryData")
+
+			database.save(newInventoryForCloud) { (record, error) in
+				guard record != nil else { return }
+				print("saved inventory to cloud \(record.debugDescription)", error)
+			}
+		}
+		catch {
+			print(error)
+		}
+
 	}
 
 }

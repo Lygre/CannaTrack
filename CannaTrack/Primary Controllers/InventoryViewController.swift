@@ -133,10 +133,12 @@ class InventoryViewController: UIViewController {
 
 	@IBAction func saveInventoryToCloudClicked(_ sender: Any) {
 		saveInventoryToCloud(inventory: masterInventory)
+
 	}
 
 	@IBAction func loadInventoryFromCloudClicked(_ sender: Any) {
-		queryCloudDatabase()
+//		queryCloudDatabase()
+		fetchInventoryFromCloud()
 	}
 
 }
@@ -195,7 +197,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			let dateString: String = {
 				dateFormatter.timeStyle = .none
 				dateFormatter.dateStyle = .short
-				guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
+				guard let openedProductDate = inventoryItem.dateOpened else {
 					return "Unopened"
 				}
 				return dateFormatter.string(from: openedProductDate)

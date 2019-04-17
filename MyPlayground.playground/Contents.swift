@@ -73,3 +73,8 @@ func saveUserDataTextField(with dataToWriteFromTextField: String) {
 		print(error)
 	}
 }
+
+let dates: [Date] = [Date(), Date(timeIntervalSinceReferenceDate: TimeInterval(exactly: 8.0)!)]
+dates.sorted { (date, otherDate) -> Bool in
+	return date > otherDate
+}

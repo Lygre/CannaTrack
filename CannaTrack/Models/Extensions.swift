@@ -37,8 +37,7 @@ func saveInventoryToCloud(inventory: Inventory) {
 
 		let dataEncodedForCloud = try encoder.encode(inventoryData)
 
-		let newInventoryForCloud = CKRecord(recordType: "Inventory")
-
+		let newInventoryForCloud = CKRecord(recordType: "Inventory", recordID: .init(recordName: "InventoryData"))
 		newInventoryForCloud.setValue(dataEncodedForCloud, forKey: "inventoryData")
 
 		database.save(newInventoryForCloud) { (record, error) in
@@ -69,15 +68,40 @@ func queryCloudDatabase() {
 	database.perform(query, inZoneWith: nil) { (recordsCompletion, _) in
 		guard let records = recordsCompletion else { return }
 
+		guard let latestRecord = records.sorted(by: { (record, otherRecord) -> Bool in
+			let recordOneDate: Date = {
+				var dateToReturn: Date = Date()
+				if let recOneModDate = record.modificationDate {
+					return recOneModDate
+				} else {
+					if let createDate = record.creationDate {
+						return createDate
+					}
+				}
+				return dateToReturn
+			}()
+			let recordTwoDate: Date = {
+				var dateToReturn: Date = Date()
+				if let recTwoModDate = otherRecord.modificationDate {
+					return recTwoModDate
+				} else {
+					if let createDate = otherRecord.creationDate {
+						return createDate
+					} else { print ("problem in cloud query filter") }
+				}
+				return dateToReturn
+			}()
+			return recordOneDate > recordTwoDate
+		}).first else { return }
+
 		let properyListDecoder = PropertyListDecoder()
 
-//		var intermediaryProductArray: [Product] = []
-//		records.
 		do {
-			if let recordData = records.first?.value(forKey: "inventoryData") as? Data {
-				let retrievedInventory = try properyListDecoder.decode([Product].self, from: recordData)
-//				intermediaryProductArray = retrievedInventory
-//				print(retrievedInventory)
+
+			if let latestRecordToRestore = latestRecord.value(forKey: "inventoryData") as? Data {
+
+				let retrievedInventory = try properyListDecoder.decode([Product].self, from: latestRecordToRestore)
+//
 				DispatchQueue.main.async {
 					masterInventory.productArray = retrievedInventory
 				}
@@ -87,12 +111,51 @@ func queryCloudDatabase() {
 			print(error)
 		}
 
-		//DispatchQueue.main.async for anything done here after loading
-
 
 	}
 }
 
+func fetchInventoryFromCloud() {
+	let fetchOperation = CKFetchRecordsOperation(recordIDs: [CKRecord.ID(recordName: "InventoryData")])
+	fetchOperation.desiredKeys = [CKRecord.FieldKey(stringLiteral: "inventoryData")]
+	fetchOperation.perRecordCompletionBlock = {(record, _, error) in
+		guard let record = record else { return }
+		let properyListDecoder = PropertyListDecoder()
+
+		do {
+
+			if let latestRecordToRestore = record.value(forKey: "inventoryData") as? Data {
+
+				let retrievedInventory = try properyListDecoder.decode([Product].self, from: latestRecordToRestore)
+				print(record, retrievedInventory)
+				masterInventory.productArray = retrievedInventory
+			}
+		}
+		catch {
+			print(error)
+		}
+	}
+
+	database.fetch(withRecordID: CKRecord.ID(recordName: "InventoryData")) { (record, error) in
+		guard let record = record else { return }
+		let properyListDecoder = PropertyListDecoder()
+
+		do {
+			if let latestRecordToRestore = record.value(forKey: "inventoryData") as? Data {
+
+				let retrievedInventory = try properyListDecoder.decode([Product].self, from: latestRecordToRestore)
+				print(record, retrievedInventory)
+				DispatchQueue.main.async {
+					masterInventory.productArray = retrievedInventory
+				}
+			}
+		}
+		catch {
+			print(error)
+		}
+	}
+
+}
 
 extension UILabel {
 
