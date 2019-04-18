@@ -180,6 +180,7 @@ class ProductDetailViewController: UIViewController {
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a product item") }
 			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
+			dose.saveDoseLogToCloud()
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1

@@ -16,7 +16,7 @@ class Inventory: Codable {
 		didSet(newValue) {
 		//implement writing user data here
 			print("value set; writing to user data")
-			saveInventoryToCloud()
+			CannaTrackSpecial.saveInventoryToCloud(inventory: self)
 			writeInventoryToUserData()
 		}
 
@@ -101,6 +101,7 @@ extension Inventory {
 
 extension Inventory {
 	func saveInventoryToCloud() {
+		let database = CKContainer.default().privateCloudDatabase
 		let encoder = PropertyListEncoder()
 		do {
 

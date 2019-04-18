@@ -27,9 +27,10 @@ var globalMasterInventory: [Product] {
 	}
 }
 
-let database = CKContainer.default().privateCloudDatabase
 
 func saveInventoryToCloud(inventory: Inventory) {
+	let database = CKContainer.default().privateCloudDatabase
+
 	let encoder = PropertyListEncoder()
 	do {
 
@@ -37,12 +38,12 @@ func saveInventoryToCloud(inventory: Inventory) {
 
 		let dataEncodedForCloud = try encoder.encode(inventoryData)
 
-		let newInventoryForCloud = CKRecord(recordType: "Inventory", recordID: .init(recordName: "InventoryData"))
+		let newInventoryForCloud = CKRecord(recordType: "Inventory", recordID: CKRecord.ID(recordName: "InventoryData"))
 		newInventoryForCloud.setValue(dataEncodedForCloud, forKey: "inventoryData")
 
 		database.save(newInventoryForCloud) { (record, error) in
 			guard record != nil else { return }
-			print("saved inventory to cloud \(record.debugDescription)", error)
+			print("saved inventory to cloud \(record.debugDescription)")
 		}
 	}
 	catch {
@@ -52,6 +53,8 @@ func saveInventoryToCloud(inventory: Inventory) {
 }
 
 func saveProductToCloud(product: Product) {
+	let database = CKContainer.default().privateCloudDatabase
+
 	let newProduct = CKRecord(recordType: "Product")
 	newProduct.setValue(product.dateOpened, forKey: "productTestDate")
 
@@ -64,6 +67,8 @@ func saveProductToCloud(product: Product) {
 
 
 func queryCloudDatabase() {
+	let database = CKContainer.default().privateCloudDatabase
+
 	let query = CKQuery(recordType: "Inventory", predicate: NSPredicate(value: true))
 	database.perform(query, inZoneWith: nil) { (recordsCompletion, _) in
 		guard let records = recordsCompletion else { return }
@@ -116,18 +121,21 @@ func queryCloudDatabase() {
 }
 
 func fetchInventoryFromCloud() {
+	let database = CKContainer.default().privateCloudDatabase
+
 	let fetchOperation = CKFetchRecordsOperation(recordIDs: [CKRecord.ID(recordName: "InventoryData")])
 	fetchOperation.desiredKeys = [CKRecord.FieldKey(stringLiteral: "inventoryData")]
+
 	fetchOperation.perRecordCompletionBlock = {(record, _, error) in
-		guard let record = record else { return }
+		guard let recordToEncode = record else { return }
 		let properyListDecoder = PropertyListDecoder()
 
 		do {
 
-			if let latestRecordToRestore = record.value(forKey: "inventoryData") as? Data {
+			if let latestRecordToRestore = recordToEncode.value(forKey: "inventoryData") as? Data {
 
 				let retrievedInventory = try properyListDecoder.decode([Product].self, from: latestRecordToRestore)
-				print(record, retrievedInventory)
+				print(recordToEncode, retrievedInventory)
 				masterInventory.productArray = retrievedInventory
 			}
 		}
@@ -135,6 +143,9 @@ func fetchInventoryFromCloud() {
 			print(error)
 		}
 	}
+	database.add(fetchOperation)
+
+//	fetchOperation.
 
 	database.fetch(withRecordID: CKRecord.ID(recordName: "InventoryData")) { (record, error) in
 		guard let record = record else { return }

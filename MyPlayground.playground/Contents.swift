@@ -1,4 +1,5 @@
 import UIKit
+import CloudKit
 
 var str = "Hello, playground"
 
@@ -78,3 +79,49 @@ let dates: [Date] = [Date(), Date(timeIntervalSinceReferenceDate: TimeInterval(e
 dates.sorted { (date, otherDate) -> Bool in
 	return date > otherDate
 }
+
+var record: CKRecord?
+var data: Data?
+
+struct CstObj {
+	var name: String
+}
+
+func saveDoseToCloud() {
+
+	let newDose = CKRecord(recordType: "Dose")
+
+//	let objToEncode = CstObj(name: "myName")
+
+	//archive the ckrecord to nsdata
+	var archivedData = Data()
+	print(archivedData)
+	let archiver = NSKeyedArchiver(requiringSecureCoding: true)
+	newDose["content"] = Data()
+	newDose.encodeSystemFields(with: archiver)
+	archiver.finishEncoding()
+	archivedData = archiver.encodedData
+	//store data locally? where?
+	print(archivedData)
+
+	data = archivedData
+
+}
+
+
+func loadDoseFromData(data: Data) -> CKRecord? {
+	var record: CKRecord?
+
+	let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+	unarchiver.requiresSecureCoding = true
+	do {
+		record = CKRecord(coder: unarchiver)
+	}
+
+
+	return record
+
+}
+saveDoseToCloud()
+
+loadDoseFromData(data: data!)

@@ -8,7 +8,7 @@
 
 import UIKit
 import JTAppleCalendar
-
+import CloudKit
 
 var doseLogDictionaryGLOBAL: [Dose] = []
 
@@ -28,6 +28,8 @@ class CalendarLogViewController: UIViewController {
 	let tableCellIdentifier: String = "DoseCell"
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
+
+	var doses = [CKRecord]()
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
 	var selectedDate: Date? {

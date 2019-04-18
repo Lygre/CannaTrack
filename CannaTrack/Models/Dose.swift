@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import JTAppleCalendar
+import CloudKit
 
 class Dose: Codable {
 
@@ -76,14 +77,52 @@ extension Dose {
 		guard let constructedDateKey: Date = userCalendar.date(from: componentsForDateKey) else { return }
 
 		doseLogDictionaryGLOBAL.append(dose)
+//		saveDoseLogToCloud(dose: dose)
 		saveDoseCalendarInfo()
-//		if doseLogDictionaryGLOBAL.index(forKey: constructedDateKey) != nil {
-//			//add to doseLog master global dictionary
-//			doseLogDictionaryGLOBAL[constructedDateKey]?.append(dose)
-//		} else {
-//			doseLogDictionaryGLOBAL[constructedDateKey] = [dose]
-//		}
+
 
 	}
+
+
+	func saveDoseLogToCloud() {
+		let newDose = CKRecord(recordType: "Dose")
+
+
+		//archive the ckrecord to nsdata
+		var archivedData = Data()
+
+		let archiver = NSKeyedArchiver(requiringSecureCoding: true)
+		let encoder = PropertyListEncoder()
+
+		let doseData: Data = {
+			do {
+				let data = try encoder.encode(self)
+				return data
+			}
+			catch { print(error); return Data() }
+		}()
+
+		newDose["DoseData"] = doseData
+		newDose.encodeSystemFields(with: archiver)
+		newDose.encode(with: archiver)
+		archiver.finishEncoding()
+		//this works, and the encoded CKRecord data is right here [archivedData]
+		archivedData = archiver.encodedData
+
+//		UserDefaults.standard.set(archivedData, forKey: )
+
+
+		let database = CKContainer.default().publicCloudDatabase
+
+		database.save(newDose) { (record, error) in
+			if error == nil {
+				print("dose saved to publicCloudDatabase in Dose.swift method")
+			}
+		}
+
+	}
+
+
+
 
 }
