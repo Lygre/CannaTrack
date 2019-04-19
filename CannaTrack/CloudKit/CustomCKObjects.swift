@@ -14,46 +14,47 @@
 
 import CloudKit
 
-enum CloudKitNoteError : Error {
-	case noteNotFound
+enum CloudKitCannabisProductError : Error {
+	case productNotFound
 	case newerVersionAvailable
 	case unexpected
 }
 
-public protocol CloudKitNoteDelegate {
-	func cloudKitNoteChanged(note: CloudKitNote)
+public protocol CloudKitCannabisProductDelegate {
+	func cloudKitCannabisProductChanged(note: CloudKitCannabisProduct)
 }
 
-public class CloudKitNote : CloudKitNoteDatabaseDelegate {
+public class CloudKitCannabisProduct : CloudKitCannabisDatabaseDelegate {
 
-	public var delegate: CloudKitNoteDelegate?
+	public var delegate: CloudKitCannabisProductDelegate?
 	private(set) var text: String?
 	private(set) var modified: Date?
+//	private(set)
 
 	private let recordName = "note"
 	private let version = 1
 	private var noteRecord: CKRecord?
 
 	public init() {
-		CloudKitNoteDatabase.shared.delegate = self
+		CloudKitCannabisDatabase.shared.delegate = self
 	}
 
 	// Map from CKRecord to our native data fields
 	private func syncToRecord(record: CKRecord) -> (String?, Date?, Error?) {
 		let version = record["version"] as? NSNumber
 		guard version != nil else {
-			return (nil, nil, CloudKitNoteError.unexpected)
+			return (nil, nil, CloudKitCannabisProductError.unexpected)
 		}
 		guard version!.intValue <= self.version else {
 			// Simple example of a version check, in case the user has
 			// has updated the client on another device but not this one.
 			// A possible response might be to prompt the user to see
 			// if the update is available on this device as well.
-			return (nil, nil, CloudKitNoteError.newerVersionAvailable)
+			return (nil, nil, CloudKitCannabisProductError.newerVersionAvailable)
 		}
 		let textAsset = record["text"] as? CKAsset
 		guard textAsset != nil else {
-			return (nil, nil, CloudKitNoteError.noteNotFound)
+			return (nil, nil, CloudKitCannabisProductError.productNotFound)
 		}
 
 		// CKAsset data is stored as a local temporary file. Read it
@@ -72,8 +73,8 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 
 	// Load a Note from iCloud
 	public func load(completion: @escaping (String?, Date?, Error?) -> Void) {
-		let noteDB = CloudKitNoteDatabase.shared
-		noteDB.loadRecord(name: recordName) { (record, error) in
+		let cannabisDB = CloudKitCannabisDatabase.shared
+		cannabisDB.loadRecord(name: recordName) { (record, error) in
 			guard error == nil else {
 				guard let ckerror = error as? CKError else {
 					completion(nil, nil, error)
@@ -82,14 +83,14 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 				if ckerror.isRecordNotFound() {
 					// This typically means we just haven’t saved it yet,
 					// for example the first time the user runs the app.
-					completion(nil, nil, CloudKitNoteError.noteNotFound)
+					completion(nil, nil, CloudKitCannabisProductError.productNotFound)
 					return
 				}
 				completion(nil, nil, error)
 				return
 			}
 			guard let record = record else {
-				completion(nil, nil, CloudKitNoteError.unexpected)
+				completion(nil, nil, CloudKitCannabisProductError.unexpected)
 				return
 			}
 
@@ -105,8 +106,8 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 	public func save(text: String, modified: Date, completion: @escaping (Error?) -> Void) {
 		guard let record = self.noteRecord else {
 			// We don’t already have a record. See if there’s one up on iCloud
-			let noteDB = CloudKitNoteDatabase.shared
-			noteDB.loadRecord(name: recordName) { record, error in
+			let cannabisDB = CloudKitCannabisDatabase.shared
+			cannabisDB.loadRecord(name: recordName) { record, error in
 				if let error = error {
 					guard let ckerror = error as? CKError else {
 						completion(error)
@@ -118,13 +119,13 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 					}
 					// No record up on iCloud, so we’ll start with a
 					// brand new record.
-					let recordID = CKRecord.ID(recordName: self.recordName, zoneID: noteDB.zoneID!)
+					let recordID = CKRecord.ID(recordName: self.recordName, zoneID: cannabisDB.zoneID!)
 					self.noteRecord = CKRecord(recordType: "note", recordID: recordID)
 					self.noteRecord?["version"] = NSNumber(value:self.version)
 				}
 				else {
 					guard record != nil else {
-						completion(CloudKitNoteError.unexpected)
+						completion(CloudKitCannabisProductError.unexpected)
 						return
 					}
 					self.noteRecord = record
@@ -172,7 +173,7 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 				self.modified = modified
 
 				// Let the UI know the Note has been updated.
-				self.delegate?.cloudKitNoteChanged(note: self)
+				self.delegate?.cloudKitCannabisProductChanged(note: self)
 				completion(nil)
 				return
 			}
@@ -186,7 +187,7 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 	// This internal saveRecord method will be called repeatedly if needed in the case
 	// of a merge. In those cases we don’t have to repeat the CKRecord setup.
 	private func saveRecord(record: CKRecord, completion: @escaping (Bool, Error?) -> Void) {
-		let noteDB = CloudKitNoteDatabase.shared
+		let noteDB = CloudKitCannabisDatabase.shared
 		noteDB.saveRecord(record: record) { error in
 			guard error == nil else {
 				guard let ckerror = error as? CKError else {
@@ -229,7 +230,7 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 	}
 
 	// CloudKitNoteDatabaseDelegate call:
-	public func cloudKitNoteRecordChanged(record: CKRecord) {
+	public func cloudKitCannabisProductRecordChanged(record: CKRecord) {
 		if record.recordID == self.noteRecord?.recordID {
 			let (text, modified, error) = self.syncToRecord(record: record)
 			guard error == nil else {
@@ -239,7 +240,7 @@ public class CloudKitNote : CloudKitNoteDatabaseDelegate {
 			self.noteRecord = record
 			self.text = text
 			self.modified = modified
-			self.delegate?.cloudKitNoteChanged(note: self)
+			self.delegate?.cloudKitCannabisProductChanged(note: self)
 		}
 	}
 }

@@ -14,19 +14,19 @@
 
 import CloudKit
 
-public protocol CloudKitNoteDatabaseDelegate {
-	func cloudKitNoteRecordChanged(record: CKRecord)
+public protocol CloudKitCannabisDatabaseDelegate {
+	func cloudKitCannabisProductRecordChanged(record: CKRecord)
 }
 
-public class CloudKitNoteDatabase {
+public class CloudKitCannabisDatabase {
 
-	static let shared = CloudKitNoteDatabase()
+	static let shared = CloudKitCannabisDatabase()
 	private init() {
 		let zone = CKRecordZone(zoneName: "note-zone")
 		zoneID = zone.zoneID
 	}
 
-	public var delegate: CloudKitNoteDatabaseDelegate?
+	public var delegate: CloudKitCannabisDatabaseDelegate?
 	public var zoneID: CKRecordZone.ID?
 
 	// Create a custom zone to contain our note records. We only have to do this once.
@@ -49,8 +49,9 @@ public class CloudKitNoteDatabase {
 	// Create the CloudKit subscription we’ll use to receive notification of changes.
 	// The SubscriptionID lets us identify when an incoming notification is associated
 	// with the query we created.
-	public let subscriptionID = "cloudkit-note-changes"
+	public let subscriptionID = "cloudkit-product-changes"
 	private let subscriptionSavedKey = "ckSubscriptionSaved"
+
 	public func saveSubscription() {
 		// Use a local flag to avoid saving the subscription more than once.
 		let alreadySaved = UserDefaults.standard.bool(forKey: subscriptionSavedKey)
@@ -62,7 +63,7 @@ public class CloudKitNoteDatabase {
 		// records you can specify a more interesting NSPredicate here.
 		// For our purposes we’ll be notified of all changes.
 		let predicate = NSPredicate(value: true)
-		let subscription = CKQuerySubscription(recordType: "note",
+		let subscription = CKQuerySubscription(recordType: "Product",
 											   predicate: predicate,
 											   subscriptionID: subscriptionID,
 											   options: [.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
@@ -98,13 +99,13 @@ public class CloudKitNoteDatabase {
 				completion(nil, error)
 				return
 			}
-			guard let noteRecord = records?[recordID] else {
+			guard let productRecord = records?[recordID] else {
 				// Didn't get the record we asked about?
 				// This shouldn’t happen but we’ll be defensive.
 				completion(nil, CKError.unknownItem as? Error)
 				return
 			}
-			completion(noteRecord, nil)
+			completion(productRecord, nil)
 		}
 		operation.qualityOfService = .utility
 
@@ -167,7 +168,7 @@ public class CloudKitNoteDatabase {
 		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID!], optionsByRecordZoneID: optionsMap)
 		operation.fetchAllChanges = true
 		operation.recordChangedBlock = { record in
-			self.delegate?.cloudKitNoteRecordChanged(record: record)
+			self.delegate?.cloudKitCannabisProductRecordChanged(record: record)
 		}
 		operation.recordZoneChangeTokensUpdatedBlock = { zoneID, changeToken, data in
 			guard let changeToken = changeToken else {
