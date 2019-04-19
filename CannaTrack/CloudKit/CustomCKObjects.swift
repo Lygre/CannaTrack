@@ -29,9 +29,9 @@ public class CloudKitCannabisProduct : CloudKitCannabisDatabaseDelegate {
 	public var delegate: CloudKitCannabisProductDelegate?
 	private(set) var text: String?
 	private(set) var modified: Date?
-//	private(set)
+//	text, and version are our defined fields
 
-	private let recordName = "note"
+	private let recordName = "Product"
 	private let version = 1
 	private var noteRecord: CKRecord?
 

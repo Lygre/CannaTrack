@@ -66,7 +66,7 @@ public class CloudKitCannabisDatabase {
 		let subscription = CKQuerySubscription(recordType: "Product",
 											   predicate: predicate,
 											   subscriptionID: subscriptionID,
-											   options: [.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
+											   options: [CKQuerySubscription.Options.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
 
 		// We set shouldSendContentAvailable to true to indicate we want CloudKit
 		// to use silent pushes, which won’t bother the user (and which don’t require
@@ -162,10 +162,11 @@ public class CloudKitCannabisDatabase {
 		if changeTokenData != nil {
 			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
 		}
-		let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
+		let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
 		options.previousServerChangeToken = changeToken
-		let optionsMap = [zoneID!: options]
-		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID!], optionsByRecordZoneID: optionsMap)
+		let optionsMap: [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]? = [zoneID!: options]
+		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID!], configurationsByRecordZoneID: optionsMap)
+
 		operation.fetchAllChanges = true
 		operation.recordChangedBlock = { record in
 			self.delegate?.cloudKitCannabisProductRecordChanged(record: record)
