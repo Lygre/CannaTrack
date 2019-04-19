@@ -29,18 +29,43 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var doses = [CKRecord]()
+	var doseCKRecords = [CKRecord]() {
+		didSet(newRecords) {
+			for record in newRecords {
+				guard let data = record.value(forKey: "DoseData") as? Data else { return }
+				print(data)
+//				let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
+//				unarchiver.requiresSecureCoding = true
+//				unarchiver.decodeData()
+				let propertyListDecoder = PropertyListDecoder()
+				do {
+					let decodedDose = try propertyListDecoder.decode(Dose.self, from: data)
+					doseLogDictionaryGLOBAL.append(decodedDose)
+//					doseArray.append(decodedDose)
+				}
+				catch {
+					print(error)
+				}
+			}
+			updateDosesForSelectedDate()
+//			doseLogDictionaryGLOBAL = doseArray
+		}
+	}
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
+	fileprivate func updateDosesForSelectedDate() {
+		self.dosesForDate = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
+			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
+			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
+			return dateFromDose == currentDate
+
+		})
+		print("doses for date set")
+	}
+
 	var selectedDate: Date? {
 		didSet {
-			self.dosesForDate = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
-				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
-				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
-				return dateFromDose == currentDate
-
-			})
-			print("doses for date set")
+			updateDosesForSelectedDate()
 		}
 	}
 
@@ -72,9 +97,11 @@ class CalendarLogViewController: UIViewController {
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
 
-		loadDoseCalendarInfo()
+		queryCloudForDoseRecords()
+//		loadDoseCalendarInfo()
 		// Do any additional setup after loading the view.
 		setupDoseLoggingDateFormatter()
+
 
     }
 
@@ -123,6 +150,10 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
+	@IBAction func refreshDoseLogDataClicked(_ sender: Any) {
+		queryCloudForDoseRecords()
+		print("querying cloud for dose records")
+	}
 
 
 
@@ -349,6 +380,28 @@ extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
 
 
 
+
+
+}
+
+
+extension CalendarLogViewController {
+
+	fileprivate func queryCloudForDoseRecords() {
+		doseCKRecords = []
+		let database = CKContainer.default().privateCloudDatabase
+
+		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
+		database.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
+			guard let doseRecords = recordsRetrieved else { return }
+			self.doseCKRecords = doseRecords
+			DispatchQueue.main.async {
+				print("dose records loaded: # \(doseRecords.count)")
+				
+			}
+		}
+
+	}
 
 
 }

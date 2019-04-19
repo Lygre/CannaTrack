@@ -1382,11 +1382,18 @@
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
                     </view>
                     <navigationItem key="navigationItem" id="tNb-gC-NIf">
-                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="sDr-BV-U6J">
-                            <connections>
-                                <segue destination="Xss-jA-LBU" kind="presentation" identifier="LogDoseFromCalendarSegue" modalPresentationStyle="pageSheet" id="cGB-W6-WAb"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="compose" id="sDr-BV-U6J">
+                                <connections>
+                                    <segue destination="Xss-jA-LBU" kind="presentation" identifier="LogDoseFromCalendarSegue" modalPresentationStyle="pageSheet" id="cGB-W6-WAb"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="xqf-e1-LdD">
+                                <connections>
+                                    <action selector="refreshDoseLogDataClicked:" destination="2LI-yC-dew" id="xmk-Qj-zRS"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="calendarCollectionView" destination="LyD-gB-HQ3" id="qHM-mQ-iRS"/>

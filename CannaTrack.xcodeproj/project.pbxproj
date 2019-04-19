@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */; };
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
+		9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F082208226A261000E8C1DC /* CloudKitSingleton.swift */; };
+		9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */; };
+		9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */; };
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
 		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
 		9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */; };
@@ -54,6 +57,9 @@
 /* Begin PBXFileReference section */
 		4E48B5F0937AEF405ACDD85B /* Pods-CannaTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.release.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.release.xcconfig"; sourceTree = "<group>"; };
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
+		9F082208226A261000E8C1DC /* CloudKitSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSingleton.swift; sourceTree = "<group>"; };
+		9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
+		9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCKObjects.swift; sourceTree = "<group>"; };
 		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLogViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +141,16 @@
 				4E48B5F0937AEF405ACDD85B /* Pods-CannaTrack.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		9F08220A226A265300E8C1DC /* CloudKit */ = {
+			isa = PBXGroup;
+			children = (
+				9F082208226A261000E8C1DC /* CloudKitSingleton.swift */,
+				9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */,
+				9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */,
+			);
+			path = CloudKit;
 			sourceTree = "<group>";
 		};
 		9F2FDF69225A7FC800ECC26B /* Reusable Custom Subclasses */ = {
@@ -233,6 +249,7 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
+				9F08220A226A265300E8C1DC /* CloudKit */,
 				9FAB54D2226610D20012248F /* CannaTrack.entitlements */,
 				9F4D2DA7222C40B0002EDA0A /* tessdata */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
@@ -397,6 +414,7 @@
 				9F3B809B224E77AB0059294B /* CustomCollectionReusableView.swift in Sources */,
 				9F2FDF6B225A802200ECC26B /* DoseProductsTableView.swift in Sources */,
 				9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */,
+				9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */,
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
@@ -414,6 +432,7 @@
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
 				9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
+				9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */,
 				9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */,
 				9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */,
 				9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */,
@@ -425,6 +444,7 @@
 				9F3B809D224E96610059294B /* Dose.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 				9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */,
+				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

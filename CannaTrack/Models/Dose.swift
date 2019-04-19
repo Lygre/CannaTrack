@@ -112,11 +112,11 @@ extension Dose {
 //		UserDefaults.standard.set(archivedData, forKey: )
 
 
-		let database = CKContainer.default().publicCloudDatabase
+		let database = CKContainer.default().privateCloudDatabase
 
 		database.save(newDose) { (record, error) in
 			if error == nil {
-				print("dose saved to publicCloudDatabase in Dose.swift method")
+				print("dose saved to private database in Dose.swift method")
 			}
 		}
 
