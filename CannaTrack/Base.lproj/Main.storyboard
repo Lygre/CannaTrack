@@ -1580,6 +1580,7 @@
                                             <outlet property="productDoseCountLabel" destination="Khe-5w-ecn" id="hbq-vP-gLM"/>
                                             <outlet property="productStrainLabel" destination="mxT-P8-QY3" id="zUs-9I-41G"/>
                                             <outlet property="productTypeLabel" destination="ZWt-vn-1Mk" id="tfW-XX-TIm"/>
+                                            <segue destination="F6T-cV-1Hw" kind="show" id="3zQ-9u-F0C"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1596,6 +1597,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Log Mass" prompt="Add mass of Products used" id="Jsx-fq-j6G">
                         <barButtonItem key="backBarButtonItem" title="Choose Products" id="br3-hz-rH4"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="jaU-6p-B6L"/>
                     </navigationItem>
                     <connections>
                         <outlet property="doseProductsTableView" destination="XAw-4y-TcJ" id="8uc-al-PME"/>
@@ -1605,20 +1607,68 @@
             </objects>
             <point key="canvasLocation" x="4160.8695652173919" y="3205.5803571428569"/>
         </scene>
-        <!--View Controller-->
+        <!--Dose Mass View Controller-->
         <scene sceneID="PG0-KL-6TN">
             <objects>
-                <viewController id="F6T-cV-1Hw" sceneMemberID="viewController">
+                <viewController id="F6T-cV-1Hw" customClass="DoseMassViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WdN-Hp-Jee">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="Qcs-gz-Yux">
+                                <rect key="frame" x="0.0" y="156" width="414" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass of Product in Dose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nj-pg-drX">
+                                        <rect key="frame" x="0.0" y="5" width="187" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ATm-m8-yXE">
+                                        <rect key="frame" x="247" y="0.0" width="167" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="TJM-Qi-HKv">
+                                <rect key="frame" x="158.5" y="88" width="97.5" height="53"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProductType" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcL-XC-F2A">
+                                        <rect key="frame" x="0.0" y="0.0" width="97.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="StrainName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwf-fb-mhB">
+                                        <rect key="frame" x="3.5" y="32.5" width="90" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Qcs-gz-Yux" firstAttribute="width" secondItem="WdN-Hp-Jee" secondAttribute="width" id="Vpg-0O-cUQ"/>
+                            <constraint firstItem="TJM-Qi-HKv" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="hCi-c6-Yuc"/>
+                            <constraint firstItem="Qcs-gz-Yux" firstAttribute="top" secondItem="TJM-Qi-HKv" secondAttribute="bottom" constant="15" id="m0x-zd-eX0"/>
+                            <constraint firstItem="Qcs-gz-Yux" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="pWQ-e0-T4e"/>
+                            <constraint firstItem="TJM-Qi-HKv" firstAttribute="top" secondItem="Qnj-8p-Zxg" secondAttribute="top" id="toO-3M-nmt"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Qnj-8p-Zxg"/>
                     </view>
+                    <connections>
+                        <outlet property="productMassTextField" destination="ATm-m8-yXE" id="OSF-mK-oCI"/>
+                        <outlet property="productTypeLabel" destination="JcL-XC-F2A" id="c6l-8p-hQp"/>
+                        <outlet property="strainNameLabel" destination="fwf-fb-mhB" id="aae-Hd-uHb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dIk-Qz-dkd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5068" y="3206"/>
+            <point key="canvasLocation" x="5066.666666666667" y="3205.5803571428569"/>
         </scene>
         <!--JTCal-->
         <scene sceneID="NWS-fX-43d">

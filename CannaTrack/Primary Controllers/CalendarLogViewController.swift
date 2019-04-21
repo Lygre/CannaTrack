@@ -12,8 +12,8 @@ import CloudKit
 
 var doseLogDictionaryGLOBAL: [Dose] = []
 
-
-
+let privateDatabase = CKContainer.default().privateCloudDatabase
+let doseZone = CKRecordZone(zoneName: "DoseZone")
 
 
 
@@ -29,27 +29,10 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var doseCKRecords = [CKRecord]() {
-		didSet(newRecords) {
-			for record in newRecords {
-				guard let data = record.value(forKey: "DoseData") as? Data else { return }
-				print(data)
-//				let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
-//				unarchiver.requiresSecureCoding = true
-//				unarchiver.decodeData()
-				let propertyListDecoder = PropertyListDecoder()
-				do {
-					let decodedDose = try propertyListDecoder.decode(Dose.self, from: data)
-					doseLogDictionaryGLOBAL.append(decodedDose)
-//					doseArray.append(decodedDose)
-				}
-				catch {
-					print(error)
-				}
-			}
-			updateDosesForSelectedDate()
-//			doseLogDictionaryGLOBAL = doseArray
-		}
+	var doseCKRecords = [CKRecord]().filter { (someRecord) -> Bool in
+		let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+		let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+		return dateFromDose == currentDate
 	}
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
@@ -60,6 +43,9 @@ class CalendarLogViewController: UIViewController {
 			return dateFromDose == currentDate
 
 		})
+		DispatchQueue.main.async {
+			self.doseTableView.reloadData()
+		}
 		print("doses for date set")
 	}
 
@@ -91,12 +77,22 @@ class CalendarLogViewController: UIViewController {
 
 
 
+	fileprivate func savePrivateDatabase() {
+		privateDatabase.save(doseZone) { (zone, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else { print("zone was saved")}
+			}
+		}
+	}
+
 	override func viewDidLoad() {
         super.viewDidLoad()
 
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
-
+		savePrivateDatabase()
 		queryCloudForDoseRecords()
 //		loadDoseCalendarInfo()
 		// Do any additional setup after loading the view.
@@ -248,7 +244,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 extension CalendarLogViewController {
 
 	func sharedFunctionToConfigureCell(cell: JTAppleCell, cellState: CellState, date: Date) {
-		print("do nothing; not implemented")
+//		print("do nothing; not implemented")
 //		cell.layer.cornerRadius = cell.frame.width / 2
 //		cell.layer.masksToBounds = true
 
@@ -324,20 +320,31 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return dosesForDate?.count ?? 0
+		return doseCKRecords.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier) as? DoseCalendarTableViewCell else { fatalError("could not cast a calendar table view cell") }
 		guard let doseArray = dosesForDate else { return cell }
+
 		let formatter = DateFormatter()
 		formatter.dateStyle = .none
 		formatter.timeStyle = .medium
-		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
-		cell.productLabel.text = doseArray[indexPath.row].product.productType.rawValue
-		cell.strainLabel.text = doseArray[indexPath.row].product.strain.name
+		let data = doseCKRecords[indexPath.row]["DoseData"] as! Data
+		let propertylistDecoder = PropertyListDecoder()
 
-		switch doseArray[indexPath.row].product.strain.race {
+		guard let doseForIndex = try? propertylistDecoder.decode(Dose.self, from: data) else { return cell }
+
+		cell.timeLabel.text = formatter.string(from: doseForIndex.timestamp)
+		cell.productLabel.text = doseForIndex.product.productType.rawValue
+		cell.strainLabel.text = doseForIndex.product.strain.name
+
+
+//		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
+//		cell.productLabel.text = doseArray[indexPath.row].product.productType.rawValue
+//		cell.strainLabel.text = doseArray[indexPath.row].product.strain.name
+
+		switch doseForIndex.product.strain.race {
 		case .hybrid:
 			cell.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
@@ -388,15 +395,19 @@ extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
 extension CalendarLogViewController {
 
 	fileprivate func queryCloudForDoseRecords() {
-		doseCKRecords = []
-		let database = CKContainer.default().privateCloudDatabase
 
 		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
-		database.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
-			guard let doseRecords = recordsRetrieved else { return }
-			self.doseCKRecords = doseRecords
+		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
+
 			DispatchQueue.main.async {
-				print("dose records loaded: # \(doseRecords.count)")
+				if let error = error {
+					print(error)
+				} else {
+					self.doseCKRecords = recordsRetrieved ?? []
+					print("dose records loaded: # \(recordsRetrieved?.count)")
+				}
+
+
 				
 			}
 		}

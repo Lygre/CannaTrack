@@ -34,6 +34,7 @@
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F563EC422452BB9003F557A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F563EC322452BB9003F557A /* UserInfo.swift */; };
 		9F5658652241598A0032902E /* ForceTouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */; };
+		9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */; };
 		9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7207BA2236C6AC009D6375 /* DoseViewController.swift */; };
 		9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */; };
 		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
@@ -83,6 +84,7 @@
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F563EC322452BB9003F557A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceTouchGestureRecognizer.swift; sourceTree = "<group>"; };
+		9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseMassViewController.swift; sourceTree = "<group>"; };
 		9F7207BA2236C6AC009D6375 /* DoseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseViewController.swift; sourceTree = "<group>"; };
 		9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDoseProtocol.swift; sourceTree = "<group>"; };
 		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */,
 				9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */,
 				9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */,
+				9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */,
 				9F2FDF70225AC82900ECC26B /* UnknownCollectionViewController.swift */,
 			);
 			path = "Other Views";
@@ -446,6 +449,7 @@
 				9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */,
 				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
+				9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

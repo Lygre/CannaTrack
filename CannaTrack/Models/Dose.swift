@@ -84,42 +84,79 @@ extension Dose {
 	}
 
 
+//	func saveDoseLogToCloud() {
+//		let newDose = CKRecord(recordType: "Dose")
+//
+//
+//		//archive the ckrecord to nsdata
+//		var archivedData = Data()
+//
+//		let archiver = NSKeyedArchiver(requiringSecureCoding: true)
+//		let encoder = PropertyListEncoder()
+//
+//		let doseData: Data = {
+//			do {
+//				let data = try encoder.encode(self)
+//				return data
+//			}
+//			catch { print(error); return Data() }
+//		}()
+//
+//		newDose["DoseData"] = doseData
+//		newDose.encodeSystemFields(with: archiver)
+//		newDose.encode(with: archiver)
+//		archiver.finishEncoding()
+//		//this works, and the encoded CKRecord data is right here [archivedData]
+//		archivedData = archiver.encodedData
+//
+//		//		UserDefaults.standard.set(archivedData, forKey: )
+//
+//
+//		let database = CKContainer.default().privateCloudDatabase
+//
+//		database.save(newDose) { (record, error) in
+//			if error == nil {
+//				print("dose saved to private database in Dose.swift method")
+//			}
+//		}
+//
+//	}
+
 	func saveDoseLogToCloud() {
 		let newDose = CKRecord(recordType: "Dose")
 
 
 		//archive the ckrecord to nsdata
-		var archivedData = Data()
-
-		let archiver = NSKeyedArchiver(requiringSecureCoding: true)
 		let encoder = PropertyListEncoder()
 
-		let doseData: Data = {
+		let doseData: CKRecordValue = {
 			do {
 				let data = try encoder.encode(self)
-				return data
+				return data as CKRecordValue
 			}
-			catch { print(error); return Data() }
+			catch { print(error); return Data() as CKRecordValue }
 		}()
 
-		newDose["DoseData"] = doseData
-		newDose.encodeSystemFields(with: archiver)
-		newDose.encode(with: archiver)
-		archiver.finishEncoding()
-		//this works, and the encoded CKRecord data is right here [archivedData]
-		archivedData = archiver.encodedData
-
-//		UserDefaults.standard.set(archivedData, forKey: )
-
-
-		let database = CKContainer.default().privateCloudDatabase
-
-		database.save(newDose) { (record, error) in
-			if error == nil {
-				print("dose saved to private database in Dose.swift method")
+		newDose.setObject(doseData, forKey: "DoseData")
+//		privateDatabase.save
+		privateDatabase.save(doseZone) { (recordZone, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Entire DoseZone Saved by Dose.swift method")
+				}
 			}
 		}
-
+		privateDatabase.save(newDose) { (record, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Record was saved in Private DB by Dose.swift method")
+				}
+			}
+		}
 	}
 
 
