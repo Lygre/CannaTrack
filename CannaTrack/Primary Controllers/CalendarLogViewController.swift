@@ -29,11 +29,7 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var doseCKRecords = [CKRecord]().filter { (someRecord) -> Bool in
-		let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
-		let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
-		return dateFromDose == currentDate
-	}
+	var doseCKRecords = [CKRecord]()
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
 	fileprivate func updateDosesForSelectedDate() {
@@ -50,8 +46,27 @@ class CalendarLogViewController: UIViewController {
 	}
 
 	var selectedDate: Date? {
-		didSet {
+		didSet(newlySelectedDate) {
 			updateDosesForSelectedDate()
+			self.recordsForDate = doseCKRecords.filter { (someRecord) -> Bool in
+				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: newlySelectedDate ?? Date())
+				return dateFromDose == currentDate
+			}
+		}
+	}
+
+	var recordsForDate: [CKRecord] {
+		get {
+			let dateRecords = doseCKRecords.filter { (someRecord) -> Bool in
+				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
+				return dateFromDose == currentDate
+			}
+			return dateRecords
+		}
+		set {
+			self.doseTableView.reloadData()
 		}
 	}
 
@@ -320,17 +335,19 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return doseCKRecords.count ?? 0
+		return recordsForDate.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier) as? DoseCalendarTableViewCell else { fatalError("could not cast a calendar table view cell") }
-		guard let doseArray = dosesForDate else { return cell }
+//		guard let doseArray = dosesForDate else { return cell }
 
 		let formatter = DateFormatter()
 		formatter.dateStyle = .none
 		formatter.timeStyle = .medium
-		let data = doseCKRecords[indexPath.row]["DoseData"] as! Data
+
+		let data = recordsForDate[indexPath.row]["DoseData"] as! Data
+
 		let propertylistDecoder = PropertyListDecoder()
 
 		guard let doseForIndex = try? propertylistDecoder.decode(Dose.self, from: data) else { return cell }
