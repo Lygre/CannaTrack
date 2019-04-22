@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 class Product: Codable {
 
@@ -112,6 +113,33 @@ extension Product {
 	func openProduct() {
 		self.dateOpened = Date()
 		saveCurrentProductInventoryToUserData()
+	}
+
+	func saveNewProductToCloud() {
+		let newProduct = CKRecord(recordType: "Product")
+
+		let encoder = PropertyListEncoder()
+
+		let productData: CKRecordValue = {
+			do {
+				let data = try encoder.encode(self)
+				return data as CKRecordValue
+			}
+			catch { print(error); return Data() as CKRecordValue }
+		}()
+
+		newProduct.setObject(productData, forKey: "ProductData")
+
+		privateDatabase.save(newProduct) { (record, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Record was saved in private DB by Product.swift method")
+				}
+			}
+		}
+
 	}
 
 }

@@ -12,8 +12,6 @@ import CloudKit
 
 var doseLogDictionaryGLOBAL: [Dose] = []
 
-let privateDatabase = CKContainer.default().privateCloudDatabase
-let doseZone = CKRecordZone(zoneName: "DoseZone")
 
 
 

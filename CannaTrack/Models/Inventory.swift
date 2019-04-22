@@ -23,8 +23,8 @@ class Inventory: Codable {
 	}
 
 	init() {
-
-		self.productArray = loadProductInventoryFromUserData()
+		self.productArray = []
+//		self.productArray = loadProductInventoryFromUserData()
 	}
 
 	required init(from decoder: Decoder) throws {

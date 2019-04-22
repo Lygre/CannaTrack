@@ -53,13 +53,19 @@ func saveInventoryToCloud(inventory: Inventory) {
 }
 
 func saveProductToCloud(product: Product) {
-	let database = CKContainer.default().privateCloudDatabase
 
 	let newProduct = CKRecord(recordType: "Product")
+	let properyListEncoder = PropertyListEncoder()
+	do {
+		let encodedProductData = try properyListEncoder.encode(product)
+//		newProduct["ProductData"] =
+	}
+	catch { print(error) }
+
 	newProduct.setValue(product.dateOpened, forKey: "productTestDate")
 
 
-	database.save(newProduct) { (record, _) in
+	privateDatabase.save(newProduct) { (record, _) in
 		guard record != nil else { return }
 		print("saved record with product \(record?.object(forKey: "productTestDate"))")
 	}

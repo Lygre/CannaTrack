@@ -118,12 +118,14 @@ class AddProductUsingTextViewController: UIViewController {
 			let strain = Strain(id: (globalStrainCount + 1), name: productComponentsDictionary["strain"] as! String, race: productComponentsDictionary["strainVariety"] as! StrainVariety, description: nil)
 
 			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
-			saveProductToInventory(product: product)
+			product.saveNewProductToCloud()
+			//			saveProductToInventory(product: product)
 			print(globalMasterInventory)
 		} else {
 			let strain = strainNameResults[0]
 			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
-			saveProductToInventory(product: product)
+			product.saveNewProductToCloud()
+			//			saveProductToInventory(product: product)
 			print(globalMasterInventory)
 		}
 	}

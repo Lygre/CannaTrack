@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CloudKit
 
 
 class InventoryViewController: UIViewController {
@@ -18,6 +18,9 @@ class InventoryViewController: UIViewController {
 
 
 	var dateFormatter = DateFormatter()
+
+
+	var productCKRecords = [CKRecord]()
 
 	var activeCategoryDisplayed: Product.ProductType? {
 		didSet {
@@ -84,8 +87,8 @@ class InventoryViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-
-		updateInventoryCollectionView()
+		queryCloudForProductRecords()
+//		updateInventoryCollectionView()
 //		refreshUI()
 		print(categoriesInInventory)
 		print(currentInventory)
@@ -185,19 +188,23 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		case .product:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: inventoryCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not instantiate inventory collection view cell") }
 
-			guard let inventoryItem = currentInventory?[indexPath.row] else {
+			guard let productForIndex = currentInventory?[indexPath.row] else {
 //				cell.inventoryProductLabel.text = "No Inventory"
 				return cell
 			}
-			cell.inventoryProductLabel.text = inventoryItem.productType.rawValue
-			cell.productStrainNameLabel.text = inventoryItem.strain.name
-			cell.productMassRemainingLabel.text = "\(inventoryItem.mass)"
-			cell.doseCountLabel.text = "\(inventoryItem.numberOfDosesTakenFromProduct)"
+//			let data = productCKRecords[indexPath.row]["ProductData"] as! Data
+//			let properyListDecoder = PropertyListDecoder()
+//			guard let productForIndex = try? properyListDecoder.decode(Product.self, from: data) else { return cell }
+
+			cell.inventoryProductLabel.text = productForIndex.productType.rawValue
+			cell.productStrainNameLabel.text = productForIndex.strain.name
+			cell.productMassRemainingLabel.text = "\(productForIndex.mass)"
+			cell.doseCountLabel.text = "\(productForIndex.numberOfDosesTakenFromProduct)"
 
 			let dateString: String = {
 				dateFormatter.timeStyle = .none
 				dateFormatter.dateStyle = .short
-				guard let openedProductDate = inventoryItem.dateOpened else {
+				guard let openedProductDate = productForIndex.dateOpened else {
 					return "Unopened"
 				}
 				return dateFormatter.string(from: openedProductDate)
@@ -205,7 +212,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			cell.dateOpenedLabel.text = dateString
 
 			//!MARK: - Generalized Cell Setup perform here
-			switch inventoryItem.strain.race {
+			switch productForIndex.strain.race {
 			case .hybrid:
 				cell.backgroundColor = UIColor(named: "hybridColor")
 			case .sativa:
@@ -252,7 +259,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
-			guard let masterInventory = masterProductArray else { return }
+			let masterInventory = globalMasterInventory
 
 			currentInventory = masterInventory.filter({ (productType) -> Bool in
 					productType.productType == activeCategoryDisplayed
@@ -291,11 +298,32 @@ extension InventoryViewController {
 		productsCollectionView.reloadData()
 	}
 
-//	func filterVisibleInventoryByCategory(completion: ([Product],Product.ProductType)->[Product]) -> [Product] {
-////		var filteredProductArray: [Product] = []
-//		return completion(self.currentInventory, Product.ProductType(rawValue: "truShatter"))
-////		return filteredProductArray
-//	}
+	fileprivate func queryCloudForProductRecords() {
+		let query = CKQuery(recordType: "Product", predicate: NSPredicate(value: true))
+		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					self.productCKRecords = recordsRetrieved ?? []
+					var productObjectsArray: [Product] = []
+					for record in self.productCKRecords {
+						let propertyListDecoder = PropertyListDecoder()
+						do {
+							let data = record["ProductData"] as! Data
+							let productToAdd = try propertyListDecoder.decode(Product.self, from: data)
+							productObjectsArray.append(productToAdd)
+						}
+						catch { print(error) }
+					}
+					globalMasterInventory = productObjectsArray
+					self.updateInventoryCollectionView()
+					print("product records loaded: # \(recordsRetrieved?.count)")
+				}
+			}
+		}
+
+	}
 
 }
 
@@ -325,23 +353,6 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
 	}
 
-//	override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//		self.productsCollectionView.collectionViewLayout.invalidateLayout()
-//		super.viewWillTransition(to: size, with: coordinator)
-//	}
 }
 
 
-/*
-extension InventoryViewController: UIViewControllerPreviewingDelegate {
-	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		<#code#>
-	}
-
-	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-		<#code#>
-	}
-
-
-}
-*/
