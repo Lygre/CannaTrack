@@ -420,6 +420,7 @@ extension CalendarLogViewController {
 				} else {
 					self.doseCKRecords = recordsRetrieved ?? []
 					print("dose records loaded: # \(recordsRetrieved?.count)")
+					self.doseTableView.reloadData()
 				}
 
 

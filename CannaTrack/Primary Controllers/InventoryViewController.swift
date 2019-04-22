@@ -126,6 +126,9 @@ class InventoryViewController: UIViewController {
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
 			// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
+			let recordToPass = productCKRecords[indexPath.row]
+
+			productDetailViewController.recordForProduct = recordToPass
 
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.row]
 		}
@@ -323,6 +326,23 @@ extension InventoryViewController {
 			}
 		}
 
+	}
+
+	func deleteProductFromCloud(product: Product) {
+		guard let recordID = product.recordID else { return }
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Record was deleted from InventoryViewController.swift method")
+					guard let indexPathForRecordToRemove = self.productCKRecords.firstIndex(of: CKRecord(recordType: "Product", recordID: recordID)) else { return }
+					self.productCKRecords.remove(at: indexPathForRecordToRemove)
+					self.updateInventoryCollectionView()
+				}
+			}
+		}
 	}
 
 }

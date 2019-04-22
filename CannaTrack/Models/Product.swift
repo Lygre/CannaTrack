@@ -22,6 +22,7 @@ class Product: Codable {
 	var mass: Double
 	var dateOpened: Date?
 	var numberOfDosesTakenFromProduct: Int
+	var recordID: CKRecord.ID?
 
 	init(typeOfProduct: ProductType, strainForProduct: Strain, inGrams massOfProduct: Double) {
 		self.productType = typeOfProduct
@@ -130,16 +131,67 @@ extension Product {
 
 		newProduct.setObject(productData, forKey: "ProductData")
 
+		//assign Product a record ID to fetch and modify it later
+
+
+
 		privateDatabase.save(newProduct) { (record, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error)
 				} else {
+					self.recordID = newProduct.recordID
 					print("Record was saved in private DB by Product.swift method")
 				}
 			}
 		}
 
+	}
+
+	func saveProductChangesToCloud(product: Product) {
+		guard let recordID = product.recordID else { return }
+		let operation = CKModifyRecordsOperation(recordsToSave: [CKRecord(recordType: "Product", recordID: recordID)], recordIDsToDelete: nil)
+		let config = CKModifyRecordsOperation.Configuration()
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+		operation.configuration = config
+
+		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else if let records = savedRecords {
+					print("saved \(records.count) records")
+				}
+			}
+		}
+
+		privateDatabase.add(operation)
+
+
+	}
+
+	func encodeProductAsCKRecordValue() -> CKRecordValue? {
+		let plistEncoder = PropertyListEncoder()
+		let data = try? plistEncoder.encode(self)
+
+		return data as CKRecordValue?
+	}
+
+
+	func deleteProductFromCloud() {
+		guard let recordID = self.recordID else { return }
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Record was deleted from ProductDetailViewController.swift method")
+
+				}
+			}
+		}
 	}
 
 }

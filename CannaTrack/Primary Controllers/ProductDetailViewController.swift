@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import CloudKit
 
 class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
+	var recordForProduct: CKRecord?
+
 	var dateFormatter: DateFormatter = DateFormatter()
 
 	@IBOutlet var productDoseLogTableView: UITableView!
@@ -20,6 +23,10 @@ class ProductDetailViewController: UIViewController {
 	let tableCellIdentifier = "DoseCell"
 
 	var doseArray: [Dose] = []
+
+	var doseCKRecords = [CKRecord]()
+
+
 	let typeCases: [Product.ProductType] = [.capsuleBottle, .co2VapePenCartridge, .nasalSpray, .oralSyringe, .rsoSyringe, .tinctureDropletBottle, .topicalCream, .topicalLotion, .topicalSunscreen, .truClear, .truCrmbl, .truFlower, .truPod, .truShatter, .vapePenCartridge]
 
 	@IBOutlet var productTypeLabel: UITextField!
@@ -61,10 +68,12 @@ class ProductDetailViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-		loadDoseCalendarInfo()
+//		loadDoseCalendarInfo()
 		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
+
+		queryCloudForDoseRecords()
 		setupProductImageTapRecognizer()
 
 		setupDateFormatter(dateFormatter)
@@ -202,7 +211,9 @@ class ProductDetailViewController: UIViewController {
 				else { preconditionFailure("Expected a reference to the product data container") }
 
 			masterInventory.removeProductFromInventoryMaster(product: product)
-
+			if let record = self.recordForProduct {
+				self.deleteProductFromCloud(with: record)
+			}
 		}
 
 		return [ doseAction, openProductAction, deleteAction ]
@@ -287,22 +298,28 @@ extension ProductDetailViewController: UITextFieldDelegate {
 			activeDetailProduct.dateOpened = dateToSave
 			saveCurrentProductInventoryToUserData()
 		}
+		saveChangesToProduct()
 	}
 
 }
 
 extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return doseArray.count
+		return doseCKRecords.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier, for: indexPath) as? DoseCalendarTableViewCell else { fatalError("could not cast correctly") }
 
+//		let plistDecoder = PropertyListDecoder()
+//		let data = doseCKRecords[indexPath.row]["DoseData"] as! Data
+//		guard let doseDecoded = try? plistDecoder.decode(Dose.self, from: data) else { return cell }
+
 		let formatter = DateFormatter()
 		formatter.dateStyle = .short
 		formatter.timeStyle = .short
-		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
+		guard let date = doseCKRecords[indexPath.row].creationDate else { return cell }
+		cell.timeLabel.text = formatter.string(from: date)
 
 		cell.productLabel.text = activeDetailProduct.productType.rawValue
 		cell.strainLabel.text = activeDetailProduct.strain.name
@@ -358,6 +375,95 @@ extension ProductDetailViewController: UIImagePickerControllerDelegate, UINaviga
 			saveCurrentProductInventoryToUserData()
 		})
 
+	}
+
+}
+
+
+extension ProductDetailViewController {
+	fileprivate func queryCloudForDoseRecords() {
+
+		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
+		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
+
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					self.doseCKRecords = recordsRetrieved ?? []
+					self.doseCKRecords = self.doseCKRecords.filter({ (someRecord) -> Bool in
+						let plistDecoder = PropertyListDecoder()
+						let data = someRecord["DoseData"] as! Data
+						var dose: Dose?
+						do {
+							dose = try plistDecoder.decode(Dose.self, from: data)
+						}
+						catch {
+							print(error)
+						}
+//						let match = self.activeDetailProduct == dose?.product
+						let match = (dose?.product.productType == self.activeDetailProduct.productType) && (dose?.product.dateOpened == self.activeDetailProduct.dateOpened) && (dose?.product.strain.name == self.activeDetailProduct.strain.name)
+						return match
+					})
+					self.productDoseLogTableView.reloadData()
+					print("dose records loaded: # \(recordsRetrieved?.count) | Filtered: \(self.doseCKRecords.count)")
+				}
+
+
+
+			}
+		}
+
+	}
+
+	fileprivate func saveChangesToProduct() {
+		let record = self.recordForProduct ?? CKRecord(recordType: "Product")
+		guard let recordValue = self.activeDetailProduct.encodeProductAsCKRecordValue() else { return }
+
+		record.setObject(recordValue, forKey: "ProductData")
+
+		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+		let configuration = CKModifyRecordsOperation.Configuration()
+		configuration.timeoutIntervalForResource = 10
+		configuration.timeoutIntervalForRequest = 10
+		operation.configuration = configuration
+
+		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+
+					if self.recordForProduct != nil {
+						print("Record was updated")
+//						presentingVC.productsCollectionView.
+					} else if let savedRecords = savedRecords {
+						print("Record was saved")
+					}
+					self.navigationController?.popViewController(animated: true)
+				}
+			}
+
+		}
+
+		privateDatabase.add(operation)
+
+	}
+
+
+	fileprivate func deleteProductFromCloud(with record: CKRecord) {
+		let recordID = record.recordID
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Record was deleted from ProductDetailViewController.swift method")
+
+				}
+			}
+		}
 	}
 
 }
