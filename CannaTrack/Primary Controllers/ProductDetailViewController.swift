@@ -202,7 +202,8 @@ class ProductDetailViewController: UIViewController {
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
-			product.saveProductChangesToCloud(product: product)
+			self.saveChangesToProduct()
+//			product.saveProductChangesToCloud(product: product)
 			masterInventory.writeInventoryToUserData()
 		})
 
@@ -212,6 +213,7 @@ class ProductDetailViewController: UIViewController {
 
 			//perform action to detail item in quick action
 			product.openProduct()
+			self.saveChangesToProduct()
 			print("product opened via quick preview action")
 		})
 

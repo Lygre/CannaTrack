@@ -118,7 +118,7 @@ extension Product {
 	func openProduct() {
 		self.dateOpened = Date()
 		saveCurrentProductInventoryToUserData()
-		saveProductChangesToCloud(product: self)
+//		saveProductChangesToCloud(product: self)
 	}
 
 	func saveNewProductToCloud() {

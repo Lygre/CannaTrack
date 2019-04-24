@@ -16,7 +16,7 @@ class Inventory: Codable {
 		didSet(newValue) {
 		//implement writing user data here
 			print("value set; writing to user data")
-			CannaTrackSpecial.saveInventoryToCloud(inventory: self)
+//			CannaTrackSpecial.saveInventoryToCloud(inventory: self)
 			writeInventoryToUserData()
 		}
 
