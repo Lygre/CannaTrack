@@ -18,7 +18,7 @@ class InventoryViewController: UIViewController {
 
 
 	var dateFormatter = DateFormatter()
-
+	var activityView = UIActivityIndicatorView()
 
 	var productCKRecords = [CKRecord]()
 

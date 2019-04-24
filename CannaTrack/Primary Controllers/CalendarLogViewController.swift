@@ -315,17 +315,31 @@ extension CalendarLogViewController {
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let dose = dosesForDate?[indexPath.row]
-		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
-				return doseCompletion === dose })
-			self.dosesForDate?.remove(at: indexPath.row)
-			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
-			saveDoseCalendarInfo()
+		let plistDecoder = PropertyListDecoder()
+		let doseRecord = doseCKRecords[indexPath.row]
+
+//		let decodedDoseFromRecord = try? plistDecoder.decode(Dose.self, from: doseRecord["DoseData"] as! Data)
+		let action2 = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+			let indexInRecords = self.doseCKRecords.firstIndex(of: doseRecord)
+			guard let indexToRemove = indexInRecords else { return }
+			self.doseCKRecords.remove(at: indexToRemove)
+			self.deleteDoseRecordFromCloud(with: doseRecord)
 			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
 		}
-		action.backgroundColor = .red
-		return action
+		action2.backgroundColor = .red
+		return action2
+
+//		let dose = dosesForDate?[indexPath.row]
+//		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+//			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
+//				return doseCompletion === dose })
+//			self.dosesForDate?.remove(at: indexPath.row)
+//			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
+//			saveDoseCalendarInfo()
+//			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
+//		}
+//		action.backgroundColor = .red
+//		return action
 	}
 
 }
@@ -430,5 +444,23 @@ extension CalendarLogViewController {
 
 	}
 
+
+
+	fileprivate func deleteDoseRecordFromCloud(with record: CKRecord) {
+		let recordID = record.recordID
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Dose Record was deleted from ProductDetailViewController.swift method")
+					self.doseTableView?.reloadData()
+
+				}
+			}
+
+		}
+	}
 
 }

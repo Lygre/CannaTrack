@@ -273,8 +273,10 @@ extension ProductDetailViewController {
 			guard let indexToRemove = indexInRecords else { return }
 			self.doseCKRecords.remove(at: indexToRemove)
 			self.deleteDoseRecordFromCloud(with: doseRecord)
+			self.productDoseLogTableView.deleteRows(at: [indexPath], with: .automatic)
 		}
 		action2.backgroundColor = .red
+
 		return action2
 
 
