@@ -363,18 +363,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Product Info" prompt="Detailed Product Information" id="ulR-mw-Vqk">
                         <barButtonItem key="backBarButtonItem" title="Inventory" id="K3c-pA-G9a"/>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="edit" id="bwQ-Q7-mM6">
-                                <connections>
-                                    <action selector="editProductTapped:" destination="ZKP-z6-ymb" id="OPd-kC-BBs"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="k4t-i3-bQA">
-                                <connections>
-                                    <action selector="saveProductToCloudClicked:" destination="ZKP-z6-ymb" id="fUN-dV-wXU"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <size key="freeformSize" width="414" height="1450"/>

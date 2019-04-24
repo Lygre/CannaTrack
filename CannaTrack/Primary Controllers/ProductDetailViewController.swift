@@ -250,16 +250,6 @@ class ProductDetailViewController: UIViewController {
 	}
 
 
-	@IBAction func editProductTapped(_ sender: Any) {
-		editProduct()
-	}
-
-	@IBAction func saveProductToCloudClicked(_ sender: Any) {
-//		saveProductToCloud(product: activeDetailProduct)
-		saveChangesToProduct()
-	}
-
-
 
 }
 
@@ -268,26 +258,26 @@ extension ProductDetailViewController {
 
 	func openDetailProduct() {
 		activeDetailProduct.openProduct()
-		print(activeDetailProduct.dateOpened)
+		saveChangesToProduct()
 	}
 
-	func editProduct() {
-
-	}
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let dose = doseArray[indexPath.row]
-		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
-				return doseCompletion === dose })
-			self.doseArray.remove(at: indexPath.row)
-			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
-			saveDoseCalendarInfo()
-			self.productDoseLogTableView.deleteRows(at: [indexPath], with: .automatic)
+		let plistDecoder = PropertyListDecoder()
+		let doseRecord = doseCKRecords[indexPath.row]
+
+		let decodedDoseFromRecord = try? plistDecoder.decode(Dose.self, from: doseRecord["DoseData"] as! Data)
+		let action2 = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+			let indexInRecords = self.doseCKRecords.firstIndex(of: doseRecord)
+			guard let indexToRemove = indexInRecords else { return }
+			self.doseCKRecords.remove(at: indexToRemove)
+			self.deleteDoseRecordFromCloud(with: doseRecord)
 		}
-		action.backgroundColor = .red
-		return action
+		action2.backgroundColor = .red
+		return action2
+
+
 	}
 
 }
@@ -436,6 +426,8 @@ extension ProductDetailViewController {
 
 		record.setObject(recordValue, forKey: "ProductData")
 
+		self.navigationItem.backBarButtonItem?.isEnabled = false
+
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
 		let configuration = CKModifyRecordsOperation.Configuration()
 		configuration.timeoutIntervalForResource = 20
@@ -444,6 +436,7 @@ extension ProductDetailViewController {
 
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
 			DispatchQueue.main.async {
+				self.navigationItem.backBarButtonItem?.isEnabled = true
 				if let error = error {
 					print(error)
 				} else {
@@ -473,10 +466,28 @@ extension ProductDetailViewController {
 				if let error = error {
 					print(error)
 				} else {
-					print("Record was deleted from ProductDetailViewController.swift method")
+					print("Product Record was deleted from ProductDetailViewController.swift method")
 
 				}
 			}
+		}
+	}
+
+
+	fileprivate func deleteDoseRecordFromCloud(with record: CKRecord) {
+		let recordID = record.recordID
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Dose Record was deleted from ProductDetailViewController.swift method")
+					self.productDoseLogTableView?.reloadData()
+
+				}
+			}
+
 		}
 	}
 
