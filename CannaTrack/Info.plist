@@ -28,6 +28,14 @@
 	<string>Main</string>
 	<key>NSCameraUsageDescription</key>
 	<string>&quot;Need camera to scan and detect 3D product objects&quot;</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>&quot;Need Location when in use&quot;</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>&quot;Need media library&quot;</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>&quot;Need location always?&quot;</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>&quot;Need to use photo library&quot;</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

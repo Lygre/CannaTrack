@@ -30,6 +30,7 @@ class ProductDetailViewController: UIViewController {
 	let typeCases: [Product.ProductType] = [.capsuleBottle, .co2VapePenCartridge, .nasalSpray, .oralSyringe, .rsoSyringe, .tinctureDropletBottle, .topicalCream, .topicalLotion, .topicalSunscreen, .truClear, .truCrmbl, .truFlower, .truPod, .truShatter, .vapePenCartridge]
 
 	@IBOutlet var productTypeLabel: UITextField!
+	@IBOutlet var strainTextField: UITextField!
 	@IBOutlet var massRemainingLabel: UITextField!
 	@IBOutlet var dateOpenedLabel: UITextField!
 	@IBOutlet var doseCountLabel: UILabel!
@@ -49,6 +50,7 @@ class ProductDetailViewController: UIViewController {
 		self.massRemainingLabel.delegate = self
 		self.productTypeLabel.delegate = self
 		self.dateOpenedLabel.delegate = self
+		self.strainTextField.delegate = self
 	}
 
 	@objc func handleTapOnProductImage() {
@@ -100,6 +102,7 @@ class ProductDetailViewController: UIViewController {
 		productTypeLabel.tag = 1
 		massRemainingLabel.tag = 2
 		dateOpenedLabel.tag = 3
+		strainTextField.tag = 4
 		//setup text field input views and keyboards
 		self.productTypeLabel.inputView = pickerView
 		self.massRemainingLabel.keyboardType = .numbersAndPunctuation
@@ -142,7 +145,7 @@ class ProductDetailViewController: UIViewController {
 
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
-
+		strainTextField.text = activeDetailProduct.strain.name
 		dateOpenedLabel.text = {
 			var dateOpened: String?
 			if let date = self.activeDetailProduct.dateOpened {
@@ -174,6 +177,10 @@ class ProductDetailViewController: UIViewController {
 	}
 
 
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+	}
+
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		self.view.endEditing(true)
 
@@ -188,11 +195,14 @@ class ProductDetailViewController: UIViewController {
 		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a product item") }
+			guard let _ = product.dateOpened else { return }
+
 			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
 			dose.saveDoseLogToCloud()
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
+			product.saveProductChangesToCloud(product: product)
 			masterInventory.writeInventoryToUserData()
 		})
 
@@ -243,7 +253,8 @@ class ProductDetailViewController: UIViewController {
 	}
 
 	@IBAction func saveProductToCloudClicked(_ sender: Any) {
-		saveProductToCloud(product: activeDetailProduct)
+//		saveProductToCloud(product: activeDetailProduct)
+		saveChangesToProduct()
 	}
 
 
@@ -372,6 +383,7 @@ extension ProductDetailViewController: UIImagePickerControllerDelegate, UINaviga
 		self.activeDetailProduct.productLabelImage = originalImage
 
 		dismiss(animated: true, completion: {
+			self.saveChangesToProduct()
 			saveCurrentProductInventoryToUserData()
 		})
 
@@ -424,8 +436,8 @@ extension ProductDetailViewController {
 
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
 		let configuration = CKModifyRecordsOperation.Configuration()
-		configuration.timeoutIntervalForResource = 10
-		configuration.timeoutIntervalForRequest = 10
+		configuration.timeoutIntervalForResource = 20
+		configuration.timeoutIntervalForRequest = 20
 		operation.configuration = configuration
 
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in

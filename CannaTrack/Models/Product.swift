@@ -36,12 +36,12 @@ class Product: Codable {
 		productType = try values.decode(ProductType.self, forKey: .productType)
 		strain = try values.decode(Strain.self, forKey: .strain)
 
-		let strBase64: String = try values.decode(String.self, forKey: .productLabelImage)
-		let dataDecoded: Data = Data(base64Encoded: strBase64, options: .ignoreUnknownCharacters)!
-		productLabelImage = UIImage(data: dataDecoded)
-//			UIImage(data: try values.decode(Data.self, forKey: .productLabelImage))
+		// new method of encoding the images for Cloud storage
+		let imgURL = try values.decode(URL.self, forKey: .productLabelImage)
+		let imgPath = imgURL.path
+		productLabelImage = UIImage(contentsOfFile: imgPath)
+
 		currentProductImage = nil
-//			UIImage(data: try values.decode(Data.self, forKey: .currentProductImage))
 		mass = try values.decode(Double.self, forKey: .mass)
 		dateOpened = try? values.decode(Date.self, forKey: .dateOpened)
 		numberOfDosesTakenFromProduct = try values.decode(Int.self, forKey: .numberOfDosesTakenFromProduct)
@@ -53,12 +53,16 @@ class Product: Codable {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(productType, forKey: .productType)
 		try container.encode(strain, forKey: .strain)
-		var strBase64: String = String()
-		if let imageToEncode = productLabelImage {
-			let imageData: Data = imageToEncode.pngData()!
-			strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-		}
-		try container.encode(strBase64, forKey: .productLabelImage)
+
+		//trying different encoding method for image
+		let img = productLabelImage
+		let manager = FileManager.default
+		let dir = manager.urls(for: .documentDirectory, in: .userDomainMask)
+		let file = dir[0].appendingPathComponent("productImage")
+		try img?.jpegData(compressionQuality: 0.5)?.write(to: file, options: .atomic)
+		let imgURL = NSURL.fileURL(withPath: file.path)
+		try container.encode(imgURL, forKey: .productLabelImage)
+
 		try container.encode(currentProductImage?.pngData(), forKey: .currentProductImage)
 		try container.encode(mass, forKey: .mass)
 		try container.encode(dateOpened, forKey: .dateOpened)
@@ -114,6 +118,7 @@ extension Product {
 	func openProduct() {
 		self.dateOpened = Date()
 		saveCurrentProductInventoryToUserData()
+		saveProductChangesToCloud(product: self)
 	}
 
 	func saveNewProductToCloud() {
@@ -128,7 +133,7 @@ extension Product {
 			}
 			catch { print(error); return Data() as CKRecordValue }
 		}()
-
+		
 		newProduct.setObject(productData, forKey: "ProductData")
 
 		//assign Product a record ID to fetch and modify it later
@@ -152,8 +157,8 @@ extension Product {
 		guard let recordID = product.recordID else { return }
 		let operation = CKModifyRecordsOperation(recordsToSave: [CKRecord(recordType: "Product", recordID: recordID)], recordIDsToDelete: nil)
 		let config = CKModifyRecordsOperation.Configuration()
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 20
+		config.timeoutIntervalForResource = 20
 		operation.configuration = config
 
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
