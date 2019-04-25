@@ -53,11 +53,21 @@ class InventoryViewController: UIViewController {
 
 	@IBOutlet var productsCollectionView: UICollectionView!
 
-    override func viewDidLoad() {
+	fileprivate func setupActivityView() {
+		activityView.center = self.view.center
+		activityView.hidesWhenStopped = true
+		activityView.style = .gray
+
+		self.view.addSubview(activityView)
+	}
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
+
+		setupActivityView()
 
 //		for product in globalMasterInventory {
 //			switch product.productType {
@@ -303,6 +313,7 @@ extension InventoryViewController {
 
 	fileprivate func queryCloudForProductRecords() {
 		let query = CKQuery(recordType: "Product", predicate: NSPredicate(value: true))
+		self.activityView.startAnimating()
 		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
 			DispatchQueue.main.async {
 				if let error = error {
@@ -321,6 +332,7 @@ extension InventoryViewController {
 					}
 					globalMasterInventory = productObjectsArray
 					self.updateInventoryCollectionView()
+					self.activityView.stopAnimating()
 					print("product records loaded: # \(recordsRetrieved?.count)")
 				}
 			}

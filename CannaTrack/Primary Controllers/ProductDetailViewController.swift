@@ -185,7 +185,7 @@ class ProductDetailViewController: UIViewController {
 		self.view.endEditing(true)
 
 		self.productInfoSubview.endEditing(true)
-		print(activeDetailProduct)
+//		print(activeDetailProduct)
 	}
 
 	// MARK: - Supporting Peek Quick Actions
@@ -203,7 +203,6 @@ class ProductDetailViewController: UIViewController {
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
 			self.saveChangesToProduct()
-//			product.saveProductChangesToCloud(product: product)
 			masterInventory.writeInventoryToUserData()
 		})
 
@@ -227,8 +226,11 @@ class ProductDetailViewController: UIViewController {
 				self.deleteProductFromCloud(with: record)
 			}
 		}
-
-		return [ doseAction, openProductAction, deleteAction ]
+		if let _ = self.activeDetailProduct.dateOpened {
+			return [ doseAction, deleteAction ]
+		} else {
+			return [ openProductAction, deleteAction ]
+		}
 	}
 
 
@@ -264,10 +266,8 @@ extension ProductDetailViewController {
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let plistDecoder = PropertyListDecoder()
 		let doseRecord = doseCKRecords[indexPath.row]
 
-		let decodedDoseFromRecord = try? plistDecoder.decode(Dose.self, from: doseRecord["DoseData"] as! Data)
 		let action2 = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
 			let indexInRecords = self.doseCKRecords.firstIndex(of: doseRecord)
 			guard let indexToRemove = indexInRecords else { return }
@@ -275,6 +275,7 @@ extension ProductDetailViewController {
 			self.deleteDoseRecordFromCloud(with: doseRecord)
 			self.productDoseLogTableView.deleteRows(at: [indexPath], with: .automatic)
 		}
+
 		action2.backgroundColor = .red
 
 		return action2
@@ -315,10 +316,6 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier, for: indexPath) as? DoseCalendarTableViewCell else { fatalError("could not cast correctly") }
-
-//		let plistDecoder = PropertyListDecoder()
-//		let data = doseCKRecords[indexPath.row]["DoseData"] as! Data
-//		guard let doseDecoded = try? plistDecoder.decode(Dose.self, from: data) else { return cell }
 
 		let formatter = DateFormatter()
 		formatter.dateStyle = .short
@@ -373,7 +370,6 @@ extension ProductDetailViewController: UIImagePickerControllerDelegate, UINaviga
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
 
-//		self.productLabelImageView.image = originalImage
 		self.activeDetailProduct.productLabelImage = originalImage
 
 		dismiss(animated: true, completion: {
@@ -407,12 +403,11 @@ extension ProductDetailViewController {
 						catch {
 							print(error)
 						}
-//						let match = self.activeDetailProduct == dose?.product
 						let match = (dose?.product.productType == self.activeDetailProduct.productType) && (dose?.product.dateOpened == self.activeDetailProduct.dateOpened) && (dose?.product.strain.name == self.activeDetailProduct.strain.name)
 						return match
 					})
 					self.productDoseLogTableView.reloadData()
-					print("dose records loaded: # \(recordsRetrieved?.count) | Filtered: \(self.doseCKRecords.count)")
+					print("dose records loaded: # \(recordsRetrieved?.count ?? 0) | Filtered: \(self.doseCKRecords.count)")
 				}
 
 
@@ -445,9 +440,8 @@ extension ProductDetailViewController {
 
 					if self.recordForProduct != nil {
 						print("Record was updated")
-//						presentingVC.productsCollectionView.
 					} else if let savedRecords = savedRecords {
-						print("Record was saved")
+						print("\(savedRecords) Records were saved")
 					}
 					self.navigationController?.popViewController(animated: true)
 				}

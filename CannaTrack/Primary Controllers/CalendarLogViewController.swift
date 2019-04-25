@@ -19,6 +19,8 @@ class CalendarLogViewController: UIViewController {
 
 	@IBOutlet weak var doseTableView: UITableView!
 
+	var activityView = UIActivityIndicatorView()
+
 	@IBOutlet weak var calendarCollectionView: JTAppleCalendarView!
 	@IBOutlet weak var year: UILabel!
 	@IBOutlet weak var month: UILabel!
@@ -105,6 +107,7 @@ class CalendarLogViewController: UIViewController {
 
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
+		setupActivityView()
 		savePrivateDatabase()
 		queryCloudForDoseRecords()
 //		loadDoseCalendarInfo()
@@ -426,6 +429,7 @@ extension CalendarLogViewController {
 	fileprivate func queryCloudForDoseRecords() {
 
 		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
+		self.activityView.startAnimating()
 		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
 
 			DispatchQueue.main.async {
@@ -435,6 +439,7 @@ extension CalendarLogViewController {
 					self.doseCKRecords = recordsRetrieved ?? []
 					print("dose records loaded: # \(recordsRetrieved?.count)")
 					self.doseTableView.reloadData()
+					self.activityView.stopAnimating()
 				}
 
 
@@ -461,6 +466,15 @@ extension CalendarLogViewController {
 			}
 
 		}
+	}
+
+
+	fileprivate func setupActivityView() {
+		activityView.center = self.view.center
+		activityView.hidesWhenStopped = true
+		activityView.style = .gray
+
+		self.view.addSubview(activityView)
 	}
 
 }
