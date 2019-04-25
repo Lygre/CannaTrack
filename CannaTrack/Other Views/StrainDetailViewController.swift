@@ -31,7 +31,12 @@ class StrainDetailViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 
-
+		medicalEffectsLabel.numberOfLines = 0
+		medicalEffectsLabel.lineBreakMode = .byWordWrapping
+		positiveEffectsLabel.numberOfLines = 0
+		positiveEffectsLabel.lineBreakMode = .byWordWrapping
+		negativeEffectsLabel.numberOfLines = 0
+		negativeEffectsLabel.lineBreakMode = .byWordWrapping
 
         // Do any additional setup after loading the view.
     }

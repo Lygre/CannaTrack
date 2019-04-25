@@ -142,6 +142,16 @@ class ProductDetailViewController: UIViewController {
 				return UIColor(named: "sativaColor")
 			}
 		}()
+		productInfoSubview.backgroundColor = {
+			switch self.activeDetailProduct.strain.race {
+			case .hybrid:
+				return UIColor(named: "hybridColor")
+			case .indica:
+				return UIColor(named: "indicaColor")
+			case .sativa:
+				return UIColor(named: "sativaColor")
+			}
+		}()
 
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
@@ -189,7 +199,7 @@ class ProductDetailViewController: UIViewController {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		self.view.endEditing(true)
 
-		self.productInfoSubview.endEditing(true)
+//		self.productInfoSubview.endEditing(true)
 //		print(activeDetailProduct)
 	}
 
