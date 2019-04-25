@@ -30,7 +30,7 @@ class ProductDetailViewController: UIViewController {
 	let typeCases: [Product.ProductType] = [.capsuleBottle, .co2VapePenCartridge, .nasalSpray, .oralSyringe, .rsoSyringe, .tinctureDropletBottle, .topicalCream, .topicalLotion, .topicalSunscreen, .truClear, .truCrmbl, .truFlower, .truPod, .truShatter, .vapePenCartridge]
 
 	@IBOutlet var productTypeLabel: UITextField!
-	@IBOutlet var strainTextField: UITextField!
+	@IBOutlet var strainButton: UIButton!
 	@IBOutlet var massRemainingLabel: UITextField!
 	@IBOutlet var dateOpenedLabel: UITextField!
 	@IBOutlet var doseCountLabel: UILabel!
@@ -50,7 +50,7 @@ class ProductDetailViewController: UIViewController {
 		self.massRemainingLabel.delegate = self
 		self.productTypeLabel.delegate = self
 		self.dateOpenedLabel.delegate = self
-		self.strainTextField.delegate = self
+//		self.strainTextField.delegate = self
 	}
 
 	@objc func handleTapOnProductImage() {
@@ -102,7 +102,7 @@ class ProductDetailViewController: UIViewController {
 		productTypeLabel.tag = 1
 		massRemainingLabel.tag = 2
 		dateOpenedLabel.tag = 3
-		strainTextField.tag = 4
+//		strainTextField.tag = 4
 		//setup text field input views and keyboards
 		self.productTypeLabel.inputView = pickerView
 		self.massRemainingLabel.keyboardType = .numbersAndPunctuation
@@ -145,7 +145,8 @@ class ProductDetailViewController: UIViewController {
 
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
-		strainTextField.text = activeDetailProduct.strain.name
+//		strainTextField.text = activeDetailProduct.strain.name
+		strainButton.setTitle(activeDetailProduct.strain.name, for: .normal)
 		dateOpenedLabel.text = {
 			var dateOpened: String?
 			if let date = self.activeDetailProduct.dateOpened {
@@ -170,9 +171,13 @@ class ProductDetailViewController: UIViewController {
 
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
 		if segue.destination is DoseViewController {
 			guard let doseViewController = segue.destination as? DoseViewController else { return }
 			doseViewController.productForDose = activeDetailProduct
+		} else if segue.destination is StrainDetailViewController {
+			guard let strainDetailVC = segue.destination as? StrainDetailViewController else { return }
+			strainDetailVC.activeDetailStrain = self.activeDetailProduct.strain
 		}
 	}
 
