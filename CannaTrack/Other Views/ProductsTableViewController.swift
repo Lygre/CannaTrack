@@ -52,11 +52,11 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier, for: indexPath) as? ProductTableViewCell else { fatalError("could not instantiate ProductTableViewCell")}
-
-		cell.productDoseCountLabel.text = "\(selectedProductsForDose[indexPath.row].numberOfDosesTakenFromProduct)"
-		cell.productStrainLabel.text = selectedProductsForDose[indexPath.row].strain.name
-		cell.productTypeLabel.text = selectedProductsForDose[indexPath.row].productType.rawValue
-
+		let productForCell = selectedProductsForDose[indexPath.row]
+		cell.productDoseCountLabel.text = "\(productForCell.numberOfDosesTakenFromProduct)"
+		cell.productStrainLabel.text = productForCell.strain.name
+		cell.productTypeLabel.text = productForCell.productType.rawValue
+		cell.massForProductInDoseLabel.text = String(dictionaryForProductsInDose[productForCell] ?? 0.0)
 		return cell
 	}
 
@@ -81,13 +81,28 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     */
 
+	func saveCompositeDose() {
+		guard let firstProductEntry = dictionaryForProductsInDose.popFirst() else { return }
+		let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, otherProductDictionary: dictionaryForProductsInDose)
+
+		compositeDose.saveDoseLogToCloud()
+		print("composite dose saved to cloud \(compositeDose)")
+	}
+
+	// MARK - DO THIS NEXT
+
+	@IBAction func saveCompositeDoseTapped(_ sender: Any) {
+		//need to implement this
+		saveCompositeDose()
+		dismiss(animated: true, completion: nil)
+	}
 
 
+	// MARK: - Navigation
 
-    // MARK: - Navigation
+	// In a storyboard-based application, you will often want to do a little preparation before navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
 		let destinationVC = segue.destination

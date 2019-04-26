@@ -1574,21 +1574,31 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0g" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LT-hu-3O5">
+                                                    <rect key="frame" x="320" y="0.0" width="34" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Khe-5w-ecn" secondAttribute="bottom" id="1DF-bu-YBO"/>
+                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="leading" secondItem="1LT-hu-3O5" secondAttribute="trailing" constant="40" id="AAi-vs-sj0"/>
                                                 <constraint firstAttribute="trailing" secondItem="Khe-5w-ecn" secondAttribute="trailing" constant="5" id="BKI-yn-KbN"/>
                                                 <constraint firstAttribute="bottom" secondItem="ZWt-vn-1Mk" secondAttribute="bottom" id="FuC-Zb-chk"/>
                                                 <constraint firstAttribute="bottom" secondItem="mxT-P8-QY3" secondAttribute="bottom" id="NQY-Ra-I9o"/>
                                                 <constraint firstItem="ZWt-vn-1Mk" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="TYf-Gj-Nom"/>
-                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="mxT-P8-QY3" secondAttribute="trailing" priority="250" constant="30" id="YUv-jE-NcJ"/>
+                                                <constraint firstItem="1LT-hu-3O5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mxT-P8-QY3" secondAttribute="trailing" constant="30" id="fas-FA-Q8B"/>
                                                 <constraint firstItem="mxT-P8-QY3" firstAttribute="leading" secondItem="ZWt-vn-1Mk" secondAttribute="trailing" constant="30" id="gPG-me-Qd4"/>
                                                 <constraint firstItem="mxT-P8-QY3" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="ogl-oc-rzb"/>
+                                                <constraint firstAttribute="bottom" secondItem="1LT-hu-3O5" secondAttribute="bottom" id="pUY-Jh-Yc1"/>
+                                                <constraint firstItem="1LT-hu-3O5" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="qTz-7w-tkK"/>
                                                 <constraint firstItem="ZWt-vn-1Mk" firstAttribute="leading" secondItem="GXt-IP-QL7" secondAttribute="leading" constant="5" id="wfc-IV-gw5"/>
                                                 <constraint firstItem="Khe-5w-ecn" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="zm1-aD-ffJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="massForProductInDoseLabel" destination="1LT-hu-3O5" id="Tm6-AG-3nd"/>
                                             <outlet property="productDoseCountLabel" destination="Khe-5w-ecn" id="hbq-vP-gLM"/>
                                             <outlet property="productStrainLabel" destination="mxT-P8-QY3" id="zUs-9I-41G"/>
                                             <outlet property="productTypeLabel" destination="ZWt-vn-1Mk" id="tfW-XX-TIm"/>
@@ -1609,7 +1619,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Log Mass" prompt="Add mass of Products used" id="Jsx-fq-j6G">
                         <barButtonItem key="backBarButtonItem" title="Choose Products" id="br3-hz-rH4"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="jaU-6p-B6L"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="jaU-6p-B6L">
+                            <connections>
+                                <action selector="saveCompositeDoseTapped:" destination="VT6-8W-HKF" id="THf-4f-4Fb"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="doseProductsTableView" destination="XAw-4y-TcJ" id="8uc-al-PME"/>

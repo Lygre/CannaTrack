@@ -13,6 +13,7 @@ class ProductTableViewCell: UITableViewCell {
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var productStrainLabel: UILabel!
 	@IBOutlet var productDoseCountLabel: UILabel!
+	@IBOutlet var massForProductInDoseLabel: UILabel!
 
 
 
