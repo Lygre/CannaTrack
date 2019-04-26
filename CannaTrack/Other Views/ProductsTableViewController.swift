@@ -15,12 +15,13 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 	var selectedProductsForDose: [Product]!
 	var selectedItemIndexPaths: [IndexPath]!
 
-
+	var dictionaryForProductsInDose: [Product: Double]! = [:]
 
 	@IBOutlet var doseProductsTableView: DoseProductsTableView!
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+		dictionaryForProductsInDose = Dictionary(uniqueKeysWithValues: selectedProductsForDose.lazy.map { ($0, 0.0) })
 
 		doseProductsTableView.delegate = self
 		doseProductsTableView.dataSource = self
@@ -91,6 +92,12 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Pass the selected object to the new view controller.
 		let destinationVC = segue.destination
 		if destinationVC is DoseMassViewController {
+			guard let doseMassVC = destinationVC as? DoseMassViewController else { return }
+			guard let productTableCell = sender as? ProductTableViewCell else { return }
+			guard let indexPath = doseProductsTableView.indexPath(for: productTableCell) else { return }
+			doseMassVC.productForDose = selectedProductsForDose[indexPath.row]
+			doseMassVC.massForOtherProductInDose = dictionaryForProductsInDose[selectedProductsForDose[indexPath.row]] ?? 0.0
+			doseMassVC.multipleDoseDelegate = self
 
 		} else if destinationVC is LogDoseFromCalendarViewController {
 			guard let selectProductsForDoseVC = destinationVC as? LogDoseFromCalendarViewController else { return }
@@ -100,6 +107,17 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 			//			selectProductsForDoseVC.
 		}
     }
+
+
+}
+
+
+extension ProductsTableViewController: MultipleDoseDelegate {
+	func saveCompositeDoseProductEntry(product: Product, mass: Double) {
+		dictionaryForProductsInDose[product] = mass
+		print("Composite entry into dict saved: \(product.strain.name) \(product.productType.rawValue) \(mass)")
+	}
+
 
 
 }
