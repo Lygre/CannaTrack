@@ -50,7 +50,6 @@ class ProductDetailViewController: UIViewController {
 		self.massRemainingLabel.delegate = self
 		self.productTypeLabel.delegate = self
 		self.dateOpenedLabel.delegate = self
-//		self.strainTextField.delegate = self
 	}
 
 	@objc func handleTapOnProductImage() {
@@ -70,7 +69,6 @@ class ProductDetailViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-//		loadDoseCalendarInfo()
 		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
@@ -102,7 +100,6 @@ class ProductDetailViewController: UIViewController {
 		productTypeLabel.tag = 1
 		massRemainingLabel.tag = 2
 		dateOpenedLabel.tag = 3
-//		strainTextField.tag = 4
 		//setup text field input views and keyboards
 		self.productTypeLabel.inputView = pickerView
 		self.massRemainingLabel.keyboardType = .numbersAndPunctuation
@@ -155,7 +152,6 @@ class ProductDetailViewController: UIViewController {
 
 		productTypeLabel.text = activeDetailProduct.productType.rawValue
 		massRemainingLabel.text = "\(activeDetailProduct.mass)"
-//		strainTextField.text = activeDetailProduct.strain.name
 		strainButton.setTitle(activeDetailProduct.strain.name, for: .normal)
 		dateOpenedLabel.text = {
 			var dateOpened: String?
@@ -174,7 +170,6 @@ class ProductDetailViewController: UIViewController {
 			}
 			return imageToReturn
 		}()
-//		currentProductImageView.image = activeDetailProduct.currentProductImage
 
 		productDoseLogTableView.reloadData()
 	}
@@ -199,8 +194,6 @@ class ProductDetailViewController: UIViewController {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		self.view.endEditing(true)
 
-//		self.productInfoSubview.endEditing(true)
-//		print(activeDetailProduct)
 	}
 
 	// MARK: - Supporting Peek Quick Actions
@@ -241,6 +234,9 @@ class ProductDetailViewController: UIViewController {
 				self.deleteProductFromCloud(with: record)
 			}
 		}
+		
+		//add edit dose mass quick action here
+		
 		if let _ = self.activeDetailProduct.dateOpened {
 			return [ doseAction, deleteAction ]
 		} else {
