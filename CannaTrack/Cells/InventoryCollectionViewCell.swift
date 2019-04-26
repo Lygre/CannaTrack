@@ -30,7 +30,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		isSelected = false
-		self.layer.borderColor = UIColor.red.cgColor
+		self.layer.borderColor = UIColor.blue.cgColor
 	}
 
 }

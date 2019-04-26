@@ -10,6 +10,7 @@ import UIKit
 import CloudKit
 
 
+
 class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"

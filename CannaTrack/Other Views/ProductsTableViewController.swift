@@ -13,6 +13,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 	let tableCellIdentifier = "ProductTableViewCell"
 
 	var selectedProductsForDose: [Product]!
+	var selectedItemIndexPaths: [IndexPath]!
 
 	@IBOutlet var doseProductsTableView: DoseProductsTableView!
 
@@ -89,6 +90,12 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		let destinationVC = segue.destination
 		if destinationVC is DoseMassViewController {
 
+		} else if destinationVC is LogDoseFromCalendarViewController {
+			guard let selectProductsForDoseVC = destinationVC as? LogDoseFromCalendarViewController else { return }
+			selectProductsForDoseVC.selectedProductIndexPathArray = selectedItemIndexPaths
+			selectProductsForDoseVC.selectedProductsForDose = selectedProductsForDose
+			selectProductsForDoseVC.loadViewIfNeeded()
+			//			selectProductsForDoseVC.
 		}
     }
 

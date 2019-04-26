@@ -56,6 +56,9 @@ class LogDoseFromCalendarViewController: UIViewController {
 		super.viewWillAppear(animated)
 		productsCollectionView.collectionViewLayout.invalidateLayout()
 		productsCollectionView.reloadData()
+		for indexPath in selectedProductIndexPathArray {
+			productsCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+		}
 	}
 
 
@@ -67,6 +70,7 @@ class LogDoseFromCalendarViewController: UIViewController {
 		if segue.destination is ProductsTableViewController {
 			guard let productsTableVC = segue.destination as? ProductsTableViewController else { return }
 			productsTableVC.selectedProductsForDose = selectedProductsForDose
+			productsTableVC.selectedItemIndexPaths = selectedProductIndexPathArray
 			productsTableVC.loadViewIfNeeded()
 		}
 
