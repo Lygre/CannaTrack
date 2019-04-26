@@ -60,6 +60,9 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		return cell
 	}
 
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return 50
+	}
 
     /*
     // Override to support conditional editing of the table view.
@@ -107,9 +110,10 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Pass the selected object to the new view controller.
 		let destinationVC = segue.destination
 		if destinationVC is DoseMassViewController {
-			guard let doseMassVC = destinationVC as? DoseMassViewController else { return }
-			guard let productTableCell = sender as? ProductTableViewCell else { return }
-			guard let indexPath = doseProductsTableView.indexPath(for: productTableCell) else { return }
+			guard let productTableCell = sender as? ProductTableViewCell, let indexPath = doseProductsTableView.indexPath(for: productTableCell) else { preconditionFailure("Expected sender to be a valid tableview cell") }
+			guard let doseMassVC = destinationVC as? DoseMassViewController else { preconditionFailure("Expected Destination to be DoseMassVC") }
+
+
 			doseMassVC.productForDose = selectedProductsForDose[indexPath.row]
 			doseMassVC.massForOtherProductInDose = dictionaryForProductsInDose[selectedProductsForDose[indexPath.row]] ?? 0.0
 			doseMassVC.multipleDoseDelegate = self
