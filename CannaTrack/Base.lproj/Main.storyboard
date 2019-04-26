@@ -1628,7 +1628,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="Qcs-gz-Yux">
-                                <rect key="frame" x="0.0" y="156" width="414" height="30"/>
+                                <rect key="frame" x="10.5" y="156" width="393" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass of Product in Dose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nj-pg-drX">
                                         <rect key="frame" x="0.0" y="5" width="187" height="20.5"/>
@@ -1636,8 +1636,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ATm-m8-yXE">
-                                        <rect key="frame" x="247" y="0.0" width="167" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ATm-m8-yXE">
+                                        <rect key="frame" x="247" y="0.0" width="146" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -1664,7 +1664,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Qcs-gz-Yux" firstAttribute="width" secondItem="WdN-Hp-Jee" secondAttribute="width" id="Vpg-0O-cUQ"/>
+                            <constraint firstItem="Qcs-gz-Yux" firstAttribute="width" secondItem="WdN-Hp-Jee" secondAttribute="width" multiplier="0.95" id="Vpg-0O-cUQ"/>
                             <constraint firstItem="TJM-Qi-HKv" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="hCi-c6-Yuc"/>
                             <constraint firstItem="Qcs-gz-Yux" firstAttribute="top" secondItem="TJM-Qi-HKv" secondAttribute="bottom" constant="15" id="m0x-zd-eX0"/>
                             <constraint firstItem="Qcs-gz-Yux" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="pWQ-e0-T4e"/>

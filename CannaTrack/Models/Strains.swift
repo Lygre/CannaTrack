@@ -149,7 +149,7 @@ struct Effects: Encodable, Decodable, Hashable {
 
 }
 
-enum StrainVariety: String, Encodable, Decodable {
+enum StrainVariety: String, Encodable, Decodable, Hashable {
 	case hybrid = "hybrid"
 	case indica = "indica"
 	case sativa = "sativa"
@@ -214,6 +214,15 @@ extension Strain: Equatable {
 		return lhs.id == rhs.id && lhs.name == rhs.name && lhs.race == rhs.race
 	}
 
+}
+
+extension Strain: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+		hasher.combine(name)
+		hasher.combine(race)
+
+	}
 }
 
 func searchStrains(using strainName: String) -> [Strain] {

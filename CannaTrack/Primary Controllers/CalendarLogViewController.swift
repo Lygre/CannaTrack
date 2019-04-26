@@ -47,7 +47,7 @@ class CalendarLogViewController: UIViewController {
 
 	var selectedDate: Date? {
 		didSet(newlySelectedDate) {
-			updateDosesForSelectedDate()
+//			updateDosesForSelectedDate()
 			self.recordsForDate = doseCKRecords.filter { (someRecord) -> Bool in
 				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
 				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: newlySelectedDate ?? Date())

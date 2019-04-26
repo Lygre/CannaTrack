@@ -15,6 +15,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 	var selectedProductsForDose: [Product]!
 	var selectedItemIndexPaths: [IndexPath]!
 
+
+
 	@IBOutlet var doseProductsTableView: DoseProductsTableView!
 
 	override func viewDidLoad() {

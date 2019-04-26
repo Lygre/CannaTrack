@@ -20,12 +20,22 @@ class Dose: Codable {
 	var product: Product!
 	var mass: Double!
 	var administrationRoute: AdministrationRoute?
+	var otherProducts: [Product: Double]!
 
 	init(timestamp: Date, product: Product, mass: Double, route: AdministrationRoute?) {
 		self.timestamp = timestamp
 		self.product = product
 		self.mass = mass
 		self.administrationRoute = route
+		self.otherProducts = [:]
+	}
+
+	init(timestamp: Date, product: Product, mass: Double, route: AdministrationRoute?, otherProductDictionary: [Product: Double]) {
+		self.timestamp = timestamp
+		self.product = product
+		self.mass = mass
+		self.administrationRoute = route
+		self.otherProducts = otherProductDictionary
 	}
 
 	required init(from decoder: Decoder) throws {
@@ -34,6 +44,7 @@ class Dose: Codable {
 		product = try values.decode(Product.self, forKey: .product)
 		mass = try values.decode(Double.self, forKey: .mass)
 		administrationRoute = try values.decode(AdministrationRoute.self, forKey: .administrationRoute)
+		otherProducts = try values.decode([Product: Double].self, forKey: .otherProducts)
 	}
 
 	func encode(to encoder: Encoder) throws {
@@ -42,6 +53,7 @@ class Dose: Codable {
 		try container.encode(product, forKey: .product)
 		try container.encode(mass, forKey: .mass)
 		try container.encode(administrationRoute, forKey: .administrationRoute)
+		try container.encode(otherProducts, forKey: .otherProducts)
 	}
 
 
@@ -60,6 +72,7 @@ extension Dose {
 		case product
 		case mass
 		case administrationRoute
+		case otherProducts
 	}
 
 

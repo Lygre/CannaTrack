@@ -210,6 +210,15 @@ extension Product: Equatable {
 }
 
 
+extension Product: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(productType)
+		hasher.combine(strain)
+		hasher.combine(dateOpened)
+
+	}
+}
+
 
 extension Product {
 
