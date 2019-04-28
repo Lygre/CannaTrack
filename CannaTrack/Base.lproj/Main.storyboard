@@ -1093,14 +1093,9 @@
                                     <segue destination="7ZB-Uv-nsT" kind="show" id="LXp-UK-pAl"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="organize" id="aCX-cy-zNL">
+                            <barButtonItem title="Item" image="filterIcon" id="aCX-cy-zNL">
                                 <connections>
-                                    <action selector="saveInventoryToCloudClicked:" destination="2sp-3f-4Lb" id="Ej4-PU-G8K"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="fS5-aG-tXL">
-                                <connections>
-                                    <action selector="loadInventoryFromCloudClicked:" destination="2sp-3f-4Lb" id="PUI-BL-TEy"/>
+                                    <action selector="filterInventoryButtonTapped:" destination="2sp-3f-4Lb" id="2j9-LG-xeR"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -1740,6 +1735,7 @@
     </scenes>
     <resources>
         <image name="cannaleaf" width="72" height="72"/>
+        <image name="filterIcon" width="30" height="30"/>
         <image name="greenCheck" width="32" height="32"/>
         <image name="unknown" width="48" height="48"/>
         <namedColor name="indicaColor">
