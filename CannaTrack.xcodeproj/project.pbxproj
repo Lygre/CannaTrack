@@ -52,6 +52,7 @@
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
 		9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FAB54D3226611180012248F /* CloudKit.framework */; };
 		9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */; };
+		9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */; };
 		9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3DCD7226CD00600C2C517 /* Constants.swift */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -106,6 +107,7 @@
 		9FAB54D2226610D20012248F /* CannaTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CannaTrack.entitlements; sourceTree = "<group>"; };
 		9FAB54D3226611180012248F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseOptionsPopupViewController.swift; sourceTree = "<group>"; };
+		9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		9FF3DCD7226CD00600C2C517 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +223,7 @@
 				9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */,
 				9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */,
 				9F2FDF70225AC82900ECC26B /* UnknownCollectionViewController.swift */,
+				9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */,
 			);
 			path = "Other Views";
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */,
 				9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */,
+				9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */,
 				9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */,
 				9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */,
 				9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */,

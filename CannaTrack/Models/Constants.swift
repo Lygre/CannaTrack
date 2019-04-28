@@ -13,4 +13,5 @@ import CloudKit
 let privateDatabase = CKContainer.default().privateCloudDatabase
 let doseZone = CKRecordZone(zoneName: "DoseZone")
 
+let filterOptionsTableViewIdentifier = "filterOptionsTableViewController"
 

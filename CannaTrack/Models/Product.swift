@@ -58,7 +58,7 @@ class Product: Codable {
 		let img = productLabelImage
 		let manager = FileManager.default
 		let dir = manager.urls(for: .documentDirectory, in: .userDomainMask)
-		let file = dir[0].appendingPathComponent("productImage")
+		let file = dir[0].appendingPathComponent(productType.rawValue + self.strain.name + (dateOpened?.description(with: .current) ?? "Unopened"))
 		try img?.jpegData(compressionQuality: 0.5)?.write(to: file, options: .atomic)
 		let imgURL = NSURL.fileURL(withPath: file.path)
 		try container.encode(imgURL, forKey: .productLabelImage)

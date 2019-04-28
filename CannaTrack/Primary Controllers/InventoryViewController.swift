@@ -54,6 +54,9 @@ class InventoryViewController: UIViewController {
 
 	@IBOutlet var productsCollectionView: UICollectionView!
 
+	@IBOutlet var filterButton: UIBarButtonItem!
+
+
 	fileprivate func setupActivityView() {
 		activityView.center = self.view.center
 		activityView.hidesWhenStopped = true
@@ -150,7 +153,14 @@ class InventoryViewController: UIViewController {
 
 
 	@IBAction func filterInventoryButtonTapped(_ sender: Any) {
-		
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let filterOptionsVC = storyboard.instantiateViewController(withIdentifier: filterOptionsTableViewIdentifier)
+		filterOptionsVC.modalPresentationStyle = .popover
+		filterOptionsVC.popoverPresentationController?.barButtonItem = filterButton
+
+		self.present(filterOptionsVC, animated: true) {
+			print("do nothing for now")
+		}
 
 	}
 
