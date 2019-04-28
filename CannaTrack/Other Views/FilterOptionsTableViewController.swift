@@ -8,10 +8,19 @@
 
 import UIKit
 
+enum FilterOption {
+
+
+	    
+}
+
+
 class FilterOptionsTableViewController: UITableViewController {
 
 
 	var filterOptions: [String]!
+	
+	
 
 
     override func viewDidLoad() {
