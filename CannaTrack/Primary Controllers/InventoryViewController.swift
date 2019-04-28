@@ -137,11 +137,11 @@ class InventoryViewController: UIViewController {
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
 			// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
-			let recordToPass = productCKRecords[indexPath.row]
+			let recordToPass = productCKRecords[indexPath.item]
 
 			productDetailViewController.recordForProduct = recordToPass
 
-			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.row]
+			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
 		}
 
 	}
@@ -202,7 +202,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		case .product:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: inventoryCellIdentifier, for: indexPath) as? InventoryCollectionViewCell else { fatalError("could not instantiate inventory collection view cell") }
 
-			guard let productForIndex = currentInventory?[indexPath.row] else {
+			guard let productForIndex = currentInventory?[indexPath.item] else {
 //				cell.inventoryProductLabel.text = "No Inventory"
 				return cell
 			}
@@ -273,6 +273,8 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
+			
+			//reuse this following code to filter
 			let masterInventory = globalMasterInventory
 
 			currentInventory = masterInventory.filter({ (productType) -> Bool in
