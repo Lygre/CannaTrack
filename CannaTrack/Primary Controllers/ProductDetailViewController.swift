@@ -432,7 +432,29 @@ extension ProductDetailViewController {
 		let record = self.recordForProduct ?? CKRecord(recordType: "Product")
 		guard let recordValue = self.activeDetailProduct.encodeProductAsCKRecordValue() else { return }
 
+
+		let manager = FileManager.default
+		let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+		let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+
+		let paths = manager.urls(for: nsDocumentDirectory, in: nsUserDomainMask)
+
+		if paths.count > 0 {
+			let dirPath = paths[0]
+			let writePath = dirPath.appendingPathComponent(self.activeDetailProduct.productType.rawValue + self.activeDetailProduct.strain.name + (self.activeDetailProduct.dateOpened?.description(with: .current) ?? "Unopened"))
+			let productImage: UIImage = {
+				let imageToReturn: UIImage = UIImage(imageLiteralResourceName: "cannaleaf.png")
+				guard let image = self.activeDetailProduct.productLabelImage else { return imageToReturn }
+				return image
+			}()
+
+			try? productImage.pngData()?.write(to: writePath)
+			let productImageData: CKAsset? = CKAsset(fileURL: NSURL(fileURLWithPath: writePath.path) as URL)
+			record.setObject(productImageData, forKey: "ProductImageData")
+//			(productImageData, forKey: "ProductImageData")
+		}
 		record.setObject(recordValue, forKey: "ProductData")
+
 
 		self.navigationItem.backBarButtonItem?.isEnabled = false
 

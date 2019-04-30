@@ -1112,19 +1112,34 @@
         <!--Filter Options Table View Controller-->
         <scene sceneID="Qqx-iK-LPx">
             <objects>
-                <tableViewController storyboardIdentifier="filterOptionsTableViewController" id="BaM-LD-bE8" customClass="FilterOptionsTableViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="filterOptionsTableViewController" modalPresentationStyle="currentContext" id="BaM-LD-bE8" customClass="FilterOptionsTableViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7li-Yw-rJf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="mao-gC-nbX">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FilterOptionsTableViewCell" id="mao-gC-nbX" customClass="FilterOptionsTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mao-gC-nbX" id="S6J-2b-SkN">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Option" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1C-kY-diP">
+                                            <rect key="frame" x="78" y="11.5" width="94" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="b1C-kY-diP" firstAttribute="centerY" secondItem="S6J-2b-SkN" secondAttribute="centerY" id="gJI-xp-OwQ"/>
+                                        <constraint firstItem="b1C-kY-diP" firstAttribute="leading" secondItem="S6J-2b-SkN" secondAttribute="leadingMargin" constant="58" id="smS-02-j57"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="filterOptionLabel" destination="b1C-kY-diP" id="P42-WK-JEc"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -8,20 +8,28 @@
 
 import UIKit
 
-enum FilterOption {
-
-
-	    
+enum FilterOption: String, CaseIterable {
+	case openedStatus = "Opened Status"
+	case dateOpened = "Date Opened"
+	case lastDoseTime = "Time of Last Dose"
+	case massRemaining = "Mass Remaining"
+	case numberOfDoses = "Number of Doses"
+	case strainVariety = "Strain Variety"
+	case none = "No Filter"
 }
 
+protocol InventoryFilterDelegate {
+	func filterInventory(using filterOption: FilterOption)
+}
 
 class FilterOptionsTableViewController: UITableViewController {
 
 
-	var filterOptions: [String]!
+	var filterOptions: [FilterOption] = FilterOption.allCases
 	
-	
+	var filterDelegate: InventoryFilterDelegate!
 
+	var selectedFilterOption: FilterOption = .none
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,19 +50,29 @@ class FilterOptionsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return filterOptions.count
     }
 
-    /*
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: filterOptionsTableViewCellIdentifier, for: indexPath) as? FilterOptionsTableViewCell else { return UITableViewCell() }
+		cell.filterOptionLabel.text = filterOptions[indexPath.row].rawValue
 
         // Configure the cell...
 
         return cell
     }
-    */
 
+
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//		guard let cell = tableView.dequeueReusableCell(withIdentifier: filterOptionsTableViewCellIdentifier, for: indexPath) as? FilterOptionsTableViewCell else { return }
+		selectedFilterOption = filterOptions[indexPath.row]
+		dismiss(animated: true) {
+			print("dismissing view with \(self.selectedFilterOption)")
+			guard let destinationVC = self.popoverPresentationController?.presentingViewController as? InventoryViewController else { return }
+			destinationVC.inventoryFilterOption = self.selectedFilterOption
+		}
+	}
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

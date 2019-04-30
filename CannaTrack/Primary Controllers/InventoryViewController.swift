@@ -23,6 +23,42 @@ class InventoryViewController: UIViewController {
 
 	var productCKRecords = [CKRecord]()
 
+	var inventoryFilterOption: FilterOption = .none {
+		didSet(newFilter) {
+			switch newFilter {
+
+			case .dateOpened:
+				self.currentInventory = self.currentInventory?.filter({ (someProduct) -> Bool in
+					return someProduct.dateOpened != nil
+				})
+				self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
+					return productOne.dateOpened! < productTwo.dateOpened!
+				})
+			case .lastDoseTime:
+//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+				print("not implemented")
+			case .massRemaining:
+				self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
+					return productOne.mass < productTwo.mass
+				})
+//				print("not implemented")
+			case .numberOfDoses:
+//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+				print("not implemented")
+			case .openedStatus:
+//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+				print("not implemented")
+			case .strainVariety:
+//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+				print("not implemented")
+			case .none:
+//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+				print("not implemented")
+
+			}
+		}
+	}
+
 	var activeCategoryDisplayed: Product.ProductType? {
 		didSet {
 			self.productsCollectionView.performBatchUpdates({
@@ -154,9 +190,10 @@ class InventoryViewController: UIViewController {
 
 	@IBAction func filterInventoryButtonTapped(_ sender: Any) {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let filterOptionsVC = storyboard.instantiateViewController(withIdentifier: filterOptionsTableViewIdentifier)
+		let filterOptionsVC = storyboard.instantiateViewController(withIdentifier: filterOptionsTableViewIdentifier) as! FilterOptionsTableViewController
 		filterOptionsVC.modalPresentationStyle = .popover
 		filterOptionsVC.popoverPresentationController?.barButtonItem = filterButton
+		filterOptionsVC.filterDelegate = self
 
 		self.present(filterOptionsVC, animated: true) {
 			print("do nothing for now")
@@ -334,7 +371,18 @@ extension InventoryViewController {
 						let propertyListDecoder = PropertyListDecoder()
 						do {
 							let data = record["ProductData"] as! Data
-							let productToAdd = try propertyListDecoder.decode(Product.self, from: data)
+							var productToAdd = try propertyListDecoder.decode(Product.self, from: data)
+
+							guard let asset = record["ProductImageData"] as? CKAsset else {
+								print("Image Missing from Record")
+								return
+							}
+							guard let imageData = NSData(contentsOf: asset.fileURL!) else {
+								print("Invalid Image")
+								return
+							}
+							let image = UIImage(data: imageData as Data)
+							productToAdd.productLabelImage = image
 							productObjectsArray.append(productToAdd)
 						}
 						catch { print(error) }
@@ -393,6 +441,15 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
 	}
+
+}
+
+extension InventoryViewController: InventoryFilterDelegate {
+	func filterInventory(using filterOption: FilterOption) {
+		//not implemented
+	}
+
+
 
 }
 

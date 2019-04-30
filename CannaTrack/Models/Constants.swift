@@ -15,3 +15,4 @@ let doseZone = CKRecordZone(zoneName: "DoseZone")
 
 let filterOptionsTableViewIdentifier = "filterOptionsTableViewController"
 
+let filterOptionsTableViewCellIdentifier = "FilterOptionsTableViewCell"
