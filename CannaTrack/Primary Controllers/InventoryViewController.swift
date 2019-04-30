@@ -426,6 +426,7 @@ extension InventoryViewController: InventoryFilterDelegate {
 			self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
 				return productOne.dateOpened! < productTwo.dateOpened!
 			})
+			filterButton?.tintColor = .red
 			print("sorting by date Opened")
 		case .lastDoseTime:
 			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
@@ -435,23 +436,34 @@ extension InventoryViewController: InventoryFilterDelegate {
 				return productOne.mass < productTwo.mass
 			})
 			self.currentInventory = masterInventory
+
+			filterButton?.tintColor = .red
 			print("filtering based on remaining mass")
-		//				print("not implemented")
 		case .numberOfDoses:
-			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-			print("not implemented")
+			self.currentInventory = masterInventory.sorted { (productOne, productTwo) -> Bool in
+				return productOne.numberOfDosesTakenFromProduct < productTwo.numberOfDosesTakenFromProduct
+			}
+
+			filterButton?.tintColor = .red
+			print("Sorting based on Number of Doses")
 		case .openedStatus:
 
 			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
 				guard let _ = someProduct.dateOpened else { return false }
 				return true
 			})
+
+			filterButton?.tintColor = .red
 			print("filtered based on open status")
 		case .strainVariety:
-			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+//			self.currentInventory = masterInventory.sorted(by: { (productOne, productTwo) -> Bool in
+//				<#code#>
+//			})
 			print("not implemented")
 		case .none:
 			self.currentInventory = masterInventory
+
+			filterButton?.tintColor = .blue
 			print("Filtering with None")
 
 		}
