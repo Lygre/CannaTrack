@@ -417,6 +417,10 @@ extension ProductDetailViewController {
 						let match = (dose?.product.productType == self.activeDetailProduct.productType) && (dose?.product.dateOpened == self.activeDetailProduct.dateOpened) && (dose?.product.strain.name == self.activeDetailProduct.strain.name)
 						return match
 					})
+					if self.doseCKRecords.count > self.activeDetailProduct.numberOfDosesTakenFromProduct {
+						self.activeDetailProduct.numberOfDosesTakenFromProduct = self.doseCKRecords.count
+						self.saveChangesToProduct()
+					}
 					self.productDoseLogTableView.reloadData()
 					print("dose records loaded: # \(recordsRetrieved?.count ?? 0) | Filtered: \(self.doseCKRecords.count)")
 				}

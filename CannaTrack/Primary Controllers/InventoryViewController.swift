@@ -168,6 +168,12 @@ class InventoryViewController: UIViewController {
 
 	}
 
+
+	@IBAction func sideMenuButtonTapped(_ sender: Any) {
+
+	}
+
+
 }
 
 
@@ -270,6 +276,8 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 				supplementaryView.sectionHeaderLabel.text = "No Category Selected"
 				return supplementaryView
 			}
+			//set filtered text label option here
+
 			supplementaryView.sectionHeaderLabel.text = activeCategoryDisplayed.map { $0.rawValue }
 		}
 
@@ -455,11 +463,30 @@ extension InventoryViewController: InventoryFilterDelegate {
 
 			filterButton?.tintColor = .red
 			print("filtered based on open status")
-		case .strainVariety:
-//			self.currentInventory = masterInventory.sorted(by: { (productOne, productTwo) -> Bool in
-//				<#code#>
-//			})
-			print("not implemented")
+		case .strainVarietyIndica:
+			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
+				return someProduct.strain.race == .indica
+			})
+
+			filterButton?.tintColor = .red
+
+			print("filtering to show only indica products")
+		case .strainVarietySativa:
+			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
+				return someProduct.strain.race == .sativa
+			})
+
+			filterButton?.tintColor = .red
+
+			print("filtering to show only indica products")
+		case .strainVarietyHybrid:
+			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
+				return someProduct.strain.race == .hybrid
+			})
+
+			filterButton?.tintColor = .red
+
+			print("filtering to show only indica products")
 		case .none:
 			self.currentInventory = masterInventory
 

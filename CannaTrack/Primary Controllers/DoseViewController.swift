@@ -117,10 +117,14 @@ class DoseViewController: UIViewController {
 
 	@IBAction func saveDoseClicked(_ sender: Any) {
 
-		saveDoseInformation(product: productForDose, doseDate: Date(), updatedMass: doseMassToUpdate, updatedProductImage: productDoseImage.image)
-
+//		saveDoseInformation(product: productForDose, doseDate: Date(), updatedMass: doseMassToUpdate, updatedProductImage: productDoseImage.image)
+		let dose = Dose(timestamp: Date(), product: productForDose, mass: doseMassToUpdate ?? 0.0, route: .inhalation, otherProductDictionary: [:])
+		dose.saveDoseLogToCloud()
+		dose.logDoseToCalendar(dose)
+		productForDose.numberOfDosesTakenFromProduct += 1
 		print("dose saved")
-		dismiss(animated: true, completion: nil)
+
+		self.navigationController?.popViewController(animated: true)
 	}
 
 	@IBAction func updateMassButtonClicked(_ sender: Any) {

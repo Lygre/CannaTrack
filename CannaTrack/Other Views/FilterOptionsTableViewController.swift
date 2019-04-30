@@ -14,7 +14,9 @@ enum FilterOption: String, CaseIterable {
 	case lastDoseTime = "Time of Last Dose"
 	case massRemaining = "Mass Remaining"
 	case numberOfDoses = "Number of Doses"
-	case strainVariety = "Strain Variety"
+	case strainVarietyIndica = "Strain Variety - Indica"
+	case strainVarietySativa = "Strain Variety - Sativa"
+	case strainVarietyHybrid = "Strain Variety - Hybrid"
 	case none = "No Filter"
 }
 
