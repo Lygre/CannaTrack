@@ -69,8 +69,7 @@ class FilterOptionsTableViewController: UITableViewController {
 		selectedFilterOption = filterOptions[indexPath.row]
 		dismiss(animated: true) {
 			print("dismissing view with \(self.selectedFilterOption)")
-			guard let destinationVC = self.popoverPresentationController?.presentingViewController as? InventoryViewController else { return }
-			destinationVC.inventoryFilterOption = self.selectedFilterOption
+			self.filterDelegate.filterInventory(using: self.selectedFilterOption)
 		}
 	}
     /*

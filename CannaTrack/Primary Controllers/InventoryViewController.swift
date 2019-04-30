@@ -23,41 +23,7 @@ class InventoryViewController: UIViewController {
 
 	var productCKRecords = [CKRecord]()
 
-	var inventoryFilterOption: FilterOption = .none {
-		didSet(newFilter) {
-			switch newFilter {
-
-			case .dateOpened:
-				self.currentInventory = self.currentInventory?.filter({ (someProduct) -> Bool in
-					return someProduct.dateOpened != nil
-				})
-				self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
-					return productOne.dateOpened! < productTwo.dateOpened!
-				})
-			case .lastDoseTime:
-//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-				print("not implemented")
-			case .massRemaining:
-				self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
-					return productOne.mass < productTwo.mass
-				})
-//				print("not implemented")
-			case .numberOfDoses:
-//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-				print("not implemented")
-			case .openedStatus:
-//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-				print("not implemented")
-			case .strainVariety:
-//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-				print("not implemented")
-			case .none:
-//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
-				print("not implemented")
-
-			}
-		}
-	}
+	var inventoryFilterOption: FilterOption = .none
 
 	var activeCategoryDisplayed: Product.ProductType? {
 		didSet {
@@ -103,7 +69,7 @@ class InventoryViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-
+		self.inventoryFilterOption = .none
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
@@ -121,7 +87,7 @@ class InventoryViewController: UIViewController {
 //
 //		}
 		masterProductArray = globalMasterInventory
-		currentInventory = masterProductArray
+//		currentInventory = masterProductArray
         // Do any additional setup after loading the view.
     }
 
@@ -129,7 +95,6 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.collectionViewLayout.invalidateLayout()
 		self.productsCollectionView.performBatchUpdates({
 			self.categoriesInInventory = updateCurrentInventory()
-
 			self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
 		}, completion: nil)
 	}
@@ -145,8 +110,10 @@ class InventoryViewController: UIViewController {
 	}
 
 	func updateCurrentInventory() -> [Product.ProductType] {
-		self.masterProductArray = globalMasterInventory
-		self.currentInventory = globalMasterInventory
+		if inventoryFilterOption == .none {
+			self.masterProductArray = globalMasterInventory
+			self.currentInventory = globalMasterInventory
+		}
 		let inventory = globalMasterInventory
 		var categories: Set<Product.ProductType> = []
 		for product in inventory {
@@ -447,6 +414,49 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 extension InventoryViewController: InventoryFilterDelegate {
 	func filterInventory(using filterOption: FilterOption) {
 		//not implemented
+
+		var masterInventory = globalMasterInventory
+		self.inventoryFilterOption = filterOption
+		switch filterOption {
+
+		case .dateOpened:
+			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
+				return someProduct.dateOpened != nil
+			})
+			self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
+				return productOne.dateOpened! < productTwo.dateOpened!
+			})
+			print("sorting by date Opened")
+		case .lastDoseTime:
+			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+			print("not implemented")
+		case .massRemaining:
+			masterInventory.sort(by: { (productOne, productTwo) -> Bool in
+				return productOne.mass < productTwo.mass
+			})
+			self.currentInventory = masterInventory
+			print("filtering based on remaining mass")
+		//				print("not implemented")
+		case .numberOfDoses:
+			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+			print("not implemented")
+		case .openedStatus:
+
+			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
+				guard let _ = someProduct.dateOpened else { return false }
+				return true
+			})
+			print("filtered based on open status")
+		case .strainVariety:
+			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
+			print("not implemented")
+		case .none:
+			self.currentInventory = masterInventory
+			print("Filtering with None")
+
+		}
+
+
 	}
 
 
