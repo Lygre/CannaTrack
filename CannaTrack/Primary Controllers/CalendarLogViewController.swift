@@ -120,6 +120,7 @@ class CalendarLogViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		queryCloudForDoseRecords()
+		setupCalendarView()
 		calendarCollectionView.collectionViewLayout.invalidateLayout()
 		calendarCollectionView.reloadData()
 
