@@ -276,7 +276,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="l3E-aN-j11">
-                                                                <rect key="frame" x="132.5" y="0.0" width="165.5" height="167"/>
+                                                                <rect key="frame" x="146.5" y="0.0" width="165.5" height="167"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i0i-YH-MUN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="157" height="15.5"/>
@@ -331,7 +331,7 @@
                                                                 </constraints>
                                                             </stackView>
                                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="fTB-3c-DG9">
-                                                                <rect key="frame" x="342" y="47.5" width="72" height="72"/>
+                                                                <rect key="frame" x="398" y="75.5" width="16" height="16"/>
                                                             </imageView>
                                                         </subviews>
                                                     </stackView>
@@ -1279,8 +1279,12 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <color key="backgroundColor" name="sativaColor"/>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-G2-rVd">
+                                                    <rect key="frame" x="19.5" y="33" width="11" height="11"/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                </view>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFp-vV-ZhG">
-                                                    <rect key="frame" x="4" y="14.5" width="42" height="21"/>
+                                                    <rect key="frame" x="4" y="8" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1289,16 +1293,21 @@
                                         </view>
                                         <color key="backgroundColor" name="indicaColor"/>
                                         <constraints>
+                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="height" secondItem="m6p-zk-1zg" secondAttribute="height" multiplier="0.22" id="04t-9F-ApE"/>
                                             <constraint firstAttribute="trailing" secondItem="FV4-hj-s0e" secondAttribute="trailing" id="432-rz-qa9"/>
                                             <constraint firstAttribute="bottom" secondItem="FV4-hj-s0e" secondAttribute="bottom" id="7Rn-De-pxo"/>
                                             <constraint firstItem="FV4-hj-s0e" firstAttribute="leading" secondItem="m6p-zk-1zg" secondAttribute="leading" id="ESN-Sa-jQ1"/>
+                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="centerX" secondItem="m6p-zk-1zg" secondAttribute="centerX" id="FXq-9B-Mg9"/>
+                                            <constraint firstAttribute="bottom" secondItem="vdU-G2-rVd" secondAttribute="bottom" constant="6" id="HQy-yc-GE1"/>
                                             <constraint firstItem="XFp-vV-ZhG" firstAttribute="centerX" secondItem="m6p-zk-1zg" secondAttribute="centerX" id="Off-Wv-chs"/>
-                                            <constraint firstItem="XFp-vV-ZhG" firstAttribute="centerY" secondItem="m6p-zk-1zg" secondAttribute="centerY" id="gfS-9I-AFR"/>
                                             <constraint firstItem="FV4-hj-s0e" firstAttribute="top" secondItem="m6p-zk-1zg" secondAttribute="top" id="nCP-i6-RrQ"/>
+                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="width" secondItem="m6p-zk-1zg" secondAttribute="width" multiplier="0.22" id="okL-5W-A2S"/>
+                                            <constraint firstItem="XFp-vV-ZhG" firstAttribute="top" secondItem="m6p-zk-1zg" secondAttribute="top" constant="8" id="wGm-90-lmm"/>
                                         </constraints>
                                         <size key="customSize" width="50" height="50"/>
                                         <connections>
                                             <outlet property="dateLabel" destination="XFp-vV-ZhG" id="Zzd-Sg-K0n"/>
+                                            <outlet property="dosesPresentIndicatorView" destination="vdU-G2-rVd" id="kpr-Q6-naS"/>
                                             <outlet property="selectedView" destination="FV4-hj-s0e" id="wcY-Af-HwU"/>
                                         </connections>
                                     </collectionViewCell>

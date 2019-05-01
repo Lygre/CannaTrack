@@ -13,11 +13,12 @@ class CustomCell: JTAppleCell {
 
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var selectedView: UIView!
+	@IBOutlet weak var dosesPresentIndicatorView: UIView!
 
+	var dosesPresentOnDate: Bool! = false
 
 	override func draw(_ rect: CGRect) {
 		super.draw(rect)
-//		self.layer.cornerRadius = self.frame.width / 2
 
 	}
 
@@ -26,8 +27,9 @@ class CustomCell: JTAppleCell {
 		var frame = self.bounds
 		frame.size.width = min(frame.width, frame.height)
 		frame.size.height = frame.width
-//		self.layer.cornerRadius = frame.width * 0.5
 		self.selectedView.layer.cornerRadius = frame.width * 0.5
+		self.dosesPresentIndicatorView.layer.cornerRadius = self.dosesPresentIndicatorView.frame.size.height * 0.5
+		self.dosesPresentIndicatorView.layer.masksToBounds = true
 	}
 
 }

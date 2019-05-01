@@ -262,9 +262,21 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 extension CalendarLogViewController {
 
 	func sharedFunctionToConfigureCell(cell: JTAppleCell, cellState: CellState, date: Date) {
-//		print("do nothing; not implemented")
-//		cell.layer.cornerRadius = cell.frame.width / 2
-//		cell.layer.masksToBounds = true
+
+		guard let validCell = cell as? CustomCell else { return }
+
+		let dosesOnDate = doseCKRecords.filter { (someDoseRecord) -> Bool in
+			guard let dateFromRecord = someDoseRecord.creationDate else { return false }
+			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: dateFromRecord)
+			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: date)
+			return dateFromDose == currentDate
+		}
+		if !dosesOnDate.isEmpty {
+			validCell.dosesPresentIndicatorView.isHidden = false
+		} else {
+			validCell.dosesPresentIndicatorView.isHidden = true
+		}
+
 
 
 	}
