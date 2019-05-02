@@ -72,24 +72,12 @@ class InventoryViewController: UIViewController {
 		self.inventoryFilterOption = .none
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
-//		setupProductCKQuerySubscription2()
-//		setupProductCKQuerySubscription()
+
 		setupActivityView()
 
-//		for product in globalMasterInventory {
-//			switch product.productType {
-//			case .truShatter:
-//				product.productLabelImage = UIImage(named: "shatter1.jpeg")
-//			case .truCrmbl:
-//				product.productLabelImage = UIImage(named: "crmbl1.jpeg")
-//			default:
-//				product.productLabelImage = UIImage(named: "cannaleaf.png")
-//			}
-//
-//		}
+		fetchProductCKQuerySubscriptions()
+
 		masterProductArray = globalMasterInventory
-//		currentInventory = masterProductArray
-        // Do any additional setup after loading the view.
     }
 
 	fileprivate func updateInventoryCollectionView() {
@@ -102,10 +90,7 @@ class InventoryViewController: UIViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
 		queryCloudForProductRecords()
-//		updateInventoryCollectionView()
-//		refreshUI()
 		print(categoriesInInventory)
 		print(currentInventory)
 	}
@@ -171,7 +156,7 @@ class InventoryViewController: UIViewController {
 
 
 	@IBAction func sideMenuButtonTapped(_ sender: Any) {
-		setupProductCKQuerySubscription2()
+		setupProductCKQuerySubscription()
 	}
 
 
@@ -223,10 +208,6 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 //				cell.inventoryProductLabel.text = "No Inventory"
 				return cell
 			}
-//			let data = productCKRecords[indexPath.row]["ProductData"] as! Data
-//			let properyListDecoder = PropertyListDecoder()
-//			guard let productForIndex = try? properyListDecoder.decode(Product.self, from: data) else { return cell }
-
 			cell.inventoryProductLabel.text = productForIndex.productType.rawValue
 			cell.productStrainNameLabel.text = productForIndex.strain.name
 			cell.productMassRemainingLabel.text = "\(productForIndex.mass)"
@@ -392,29 +373,18 @@ extension InventoryViewController {
 
 	//!!MARK -- CKSubscription work
 
+	func fetchProductCKQuerySubscriptions() {
 
-	func setupProductCKQuerySubscription() {
-
-//		let defaults = UserDefaults.standard
-		//!!MARK -- Not implemented pulling subs and removing them
-//		defaults.set(inventory, forKey: "Inventory?")
+		let allowedSubscriptionIDs: [CKSubscription.ID] = ["product-changes"]
 
 		privateDatabase.fetchAllSubscriptions { (subscriptions, error) in
 			DispatchQueue.main.async {
 				if error == nil {
 					if let subscriptions = subscriptions {
-						for subscription in subscriptions {
-							privateDatabase.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { (str, error) in
-								DispatchQueue.main.async {
-									if error != nil {
-										//!!Mark -- Error handling
-										print(error!.localizedDescription)
-									} else {
-										print("Removed sub with ID: \(subscription.subscriptionID)")
-									}
-								}
-
-							})
+						if subscriptions.isEmpty {
+							self.setupProductCKQuerySubscription()
+						} else {
+							print("\(subscriptions.debugDescription) retrieved")
 						}
 						//more code to come!
 
@@ -424,26 +394,10 @@ extension InventoryViewController {
 				}
 			}
 		}
-		/*
-		let modifySubscriptionsOperation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-		modifySubscriptionsOperation.configuration = config
-		modifySubscriptionsOperation.modifySubscriptionsCompletionBlock = { (savedSubscriptions, IDsToDelete, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error.localizedDescription)
-				} else if let subscriptionsSaved = savedSubscriptions {
-					print("saved \(subscriptionsSaved.count) subscriptions")
-				} else {
-					print("subscriptions were deleted?")
-				}
-			}
 
-		}
-		privateDatabase.add(modifySubscriptionsOperation)
-	*/
 	}
 
-	func setupProductCKQuerySubscription2() {
+	func setupProductCKQuerySubscription() {
 		let predicate = NSPredicate(value: true)
 		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: "product-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
 
@@ -459,6 +413,7 @@ extension InventoryViewController {
 		notification.shouldSendContentAvailable = true
 
 		subscription.notificationInfo = notification
+		config.qualityOfService = .utility
 
 		privateDatabase.save(subscription) { (subscription, error) in
 			DispatchQueue.main.async {
