@@ -12,7 +12,7 @@ import AVKit
 import TesseractOCR
 
 
-class AddProductViewController: UIViewController, G8TesseractDelegate {
+class AddProductViewController: UIViewController {
 
 	@IBOutlet var productCategoryScanResultText: UITextView!
 
@@ -58,9 +58,9 @@ class AddProductViewController: UIViewController, G8TesseractDelegate {
 	}
 
 	// MARK: - Tesseract Helpers
-	func progressImageRecognition(for tesseract: G8Tesseract!) {
-		print("Recognition progress for image \(tesseract.progress)")
-	}
+//	func progressImageRecognition(for tesseract: G8Tesseract!) {
+//		print("Recognition progress for image \(tesseract.progress)")
+//	}
 
 	// MARK: - Helper Methods
 
@@ -228,29 +228,29 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
 
-		if let tesseract = G8Tesseract(language: "eng") {
-			tesseract.engineMode = .tesseractOnly
-			tesseract.delegate = self
-			tesseract.image = originalImage.g8_blackAndWhite()
-			tesseract.recognize()
-
-			self.productImageToAdd.image = originalImage
-			self.scannedProductTextField.text = tesseract.recognizedText
-			if tesseract.recognizedText.lowercased().contains("trushatter") {
-				self.productCategoryScanResultText.text = "truShatter"
-				self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-			} else if tesseract.recognizedText.lowercased().contains("truflower") {
-				self.productCategoryScanResultText.text = "truFlower"
-				self.productToAdd = Product(typeOfProduct: .truFlower, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-			} else if tesseract.recognizedText.lowercased().contains("trucrmbl") {
-				self.productCategoryScanResultText.text = "truCRMBL"
-				self.productToAdd = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-			} else if tesseract.recognizedText.lowercased().contains("truclear") {
-				self.productCategoryScanResultText.text = "truClear"
-				self.productToAdd = Product(typeOfProduct: .truClear, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-			}
-
-		} else { print("not able to instantiate tesseract") }
+//		if let tesseract = G8Tesseract(language: "eng") {
+//			tesseract.engineMode = .tesseractOnly
+//			tesseract.delegate = self
+//			tesseract.image = originalImage.g8_blackAndWhite()
+//			tesseract.recognize()
+//
+//			self.productImageToAdd.image = originalImage
+//			self.scannedProductTextField.text = tesseract.recognizedText
+//			if tesseract.recognizedText.lowercased().contains("trushatter") {
+//				self.productCategoryScanResultText.text = "truShatter"
+//				self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+//			} else if tesseract.recognizedText.lowercased().contains("truflower") {
+//				self.productCategoryScanResultText.text = "truFlower"
+//				self.productToAdd = Product(typeOfProduct: .truFlower, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+//			} else if tesseract.recognizedText.lowercased().contains("trucrmbl") {
+//				self.productCategoryScanResultText.text = "truCRMBL"
+//				self.productToAdd = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+//			} else if tesseract.recognizedText.lowercased().contains("truclear") {
+//				self.productCategoryScanResultText.text = "truClear"
+//				self.productToAdd = Product(typeOfProduct: .truClear, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
+//			}
+//
+//		} else { print("not able to instantiate tesseract") }
 
 
 		self.productToAdd?.currentProductImage = originalImage

@@ -29,7 +29,6 @@
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
 		9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */; };
-		9F4D2DA8222C40B0002EDA0A /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 9F4D2DA7222C40B0002EDA0A /* tessdata */; };
 		9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F563EC422452BB9003F557A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F563EC322452BB9003F557A /* UserInfo.swift */; };
@@ -82,7 +81,6 @@
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDoseFromCalendarViewController.swift; sourceTree = "<group>"; };
-		9F4D2DA7222C40B0002EDA0A /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F563EC322452BB9003F557A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -263,7 +261,6 @@
 			children = (
 				9F08220A226A265300E8C1DC /* CloudKit */,
 				9FAB54D2226610D20012248F /* CannaTrack.entitlements */,
-				9F4D2DA7222C40B0002EDA0A /* tessdata */,
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F7207BC22372D96009D6375 /* Protocols */,
 				9F3D5B14221F52ED00D7B705 /* Models */,
@@ -357,7 +354,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F825C2A2214A2C300FC2327 /* LaunchScreen.storyboard in Resources */,
-				9F4D2DA8222C40B0002EDA0A /* tessdata in Resources */,
 				9F825C272214A2C300FC2327 /* Assets.xcassets in Resources */,
 				9F825C252214A2C200FC2327 /* Main.storyboard in Resources */,
 			);
