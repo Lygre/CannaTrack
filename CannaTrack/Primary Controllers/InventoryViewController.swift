@@ -72,7 +72,8 @@ class InventoryViewController: UIViewController {
 		self.inventoryFilterOption = .none
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
-
+//		setupProductCKQuerySubscription2()
+//		setupProductCKQuerySubscription()
 		setupActivityView()
 
 //		for product in globalMasterInventory {
@@ -170,7 +171,7 @@ class InventoryViewController: UIViewController {
 
 
 	@IBAction func sideMenuButtonTapped(_ sender: Any) {
-
+		setupProductCKQuerySubscription2()
 	}
 
 
@@ -389,34 +390,88 @@ extension InventoryViewController {
 		}
 	}
 
+	//!!MARK -- CKSubscription work
 
-	func saveCKSubscriptionToDatabase() {
 
-		let defaults = UserDefaults.standard
+	func setupProductCKQuerySubscription() {
+
+//		let defaults = UserDefaults.standard
 		//!!MARK -- Not implemented pulling subs and removing them
+//		defaults.set(inventory, forKey: "Inventory?")
 
+		privateDatabase.fetchAllSubscriptions { (subscriptions, error) in
+			DispatchQueue.main.async {
+				if error == nil {
+					if let subscriptions = subscriptions {
+						for subscription in subscriptions {
+							privateDatabase.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { (str, error) in
+								DispatchQueue.main.async {
+									if error != nil {
+										//!!Mark -- Error handling
+										print(error!.localizedDescription)
+									} else {
+										print("Removed sub with ID: \(subscription.subscriptionID)")
+									}
+								}
 
+							})
+						}
+						//more code to come!
 
+					}
+				} else {
+					print(error!.localizedDescription)
+				}
+			}
+		}
+		/*
+		let modifySubscriptionsOperation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+		modifySubscriptionsOperation.configuration = config
+		modifySubscriptionsOperation.modifySubscriptionsCompletionBlock = { (savedSubscriptions, IDsToDelete, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+				} else if let subscriptionsSaved = savedSubscriptions {
+					print("saved \(subscriptionsSaved.count) subscriptions")
+				} else {
+					print("subscriptions were deleted?")
+				}
+			}
 
+		}
+		privateDatabase.add(modifySubscriptionsOperation)
+	*/
+	}
 
-
+	func setupProductCKQuerySubscription2() {
 		let predicate = NSPredicate(value: true)
-		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: .init(), options: [CKQuerySubscription.Options.firesOnRecordCreation])
+		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: "product-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
+
+
+		let config = CKModifySubscriptionsOperation.Configuration()
+		config.timeoutIntervalForRequest = 20
+		config.timeoutIntervalForResource = 20
+
 
 		let notification = CKSubscription.NotificationInfo()
 		notification.alertBody = "There's a new product in Inventory"
 		notification.soundName = "default"
+		notification.shouldSendContentAvailable = true
+
 		subscription.notificationInfo = notification
 
-		privateDatabase.save(subscription) { (subscriptionToSave, error) in
-			if let error = error {
-				print(error)
-			} else {
-				print("Saved Subscription To Server")
+		privateDatabase.save(subscription) { (subscription, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+				} else {
+					print("Subscription Saved to Server from InventoryViewController.swift!")
+				}
 			}
 		}
-	}
 
+
+	}
 }
 
 

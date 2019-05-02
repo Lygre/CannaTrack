@@ -20,11 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 		// Override point for customization after application launch.
 
 		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-			if let error = error {
-				print(error.localizedDescription)
-			} else {
-				application.registerForRemoteNotifications()
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+				} else {
+					application.registerForRemoteNotifications()
+				}
 			}
+
 		}
 		UNUserNotificationCenter.current().delegate = self
 

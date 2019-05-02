@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CVCalendarViewMode</key>
-	<string>WeekView</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -20,22 +18,29 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CVCalendarViewMode</key>
+	<string>WeekView</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>"Need media library"</string>
+	<key>NSCameraUsageDescription</key>
+	<string>"Need camera to scan and detect 3D product objects"</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>"Need location always?"</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>"Need Location when in use"</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>"Need to use photo library"</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSCameraUsageDescription</key>
-	<string>&quot;Need camera to scan and detect 3D product objects&quot;</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>&quot;Need Location when in use&quot;</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>&quot;Need media library&quot;</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>&quot;Need location always?&quot;</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>&quot;Need to use photo library&quot;</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -52,10 +57,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>
