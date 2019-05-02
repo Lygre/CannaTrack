@@ -8,7 +8,7 @@
 
 import UIKit
 import CloudKit
-
+import Foundation
 
 
 class InventoryViewController: UIViewController {
@@ -389,6 +389,34 @@ extension InventoryViewController {
 		}
 	}
 
+
+	func saveCKSubscriptionToDatabase() {
+
+		let defaults = UserDefaults.standard
+		//!!MARK -- Not implemented pulling subs and removing them
+
+
+
+
+
+
+		let predicate = NSPredicate(value: true)
+		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: .init(), options: [CKQuerySubscription.Options.firesOnRecordCreation])
+
+		let notification = CKSubscription.NotificationInfo()
+		notification.alertBody = "There's a new product in Inventory"
+		notification.soundName = "default"
+		subscription.notificationInfo = notification
+
+		privateDatabase.save(subscription) { (subscriptionToSave, error) in
+			if let error = error {
+				print(error)
+			} else {
+				print("Saved Subscription To Server")
+			}
+		}
+	}
+
 }
 
 
@@ -502,33 +530,4 @@ extension InventoryViewController: InventoryFilterDelegate {
 
 }
 
-//extension InventoryViewController: UIViewControllerPreviewingDelegate {
-//	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-//		//		guard let sourceProductView = forceTouchPreviewProduct else { fatalError("couldn't get source product view") }
-//		guard let indexPath = productsCollectionView.indexPathForItem(at: location) else { return nil }
-//		guard let cellForView = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return nil }
-//		previewingContext.sourceRect = cellForView.frame
-//
-//		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
-//		let plistDecoder = PropertyListDecoder()
-//		let data = productCKRecords[indexPath.item]["ProductData"] as! Data
-//		guard let productForCell = try? plistDecoder.decode(Product.self, from: data) else { return nil }
-//
-//		viewController.activeDetailProduct = productForCell
-//
-//		print("active detail product for 3d peek pop set")
-//		return viewController
-//	}
-//
-//	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-//
-//		guard let ProductViewController = viewControllerToCommit as? ProductDetailViewController else { fatalError("could not create product detail view controller") }
-//
-//		navigationController?.pushViewController(ProductViewController, animated: true)
-//		print("commiting and pushing to new view")
-//	}
-//
-//
-//
-//}
 

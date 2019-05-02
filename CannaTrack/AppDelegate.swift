@@ -8,17 +8,26 @@
 
 import UIKit
 import CloudKit
-
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
 	var window: UIWindow?
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		application.registerForRemoteNotifications()
+
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+			if let error = error {
+				print(error.localizedDescription)
+			} else {
+				application.registerForRemoteNotifications()
+			}
+		}
+		UNUserNotificationCenter.current().delegate = self
+
 		return true
 	}
 
@@ -58,5 +67,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 	}
 
+	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+		//!!MARK -- change the nature of the notification, alter this array being passed by completion handler
+		completionHandler([.alert, .sound, .badge])
+	}
 }
 
