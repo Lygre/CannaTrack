@@ -24,6 +24,8 @@ class ProductDetailViewController: UIViewController {
 
 	var doseArray: [Dose] = []
 
+	var editMassDelegate: EditMassDelegate!
+
 	var doseCKRecords = [CKRecord]()
 
 
@@ -234,13 +236,24 @@ class ProductDetailViewController: UIViewController {
 				self.deleteProductFromCloud(with: record)
 			}
 		}
-		
+
+		let editMassAction = UIPreviewAction(title: "Edit Mass", style: .default) { [unowned self] (_, _) in
+			guard let product = self.activeDetailProduct else { preconditionFailure("Expected a reference to the product data container") }
+			guard let recordForProduct = self.recordForProduct else { preconditionFailure("Expected reference to record for product") }
+			//implement presenting place to edit the mass
+			self.editMassDelegate.editMassForProduct(product: product, with: recordForProduct)
+
+
+
+
+		}
+
 		//add edit dose mass quick action here
 		
 		if let _ = self.activeDetailProduct.dateOpened {
 			return [ doseAction, deleteAction ]
 		} else {
-			return [ openProductAction, deleteAction ]
+			return [ openProductAction, deleteAction, editMassAction ]
 		}
 	}
 
@@ -455,7 +468,6 @@ extension ProductDetailViewController {
 			try? productImage.pngData()?.write(to: writePath)
 			let productImageData: CKAsset? = CKAsset(fileURL: NSURL(fileURLWithPath: writePath.path) as URL)
 			record.setObject(productImageData, forKey: "ProductImageData")
-//			(productImageData, forKey: "ProductImageData")
 		}
 		record.setObject(recordValue, forKey: "ProductData")
 

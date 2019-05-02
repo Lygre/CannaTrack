@@ -328,3 +328,8 @@ func removeProductFromInventory(product: Product) {
 		print(error)
 	}
 }
+
+
+protocol EditMassDelegate {
+	func editMassForProduct(product: Product, with record: CKRecord)
+}

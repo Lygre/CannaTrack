@@ -33,6 +33,8 @@ class InventoryViewController: UIViewController {
 		}
 	}
 
+
+
 	var currentInventory: [Product]? {
 		didSet {
 			self.productsCollectionView.performBatchUpdates({
@@ -69,6 +71,7 @@ class InventoryViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+		self.definesPresentationContext = true
 		self.inventoryFilterOption = .none
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
@@ -132,7 +135,7 @@ class InventoryViewController: UIViewController {
 			let recordToPass = productCKRecords[indexPath.item]
 
 			productDetailViewController.recordForProduct = recordToPass
-
+			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
 		}
 
@@ -541,3 +544,73 @@ extension InventoryViewController: InventoryFilterDelegate {
 }
 
 
+
+extension InventoryViewController: EditMassDelegate {
+	func editMassForProduct(product: Product, with record: CKRecord) {
+		DispatchQueue.main.async {
+			let massEditView = UIAlertController(title: "Edit Mass \(product.productType.rawValue) \(product.strain.name)", message: "Enter updated mass value in grams", preferredStyle: .alert)
+			massEditView.addTextField(configurationHandler: nil)
+			let confirmMassEditAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] (_) in
+				product.mass = Double(massEditView.textFields?.first!.text ?? "0.0") ?? 0.0
+				self.saveChangesToProduct(product: product, record: record)
+			})
+			let cancelMassEditAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+			massEditView.addAction(confirmMassEditAction)
+			massEditView.addAction(cancelMassEditAction)
+
+			self.present(massEditView, animated: true, completion: nil)
+		}
+
+	}
+
+	func saveChangesToProduct(product: Product, record: CKRecord) {
+		guard let recordValue = product.encodeProductAsCKRecordValue() else { return }
+
+		let manager = FileManager.default
+		let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+		let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+
+		let paths = manager.urls(for: nsDocumentDirectory, in: nsUserDomainMask)
+
+		if paths.count > 0 {
+			let dirPath = paths[0]
+			let writePath = dirPath.appendingPathComponent(product.productType.rawValue + product.strain.name + (product.dateOpened?.description(with: .current) ?? "Unopened"))
+			let productImage: UIImage = {
+				let imageToReturn: UIImage = UIImage(imageLiteralResourceName: "cannaleaf.png")
+				guard let image = product.productLabelImage else { return imageToReturn }
+				return image
+			}()
+
+			try? productImage.pngData()?.write(to: writePath)
+			let productImageData: CKAsset? = CKAsset(fileURL: NSURL(fileURLWithPath: writePath.path) as URL)
+			record.setObject(productImageData, forKey: "ProductImageData")
+		}
+		record.setObject(recordValue, forKey: "ProductData")
+		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+		let configuration = CKModifyRecordsOperation.Configuration()
+		configuration.timeoutIntervalForResource = 20
+		configuration.timeoutIntervalForRequest = 20
+		operation.configuration = configuration
+
+		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
+			DispatchQueue.main.async {
+				self.navigationItem.backBarButtonItem?.isEnabled = true
+				if let error = error {
+					print(error)
+				} else {
+					if let savedRecords = savedRecords {
+						self.updateInventoryCollectionView()
+						print("\(savedRecords) Records were saved")
+					}
+				}
+			}
+
+		}
+
+		privateDatabase.add(operation)
+
+
+	}
+
+
+}
