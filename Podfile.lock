@@ -1,24 +1,16 @@
 PODS:
-  - CVCalendar (1.6.2)
   - JTAppleCalendar (7.1.7)
-  - TesseractOCRiOS (4.0.0)
 
 DEPENDENCIES:
-  - CVCalendar (~> 1.6.2)
   - JTAppleCalendar (~> 7.0)
-  - TesseractOCRiOS (= 4.00)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - CVCalendar
     - JTAppleCalendar
-    - TesseractOCRiOS
 
 SPEC CHECKSUMS:
-  CVCalendar: 515092247b9c5059855643c2a2220f259bd5417f
   JTAppleCalendar: 96da4d8388fa6dc82d6a60d41ef36a015e167e2f
-  TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
 
-PODFILE CHECKSUM: f57e62a5422933f0fcdc46a8860e218c768576d5
+PODFILE CHECKSUM: 36429122b744a263474af0a455142256f053dbb1
 
 COCOAPODS: 1.5.3
