@@ -9,7 +9,6 @@
 import UIKit
 import Vision
 import AVKit
-import TesseractOCR
 
 
 class AddProductViewController: UIViewController {

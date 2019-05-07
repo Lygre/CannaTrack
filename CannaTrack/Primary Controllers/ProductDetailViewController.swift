@@ -251,9 +251,9 @@ class ProductDetailViewController: UIViewController {
 		//add edit dose mass quick action here
 		
 		if let _ = self.activeDetailProduct.dateOpened {
-			return [ doseAction, deleteAction ]
+			return [ doseAction, editMassAction, deleteAction ]
 		} else {
-			return [ openProductAction, deleteAction, editMassAction ]
+			return [ openProductAction, editMassAction, deleteAction ]
 		}
 	}
 

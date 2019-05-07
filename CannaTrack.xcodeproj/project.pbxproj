@@ -13,7 +13,6 @@
 		9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */; };
 		9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */; };
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
-		9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D52227A02600658F62 /* TesseractOCR.framework */; };
 		9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */; };
 		9F22F122224D458700C67D69 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F121224D458700C67D69 /* CustomCell.swift */; };
 		9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDB223C092E00EF644D /* ProductView.swift */; };
@@ -64,7 +63,6 @@
 		9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
 		9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCKObjects.swift; sourceTree = "<group>"; };
 		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		9F1052D52227A02600658F62 /* TesseractOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TesseractOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLogViewController.swift; sourceTree = "<group>"; };
 		9F22F120224D10FA00C67D69 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9F22F121224D458700C67D69 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -119,7 +117,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F1052D62227A02600658F62 /* TesseractOCR.framework in Frameworks */,
 				9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */,
 				9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */,
 				575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */,
@@ -133,7 +130,6 @@
 			isa = PBXGroup;
 			children = (
 				9FAB54D3226611180012248F /* CloudKit.framework */,
-				9F1052D52227A02600658F62 /* TesseractOCR.framework */,
 				9F1052D32227A01800658F62 /* CoreImage.framework */,
 				D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */,
 			);
@@ -513,6 +509,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -538,6 +535,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -575,6 +573,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -594,6 +593,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

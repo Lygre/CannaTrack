@@ -4,10 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>CVCalendar.xcscheme_^#shared#^_</key>
+		<key>CVCalendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<true/>
+			<false/>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
@@ -23,8 +23,10 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>TesseractOCRiOS.xcscheme_^#shared#^_</key>
+		<key>TesseractOCRiOS.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
