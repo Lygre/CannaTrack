@@ -49,7 +49,6 @@
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
 		9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FAB54D3226611180012248F /* CloudKit.framework */; };
-		9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */; };
 		9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */; };
 		9FB8F7F222761A9800823CDC /* FilterOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */; };
 		9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3DCD7226CD00600C2C517 /* Constants.swift */; };
@@ -103,7 +102,6 @@
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
 		9FAB54D2226610D20012248F /* CannaTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CannaTrack.entitlements; sourceTree = "<group>"; };
 		9FAB54D3226611180012248F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseOptionsPopupViewController.swift; sourceTree = "<group>"; };
 		9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewCell.swift; sourceTree = "<group>"; };
 		9FF3DCD7226CD00600C2C517 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -213,7 +211,6 @@
 			isa = PBXGroup;
 			children = (
 				9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */,
-				9FB53EAA2232E30800523344 /* DoseOptionsPopupViewController.swift */,
 				9F27EEDB223C092E00EF644D /* ProductView.swift */,
 				9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */,
 				9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */,
@@ -432,7 +429,6 @@
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */,
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
-				9FB53EAB2232E30800523344 /* DoseOptionsPopupViewController.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */,
 				9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */,
