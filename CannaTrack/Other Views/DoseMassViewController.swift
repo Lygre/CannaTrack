@@ -75,7 +75,7 @@ extension DoseMassViewController: UITextFieldDelegate {
 
 		multipleDoseDelegate.saveCompositeDoseProductEntry(product: productForDose, mass: massForOtherProductInDose)
 		self.navigationController?.popViewController(animated: true)
-		print("ended editing textfield in DoseMassVC.swift. saving \(massForOtherProductInDose) as dose mass for product")
+		print("ended editing textfield in DoseMassVC.swift. saving \(massForOtherProductInDose ?? 0) as dose mass for product")
 	}
 
 }

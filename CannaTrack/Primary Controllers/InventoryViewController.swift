@@ -95,7 +95,7 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 		queryCloudForProductRecords()
 		print(categoriesInInventory)
-		print(currentInventory)
+		print(currentInventory?.debugDescription ?? "No value for `currentInventory`:InventoryViewController.swift")
 	}
 
 	func updateCurrentInventory() -> [Product.ProductType] {
@@ -131,7 +131,8 @@ class InventoryViewController: UIViewController {
 			guard let productDetailViewController = segue.destination as? ProductDetailViewController
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
-			// Pass over a reference to the ColorData object and the specific ColorItem being viewed.
+			// Pass over a reference to the CKRecord object, Product object, and assign self as the editMassDelegate object of the productDetailVC
+
 			let recordToPass = productCKRecords[indexPath.item]
 
 			productDetailViewController.recordForProduct = recordToPass
@@ -158,9 +159,6 @@ class InventoryViewController: UIViewController {
 	}
 
 
-	@IBAction func sideMenuButtonTapped(_ sender: Any) {
-		setupProductCKQuerySubscription()
-	}
 
 
 }
@@ -176,10 +174,8 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 	}
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
 		guard let inventory = currentInventory else { return 0 }
 		return (section == 0) ? categoriesInInventory.count : inventory.count
-
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -187,13 +183,10 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
 
 		switch sectionForCell {
-
 		case .category:
 			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: productCategoryCellIdentifier, for: indexPath) as? ProductCategoryCollectionViewCell else { fatalError("could not instantiate category collection view cell") }
 
-
 			let categoriesPresent = categoriesInInventory[indexPath.row].rawValue
-
 
 			cell.categoryLabel.text = categoriesPresent
 
@@ -257,16 +250,13 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		case .category:
 			supplementaryView.sectionHeaderLabel.text = "Product Types in Inventory"
 		case .product:
-			guard let activeCategory = activeCategoryDisplayed else {
+			guard let _ = activeCategoryDisplayed else {
 				supplementaryView.sectionHeaderLabel.text = "No Category Selected"
 				return supplementaryView
 			}
 			//set filtered text label option here
-
 			supplementaryView.sectionHeaderLabel.text = activeCategoryDisplayed.map { $0.rawValue }
 		}
-
-
 		return supplementaryView
 	}
 
@@ -276,15 +266,12 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		switch sectionForCell {
 		case .category:
 			activeCategoryDisplayed = categoriesInInventory[indexPath.row]
-			
 			//reuse this following code to filter
 			let masterInventory = globalMasterInventory
 
 			currentInventory = masterInventory.filter({ (productType) -> Bool in
 					productType.productType == activeCategoryDisplayed
 				})
-
-
 		case .product:
 			print("do nothing")
 		}
@@ -331,7 +318,7 @@ extension InventoryViewController {
 						let propertyListDecoder = PropertyListDecoder()
 						do {
 							let data = record["ProductData"] as! Data
-							var productToAdd = try propertyListDecoder.decode(Product.self, from: data)
+							let productToAdd = try propertyListDecoder.decode(Product.self, from: data)
 
 							guard let asset = record["ProductImageData"] as? CKAsset else {
 								print("Image Missing from Record")
@@ -350,7 +337,7 @@ extension InventoryViewController {
 					globalMasterInventory = productObjectsArray
 					self.updateInventoryCollectionView()
 					self.activityView.stopAnimating()
-					print("product records loaded: # \(recordsRetrieved?.count)")
+					print("product records loaded: # \(recordsRetrieved?.count ?? 0)")
 				}
 			}
 		}
@@ -378,7 +365,7 @@ extension InventoryViewController {
 
 	func fetchProductCKQuerySubscriptions() {
 
-		let allowedSubscriptionIDs: [CKSubscription.ID] = ["product-changes"]
+		let _: [CKSubscription.ID] = ["product-changes"]
 
 		privateDatabase.fetchAllSubscriptions { (subscriptions, error) in
 			DispatchQueue.main.async {

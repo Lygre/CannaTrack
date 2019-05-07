@@ -86,7 +86,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		if strainsToDisplay.isEmpty {
-			strainsToDisplay = masterStrainDatabase ?? []
+			strainsToDisplay = masterStrainDatabase
 		} else {
 			print("strain db isn't empty")
 			refreshUI()
@@ -147,9 +147,8 @@ class StrainsCollectionViewController: UICollectionViewController {
     }
 
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
+		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath; this should never ever fail")}
 		strainToPassToDetail = getStrainForIndexPath(indexPath: indexPath)
-//		performSegue(withIdentifier: detailSegueIdentifier, sender: nil)
 
 	}
 
@@ -213,9 +212,9 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 		let searchResults = searchStrains(using: searchString!)
 //		print(searchResults)
 		strainsToDisplay = searchResults
-		print(searchString)
+		print(searchString ?? "No search string established, or is empty.")
 		if (searchString == "") {
-			strainsToDisplay = masterStrainDatabase ?? []
+			strainsToDisplay = masterStrainDatabase
 		}
 		print("Updating Search Results")
 		self.collectionView?.reloadData()

@@ -124,6 +124,8 @@ class AddProductViewController: UIViewController {
 			bounds.size.height = bounds.size.width
 			bounds.size.width = boundsHeight
 			transform = CGAffineTransform(scaleX: -1, y: 1).rotated(by: .pi / 2.0)
+		@unknown default:
+			fatalError("Default Unknown case for UIImage Orientations; instantiating crash")
 		}
 
 		return UIGraphicsImageRenderer(size: bounds.size).image { rendererContext in
@@ -186,7 +188,7 @@ class AddProductViewController: UIViewController {
 
 	@IBAction func scanProductToAddImageForData(_ sender: UIButton) {
 //		guard let uiImageForVision = productToAdd?.productLabelImage else { return }
-		guard let cgImageForVision = productToAdd?.productLabelImage?.cgImage else { return }
+		guard (productToAdd?.productLabelImage?.cgImage) != nil else { return }
 
 //		let imageRequestHandler = VNImageRequestHandler(cgImage: cgImageForVision, orientation: .up, options: [:])
 

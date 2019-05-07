@@ -276,7 +276,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="l3E-aN-j11">
-                                                                <rect key="frame" x="146.5" y="0.0" width="165.5" height="167"/>
+                                                                <rect key="frame" x="132.5" y="0.0" width="165.5" height="167"/>
                                                                 <subviews>
                                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i0i-YH-MUN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="157" height="15.5"/>
@@ -331,7 +331,7 @@
                                                                 </constraints>
                                                             </stackView>
                                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="fTB-3c-DG9">
-                                                                <rect key="frame" x="398" y="75.5" width="16" height="16"/>
+                                                                <rect key="frame" x="342" y="47.5" width="72" height="72"/>
                                                             </imageView>
                                                         </subviews>
                                                     </stackView>
@@ -1096,11 +1096,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="pFP-Bp-r1i">
                         <barButtonItem key="backBarButtonItem" title="Inventory" id="7rX-Dy-JXR"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="qAR-Wt-JbX" userLabel="Side Menu Button">
-                            <connections>
-                                <action selector="sideMenuButtonTapped:" destination="2sp-3f-4Lb" id="ktc-0t-TKQ"/>
-                            </connections>
-                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="camera" id="lTm-9X-i7P">
                                 <connections>

@@ -52,24 +52,24 @@ func saveInventoryToCloud(inventory: Inventory) {
 
 }
 
-func saveProductToCloud(product: Product) {
-
-	let newProduct = CKRecord(recordType: "Product")
-	let properyListEncoder = PropertyListEncoder()
-	do {
-		let encodedProductData = try properyListEncoder.encode(product)
-//		newProduct["ProductData"] =
-	}
-	catch { print(error) }
-
-	newProduct.setValue(product.dateOpened, forKey: "productTestDate")
-
-
-	privateDatabase.save(newProduct) { (record, _) in
-		guard record != nil else { return }
-		print("saved record with product \(record?.object(forKey: "productTestDate"))")
-	}
-}
+//func saveProductToCloud(product: Product) {
+//
+//	let newProduct = CKRecord(recordType: "Product")
+//	let properyListEncoder = PropertyListEncoder()
+//	do {
+//		_ = try properyListEncoder.encode(product)
+//		// stupids
+//	}
+//	catch { print(error) }
+//
+//	newProduct.setValue(product.dateOpened, forKey: "productTestDate")
+//
+//
+//	privateDatabase.save(newProduct) { (record, _) in
+//		guard record != nil else { return }
+//		print("saved record with product \(String(describing: record?.object(forKey: "productTestDate")))")
+//	}
+//}
 
 
 func queryCloudDatabase() {
@@ -81,7 +81,7 @@ func queryCloudDatabase() {
 
 		guard let latestRecord = records.sorted(by: { (record, otherRecord) -> Bool in
 			let recordOneDate: Date = {
-				var dateToReturn: Date = Date()
+				let dateToReturn: Date = Date()
 				if let recOneModDate = record.modificationDate {
 					return recOneModDate
 				} else {
@@ -92,7 +92,7 @@ func queryCloudDatabase() {
 				return dateToReturn
 			}()
 			let recordTwoDate: Date = {
-				var dateToReturn: Date = Date()
+				let dateToReturn: Date = Date()
 				if let recTwoModDate = otherRecord.modificationDate {
 					return recTwoModDate
 				} else {

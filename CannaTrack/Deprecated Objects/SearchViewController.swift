@@ -133,7 +133,6 @@ class SearchViewController: UIViewController {
 	}
 
 	func sendRequest(using vowel: String, completion: @escaping (([BaseStrain]) -> Void)) {
-		var baseStrainsArrayForVowel: [BaseStrain] = []
 		let urlForVowel = "https://strainapi.evanbusse.com/oJ5GvWc/strains/search/name/" + String("\(vowel)").trimmingCharacters(in: .whitespaces)
 		guard let urlObj = URL(string: urlForVowel) else { return }
 
@@ -143,8 +142,6 @@ class SearchViewController: UIViewController {
 
 			do {
 				let intermediateBasestrainArray = try JSONDecoder().decode([BaseStrain].self, from: data)
-				baseStrainsArrayForVowel = intermediateBasestrainArray
-//				self.intermediaryBaseStrainArray = intermediateBasestrainArray
 				self.strainSetsArray.append(self.createStrainSetFromArray(using: intermediateBasestrainArray))
 				completion(intermediateBasestrainArray)
 				print("data parsed from strain database")

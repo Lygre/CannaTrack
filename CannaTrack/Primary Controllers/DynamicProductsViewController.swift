@@ -112,7 +112,7 @@ class DynamicProductsViewController: UIViewController {
 			//setup gesture recognizers
 			let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForProductView(recognizer:)))
 			let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapForProductView(recognizer:)))
-			let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
+			let _ = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
 
 			//make any modifications needed
 			tap.numberOfTapsRequired = 2
@@ -238,7 +238,7 @@ extension DynamicProductsViewController {
 	//noted******
 	@objc func handlePanForProductView(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
-		let locationCenterView = view.center
+		_ = view.center
 		guard let productViewToTranslate = recognizer.view else { return }
 		guard let productView = recognizer.view as? ProductView else { return }
 		switch recognizer.state {
@@ -246,7 +246,7 @@ extension DynamicProductsViewController {
 
 			forceTouchPreviewProduct = productView
 			itemBehavior.isAnchored = false
-			let translation = recognizer.translation(in: view)
+			_ = recognizer.translation(in: view)
 			let velocity = recognizer.velocity(in: view)
 			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
 			let pushBehavior = UIPushBehavior(items: [productViewToTranslate], mode: .instantaneous)
@@ -299,13 +299,15 @@ extension DynamicProductsViewController {
 		case .possible:
 			forceTouchPreviewProduct = productView
 			print("possible pan case")
+		@unknown default:
+			fatalError("unknown default handling of unknown case in switch: DynamicProductViewController.swift")
 		}
 
 	}
 
 	@objc func handleTapForProductView(recognizer: UITapGestureRecognizer) {
-		let location = recognizer.location(in: self.view)
-		let locationCenterView = view.center
+		_ = recognizer.location(in: self.view)
+		_ = view.center
 		guard let productViewToTranslate = recognizer.view as? ProductView else { return }
 		print("tap recognized in \(productViewToTranslate)")
 		forceTouchPreviewProduct = productViewToTranslate

@@ -115,7 +115,7 @@ extension Inventory {
 
 			database.save(newInventoryForCloud) { (record, error) in
 				guard record != nil else { return }
-				print("saved inventory to cloud \(record.debugDescription)", error)
+				print("saved inventory to cloud \(record.debugDescription)", error?.localizedDescription ?? "No errors in saving inventory to cloud. This method should not be in use")
 			}
 		}
 		catch {

@@ -72,7 +72,7 @@ class CalendarLogViewController: UIViewController {
 
 	var dosesForDate: [Dose]? {
 		didSet {
-			print(self.dosesForDate?.debugDescription)
+			print(self.dosesForDate?.debugDescription ?? "No doses for selected Date")
 			DispatchQueue.main.async {
 				self.doseTableView.reloadData()
 			}
@@ -332,31 +332,18 @@ extension CalendarLogViewController {
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let plistDecoder = PropertyListDecoder()
 		let doseRecord = doseCKRecords[indexPath.row]
 
-//		let decodedDoseFromRecord = try? plistDecoder.decode(Dose.self, from: doseRecord["DoseData"] as! Data)
-		let action2 = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
 			let indexInRecords = self.doseCKRecords.firstIndex(of: doseRecord)
 			guard let indexToRemove = indexInRecords else { return }
 			self.doseCKRecords.remove(at: indexToRemove)
 			self.deleteDoseRecordFromCloud(with: doseRecord)
 			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
 		}
-		action2.backgroundColor = .red
-		return action2
+		action.backgroundColor = .red
+		return action
 
-//		let dose = dosesForDate?[indexPath.row]
-//		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-//			let indexInGlobalDoses = doseLogDictionaryGLOBAL.firstIndex(where: { (doseCompletion) -> Bool in
-//				return doseCompletion === dose })
-//			self.dosesForDate?.remove(at: indexPath.row)
-//			doseLogDictionaryGLOBAL.remove(at: indexInGlobalDoses!)
-//			saveDoseCalendarInfo()
-//			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
-//		}
-//		action.backgroundColor = .red
-//		return action
 	}
 
 }
@@ -369,14 +356,12 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: tableCellIdentifier) as? DoseCalendarTableViewCell else { fatalError("could not cast a calendar table view cell") }
-//		guard let doseArray = dosesForDate else { return cell }
 
 		let formatter = DateFormatter()
 		formatter.dateStyle = .none
 		formatter.timeStyle = .medium
 
 		let data = recordsForDate[indexPath.row]["DoseData"] as! Data
-
 		let propertylistDecoder = PropertyListDecoder()
 
 		guard let doseForIndex = try? propertylistDecoder.decode(Dose.self, from: data) else { return cell }
@@ -384,11 +369,6 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 		cell.timeLabel.text = formatter.string(from: doseForIndex.timestamp)
 		cell.productLabel.text = doseForIndex.product.productType.rawValue
 		cell.strainLabel.text = doseForIndex.product.strain.name
-
-
-//		cell.timeLabel.text = formatter.string(from: doseArray[indexPath.row].timestamp)
-//		cell.productLabel.text = doseArray[indexPath.row].product.productType.rawValue
-//		cell.strainLabel.text = doseArray[indexPath.row].product.strain.name
 
 		switch doseForIndex.product.strain.race {
 		case .hybrid:
@@ -424,16 +404,7 @@ extension CalendarLogViewController {
 }
 
 extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
-
-//	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//		return CGSize(width: (self.calendarCollectionView.frame.size.width/3)-10, height: (self.calendarCollectionView.frame.size.height/4)-10)
-//	}
-
-
-
-
-
-
+	//nothing implemented, nor do I know that anything needs to be
 
 }
 
@@ -451,7 +422,7 @@ extension CalendarLogViewController {
 					print(error)
 				} else {
 					self.doseCKRecords = recordsRetrieved ?? []
-					print("dose records loaded: # \(recordsRetrieved?.count)")
+					print("dose records loaded: # \(recordsRetrieved?.count ?? 0)")
 					self.doseTableView.reloadData()
 					self.activityView.stopAnimating()
 				}
