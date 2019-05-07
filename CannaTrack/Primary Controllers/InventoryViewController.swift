@@ -18,6 +18,8 @@ class InventoryViewController: UIViewController {
 	let headerIdentifier = "ProductSectionHeaderView"
 
 
+	var originalAddButtonPosition: CGPoint!
+
 	var dateFormatter = DateFormatter()
 	var activityView = UIActivityIndicatorView()
 
@@ -60,6 +62,8 @@ class InventoryViewController: UIViewController {
 
 	@IBOutlet var filterButton: UIBarButtonItem!
 
+	@IBOutlet var addProductButton: AddProductFloatingButton!
+
 
 	fileprivate func setupActivityView() {
 		activityView.center = self.view.center
@@ -69,6 +73,12 @@ class InventoryViewController: UIViewController {
 		self.view.addSubview(activityView)
 	}
 
+	fileprivate func setupAddButtonPanGesture() {
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
+		addProductButton.addGestureRecognizer(pan)
+		addProductButton.isUserInteractionEnabled = true
+	}
+
 	override func viewDidLoad() {
         super.viewDidLoad()
 		self.definesPresentationContext = true
@@ -76,12 +86,41 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
+		originalAddButtonPosition = addProductButton.center
+
+		setupAddButtonPanGesture()
+
+
+
+
+
 		setupActivityView()
 
 		fetchProductCKQuerySubscriptions()
 
 		masterProductArray = globalMasterInventory
     }
+
+	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
+		let location = recognizer.location(in: self.view)
+		let translation = recognizer.translation(in: self.view)
+
+		switch recognizer.state {
+		case .changed:
+			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
+			recognizer.setTranslation(.zero, in: view)
+		case .began:
+			recognizer.setTranslation(.zero, in: view)
+			addProductButton.center = location
+		case .ended:
+			recognizer.setTranslation(.zero, in: view)
+
+		default:
+			print("unrecognized recognizer switch state")
+		}
+
+	}
+
 
 	fileprivate func updateInventoryCollectionView() {
 		self.productsCollectionView.collectionViewLayout.invalidateLayout()
@@ -91,11 +130,15 @@ class InventoryViewController: UIViewController {
 		}, completion: nil)
 	}
 
+
+
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+
 		queryCloudForProductRecords()
 		print(categoriesInInventory)
-		print(currentInventory?.debugDescription ?? "No value for `currentInventory`:InventoryViewController.swift")
+
 	}
 
 	func updateCurrentInventory() -> [Product.ProductType] {
@@ -303,6 +346,10 @@ extension InventoryViewController {
 		loadViewIfNeeded()
 		productsCollectionView.reloadData()
 	}
+
+
+
+
 
 	fileprivate func queryCloudForProductRecords() {
 		let query = CKQuery(recordType: "Product", predicate: NSPredicate(value: true))

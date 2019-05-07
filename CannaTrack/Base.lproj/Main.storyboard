@@ -1008,12 +1008,27 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                <rect key="frame" x="341" y="740" width="48" height="48"/>
+                                <color key="backgroundColor" name="sativaColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="4jH-0z-N1d" secondAttribute="height" multiplier="1:1" id="QRq-pQ-7bu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="tintColor" name="indicaColor"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
+                                <state key="normal" title="+">
+                                    <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.35074011760000001" green="0.66666668650000005" blue="0.37963403709999999" alpha="0.90190360920000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="KZT-4n-qef" firstAttribute="leading" secondItem="k4E-R0-PJJ" secondAttribute="leading" constant="5" id="GBK-4g-gIL"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="bottom" secondItem="KZT-4n-qef" secondAttribute="bottom" id="Lhg-E6-MOB"/>
                             <constraint firstItem="KZT-4n-qef" firstAttribute="top" secondItem="k4E-R0-PJJ" secondAttribute="top" id="lyv-zY-AgZ"/>
+                            <constraint firstItem="k4E-R0-PJJ" firstAttribute="trailing" secondItem="4jH-0z-N1d" secondAttribute="trailing" constant="25" id="tNp-tR-NwN"/>
+                            <constraint firstItem="k4E-R0-PJJ" firstAttribute="bottom" secondItem="4jH-0z-N1d" secondAttribute="bottom" constant="25" id="xmK-zr-oJA"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="trailing" secondItem="KZT-4n-qef" secondAttribute="trailing" constant="5" id="ycf-b1-hM4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="k4E-R0-PJJ"/>
@@ -1039,13 +1054,14 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addProductButton" destination="4jH-0z-N1d" id="c73-4z-o6k"/>
                         <outlet property="filterButton" destination="aCX-cy-zNL" id="m5I-oo-tiQ"/>
                         <outlet property="productsCollectionView" destination="KZT-4n-qef" id="gcC-sc-qqP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72h-jy-are" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="352" y="1802"/>
+            <point key="canvasLocation" x="350.72463768115944" y="1801.3392857142856"/>
         </scene>
         <!--Filter Options Table View Controller-->
         <scene sceneID="Qqx-iK-LPx">

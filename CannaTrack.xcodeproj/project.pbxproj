@@ -27,6 +27,7 @@
 		9F3B809D224E96610059294B /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809C224E96610059294B /* Dose.swift */; };
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
+		9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */; };
 		9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */; };
 		9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
@@ -77,6 +78,7 @@
 		9F3B809C224E96610059294B /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductFloatingButton.swift; sourceTree = "<group>"; };
 		9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDoseFromCalendarViewController.swift; sourceTree = "<group>"; };
 		9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		9F4A3305228233FF0092D8AC /* Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */,
+			);
+			path = Subclasses;
+			sourceTree = "<group>";
+		};
 		9F52F031221DC2BC007E6330 /* Primary Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +270,7 @@
 				9F2FDF69225A7FC800ECC26B /* Reusable Custom Subclasses */,
 				9F52F033221DC313007E6330 /* Other Views */,
 				9F52F032221DC2FA007E6330 /* Cells */,
+				9F4A3305228233FF0092D8AC /* Subclasses */,
 				9F52F031221DC2BC007E6330 /* Primary Controllers */,
 				9FB6F307224983B200C18BD3 /* Deprecated Objects */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
@@ -437,6 +448,7 @@
 				9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */,
 				9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */,
 				9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */,
+				9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */,
 				9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */,
 				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
 				9F2FDF71225AC82900ECC26B /* UnknownCollectionViewController.swift in Sources */,
