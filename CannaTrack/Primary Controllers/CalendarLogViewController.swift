@@ -227,7 +227,6 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 		sharedFunctionToConfigureCell(cell: myCustomCell, cellState: cellState, date: date)
 		handleCellSelected(cell: myCustomCell, cellState: cellState)
 		handleCellTextColor(cell: myCustomCell, cellState: cellState)
-		//return cell
 		return myCustomCell
 	}
 

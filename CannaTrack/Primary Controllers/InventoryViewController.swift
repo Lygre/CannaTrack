@@ -19,6 +19,11 @@ class InventoryViewController: UIViewController {
 
 	var viewPropertyAnimator: UIViewPropertyAnimator!
 
+	var animator: UIDynamicAnimator!
+	var snapBehavior: UISnapBehavior!
+	var itemBehavior: UIDynamicItemBehavior!
+
+
 	var originalAddButtonPosition: CGPoint!
 
 	var dateFormatter = DateFormatter()
@@ -28,6 +33,7 @@ class InventoryViewController: UIViewController {
 
 	var inventoryFilterOption: FilterOption = .none
 
+
 	var activeCategoryDisplayed: Product.ProductType? {
 		didSet {
 			self.productsCollectionView.performBatchUpdates({
@@ -35,7 +41,6 @@ class InventoryViewController: UIViewController {
 			}, completion: nil)
 		}
 	}
-
 
 
 	var currentInventory: [Product]? {
@@ -47,6 +52,7 @@ class InventoryViewController: UIViewController {
 	}
 
 	var masterProductArray: [Product]?
+
 
 	var categoriesInInventory: [Product.ProductType] = {
 
@@ -81,6 +87,13 @@ class InventoryViewController: UIViewController {
 		addProductButton.isUserInteractionEnabled = true
 	}
 
+	fileprivate func setupDynamicItemBehavior() {
+		itemBehavior = UIDynamicItemBehavior(items: [addProductButton])
+		itemBehavior.resistance = 0.5
+		itemBehavior.allowsRotation = true
+		animator.addBehavior(itemBehavior)
+	}
+
 	override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -95,12 +108,18 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-		originalAddButtonPosition = addProductButton.center
+		originalAddButtonPosition = addProductButton.frame.origin
 
 		setupAddButtonPanGesture()
 
 
+		animator = UIDynamicAnimator(referenceView: self.view)
 
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
+		snapBehavior.damping = 0.8
+		animator.addBehavior(snapBehavior)
+
+		setupDynamicItemBehavior()
 
 
 		setupActivityView()
@@ -120,7 +139,11 @@ class InventoryViewController: UIViewController {
 			recognizer.setTranslation(.zero, in: view)
 		case .began:
 			recognizer.setTranslation(.zero, in: view)
+
+			animator.removeBehavior(snapBehavior)
+
 			addProductButton.center = location
+
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
@@ -128,8 +151,18 @@ class InventoryViewController: UIViewController {
 			})
 			viewPropertyAnimator.startAnimation()
 
-		default:
-			print("unrecognized recognizer switch state")
+			animator.addBehavior(snapBehavior)
+			//whole lot has to be implemented here
+			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
+
+		case .cancelled, .failed:
+			animator.addBehavior(snapBehavior)
+
+
+		case .possible:
+			print("possible pan gesture state case. No implementation")
+		@unknown default:
+			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
 		}
 
 	}
