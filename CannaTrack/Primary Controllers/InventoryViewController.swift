@@ -45,6 +45,7 @@ class InventoryViewController: UIViewController {
 			}, completion: nil)
 		}
 	}
+
 	var masterProductArray: [Product]?
 
 	var categoriesInInventory: [Product.ProductType] = {
@@ -123,7 +124,7 @@ class InventoryViewController: UIViewController {
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear, animations: {
-				self.addProductButton.frame = CGRect(x: self.addProductButton.frame.minX, y: self.addProductButton.frame.minY, width: self.addProductButton.frame.width / 2, height: self.addProductButton.frame.height / 2)
+				self.addProductButton.bounds = CGRect(x: self.addProductButton.bounds.minX, y: self.addProductButton.bounds.minY, width: self.addProductButton.bounds.height / 2, height: self.addProductButton.bounds.height / 2)
 			})
 			viewPropertyAnimator.startAnimation()
 

@@ -13,6 +13,16 @@ class AddProductFloatingButton: UIButton {
 	let indicaColor = UIColor(named: "indicaColor")
 	var addButtonDelegate: AddButtonDelegate?
 
+	var path: UIBezierPath!
+
+	override var bounds: CGRect {
+		get { return super.bounds }
+		set(newBounds) {
+			super.bounds = newBounds
+			let newFrameSize = min(newBounds.size.width, newBounds.size.height)
+			self.layer.cornerRadius = newFrameSize / 2.0
+		}
+	}
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -37,6 +47,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
 
+		setupMotionEffectForAddButton()
 
 	}
 
@@ -47,54 +58,42 @@ class AddProductFloatingButton: UIButton {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		self.clipsToBounds = true
-		self.layer.cornerRadius = self.bounds.size.height / 2
 		self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
 		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.2)
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
-		self.layer.masksToBounds = false
+		self.clipsToBounds = true
 
 //		setupMotionEffectForAddButton()
-		setupShadowMotionEffectForAddButton()
-
+//		setupShadowMotionEffectForAddButton()
 
 	}
 
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-			self.frame = CGRect(x: self.frame.minX, y: self.frame.maxY, width: self.frame.width * 2, height: self.frame.height * 2)
+			self.bounds = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.bounds.height * 2, height: self.bounds.height * 2)
 		}
 		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
 
-	/*
-	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-			self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width / 2, height: self.frame.height / 2)
-		}
-		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 
-	}
-	*/
-	/*
-	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-			self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width / 2, height: self.frame.height / 2)
-		}
-		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
-	}
-	*/
-
-    /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
+		self.createCircle()
+
+		UIColor.purple.setFill()
+		path.fill()
+		UIColor.purple.setStroke()
+		path.stroke()
     }
-    */
+
+	func createCircle() {
+		self.path = UIBezierPath(ovalIn: CGRect(x: self.frame.size.width / 2 - self.frame.size.height / 2, y: 0.0, width: self.frame.size.height, height: self.frame.size.height))
+	}
 
 }
 
