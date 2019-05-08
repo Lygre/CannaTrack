@@ -1008,7 +1008,7 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleAspectFill" restorationIdentifier="AddButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" restorationIdentifier="AddButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
                                 <rect key="frame" x="329" y="728" width="60" height="60"/>
                                 <color key="backgroundColor" name="sativaColor"/>
                                 <constraints>

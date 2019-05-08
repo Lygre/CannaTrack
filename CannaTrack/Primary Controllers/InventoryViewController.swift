@@ -123,7 +123,7 @@ class InventoryViewController: UIViewController {
 			addProductButton.center = location
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
-			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear, animations: {
+			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 				self.addProductButton.bounds = CGRect(x: self.addProductButton.bounds.minX, y: self.addProductButton.bounds.minY, width: self.addProductButton.bounds.height / 2, height: self.addProductButton.bounds.height / 2)
 			})
 			viewPropertyAnimator.startAnimation()
