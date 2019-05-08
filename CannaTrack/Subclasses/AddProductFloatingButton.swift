@@ -79,13 +79,14 @@ class AddProductFloatingButton: UIButton {
 
 	}
 	*/
-	
+	/*
 	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
 			self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width / 2, height: self.frame.height / 2)
 		}
 		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
+	*/
 
     /*
     // Only override draw() if you perform custom drawing.

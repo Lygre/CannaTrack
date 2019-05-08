@@ -122,6 +122,10 @@ class InventoryViewController: UIViewController {
 			addProductButton.center = location
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
+			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear, animations: {
+				self.addProductButton.frame = CGRect(x: self.addProductButton.frame.minX, y: self.addProductButton.frame.minY, width: self.addProductButton.frame.width / 2, height: self.addProductButton.frame.height / 2)
+			})
+			viewPropertyAnimator.startAnimation()
 
 		default:
 			print("unrecognized recognizer switch state")
