@@ -1216,7 +1216,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <color key="backgroundColor" name="sativaColor"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-G2-rVd" customClass="DoseIndicatorView" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-G2-rVd" customClass="DoseIndicatorView" customModule="CannaTrackSpecial" customModuleProvider="target">
                                                     <rect key="frame" x="19.5" y="33" width="11" height="11"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <constraints>
@@ -1233,7 +1233,7 @@
                                         </view>
                                         <color key="backgroundColor" name="indicaColor"/>
                                         <constraints>
-                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="height" secondItem="m6p-zk-1zg" secondAttribute="height" multiplier="0.22" id="04t-9F-ApE"/>
+                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="height" secondItem="m6p-zk-1zg" secondAttribute="height" multiplier="0.22" priority="250" id="04t-9F-ApE"/>
                                             <constraint firstAttribute="trailing" secondItem="FV4-hj-s0e" secondAttribute="trailing" id="432-rz-qa9"/>
                                             <constraint firstAttribute="bottom" secondItem="FV4-hj-s0e" secondAttribute="bottom" id="7Rn-De-pxo"/>
                                             <constraint firstItem="FV4-hj-s0e" firstAttribute="leading" secondItem="m6p-zk-1zg" secondAttribute="leading" id="ESN-Sa-jQ1"/>
@@ -1241,7 +1241,7 @@
                                             <constraint firstAttribute="bottom" secondItem="vdU-G2-rVd" secondAttribute="bottom" constant="6" id="HQy-yc-GE1"/>
                                             <constraint firstItem="XFp-vV-ZhG" firstAttribute="centerX" secondItem="m6p-zk-1zg" secondAttribute="centerX" id="Off-Wv-chs"/>
                                             <constraint firstItem="FV4-hj-s0e" firstAttribute="top" secondItem="m6p-zk-1zg" secondAttribute="top" id="nCP-i6-RrQ"/>
-                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="width" secondItem="m6p-zk-1zg" secondAttribute="width" multiplier="0.22" id="okL-5W-A2S"/>
+                                            <constraint firstItem="vdU-G2-rVd" firstAttribute="width" secondItem="m6p-zk-1zg" secondAttribute="width" multiplier="0.22" priority="250" id="okL-5W-A2S"/>
                                             <constraint firstItem="XFp-vV-ZhG" firstAttribute="top" secondItem="m6p-zk-1zg" secondAttribute="top" constant="8" id="wGm-90-lmm"/>
                                         </constraints>
                                         <size key="customSize" width="50" height="50"/>
