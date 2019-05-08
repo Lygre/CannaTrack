@@ -108,7 +108,8 @@ class InventoryViewController: UIViewController {
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-		originalAddButtonPosition = addProductButton.frame.origin
+//		originalAddButtonPosition = addProductButton.frame.origin
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 
 		setupAddButtonPanGesture()
 
@@ -118,8 +119,8 @@ class InventoryViewController: UIViewController {
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		snapBehavior.damping = 0.8
 		animator.addBehavior(snapBehavior)
-
-		setupDynamicItemBehavior()
+		
+//		setupDynamicItemBehavior()
 
 
 		setupActivityView()
@@ -147,7 +148,7 @@ class InventoryViewController: UIViewController {
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addProductButton.bounds = CGRect(x: self.addProductButton.bounds.minX, y: self.addProductButton.bounds.minY, width: self.addProductButton.bounds.height / 2, height: self.addProductButton.bounds.height / 2)
+				self.addProductButton.bounds = CGRect(x: self.addProductButton.bounds.minX, y: self.addProductButton.bounds.minY, width: self.addProductButton.frame.height / 2, height: self.addProductButton.frame.height / 2)
 			})
 			viewPropertyAnimator.startAnimation()
 

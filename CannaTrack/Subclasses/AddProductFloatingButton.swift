@@ -28,8 +28,8 @@ class AddProductFloatingButton: UIButton {
 		super.init(frame: frame)
 
 
-		self.backgroundColor = UIColor(named: "sativaColor")
-
+//		self.backgroundColor = UIColor(named: "sativaColor")
+		self.backgroundColor = .clear
 
 		self.setTitle("+", for: .normal)
 		self.setTitle("+", for: .disabled)
@@ -46,6 +46,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .highlighted)
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
+		self.clipsToBounds = true
 
 		setupMotionEffectForAddButton()
 
@@ -63,7 +64,7 @@ class AddProductFloatingButton: UIButton {
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
 		self.clipsToBounds = true
-
+		self.layer.masksToBounds = true
 //		setupMotionEffectForAddButton()
 //		setupShadowMotionEffectForAddButton()
 
@@ -89,6 +90,8 @@ class AddProductFloatingButton: UIButton {
 		path.fill()
 		UIColor.purple.setStroke()
 		path.stroke()
+
+		self.layer.bounds = path.bounds
     }
 
 	func createCircle() {
@@ -142,3 +145,5 @@ extension AddProductFloatingButton {
 
 
 }
+
+
