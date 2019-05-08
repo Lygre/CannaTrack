@@ -1216,9 +1216,12 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <color key="backgroundColor" name="sativaColor"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-G2-rVd">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-G2-rVd" customClass="DoseIndicatorView" customModule="CannaTrackSpecial" customModuleProvider="target">
                                                     <rect key="frame" x="19.5" y="33" width="11" height="11"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="vdU-G2-rVd" secondAttribute="height" multiplier="1:1" id="tgv-XV-7no"/>
+                                                    </constraints>
                                                 </view>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFp-vV-ZhG">
                                                     <rect key="frame" x="4" y="8" width="42" height="21"/>
