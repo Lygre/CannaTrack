@@ -28,6 +28,7 @@ class CustomCell: JTAppleCell {
 		frame.size.width = min(frame.width, frame.height)
 		frame.size.height = frame.width
 		self.selectedView.layer.cornerRadius = frame.width * 0.5
+		self.selectedView.clipsToBounds = true
 		self.dosesPresentIndicatorView.layer.cornerRadius = self.dosesPresentIndicatorView.bounds.size.height / 2.0
 //		self.dosesPresentIndicatorView.layer.masksToBounds = true
 		self.dosesPresentIndicatorView.clipsToBounds = true

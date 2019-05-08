@@ -312,7 +312,7 @@ extension CalendarLogViewController {
 		calendarCollectionView.minimumLineSpacing = 0
 		calendarCollectionView.minimumInteritemSpacing = 0
 		calendarCollectionView.scrollingMode = .stopAtEachSection
-		calendarCollectionView.allowsDateCellStretching = false
+		calendarCollectionView.allowsDateCellStretching = true
 
 		calendarCollectionView.visibleDates { visibleDates in
 			self.setupViewsOfCalendar(from: visibleDates)
