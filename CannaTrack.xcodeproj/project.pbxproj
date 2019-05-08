@@ -52,6 +52,7 @@
 		9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FAB54D3226611180012248F /* CloudKit.framework */; };
 		9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */; };
 		9FB8F7F222761A9800823CDC /* FilterOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */; };
+		9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */; };
 		9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3DCD7226CD00600C2C517 /* Constants.swift */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -106,6 +107,7 @@
 		9FAB54D3226611180012248F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewCell.swift; sourceTree = "<group>"; };
+		9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonProtocol.swift; sourceTree = "<group>"; };
 		9FF3DCD7226CD00600C2C517 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
 		D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CannaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */,
+				9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 				9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */,
+				9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

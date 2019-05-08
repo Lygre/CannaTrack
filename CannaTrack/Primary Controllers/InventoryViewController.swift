@@ -17,6 +17,7 @@ class InventoryViewController: UIViewController {
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
 	let headerIdentifier = "ProductSectionHeaderView"
 
+	var viewPropertyAnimator: UIViewPropertyAnimator!
 
 	var originalAddButtonPosition: CGPoint!
 
@@ -81,6 +82,13 @@ class InventoryViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+
+		self.addProductButton.addButtonDelegate = self
+
+		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.2, curve: .linear, animations: {
+			self.addProductButton.frame = CGRect(x: self.addProductButton.frame.minX, y: self.addProductButton.frame.minY, width: self.addProductButton.frame.width * 2, height: self.addProductButton.frame.height * 2)
+		})
+
 		self.definesPresentationContext = true
 		self.inventoryFilterOption = .none
 		self.productsCollectionView.delegate = self
@@ -645,6 +653,24 @@ extension InventoryViewController: EditMassDelegate {
 
 
 	}
+
+
+}
+
+
+
+
+
+
+
+
+extension InventoryViewController: AddButtonDelegate {
+	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator) {
+		viewPropertyAnimator = animator
+		viewPropertyAnimator.startAnimation()
+//		button.frame = CGRect(x: button.frame.minX, y: button.frame.maxY, width: button.frame.width * 2, height: button.frame.height * 2)
+	}
+
 
 
 }
