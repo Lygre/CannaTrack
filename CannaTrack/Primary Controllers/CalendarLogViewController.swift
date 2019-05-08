@@ -135,6 +135,11 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		calendarCollectionView.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
+	}
+
+
 	@IBAction func unwindToDoseCalendar(unwindSegue: UIStoryboardSegue) {
 
 	}
@@ -189,7 +194,6 @@ extension CalendarLogViewController: JTAppleCalendarViewDataSource {
 
 		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate, numberOfRows: 6, calendar: .current, generateInDates: .forAllMonths, generateOutDates: .tillEndOfRow, firstDayOfWeek: .sunday, hasStrictBoundaries: true)
 
-//		let configs = ConfigurationParameters(startDate: startDate, endDate: endDate)
 
 		return configs
 	}
@@ -248,11 +252,6 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	}
 
 
-//	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//		super.viewWillTransition(to: size, with: coordinator)
-//		calendarCollectionView.collectionViewLayout.invalidateLayout()
-//		calendarCollectionView.reloadData()
-//	}
 
 
 }
