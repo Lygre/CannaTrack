@@ -131,14 +131,14 @@ extension AddProductFloatingButton {
 		let horizontalEffect = UIInterpolatingMotionEffect(
 			keyPath: "layer.shadowOffset.width",
 			type: .tiltAlongHorizontalAxis)
-		horizontalEffect.minimumRelativeValue = 5
-		horizontalEffect.maximumRelativeValue = -5
+		horizontalEffect.minimumRelativeValue = 3
+		horizontalEffect.maximumRelativeValue = -3
 
 		let verticalEffect = UIInterpolatingMotionEffect(
 			keyPath: "layer.shadowOffset.height",
 			type: .tiltAlongVerticalAxis)
-		verticalEffect.minimumRelativeValue = 5
-		verticalEffect.maximumRelativeValue = -5
+		verticalEffect.minimumRelativeValue = 3
+		verticalEffect.maximumRelativeValue = -3
 
 		let effectGroup = UIMotionEffectGroup()
 		effectGroup.motionEffects = [ horizontalEffect,

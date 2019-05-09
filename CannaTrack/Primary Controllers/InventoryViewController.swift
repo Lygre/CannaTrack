@@ -11,6 +11,8 @@ import CloudKit
 import Foundation
 
 
+
+
 class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"
@@ -108,6 +110,10 @@ class InventoryViewController: UIViewController {
 		//add button work here
 		self.addProductButton.addButtonDelegate = self
 
+		//haptic setup for button here
+		self.addProductButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+
+
 		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
@@ -120,6 +126,7 @@ class InventoryViewController: UIViewController {
 
 		//dynamic animator work
 		animator = UIDynamicAnimator(referenceView: self.view)
+		animator.delegate = self
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		snapBehavior.damping = 0.8
 		animator.addBehavior(snapBehavior)
@@ -148,6 +155,12 @@ class InventoryViewController: UIViewController {
 		case .changed:
 			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
 			recognizer.setTranslation(.zero, in: view)
+			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) else {
+				print("no cell)")
+				return
+			}
+			addProductButton.sendActions(for: .overEligibleContainerRegion)
+			print("collision with \(cell.debugDescription)")
 		case .began:
 			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
@@ -184,6 +197,28 @@ class InventoryViewController: UIViewController {
 
 	}
 
+	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
+//		let selectionFeedbackGenerator: UISelectionFeedbackGenerator = .init()
+//		selectionFeedbackGenerator.selectionChanged()
+
+		let generator = UIImpactFeedbackGenerator(style: .medium)
+
+
+		let targets = sender.allControlEvents
+		switch targets {
+		case .backToAnchorPoint:
+			print("back to anchor point haptic action triggered")
+			generator.impactOccurred()
+		case .overEligibleContainerRegion:
+			print("over eligible container region haptic action")
+			generator.impactOccurred()
+		default:
+			generator.impactOccurred()
+			print("do nothing")
+		}
+
+
+	}
 
 	fileprivate func updateInventoryCollectionView() {
 		self.productsCollectionView.collectionViewLayout.invalidateLayout()
@@ -728,5 +763,20 @@ extension InventoryViewController: AddButtonDelegate {
 	}
 
 
+
+}
+
+
+extension InventoryViewController: UIDynamicAnimatorDelegate {
+
+	func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+
+		guard let button = animator.items(in: self.view.frame).first as? AddProductFloatingButton else {
+			print("There is no button; not able to be cast as The Button, anyway")
+			return
+		}
+
+		button.sendActions(for: .backToAnchorPoint)
+	}
 
 }

@@ -333,3 +333,9 @@ func removeProductFromInventory(product: Product) {
 protocol EditMassDelegate: class {
 	func editMassForProduct(product: Product, with record: CKRecord)
 }
+
+
+extension UIControl.Event {
+	static var backToAnchorPoint: UIControl.Event { return UIControl.Event(rawValue: 0b0001 << 24) }
+	static var overEligibleContainerRegion: UIControl.Event { return UIControl.Event(rawValue: 0b0010 << 24) }
+}
