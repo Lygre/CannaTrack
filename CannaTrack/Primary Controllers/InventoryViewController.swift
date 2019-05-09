@@ -97,25 +97,29 @@ class InventoryViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 
-		self.addProductButton.addButtonDelegate = self
-
-		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.2, curve: .linear, animations: {
-			self.addProductButton.frame = CGRect(x: self.addProductButton.frame.minX, y: self.addProductButton.frame.minY, width: self.addProductButton.frame.width * 2, height: self.addProductButton.frame.height * 2)
-		})
-
+		//obligatory random setup of view
 		self.definesPresentationContext = true
 		self.inventoryFilterOption = .none
+
+		//assign collection delegates and datasource
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
 
-//		originalAddButtonPosition = addProductButton.frame.origin
+		//add button work here
+		self.addProductButton.addButtonDelegate = self
+
+		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.2, curve: .linear, animations: {
+			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
+		})
+
+
+
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 
 		setupAddButtonPanGesture()
 
-
+		//dynamic animator work
 		animator = UIDynamicAnimator(referenceView: self.view)
-
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		snapBehavior.damping = 0.8
 		animator.addBehavior(snapBehavior)
@@ -123,6 +127,7 @@ class InventoryViewController: UIViewController {
 //		setupDynamicItemBehavior()
 
 
+		//activity view setup and CKQuery, other
 		setupActivityView()
 
 		fetchProductCKQuerySubscriptions()
@@ -148,7 +153,7 @@ class InventoryViewController: UIViewController {
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addProductButton.bounds = CGRect(x: self.addProductButton.bounds.minX, y: self.addProductButton.bounds.minY, width: self.addProductButton.frame.height / 2, height: self.addProductButton.frame.height / 2)
+				self.addProductButton.transform = .identity
 			})
 			viewPropertyAnimator.startAnimation()
 
@@ -183,6 +188,7 @@ class InventoryViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
+		viewPropertyAnimator.startAnimation()
 		queryCloudForProductRecords()
 		print(categoriesInInventory)
 

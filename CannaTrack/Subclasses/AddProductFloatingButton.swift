@@ -15,6 +15,14 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
+	override var transform: CGAffineTransform {
+		get { return super.transform }
+		set(newTransform) {
+			super.transform = newTransform
+
+		}
+	}
+
 	override var bounds: CGRect {
 		get { return super.bounds }
 		set(newBounds) {
@@ -47,8 +55,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
-
-		setupMotionEffectForAddButton()
+//		setupMotionEffectForAddButton()
 
 	}
 
@@ -63,8 +70,9 @@ class AddProductFloatingButton: UIButton {
 		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.2)
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
-		self.clipsToBounds = true
-		self.layer.masksToBounds = true
+//		self.layer.masksToBounds = true
+
+		self.translatesAutoresizingMaskIntoConstraints = false
 //		setupMotionEffectForAddButton()
 //		setupShadowMotionEffectForAddButton()
 
@@ -73,7 +81,8 @@ class AddProductFloatingButton: UIButton {
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-			self.bounds = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.bounds.height * 2, height: self.bounds.height * 2)
+
+			self.transform = .init(scaleX: 2.0, y: 2.0)
 		}
 		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
@@ -91,11 +100,12 @@ class AddProductFloatingButton: UIButton {
 		UIColor.purple.setStroke()
 		path.stroke()
 
-		self.layer.bounds = path.bounds
+		self.bounds = path.bounds
     }
 
 	func createCircle() {
-		self.path = UIBezierPath(ovalIn: CGRect(x: self.frame.size.width / 2 - self.frame.size.height / 2, y: 0.0, width: self.frame.size.height, height: self.frame.size.height))
+		self.path = UIBezierPath(ovalIn: CGRect(x: self.frame.size.width / 2 - self.frame.size.height / 2, y: 0.0, width: self.bounds.size.height, height: self.bounds.size.height))
+//		self.path = UIBezierPath(arcCenter: self.center, radius: self.bounds.size.width, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
 	}
 
 }
@@ -109,12 +119,12 @@ extension AddProductFloatingButton {
 		//some UI playing around with Motion Effects and with the floating add product button
 		let horizontalEffect = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
 
-		horizontalEffect.minimumRelativeValue = -16
-		horizontalEffect.maximumRelativeValue = 16
+		horizontalEffect.minimumRelativeValue = -3
+		horizontalEffect.maximumRelativeValue = 3
 
 		let verticalEffect = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
-		verticalEffect.minimumRelativeValue = -16
-		verticalEffect.maximumRelativeValue = 16
+		verticalEffect.minimumRelativeValue = -3
+		verticalEffect.maximumRelativeValue = 3
 
 		let effectGroup = UIMotionEffectGroup()
 		effectGroup.motionEffects = [ horizontalEffect, verticalEffect ]
@@ -127,14 +137,14 @@ extension AddProductFloatingButton {
 		let horizontalEffect = UIInterpolatingMotionEffect(
 			keyPath: "layer.shadowOffset.width",
 			type: .tiltAlongHorizontalAxis)
-		horizontalEffect.minimumRelativeValue = 16
-		horizontalEffect.maximumRelativeValue = -16
+		horizontalEffect.minimumRelativeValue = 5
+		horizontalEffect.maximumRelativeValue = -5
 
 		let verticalEffect = UIInterpolatingMotionEffect(
 			keyPath: "layer.shadowOffset.height",
 			type: .tiltAlongVerticalAxis)
-		verticalEffect.minimumRelativeValue = 16
-		verticalEffect.maximumRelativeValue = -16
+		verticalEffect.minimumRelativeValue = 5
+		verticalEffect.maximumRelativeValue = -5
 
 		let effectGroup = UIMotionEffectGroup()
 		effectGroup.motionEffects = [ horizontalEffect,

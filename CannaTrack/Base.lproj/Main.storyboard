@@ -1008,10 +1008,12 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" restorationIdentifier="AddButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="60" placeholderIntrinsicHeight="60" restorationIdentifier="AddButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
                                 <rect key="frame" x="329" y="728" width="60" height="60"/>
-                                <color key="backgroundColor" name="sativaColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="5G4-I2-RHX"/>
+                                    <constraint firstAttribute="width" constant="60" id="aHo-bL-5Zr"/>
                                     <constraint firstAttribute="width" secondItem="4jH-0z-N1d" secondAttribute="height" multiplier="1:1" id="k7K-cc-oOv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
@@ -1026,10 +1028,9 @@
                         <constraints>
                             <constraint firstItem="KZT-4n-qef" firstAttribute="leading" secondItem="k4E-R0-PJJ" secondAttribute="leading" constant="5" id="GBK-4g-gIL"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="bottom" secondItem="KZT-4n-qef" secondAttribute="bottom" id="Lhg-E6-MOB"/>
-                            <constraint firstItem="4jH-0z-N1d" firstAttribute="height" secondItem="tHn-6P-u27" secondAttribute="height" multiplier="0.067" priority="750" id="kye-3h-31F"/>
                             <constraint firstItem="KZT-4n-qef" firstAttribute="top" secondItem="k4E-R0-PJJ" secondAttribute="top" id="lyv-zY-AgZ"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="trailing" secondItem="4jH-0z-N1d" secondAttribute="trailing" constant="25" id="tNp-tR-NwN"/>
-                            <constraint firstItem="4jH-0z-N1d" firstAttribute="width" secondItem="tHn-6P-u27" secondAttribute="width" multiplier="0.145" priority="250" id="wWs-EX-V8r"/>
+                            <constraint firstItem="4jH-0z-N1d" firstAttribute="width" secondItem="tHn-6P-u27" secondAttribute="width" multiplier="0.145" priority="750" id="wWs-EX-V8r"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="bottom" secondItem="4jH-0z-N1d" secondAttribute="bottom" constant="25" id="xmK-zr-oJA"/>
                             <constraint firstItem="k4E-R0-PJJ" firstAttribute="trailing" secondItem="KZT-4n-qef" secondAttribute="trailing" constant="5" id="ycf-b1-hM4"/>
                         </constraints>
