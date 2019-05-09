@@ -10,7 +10,7 @@ import UIKit
 
 class DoseViewController: UIViewController {
 
-	var delegate: SaveDoseDelegate?
+	unowned var delegate: SaveDoseDelegate?
 
 	var productForDose: Product!
 

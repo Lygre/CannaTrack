@@ -24,7 +24,7 @@ class ProductDetailViewController: UIViewController {
 
 	var doseArray: [Dose] = []
 
-	var editMassDelegate: EditMassDelegate!
+	unowned var editMassDelegate: EditMassDelegate!
 
 	var doseCKRecords = [CKRecord]()
 

@@ -157,14 +157,6 @@
 			path = CloudKit;
 			sourceTree = "<group>";
 		};
-		9F2FDF69225A7FC800ECC26B /* Reusable Custom Subclasses */ = {
-			isa = PBXGroup;
-			children = (
-				9F2FDF6A225A802200ECC26B /* DoseProductsTableView.swift */,
-			);
-			path = "Reusable Custom Subclasses";
-			sourceTree = "<group>";
-		};
 		9F3D5B14221F52ED00D7B705 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +174,7 @@
 		9F4A3305228233FF0092D8AC /* Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				9F2FDF6A225A802200ECC26B /* DoseProductsTableView.swift */,
 				9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */,
 			);
 			path = Subclasses;
@@ -196,7 +189,6 @@
 				9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */,
 				9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */,
 				9F7207BA2236C6AC009D6375 /* DoseViewController.swift */,
-				9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */,
 				9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */,
 			);
 			path = "Primary Controllers";
@@ -223,7 +215,6 @@
 			isa = PBXGroup;
 			children = (
 				9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */,
-				9F27EEDB223C092E00EF644D /* ProductView.swift */,
 				9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */,
 				9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */,
 				9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */,
@@ -270,10 +261,9 @@
 				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
 				9F7207BC22372D96009D6375 /* Protocols */,
 				9F3D5B14221F52ED00D7B705 /* Models */,
-				9F2FDF69225A7FC800ECC26B /* Reusable Custom Subclasses */,
+				9F4A3305228233FF0092D8AC /* Subclasses */,
 				9F52F033221DC313007E6330 /* Other Views */,
 				9F52F032221DC2FA007E6330 /* Cells */,
-				9F4A3305228233FF0092D8AC /* Subclasses */,
 				9F52F031221DC2BC007E6330 /* Primary Controllers */,
 				9FB6F307224983B200C18BD3 /* Deprecated Objects */,
 				9F825C232214A2C200FC2327 /* Main.storyboard */,
@@ -287,6 +277,8 @@
 		9FB6F307224983B200C18BD3 /* Deprecated Objects */ = {
 			isa = PBXGroup;
 			children = (
+				9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */,
+				9F27EEDB223C092E00EF644D /* ProductView.swift */,
 				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
 			);
 			path = "Deprecated Objects";

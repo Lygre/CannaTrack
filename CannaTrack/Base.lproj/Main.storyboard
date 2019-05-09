@@ -863,7 +863,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="5bV-5a-mpT" kind="relationship" relationship="viewControllers" id="UaG-6O-hfB"/>
-                        <segue destination="2xC-yw-4yc" kind="relationship" relationship="viewControllers" id="3wL-n6-uDO"/>
                         <segue destination="dtm-Pu-caa" kind="relationship" relationship="viewControllers" id="atX-ns-sHe"/>
                         <segue destination="mD5-Z1-JOT" kind="relationship" relationship="viewControllers" id="qqf-ef-aQI"/>
                     </connections>
@@ -1147,47 +1146,6 @@
             </objects>
             <point key="canvasLocation" x="352" y="981"/>
         </scene>
-        <!--Dynamic Products View Controller-->
-        <scene sceneID="O37-Hf-Lqm">
-            <objects>
-                <viewController id="NQG-sD-xTF" customClass="DynamicProductsViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="0Jo-he-jnz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="G6u-zn-zDM"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="zpd-5u-hOs">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="6UJ-bO-tBM">
-                            <connections>
-                                <action selector="addProductTapped:" destination="NQG-sD-xTF" id="DXD-Nu-0To"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="edG-5o-XJv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2143" y="1802"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Yt2-Jx-hJh">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xC-yw-4yc" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="more" id="lEP-QM-04N"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VAG-1J-e70">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="NQG-sD-xTF" kind="relationship" relationship="rootViewController" id="WRk-Yc-PhW"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LbD-fO-uF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2143" y="981"/>
-        </scene>
         <!--Ib Calendar Data Source-->
         <scene sceneID="cB5-vs-E2N">
             <objects>
@@ -1425,7 +1383,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BlL-7N-CYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3303" y="1762"/>
+            <point key="canvasLocation" x="2290" y="1801"/>
         </scene>
         <!--Choose Product(s)-->
         <scene sceneID="tkX-oq-IfB">
@@ -1544,7 +1502,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s6e-Dk-Lve" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="D88-9k-eks" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4161" y="2484"/>
+            <point key="canvasLocation" x="3148" y="2627"/>
         </scene>
         <!--Log Mass-->
         <scene sceneID="Uqx-Eu-0lU">
@@ -1643,7 +1601,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsL-yT-Yyl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4160.8695652173919" y="3205.5803571428569"/>
+            <point key="canvasLocation" x="3148" y="3350"/>
         </scene>
         <!--Dose Mass View Controller-->
         <scene sceneID="PG0-KL-6TN">
@@ -1707,7 +1665,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dIk-Qz-dkd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5066.666666666667" y="3205.5803571428569"/>
+            <point key="canvasLocation" x="4054" y="3350"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NWS-fX-43d">
@@ -1726,7 +1684,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVE-F6-HxU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3304" y="1021"/>
+            <point key="canvasLocation" x="2290" y="980"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HZc-Sq-njp">
@@ -1744,7 +1702,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aOR-jx-Ssg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4161" y="1762"/>
+            <point key="canvasLocation" x="3148" y="1801"/>
         </scene>
     </scenes>
     <resources>

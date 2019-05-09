@@ -330,6 +330,6 @@ func removeProductFromInventory(product: Product) {
 }
 
 
-protocol EditMassDelegate {
+protocol EditMassDelegate: class {
 	func editMassForProduct(product: Product, with record: CKRecord)
 }

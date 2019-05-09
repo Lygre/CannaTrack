@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol SaveDoseDelegate {
+protocol SaveDoseDelegate: class {
 
 	func saveDoseInformation(product: Product, doseDate: Date, updatedMass: Double?, updatedProductImage: UIImage?)
 

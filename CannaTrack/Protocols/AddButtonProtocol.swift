@@ -9,6 +9,6 @@
 import Foundation
 import UIKit
 
-protocol AddButtonDelegate {
+protocol AddButtonDelegate: class {
 	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator)
 }

@@ -18,7 +18,7 @@ class DoseMassViewController: UIViewController {
 	@IBOutlet var strainNameLabel: UILabel!
 	@IBOutlet var productMassTextField: UITextField!
 
-	var multipleDoseDelegate: MultipleDoseDelegate!
+	unowned var multipleDoseDelegate: MultipleDoseDelegate!
 
 
 
@@ -84,6 +84,6 @@ extension DoseMassViewController: UITextFieldDelegate {
 
 
 
-protocol MultipleDoseDelegate {
+protocol MultipleDoseDelegate: class {
 	func saveCompositeDoseProductEntry(product: Product, mass: Double)
 }

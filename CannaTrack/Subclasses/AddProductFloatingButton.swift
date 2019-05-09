@@ -11,7 +11,7 @@ import UIKit
 class AddProductFloatingButton: UIButton {
 
 	let indicaColor = UIColor(named: "indicaColor")
-	var addButtonDelegate: AddButtonDelegate?
+	unowned var addButtonDelegate: AddButtonDelegate?
 
 	var path: UIBezierPath!
 
@@ -64,12 +64,12 @@ class AddProductFloatingButton: UIButton {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.2)
+		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
 		self.translatesAutoresizingMaskIntoConstraints = false
 //		self.layer.masksToBounds = true
-
+		setupShadowMotionEffectForAddButton()
 
 	}
 
