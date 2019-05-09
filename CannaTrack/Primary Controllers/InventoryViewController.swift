@@ -108,7 +108,7 @@ class InventoryViewController: UIViewController {
 		//add button work here
 		self.addProductButton.addButtonDelegate = self
 
-		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.2, curve: .linear, animations: {
+		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
 
@@ -135,6 +135,11 @@ class InventoryViewController: UIViewController {
 		masterProductArray = globalMasterInventory
     }
 
+	fileprivate func stopAndFinishCurrentAnimations() {
+		viewPropertyAnimator.stopAnimation(false)
+		viewPropertyAnimator.finishAnimation(at: .end)
+	}
+
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let translation = recognizer.translation(in: self.view)
@@ -144,6 +149,7 @@ class InventoryViewController: UIViewController {
 			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
 			recognizer.setTranslation(.zero, in: view)
 		case .began:
+			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 
 			animator.removeBehavior(snapBehavior)
@@ -162,6 +168,11 @@ class InventoryViewController: UIViewController {
 			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
 
 		case .cancelled, .failed:
+			recognizer.setTranslation(.zero, in: view)
+			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+				self.addProductButton.transform = .identity
+			})
+			viewPropertyAnimator.startAnimation()
 			animator.addBehavior(snapBehavior)
 
 

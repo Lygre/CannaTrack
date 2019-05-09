@@ -35,8 +35,6 @@ class AddProductFloatingButton: UIButton {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 
-
-//		self.backgroundColor = UIColor(named: "sativaColor")
 		self.backgroundColor = .clear
 
 		self.setTitle("+", for: .normal)
@@ -55,7 +53,6 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
-//		setupMotionEffectForAddButton()
 
 	}
 
@@ -70,17 +67,15 @@ class AddProductFloatingButton: UIButton {
 		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.2)
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
+		self.translatesAutoresizingMaskIntoConstraints = false
 //		self.layer.masksToBounds = true
 
-		self.translatesAutoresizingMaskIntoConstraints = false
-//		setupMotionEffectForAddButton()
-//		setupShadowMotionEffectForAddButton()
 
 	}
 
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
+		let animator = UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
 
 			self.transform = .init(scaleX: 2.0, y: 2.0)
 		}
@@ -105,7 +100,6 @@ class AddProductFloatingButton: UIButton {
 
 	func createCircle() {
 		self.path = UIBezierPath(ovalIn: CGRect(x: self.frame.size.width / 2 - self.frame.size.height / 2, y: 0.0, width: self.bounds.size.height, height: self.bounds.size.height))
-//		self.path = UIBezierPath(arcCenter: self.center, radius: self.bounds.size.width, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
 	}
 
 }
