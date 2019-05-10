@@ -170,8 +170,7 @@ class Strain: Codable {
 		self.race = race
 		self.desc = description
 		self.effects = nil
-		sendRequestForEffects(forStrain: id, completion: { effectParsed in
-		})
+//		sendRequestForEffects(forStrain: id, completion: { effectParsed in })
 
 
 	}
@@ -181,7 +180,7 @@ class Strain: Codable {
 
 
 
-
+	/*
 	func sendRequestForEffects(forStrain id: Int, completion: @escaping ((Effects) ->Void)) {
 		let urlForId = "https://strainapi.evanbusse.com/oJ5GvWc/strains/data/effects/" + String("\(id)").trimmingCharacters(in: .whitespaces)
 		guard let urlObj = URL(string: urlForId) else { return }
@@ -202,7 +201,7 @@ class Strain: Codable {
 
 			}.resume()
 	}
-
+	*/
 
 
 }

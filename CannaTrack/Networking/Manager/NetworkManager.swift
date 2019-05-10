@@ -66,4 +66,32 @@ struct NetworkManager {
 		}
 	}
 
+	func getEffects(for strainID: Int, completion: @escaping ((_ strainEffects: Effects?, _ error: String?) -> Void)) {
+		router.request(.effects(id: strainID)) { (data, response, error) in
+			if error != nil {
+				print(error)
+			}
+			if let response = response as? HTTPURLResponse {
+				let result = self.handleNetworkResponse(response)
+				switch result {
+				case .success:
+					guard let responseData = data else {
+						completion(nil, NetworkResponse.noData.rawValue)
+						return
+					}
+
+					do {
+						let apiResponse = try JSONDecoder().decode(Effects.self, from: responseData)
+						completion(apiResponse, nil)
+					} catch {
+						completion(nil, NetworkResponse.unableToDecode.rawValue)
+					}
+				case .failure(let networkFailureError):
+					completion(nil, networkFailureError)
+
+				}
+			}
+		}
+	}
+
 }

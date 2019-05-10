@@ -16,6 +16,8 @@ class StrainDetailViewController: UIViewController {
 		}
 	}
 
+	var networkManager: NetworkManager!
+
 	@IBOutlet var strainAbbreviation: UILabel!
 
 	@IBOutlet var strainFullName: UILabel!
@@ -28,8 +30,23 @@ class StrainDetailViewController: UIViewController {
 
 	@IBOutlet var negativeEffectsLabel: UILabel!
 
+
+
+	init() {
+		self.networkManager = NetworkManager()
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+
+
+
+
 	override func viewDidLoad() {
         super.viewDidLoad()
+
 
 		medicalEffectsLabel.numberOfLines = 0
 		medicalEffectsLabel.lineBreakMode = .byWordWrapping
@@ -38,13 +55,18 @@ class StrainDetailViewController: UIViewController {
 		negativeEffectsLabel.numberOfLines = 0
 		negativeEffectsLabel.lineBreakMode = .byWordWrapping
 
+
+
         // Do any additional setup after loading the view.
     }
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
+
 	}
+
+
 
 	func refreshUI() {
 		loadViewIfNeeded()
@@ -65,41 +87,19 @@ class StrainDetailViewController: UIViewController {
 			view.backgroundColor = UIColor(named: "sativaColor")
 		}
 		if let effects = strain.effects {
-			if let medical = effects.medical {
-				var medicalEffectsString: String = ""
-				for effect in medical {
-					if medicalEffectsString == "" {
-						medicalEffectsString = effect
-					} else {
-						medicalEffectsString += ", \(effect)"
+			updateStrainEffectsUI(effects)
+		} else {
+			networkManager.getEffects(for: strain.id) { (effects, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					}
+					if let effects = effects {
+						print("Updating effects UI, and effects property for strain object: Message sent by \(self.networkManager.debugDescription)")
+						self.activeDetailStrain?.effects = effects
+						self.updateStrainEffectsUI(effects)
 					}
 				}
-
-				medicalEffectsLabel.text = medicalEffectsString
-			}
-			if let positive = effects.positive {
-				var positiveEffectsString: String = ""
-				for effect in positive {
-					if positiveEffectsString == "" {
-						positiveEffectsString = effect
-					} else {
-						positiveEffectsString += ", \(effect)"
-					}
-				}
-
-				positiveEffectsLabel.text = positiveEffectsString
-			}
-			if let negative = effects.negative {
-				var negativeEffectsString: String = ""
-				for effect in negative {
-					if negativeEffectsString == "" {
-						negativeEffectsString = effect
-					} else {
-						negativeEffectsString += ", \(effect)"
-					}
-				}
-
-				negativeEffectsLabel.text = negativeEffectsString
 			}
 		}
 
@@ -114,5 +114,49 @@ class StrainDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+}
+
+
+extension StrainDetailViewController {
+	//private helper methods
+	fileprivate func updateStrainEffectsUI(_ effects: Effects) {
+		if let medical = effects.medical {
+			var medicalEffectsString: String = ""
+			for effect in medical {
+				if medicalEffectsString == "" {
+					medicalEffectsString = effect
+				} else {
+					medicalEffectsString += ", \(effect)"
+				}
+			}
+
+			medicalEffectsLabel.text = medicalEffectsString
+		}
+		if let positive = effects.positive {
+			var positiveEffectsString: String = ""
+			for effect in positive {
+				if positiveEffectsString == "" {
+					positiveEffectsString = effect
+				} else {
+					positiveEffectsString += ", \(effect)"
+				}
+			}
+
+			positiveEffectsLabel.text = positiveEffectsString
+		}
+		if let negative = effects.negative {
+			var negativeEffectsString: String = ""
+			for effect in negative {
+				if negativeEffectsString == "" {
+					negativeEffectsString = effect
+				} else {
+					negativeEffectsString += ", \(effect)"
+				}
+			}
+
+			negativeEffectsLabel.text = negativeEffectsString
+		}
+	}
 
 }

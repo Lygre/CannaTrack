@@ -17,7 +17,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 	let searchController = UISearchController(searchResultsController: nil)
 	var searchActive: Bool = false
 
-	var networkManager: NetworkManager?
+	var networkManager: NetworkManager!
 
 	var allStrains: [String: StrainInformation] {
 		get {
@@ -52,55 +52,27 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	var strainToPassToDetail: Strain?
 
-	init(networkManager: NetworkManager) {
-		super.init(nibName: nil, bundle: nil)
-		self.networkManager = networkManager
-	}
-
-	override init(collectionViewLayout layout: UICollectionViewLayout) {
-		super.init(collectionViewLayout: layout)
+	init() {
 		self.networkManager = NetworkManager()
+		super.init(nibName: nil, bundle: nil)
 	}
-
 	required init?(coder aDecoder: NSCoder) {
+		self.networkManager = NetworkManager()
 		super.init(coder: aDecoder)
 	}
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		if strainsToDisplay.isEmpty {
-//			sendRequestForAllStrains(completion: {allstrainsDict in
-//				self.allStrains = allstrainsDict
-//		})
-
-			if let networkManager = networkManager {
-				networkManager.getNewStrains { (allStrainsDict, error) in
-					if let error = error {
-						print(error)
-					}
-					if let strainsDict = allStrainsDict {
-						print(strainsDict)
-						self.allStrains = strainsDict
-					}
+			networkManager.getNewStrains { (allStrainsDict, error) in
+				if let error = error {
+					print(error)
 				}
-			} else {
-				print("no network manager; lets initialize one")
-				networkManager = NetworkManager()
-				guard let networkManager = networkManager else { print("no manager"); return }
-				networkManager.getNewStrains { (allStrainsDict, error) in
-					if let error = error {
-						print(error)
-					}
-					if let strainsDict = allStrainsDict {
-						print(strainsDict)
-						self.allStrains = strainsDict
-					}
+				if let strainsDict = allStrainsDict {
+					print(strainsDict)
+					self.allStrains = strainsDict
 				}
 			}
-
-
-
-
 
 //			strainsToDisplay = masterStrainDatabase
 		}
@@ -146,7 +118,7 @@ class StrainsCollectionViewController: UICollectionViewController {
         // Pass the selected object to the new view controller.
 		guard let selectedCollectionViewCell = sender as? StrainCollectionViewCell, let indexPath = collectionView.indexPath(for: selectedCollectionViewCell) else { preconditionFailure("could not get selected cell and indexPath")}
 		guard let detailVC = segue.destination as? StrainDetailViewController else { preconditionFailure("could not get segue destination as StrainDetailVC")}
-
+		detailVC.networkManager = self.networkManager
 		detailVC.activeDetailStrain = strainsToDisplay[indexPath.item]
 
 	}
