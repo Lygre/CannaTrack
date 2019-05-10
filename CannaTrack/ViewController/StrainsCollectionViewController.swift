@@ -17,6 +17,7 @@ class StrainsCollectionViewController: UICollectionViewController {
 	let searchController = UISearchController(searchResultsController: nil)
 	var searchActive: Bool = false
 
+	var networkManager: NetworkManager?
 
 	var allStrains: [String: StrainInformation] {
 		get {
@@ -51,12 +52,56 @@ class StrainsCollectionViewController: UICollectionViewController {
 
 	var strainToPassToDetail: Strain?
 
+	init(networkManager: NetworkManager) {
+		super.init(nibName: nil, bundle: nil)
+		self.networkManager = networkManager
+	}
+
+	override init(collectionViewLayout layout: UICollectionViewLayout) {
+		super.init(collectionViewLayout: layout)
+		self.networkManager = NetworkManager()
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		if strainsToDisplay.isEmpty {
-			sendRequestForAllStrains(completion: {allstrainsDict in
-				self.allStrains = allstrainsDict
-		})
+//			sendRequestForAllStrains(completion: {allstrainsDict in
+//				self.allStrains = allstrainsDict
+//		})
+
+			if let networkManager = networkManager {
+				networkManager.getNewStrains { (allStrainsDict, error) in
+					if let error = error {
+						print(error)
+					}
+					if let strainsDict = allStrainsDict {
+						print(strainsDict)
+						self.allStrains = strainsDict
+					}
+				}
+			} else {
+				print("no network manager; lets initialize one")
+				networkManager = NetworkManager()
+				guard let networkManager = networkManager else { print("no manager"); return }
+				networkManager.getNewStrains { (allStrainsDict, error) in
+					if let error = error {
+						print(error)
+					}
+					if let strainsDict = allStrainsDict {
+						print(strainsDict)
+						self.allStrains = strainsDict
+					}
+				}
+			}
+
+
+
+
+
 //			strainsToDisplay = masterStrainDatabase
 		}
 

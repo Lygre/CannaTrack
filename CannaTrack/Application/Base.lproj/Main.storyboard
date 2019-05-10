@@ -15,7 +15,7 @@
         <scene sceneID="BXQ-3M-r7a">
             <objects>
                 <viewController title="StrainDetailVC" id="uLF-r6-80q" customClass="StrainDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="gf4-6z-mm9" customClass="StrainD">
+                    <view key="view" contentMode="scaleToFill" id="gf4-6z-mm9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
