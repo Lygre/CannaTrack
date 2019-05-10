@@ -108,7 +108,7 @@ class CalendarLogViewController: UIViewController {
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
 		setupActivityView()
-		savePrivateDatabase()
+//		savePrivateDatabase()
 		queryCloudForDoseRecords()
 //		loadDoseCalendarInfo()
 		// Do any additional setup after loading the view.

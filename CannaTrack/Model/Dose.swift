@@ -151,6 +151,7 @@ extension Dose {
 
 		newDose.setObject(doseData, forKey: "DoseData")
 //		privateDatabase.save
+		/*
 		privateDatabase.save(doseZone) { (recordZone, error) in
 			DispatchQueue.main.async {
 				if let error = error {
@@ -160,7 +161,7 @@ extension Dose {
 				}
 			}
 		}
-
+	*/
 
 		privateDatabase.save(newDose) { (record, error) in
 			DispatchQueue.main.async {

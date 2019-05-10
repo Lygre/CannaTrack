@@ -31,6 +31,8 @@ class InventoryViewController: UIViewController {
 	var dateFormatter = DateFormatter()
 	var activityView = UIActivityIndicatorView()
 
+	var inventoryDatabaseChangeToken: CKServerChangeToken?
+
 	var productCKRecords = [CKRecord]()
 
 	var inventoryFilterOption: FilterOption = .none
@@ -235,7 +237,16 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 
 		viewPropertyAnimator.startAnimation()
-		queryCloudForProductRecords()
+		if productCKRecords.isEmpty {
+			queryCloudForProductRecords()
+			fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
+		} else {
+			print("Records present already, lets update collectionView")
+			fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
+			addFetchOperationForProductsToDatabase(with: productCKRecords.map({ $0.recordID }))
+		}
+//		addFetchOperationForProductsToDatabase(with: )
+
 		print(categoriesInInventory)
 
 	}
@@ -484,9 +495,102 @@ extension InventoryViewController {
 					self.updateInventoryCollectionView()
 					self.activityView.stopAnimating()
 					print("product records loaded: # \(recordsRetrieved?.count ?? 0)")
+					self.addFetchOperationForProductsToDatabase(with: self.productCKRecords.map({ $0.recordID }))
 				}
 			}
 		}
+
+	}
+
+//	fileprivate func fetchInventoryFromDatabase() {
+//		privateDatabase.pe
+//	}
+
+	fileprivate func addFetchOperationForProductsToDatabase(with recordIDs: [CKRecord.ID]) {
+		//need to save the recordIDs locally
+		let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+		operation.perRecordProgressBlock = { (recordID, progress) in
+			DispatchQueue.main.async {
+				print("Record with \(recordID) is \(progress) done")
+			}
+		}
+
+		operation.perRecordCompletionBlock = { (record, recordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else if let record = record, let id = recordID {
+					print("Record \(record) fetch completed with ID \(id)")
+
+					guard let index = self.productCKRecords.firstIndex(where: { (someRecord) -> Bool in
+						return someRecord.recordID == id
+					}) else { return }
+					self.productCKRecords[index] = record
+					self.updateInventoryCollectionView()
+				}
+			}
+		}
+
+		operation.fetchRecordsCompletionBlock = { (recordsByID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+
+					print("Records fetch completed")
+				}
+
+			}
+		}
+
+		let config = CKFetchRecordsOperation.Configuration()
+		config.qualityOfService = .utility
+		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 10
+		operation.configuration = config
+
+		privateDatabase.add(operation)
+
+	}
+
+	fileprivate func fetchProductDatabaseChanges(_ previousChangeToken: CKServerChangeToken?) {
+		//client is responsible for saving the change token at the end of the operation and passing it into the next call to CKFetchDatabaseChangesOperation
+
+		let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: previousChangeToken)
+
+		operation.fetchAllChanges = true
+		operation.resultsLimit = 20
+		operation.fetchDatabaseChangesCompletionBlock = { (changeToken, moreComing, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else if let changeToken = changeToken {
+					print("database changes fetched")
+
+				}
+			}
+		}
+
+		operation.changeTokenUpdatedBlock = { changeToken in
+			DispatchQueue.main.async {
+				print("database change token value updated through changeToken completionblock; new: \(changeToken.debugDescription)")
+				self.inventoryDatabaseChangeToken = changeToken
+			}
+		}
+
+		operation.recordZoneWithIDChangedBlock = { zoneID in
+			DispatchQueue.main.async {
+				print("\(zoneID.debugDescription) ID of zone was changed")
+			}
+		}
+
+		let config = CKFetchDatabaseChangesOperation.Configuration()
+		config.qualityOfService = .utility
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+		operation.configuration = config
+
+		privateDatabase.add(operation)
 
 	}
 
@@ -547,6 +651,7 @@ extension InventoryViewController {
 		notification.alertBody = "There's a new product in Inventory"
 		notification.soundName = "default"
 		notification.shouldSendContentAvailable = true
+
 
 		subscription.notificationInfo = notification
 		config.qualityOfService = .utility
