@@ -330,9 +330,6 @@ func removeProductFromInventory(product: Product) {
 }
 
 
-protocol EditMassDelegate: class {
-	func editMassForProduct(product: Product, with record: CKRecord)
-}
 
 
 extension UIControl.Event {

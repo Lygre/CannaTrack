@@ -12,6 +12,19 @@
 		9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F082208226A261000E8C1DC /* CloudKitSingleton.swift */; };
 		9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */; };
 		9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */; };
+		9F0F0BD82284E5C300DFFFC4 /* EditMassDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BD72284E5C300DFFFC4 /* EditMassDelegate.swift */; };
+		9F0F0BDA2284E5F900DFFFC4 /* MultipleDoseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BD92284E5F900DFFFC4 /* MultipleDoseDelegate.swift */; };
+		9F0F0BDC2284E62800DFFFC4 /* InventoryFilterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BDB2284E62800DFFFC4 /* InventoryFilterDelegate.swift */; };
+		9F0F0BDE2284E74500DFFFC4 /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BDD2284E74500DFFFC4 /* EndPointType.swift */; };
+		9F0F0BE02284E95900DFFFC4 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BDF2284E95900DFFFC4 /* HTTPMethod.swift */; };
+		9F0F0BE22284E9B400DFFFC4 /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BE12284E9B400DFFFC4 /* HTTPTask.swift */; };
+		9F0F0BE42284EA6600DFFFC4 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BE32284EA6600DFFFC4 /* ParameterEncoding.swift */; };
+		9F0F0BE62284EB8300DFFFC4 /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BE52284EB8300DFFFC4 /* URLParameterEncoder.swift */; };
+		9F0F0BE82284ED1B00DFFFC4 /* JSONParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BE72284ED1B00DFFFC4 /* JSONParameterEncoder.swift */; };
+		9F0F0BEA2284EDD200DFFFC4 /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BE92284EDD200DFFFC4 /* NetworkRouter.swift */; };
+		9F0F0BEC2284EE7900DFFFC4 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BEB2284EE7900DFFFC4 /* Router.swift */; };
+		9F0F0BEE2284F1FA00DFFFC4 /* StrainEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BED2284F1FA00DFFFC4 /* StrainEndPoint.swift */; };
+		9F0F0BF02284F46100DFFFC4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F0BEF2284F46100DFFFC4 /* NetworkManager.swift */; };
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
 		9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */; };
 		9F22F122224D458700C67D69 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F121224D458700C67D69 /* CustomCell.swift */; };
@@ -63,6 +76,19 @@
 		9F082208226A261000E8C1DC /* CloudKitSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSingleton.swift; sourceTree = "<group>"; };
 		9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
 		9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCKObjects.swift; sourceTree = "<group>"; };
+		9F0F0BD72284E5C300DFFFC4 /* EditMassDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMassDelegate.swift; sourceTree = "<group>"; };
+		9F0F0BD92284E5F900DFFFC4 /* MultipleDoseDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleDoseDelegate.swift; sourceTree = "<group>"; };
+		9F0F0BDB2284E62800DFFFC4 /* InventoryFilterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryFilterDelegate.swift; sourceTree = "<group>"; };
+		9F0F0BDD2284E74500DFFFC4 /* EndPointType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointType.swift; sourceTree = "<group>"; };
+		9F0F0BDF2284E95900DFFFC4 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		9F0F0BE12284E9B400DFFFC4 /* HTTPTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPTask.swift; sourceTree = "<group>"; };
+		9F0F0BE32284EA6600DFFFC4 /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
+		9F0F0BE52284EB8300DFFFC4 /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
+		9F0F0BE72284ED1B00DFFFC4 /* JSONParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParameterEncoder.swift; sourceTree = "<group>"; };
+		9F0F0BE92284EDD200DFFFC4 /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
+		9F0F0BEB2284EE7900DFFFC4 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		9F0F0BED2284F1FA00DFFFC4 /* StrainEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainEndPoint.swift; sourceTree = "<group>"; };
+		9F0F0BEF2284F46100DFFFC4 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		9F1052D32227A01800658F62 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLogViewController.swift; sourceTree = "<group>"; };
 		9F22F120224D10FA00C67D69 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -147,17 +173,77 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		9F08220A226A265300E8C1DC /* CloudKit */ = {
+		9F08220A226A265300E8C1DC /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9F0F0BD42284E50900DFFFC4 /* Service */,
+				9F0F0BD22284E4EC00DFFFC4 /* EndPoint */,
+				9F0F0BD32284E4F300DFFFC4 /* Manager */,
+				9F0F0BD52284E51400DFFFC4 /* Encoding */,
+				9F0F0BD62284E52E00DFFFC4 /* Other */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		9F0F0BD12284E46900DFFFC4 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				9F825C232214A2C200FC2327 /* Main.storyboard */,
+				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
+				9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		9F0F0BD22284E4EC00DFFFC4 /* EndPoint */ = {
+			isa = PBXGroup;
+			children = (
+				9F0F0BED2284F1FA00DFFFC4 /* StrainEndPoint.swift */,
+			);
+			path = EndPoint;
+			sourceTree = "<group>";
+		};
+		9F0F0BD32284E4F300DFFFC4 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9F0F0BEF2284F46100DFFFC4 /* NetworkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		9F0F0BD42284E50900DFFFC4 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				9F0F0BE92284EDD200DFFFC4 /* NetworkRouter.swift */,
+				9F0F0BEB2284EE7900DFFFC4 /* Router.swift */,
+				9F0F0BDD2284E74500DFFFC4 /* EndPointType.swift */,
+				9F0F0BDF2284E95900DFFFC4 /* HTTPMethod.swift */,
+				9F0F0BE12284E9B400DFFFC4 /* HTTPTask.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		9F0F0BD52284E51400DFFFC4 /* Encoding */ = {
+			isa = PBXGroup;
+			children = (
+				9F0F0BE32284EA6600DFFFC4 /* ParameterEncoding.swift */,
+				9F0F0BE52284EB8300DFFFC4 /* URLParameterEncoder.swift */,
+				9F0F0BE72284ED1B00DFFFC4 /* JSONParameterEncoder.swift */,
+			);
+			path = Encoding;
+			sourceTree = "<group>";
+		};
+		9F0F0BD62284E52E00DFFFC4 /* Other */ = {
 			isa = PBXGroup;
 			children = (
 				9F082208226A261000E8C1DC /* CloudKitSingleton.swift */,
 				9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */,
 				9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */,
 			);
-			path = CloudKit;
+			path = Other;
 			sourceTree = "<group>";
 		};
-		9F3D5B14221F52ED00D7B705 /* Models */ = {
+		9F3D5B14221F52ED00D7B705 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				9F825C312214A2F200FC2327 /* Extensions.swift */,
@@ -168,7 +254,7 @@
 				9F2C2A4C225A4AB900237D4B /* Inventory.swift */,
 				9FF3DCD7226CD00600C2C517 /* Constants.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		9F4A3305228233FF0092D8AC /* Subclasses */ = {
@@ -180,7 +266,7 @@
 			path = Subclasses;
 			sourceTree = "<group>";
 		};
-		9F52F031221DC2BC007E6330 /* Primary Controllers */ = {
+		9F52F031221DC2BC007E6330 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
@@ -191,7 +277,7 @@
 				9F7207BA2236C6AC009D6375 /* DoseViewController.swift */,
 				9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */,
 			);
-			path = "Primary Controllers";
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		9F52F032221DC2FA007E6330 /* Cells */ = {
@@ -230,6 +316,9 @@
 			children = (
 				9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */,
 				9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */,
+				9F0F0BD72284E5C300DFFFC4 /* EditMassDelegate.swift */,
+				9F0F0BD92284E5F900DFFFC4 /* MultipleDoseDelegate.swift */,
+				9F0F0BDB2284E62800DFFFC4 /* InventoryFilterDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -256,20 +345,18 @@
 		9F825C1E2214A2C200FC2327 /* CannaTrack */ = {
 			isa = PBXGroup;
 			children = (
-				9F08220A226A265300E8C1DC /* CloudKit */,
 				9FAB54D2226610D20012248F /* CannaTrack.entitlements */,
-				9F825C1F2214A2C200FC2327 /* AppDelegate.swift */,
+				9F825C2B2214A2C300FC2327 /* Info.plist */,
+				9F0F0BD12284E46900DFFFC4 /* Application */,
+				9F08220A226A265300E8C1DC /* Networking */,
 				9F7207BC22372D96009D6375 /* Protocols */,
-				9F3D5B14221F52ED00D7B705 /* Models */,
+				9F3D5B14221F52ED00D7B705 /* Model */,
 				9F4A3305228233FF0092D8AC /* Subclasses */,
 				9F52F033221DC313007E6330 /* Other Views */,
 				9F52F032221DC2FA007E6330 /* Cells */,
-				9F52F031221DC2BC007E6330 /* Primary Controllers */,
+				9F52F031221DC2BC007E6330 /* ViewController */,
 				9FB6F307224983B200C18BD3 /* Deprecated Objects */,
-				9F825C232214A2C200FC2327 /* Main.storyboard */,
 				9F825C262214A2C300FC2327 /* Assets.xcassets */,
-				9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */,
-				9F825C2B2214A2C300FC2327 /* Info.plist */,
 			);
 			path = CannaTrack;
 			sourceTree = "<group>";
@@ -415,18 +502,26 @@
 				9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */,
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
 				9F3B809B224E77AB0059294B /* CustomCollectionReusableView.swift in Sources */,
+				9F0F0BDA2284E5F900DFFFC4 /* MultipleDoseDelegate.swift in Sources */,
 				9F2FDF6B225A802200ECC26B /* DoseProductsTableView.swift in Sources */,
+				9F0F0BE02284E95900DFFFC4 /* HTTPMethod.swift in Sources */,
 				9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */,
 				9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */,
+				9F0F0BEC2284EE7900DFFFC4 /* Router.swift in Sources */,
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F22F122224D458700C67D69 /* CustomCell.swift in Sources */,
+				9F0F0BE22284E9B400DFFFC4 /* HTTPTask.swift in Sources */,
 				9F563EC422452BB9003F557A /* UserInfo.swift in Sources */,
+				9F0F0BE82284ED1B00DFFFC4 /* JSONParameterEncoder.swift in Sources */,
+				9F0F0BDC2284E62800DFFFC4 /* InventoryFilterDelegate.swift in Sources */,
+				9F0F0BD82284E5C300DFFFC4 /* EditMassDelegate.swift in Sources */,
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
 				9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */,
 				9FB8F7F222761A9800823CDC /* FilterOptionsTableViewCell.swift in Sources */,
 				9F5658652241598A0032902E /* ForceTouchGestureRecognizer.swift in Sources */,
+				9F0F0BEA2284EDD200DFFFC4 /* NetworkRouter.swift in Sources */,
 				9F2C2A4D225A4AB900237D4B /* Inventory.swift in Sources */,
 				9F825C342214A2F200FC2327 /* Extensions.swift in Sources */,
 				9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */,
@@ -435,15 +530,19 @@
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */,
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
+				9F0F0BE42284EA6600DFFFC4 /* ParameterEncoding.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */,
 				9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */,
 				9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */,
 				9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */,
+				9F0F0BF02284F46100DFFFC4 /* NetworkManager.swift in Sources */,
 				9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */,
 				9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */,
+				9F0F0BEE2284F1FA00DFFFC4 /* StrainEndPoint.swift in Sources */,
 				9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */,
 				9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */,
+				9F0F0BE62284EB8300DFFFC4 /* URLParameterEncoder.swift in Sources */,
 				9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */,
 				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
 				9F2FDF71225AC82900ECC26B /* UnknownCollectionViewController.swift in Sources */,
@@ -453,6 +552,7 @@
 				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 				9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */,
+				9F0F0BDE2284E74500DFFFC4 /* EndPointType.swift in Sources */,
 				9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

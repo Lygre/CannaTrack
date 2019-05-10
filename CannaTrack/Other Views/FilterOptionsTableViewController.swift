@@ -20,9 +20,7 @@ enum FilterOption: String, CaseIterable {
 	case none = "No Filter"
 }
 
-protocol InventoryFilterDelegate: class {
-	func filterInventory(using filterOption: FilterOption)
-}
+
 
 class FilterOptionsTableViewController: UITableViewController {
 

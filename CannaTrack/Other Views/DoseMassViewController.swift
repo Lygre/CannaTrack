@@ -83,7 +83,3 @@ extension DoseMassViewController: UITextFieldDelegate {
 
 
 
-
-protocol MultipleDoseDelegate: class {
-	func saveCompositeDoseProductEntry(product: Product, mass: Double)
-}
