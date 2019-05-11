@@ -228,9 +228,33 @@ extension Product {
 				record.setObject(productImageData, forKey: "ProductImageData")
 			}
 			record.setObject(recordValue, forKey: "ProductData")
-			return record
-		}
 
+		}
+		print("encoded product as a CKRecord from Product.swift method toCKRecord")
+		return record
+	}
+
+	static func fromCKRecord(record: CKRecord) -> Product? {
+		let plistDecoder = PropertyListDecoder()
+		guard let productData = record["ProductData"] as? Data else {
+			return nil
+		}
+		guard let decodedProduct = try? plistDecoder.decode(Product.self, from: productData) else { return nil }
+
+		guard let asset = record["ProductImageData"] as? CKAsset else {
+			print("Image missing from record")
+			return nil
+		}
+		guard let imageData = NSData(contentsOf: asset.fileURL!) else {
+			print("INvalid image")
+			return nil
+		}
+		let image = UIImage(data: imageData as Data)
+		decodedProduct.productLabelImage = image
+
+		print("success decoding product from record in Product.swift fromCKRecord method")
+
+		return decodedProduct
 	}
 
 

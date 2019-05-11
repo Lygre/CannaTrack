@@ -238,7 +238,22 @@ class InventoryViewController: UIViewController {
 
 		viewPropertyAnimator.startAnimation()
 		if productCKRecords.isEmpty {
-			queryCloudForProductRecords()
+//			queryCloudForProductRecords()
+			activityView.startAnimating()
+			CloudKitManager.shared.retrieveAllProducts { (productArray, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					}
+					if let productArray = productArray {
+						print("retreieved products, about to call update collectionview")
+						self.currentInventory = productArray
+						self.masterProductArray = productArray
+						self.activityView.stopAnimating()
+						self.updateInventoryCollectionView()
+					}
+				}
+			}
 			fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
 		} else {
 			print("Records present already, lets update collectionView")
@@ -253,10 +268,9 @@ class InventoryViewController: UIViewController {
 
 	func updateCurrentInventory() -> [Product.ProductType] {
 		if inventoryFilterOption == .none {
-			self.masterProductArray = globalMasterInventory
-			self.currentInventory = globalMasterInventory
+			self.currentInventory = masterProductArray
 		}
-		let inventory = globalMasterInventory
+		guard let inventory = masterProductArray else { return [] }
 		var categories: Set<Product.ProductType> = []
 		for product in inventory {
 			categories.insert(product.productType)
@@ -499,7 +513,6 @@ extension InventoryViewController {
 				}
 			}
 		}
-
 	}
 
 //	fileprivate func fetchInventoryFromDatabase() {

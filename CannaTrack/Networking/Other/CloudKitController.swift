@@ -47,14 +47,34 @@ struct CloudKitManager {
 		let record = product.toCKRecord()
 
 		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
-			guard let _ = serverRecord else {
+			guard let serverRecord = serverRecord else {
 				DispatchQueue.main.async {
 					completion(false, nil, error)
 				}
 				return
 			}
 			DispatchQueue.main.async {
-				completion(true, product, nil)
+				completion(true, Product.fromCKRecord(record: serverRecord), nil)
+			}
+		}
+	}
+
+	func retrieveAllProducts(completion: @escaping RetrieveProductCompletion) {
+		let predicate = NSPredicate(format: "TRUEPREDICATE")
+		let query = CKQuery(recordType: "Product", predicate: predicate)
+
+		CloudKitManager.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
+			guard let records = records else {
+				completion(nil, error)
+				return
+			}
+
+			if error == nil {
+				var products = [Product]()
+				products = records.flatMap({ return Product.fromCKRecord(record: $0) })
+				completion(products, nil)
+			} else {
+				completion(nil, error)
 			}
 		}
 	}
