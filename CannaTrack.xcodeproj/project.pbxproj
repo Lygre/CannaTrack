@@ -39,6 +39,7 @@
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
 		9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */; };
+		9F4AD00A22861C3B00079BC7 /* CloudKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4AD00922861C3B00079BC7 /* CloudKitController.swift */; };
 		9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */; };
 		9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */; };
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
@@ -102,6 +103,7 @@
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductFloatingButton.swift; sourceTree = "<group>"; };
+		9F4AD00922861C3B00079BC7 /* CloudKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitController.swift; sourceTree = "<group>"; };
 		9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDoseFromCalendarViewController.swift; sourceTree = "<group>"; };
 		9F50065D222988E90061FD11 /* ProductHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				9F082208226A261000E8C1DC /* CloudKitSingleton.swift */,
 				9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */,
 				9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */,
+				9F4AD00922861C3B00079BC7 /* CloudKitController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				9F0F0BEC2284EE7900DFFFC4 /* Router.swift in Sources */,
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
+				9F4AD00A22861C3B00079BC7 /* CloudKitController.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F22F122224D458700C67D69 /* CustomCell.swift in Sources */,
 				9F0F0BE22284E9B400DFFFC4 /* HTTPTask.swift in Sources */,
