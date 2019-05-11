@@ -240,15 +240,12 @@ class InventoryViewController: UIViewController {
 		if productCKRecords.isEmpty {
 //			queryCloudForProductRecords()
 			activityView.startAnimating()
-			CloudKitManager.shared.retrieveAllProducts { (productArray, error) in
+			CloudKitManager.shared.retrieveAllProducts { (product) in
 				DispatchQueue.main.async {
-					if let error = error {
-						print(error)
-					}
-					if let productArray = productArray {
-						print("retreieved products, about to call update collectionview")
-						self.currentInventory = productArray
-						self.masterProductArray = productArray
+					if let product = product {
+						print("retreieved product, about to call update collectionview")
+						self.currentInventory?.append(product)
+						self.masterProductArray?.append(product)
 						self.activityView.stopAnimating()
 						self.updateInventoryCollectionView()
 					}
@@ -557,7 +554,7 @@ extension InventoryViewController {
 		}
 
 		let config = CKFetchRecordsOperation.Configuration()
-		config.qualityOfService = .utility
+		config.qualityOfService = .userInitiated
 		config.timeoutIntervalForResource = 10
 		config.timeoutIntervalForRequest = 10
 		operation.configuration = config
@@ -664,7 +661,7 @@ extension InventoryViewController {
 		notification.alertBody = "There's a new product in Inventory"
 		notification.soundName = "default"
 		notification.shouldSendContentAvailable = true
-
+		notification.shouldBadge = true
 
 		subscription.notificationInfo = notification
 		config.qualityOfService = .utility

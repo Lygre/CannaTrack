@@ -11,10 +11,10 @@ import CloudKit
 
 typealias RequestCKPermissionCompletion = (_ accountStatus: CKAccountStatus, _ error: Error?) -> Void
 typealias CreateProductCompletion = (_ success: Bool, _ resultingCloudProduct: Product?, _ error: Error?) -> Void
-typealias RetrieveProductCompletion = (_ products: [Product]?, _ error: Error?) -> Void
+typealias RetrieveProductsCompletion = (_ products: [Product]?, _ error: Error?) -> Void
 typealias UpdateProductCompletion = (_ success: Bool, _ resultingCloudProduct: Product?, _ error: Error?) -> Void
 typealias DeleteProductCompletion = (_ success: Bool, _ error: Error?) -> Void
-
+typealias RetrieveProductCompletion = (_ product: Product?) -> Void
 
 
 struct CKProduct {
@@ -63,6 +63,34 @@ struct CloudKitManager {
 		let predicate = NSPredicate(format: "TRUEPREDICATE")
 		let query = CKQuery(recordType: "Product", predicate: predicate)
 
+
+		let queryOperation = CKQueryOperation(query: query)
+		queryOperation.queryCompletionBlock = { (operationCursor, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+				} else {
+					print("query completed by CKManager")
+				}
+			}
+
+		}
+		queryOperation.recordFetchedBlock = { record in
+			DispatchQueue.main.async {
+				guard let product = Product.fromCKRecord(record: record) else { return }
+				print("record fetched by query in CKManager")
+				completion(product)
+			}
+		}
+		let config = CKQueryOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+		queryOperation.configuration = config
+
+		CloudKitManager.privateDatabase.add(queryOperation)
+
+		/*
 		CloudKitManager.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
 			guard let records = records else {
 				completion(nil, error)
@@ -77,6 +105,7 @@ struct CloudKitManager {
 				completion(nil, error)
 			}
 		}
+		*/
 	}
 
 
