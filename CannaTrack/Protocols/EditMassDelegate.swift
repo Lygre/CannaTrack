@@ -11,7 +11,7 @@ import CloudKit
 
 
 protocol EditMassDelegate: class {
-	func editMassForProduct(product: Product, with record: CKRecord)
+	func editMassForProduct(product: Product, with record: CKRecord.ID)
 }
 
 

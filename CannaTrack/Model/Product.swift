@@ -205,7 +205,13 @@ extension Product {
 	}
 
 	func toCKRecord() -> CKRecord {
-		let record = CKRecord(recordType: "Product")
+		var record: CKRecord!
+		if let productRecordID = self.recordID {
+			record = CKRecord(recordType: "Product", recordID: productRecordID)
+		} else {
+			record = CKRecord(recordType: "Product")
+		}
+//		let record = CKRecord(recordType: "Product")
 		if let recordValue = self.encodeProductAsCKRecordValue() {
 
 			let manager = FileManager.default
@@ -251,7 +257,7 @@ extension Product {
 		}
 		let image = UIImage(data: imageData as Data)
 		decodedProduct.productLabelImage = image
-
+		decodedProduct.recordID = record.recordID
 		print("success decoding product from record in Product.swift fromCKRecord method")
 
 		return decodedProduct

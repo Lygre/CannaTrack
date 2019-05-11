@@ -90,22 +90,6 @@ struct CloudKitManager {
 
 		CloudKitManager.privateDatabase.add(queryOperation)
 
-		/*
-		CloudKitManager.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-			guard let records = records else {
-				completion(nil, error)
-				return
-			}
-
-			if error == nil {
-				var products = [Product]()
-				products = records.flatMap({ return Product.fromCKRecord(record: $0) })
-				completion(products, nil)
-			} else {
-				completion(nil, error)
-			}
-		}
-		*/
 	}
 
 

@@ -33,7 +33,7 @@ class InventoryViewController: UIViewController {
 
 	var inventoryDatabaseChangeToken: CKServerChangeToken?
 
-	var productCKRecords = [CKRecord]()
+//	var productCKRecords = [CKRecord]()
 
 	var inventoryFilterOption: FilterOption = .none
 
@@ -141,7 +141,24 @@ class InventoryViewController: UIViewController {
 
 		fetchProductCKQuerySubscriptions()
 
-		masterProductArray = globalMasterInventory
+		masterProductArray = []
+		activityView.startAnimating()
+		CloudKitManager.shared.retrieveAllProducts { (product) in
+			DispatchQueue.main.async {
+				if let product = product {
+					guard let productsArray = self.masterProductArray else { return }
+					if !productsArray.contains(product) {
+						print("retreieved product, about to call update collectionview")
+						//						self.currentInventory?.append(product)
+						self.masterProductArray?.append(product)
+						self.updateInventoryCollectionView()
+					}
+
+					self.activityView.stopAnimating()
+
+				}
+			}
+		}
     }
 
 	fileprivate func stopAndFinishCurrentAnimations() {
@@ -237,26 +254,11 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 
 		viewPropertyAnimator.startAnimation()
-		if productCKRecords.isEmpty {
 //			queryCloudForProductRecords()
-			activityView.startAnimating()
-			CloudKitManager.shared.retrieveAllProducts { (product) in
-				DispatchQueue.main.async {
-					if let product = product {
-						print("retreieved product, about to call update collectionview")
-						self.currentInventory?.append(product)
-						self.masterProductArray?.append(product)
-						self.activityView.stopAnimating()
-						self.updateInventoryCollectionView()
-					}
-				}
-			}
-			fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
-		} else {
-			print("Records present already, lets update collectionView")
-			fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
-			addFetchOperationForProductsToDatabase(with: productCKRecords.map({ $0.recordID }))
-		}
+
+		fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
+		addFetchOperationForProductsToDatabase(with: (masterProductArray?.compactMap({ $0.recordID }))!)
+
 //		addFetchOperationForProductsToDatabase(with: )
 
 		print(categoriesInInventory)
@@ -297,9 +299,7 @@ class InventoryViewController: UIViewController {
 
 			// Pass over a reference to the CKRecord object, Product object, and assign self as the editMassDelegate object of the productDetailVC
 
-			let recordToPass = productCKRecords[indexPath.item]
 
-			productDetailViewController.recordForProduct = recordToPass
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
 		}
@@ -471,7 +471,7 @@ extension InventoryViewController {
 
 
 
-
+/*
 	fileprivate func queryCloudForProductRecords() {
 		let query = CKQuery(recordType: "Product", predicate: NSPredicate(value: true))
 		self.activityView.startAnimating()
@@ -511,10 +511,8 @@ extension InventoryViewController {
 			}
 		}
 	}
+*/
 
-//	fileprivate func fetchInventoryFromDatabase() {
-//		privateDatabase.pe
-//	}
 
 	fileprivate func addFetchOperationForProductsToDatabase(with recordIDs: [CKRecord.ID]) {
 		//need to save the recordIDs locally
@@ -532,10 +530,7 @@ extension InventoryViewController {
 				} else if let record = record, let id = recordID {
 					print("Record \(record) fetch completed with ID \(id)")
 
-					guard let index = self.productCKRecords.firstIndex(where: { (someRecord) -> Bool in
-						return someRecord.recordID == id
-					}) else { return }
-					self.productCKRecords[index] = record
+
 					self.updateInventoryCollectionView()
 				}
 			}
@@ -604,6 +599,8 @@ extension InventoryViewController {
 
 	}
 
+	/*
+
 	func deleteProductFromCloud(product: Product) {
 		guard let recordID = product.recordID else { return }
 
@@ -620,7 +617,7 @@ extension InventoryViewController {
 			}
 		}
 	}
-
+	*/
 	//!!MARK -- CKSubscription work
 
 	func fetchProductCKQuerySubscriptions() {
@@ -794,13 +791,15 @@ extension InventoryViewController: InventoryFilterDelegate {
 
 
 extension InventoryViewController: EditMassDelegate {
-	func editMassForProduct(product: Product, with record: CKRecord) {
+
+
+	func editMassForProduct(product: Product, with record: CKRecord.ID) {
 		DispatchQueue.main.async {
 			let massEditView = UIAlertController(title: "Edit Mass \(product.productType.rawValue) \(product.strain.name)", message: "Enter updated mass value in grams", preferredStyle: .alert)
 			massEditView.addTextField(configurationHandler: nil)
 			let confirmMassEditAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] (_) in
 				product.mass = Double(massEditView.textFields?.first!.text ?? "0.0") ?? 0.0
-				self.saveChangesToProduct(product: product, record: record)
+				self.saveChangesToProduct(product: product, record: product.toCKRecord())
 			})
 			let cancelMassEditAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 			massEditView.addAction(confirmMassEditAction)

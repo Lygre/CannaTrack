@@ -12,7 +12,7 @@ import CloudKit
 class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
-	var recordForProduct: CKRecord?
+//	var recordForProduct: CKRecord?
 
 	var dateFormatter: DateFormatter = DateFormatter()
 
@@ -232,16 +232,23 @@ class ProductDetailViewController: UIViewController {
 				else { preconditionFailure("Expected a reference to the product data container") }
 
 			masterInventory.removeProductFromInventoryMaster(product: product)
+			/*
+			//Need to re-implement new cloud delete method here, once I make it
 			if let record = self.recordForProduct {
 				self.deleteProductFromCloud(with: record)
 			}
+			*/
 		}
 
 		let editMassAction = UIPreviewAction(title: "Edit Mass", style: .default) { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct else { preconditionFailure("Expected a reference to the product data container") }
-			guard let recordForProduct = self.recordForProduct else { preconditionFailure("Expected reference to record for product") }
+//			guard let recordForProduct = self.recordForProduct else { preconditionFailure("Expected reference to record for product") }
 			//implement presenting place to edit the mass
-			self.editMassDelegate.editMassForProduct(product: product, with: recordForProduct)
+			guard let productRecordID = product.recordID else {
+				print("got product's record ID")
+				return
+			}
+			self.editMassDelegate.editMassForProduct(product: product, with: productRecordID)
 
 
 
@@ -446,7 +453,13 @@ extension ProductDetailViewController {
 	}
 
 	fileprivate func saveChangesToProduct() {
-		let record = self.recordForProduct ?? CKRecord(recordType: "Product")
+		var record: CKRecord!
+		if let productRecordID = self.activeDetailProduct.recordID {
+			record = CKRecord(recordType: "Product", recordID: productRecordID)
+		} else {
+			record = CKRecord(recordType: "Product")
+		}
+//		let record = self.recordForProduct ?? CKRecord(recordType: "Product")
 		guard let recordValue = self.activeDetailProduct.encodeProductAsCKRecordValue() else { return }
 
 
@@ -487,7 +500,7 @@ extension ProductDetailViewController {
 					print(error)
 				} else {
 
-					if self.recordForProduct != nil {
+					if self.activeDetailProduct.recordID != nil {
 						print("Record was updated")
 					} else if let savedRecords = savedRecords {
 						print("\(savedRecords) Records were saved")
