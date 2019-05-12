@@ -179,6 +179,7 @@ extension Product {
 					print(error)
 				} else {
 					print("created ck record")
+
 				}
 			}
 		}

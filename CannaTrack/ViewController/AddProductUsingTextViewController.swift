@@ -118,15 +118,36 @@ class AddProductUsingTextViewController: UIViewController {
 			let strain = Strain(id: (globalStrainCount + 1), name: productComponentsDictionary["strain"] as! String, race: productComponentsDictionary["strainVariety"] as! StrainVariety, description: nil)
 
 			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
-			product.saveNewProductToCloud()
+//			product.saveNewProductToCloud()
+
+			CloudKitManager.shared.createCKRecord(for: product) { (success, productCreated, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						print("created ck record")
+						self.navigationController?.popViewController(animated: true)
+					}
+				}
+			}
 			//			saveProductToInventory(product: product)
-			print(globalMasterInventory)
+//			print(globalMasterInventory)
 		} else {
 			let strain = strainNameResults[0]
 			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
-			product.saveNewProductToCloud()
+//			product.saveNewProductToCloud()
+			CloudKitManager.shared.createCKRecord(for: product) { (success, productCreated, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						print("created ck record")
+						self.navigationController?.popViewController(animated: true)
+					}
+				}
+			}
 			//			saveProductToInventory(product: product)
-			print(globalMasterInventory)
+//			print(globalMasterInventory)
 		}
 	}
 

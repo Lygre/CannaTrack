@@ -734,8 +734,11 @@ extension InventoryViewController: AddButtonDelegate {
 
 extension InventoryViewController: InventoryManagerDelegate {
 	func deleteProductFromLocalInventory(product: Product) {
-		self.masterProductArray?.removeAll(where: { (someProduct) -> Bool in
-			return someProduct == product
+//		self.masterProductArray?.removeAll(where: { (someProduct) -> Bool in
+//			return someProduct == product
+//		})
+		self.masterProductArray = self.masterProductArray?.filter({ (someProduct) -> Bool in
+			return someProduct != product
 		})
 		self.updateInventoryCollectionView()
 	}
