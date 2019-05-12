@@ -25,7 +25,7 @@ class ProductDetailViewController: UIViewController {
 	var doseArray: [Dose] = []
 
 	unowned var editMassDelegate: EditMassDelegate!
-	var inventoryManagerDelegate: InventoryManagerDelegate!
+	unowned var inventoryManagerDelegate: InventoryManagerDelegate!
 
 	var doseCKRecords = [CKRecord]()
 
@@ -542,8 +542,13 @@ extension ProductDetailViewController {
 					print(error)
 				} else {
 					if success == true {
+						guard let productUpdated = productUpdated else {
+							print("could not get product To be updated")
+							return
+						}
+						self.inventoryManagerDelegate.updateProduct(product: productUpdated)
 						self.navigationController?.popViewController(animated: true)
-						print(productUpdated.debugDescription)
+						print(productUpdated)
 					}
 				}
 			}

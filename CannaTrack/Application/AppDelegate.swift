@@ -60,8 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 		let dict = userInfo as! [String: NSObject]
 		let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-		let db = CloudKitCannabisDatabase.shared
-		if notification?.subscriptionID == db.subscriptionID {
+		let db = CloudKitManager.shared
+		if notification?.subscriptionID == CloudKitManager.subscriptionID {
 			db.handleNotification()
 			completionHandler(.newData)
 		}

@@ -18,6 +18,7 @@ class AddProductUsingTextViewController: UIViewController {
 
 	@IBOutlet var productMassTextField: UITextField!
 
+	unowned var inventoryManagerDelegate: InventoryManagerDelegate!
 
 	var selectedVariety: StrainVariety! {
 		get {
@@ -125,6 +126,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
+						self.inventoryManagerDelegate.addProductToInventory(product: product)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}
@@ -141,6 +143,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
+						self.inventoryManagerDelegate.addProductToInventory(product: product)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}

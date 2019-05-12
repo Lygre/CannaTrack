@@ -13,4 +13,8 @@ import UIKit
 
 protocol InventoryManagerDelegate: class {
 	func deleteProductFromLocalInventory(product: Product)
+
+	func addProductToInventory(product: Product)
+
+	func updateProduct(product: Product)
 }

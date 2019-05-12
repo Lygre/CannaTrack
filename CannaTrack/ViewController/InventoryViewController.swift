@@ -25,6 +25,7 @@ class InventoryViewController: UIViewController {
 	var snapBehavior: UISnapBehavior!
 	var itemBehavior: UIDynamicItemBehavior!
 
+	var cloudKitObserver: NSObjectProtocol?
 
 	var originalAddButtonPosition: CGPoint!
 
@@ -145,9 +146,11 @@ class InventoryViewController: UIViewController {
 
 					self.activityView.stopAnimating()
 
+
 				}
 			}
 		}
+
     }
 
 	fileprivate func stopAndFinishCurrentAnimations() {
@@ -229,11 +232,14 @@ class InventoryViewController: UIViewController {
 	}
 
 	fileprivate func updateInventoryCollectionView() {
-		self.productsCollectionView.collectionViewLayout.invalidateLayout()
-		self.productsCollectionView.performBatchUpdates({
-			self.categoriesInInventory = updateCurrentInventory()
-			self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-		}, completion: nil)
+		DispatchQueue.main.async {
+			self.productsCollectionView.collectionViewLayout.invalidateLayout()
+			self.productsCollectionView.performBatchUpdates({
+				self.categoriesInInventory = self.updateCurrentInventory()
+				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+			}, completion: nil)
+		}
+
 	}
 
 
@@ -243,7 +249,8 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 
 		viewPropertyAnimator.startAnimation()
-		fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
+//		fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
+
 //		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!)
 		/*
 		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!) { (productArray, error) in
@@ -258,7 +265,51 @@ class InventoryViewController: UIViewController {
 		}
 		*/
 		CloudKitManager.shared.setupProductCKQuerySubscription()
+		/*
+		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
+			DispatchQueue.main.async {
+				self.masterProductArray = fetchedProductArray
+				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+			}
 
+		})
+	*/
+
+		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+
+	}
+
+	@objc func handleNotificationForInventoryChanges() {
+		DispatchQueue.main.async {
+			self.activityView.stopAnimating()
+			self.updateInventoryCollectionView()
+		}
+
+	}
+
+	func handleSubscriptionNotification(ckqn: CKQueryNotification) {
+		if ckqn.subscriptionID == CloudKitManager.subscriptionID {
+			if let recordID = ckqn.recordID {
+				switch ckqn.queryNotificationReason {
+				case .recordCreated:
+					DispatchQueue.main.async {
+						print("record created notification received")
+						self.updateInventoryCollectionView()
+					}
+				case .recordUpdated:
+					DispatchQueue.main.async {
+						print("record updated notification received")
+						self.updateInventoryCollectionView()
+					}
+				case .recordDeleted:
+					DispatchQueue.main.async {
+						print("record deleted notification received")
+//						self.masterProductArray = self.masterProductArray?.filter({$0.recordID != recordID})
+						self.updateInventoryCollectionView()
+					}
+				}
+			}
+		}
 	}
 
 	override func viewDidDisappear(_ animated: Bool) {
@@ -300,6 +351,9 @@ class InventoryViewController: UIViewController {
 			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
+		} else if segue.destination is AddProductUsingTextViewController {
+			guard let addProductVC = segue.destination as? AddProductUsingTextViewController else { preconditionFailure("Expected AddProductUsingTextVC") }
+			addProductVC.inventoryManagerDelegate = self
 		}
 
 	}
@@ -733,16 +787,37 @@ extension InventoryViewController: AddButtonDelegate {
 }
 
 extension InventoryViewController: InventoryManagerDelegate {
+	func addProductToInventory(product: Product) {
+		self.masterProductArray?.append(product)
+		self.updateInventoryCollectionView()
+	}
+
 	func deleteProductFromLocalInventory(product: Product) {
 //		self.masterProductArray?.removeAll(where: { (someProduct) -> Bool in
 //			return someProduct == product
 //		})
-		self.masterProductArray = self.masterProductArray?.filter({ (someProduct) -> Bool in
-			return someProduct != product
-		})
+//		self.masterProductArray = self.masterProductArray?.filter({ (someProduct) -> Bool in
+//			return someProduct != product
+//		})
+		guard let matchingProductToRemoveIndex = masterProductArray?.firstIndex(of: product) else {
+			print("there was no matching product to obtain an index to remove")
+			return
+
+		}
+		self.masterProductArray?.remove(at: matchingProductToRemoveIndex)
 		self.updateInventoryCollectionView()
 	}
 
+	func updateProduct(product: Product) {
+		guard let matchingProductToUpdateIndex = masterProductArray?.firstIndex(where: { (someProduct) -> Bool in
+			return (someProduct.productType == product.productType) && (someProduct.numberOfDosesTakenFromProduct == product.numberOfDosesTakenFromProduct) && (someProduct.recordID == product.recordID)
+		}) else { return }
+		masterProductArray?.remove(at: matchingProductToUpdateIndex)
+
+		masterProductArray?.append(product)
+		updateInventoryCollectionView()
+
+	}
 
 }
 

@@ -178,6 +178,7 @@ extension Product {
 				if let error = error {
 					print(error)
 				} else {
+
 					print("created ck record")
 
 				}
