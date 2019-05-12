@@ -980,7 +980,7 @@
                                             <outlet property="inventoryProductLabel" destination="im1-K2-pyY" id="SoZ-v2-F9l"/>
                                             <outlet property="productMassRemainingLabel" destination="fsc-dH-EYb" id="EDH-DH-H0U"/>
                                             <outlet property="productStrainNameLabel" destination="Sk3-zi-bLJ" id="kM9-Bs-Cz4"/>
-                                            <segue destination="ZKP-z6-ymb" kind="show" id="tx6-PA-Bt3">
+                                            <segue destination="ZKP-z6-ymb" kind="show" identifier="ProductDetailSegue" id="tx6-PA-Bt3">
                                                 <segue key="commit" inheritsFrom="parent" id="gqs-Gx-hmz"/>
                                                 <segue key="preview" inheritsFrom="commit" id="yBk-u2-wbf"/>
                                             </segue>

@@ -182,12 +182,22 @@ class InventoryViewController: UIViewController {
 
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
-			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addProductButton.transform = .identity
-			})
-			viewPropertyAnimator.startAnimation()
 
-			animator.addBehavior(snapBehavior)
+			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
+				print("no cell to segue to product from, pulling button back t position")
+				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+					self.addProductButton.transform = .identity
+				})
+				viewPropertyAnimator.startAnimation()
+
+				animator.addBehavior(snapBehavior)
+				return
+			}
+
+			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
+
+
+
 			//whole lot has to be implemented here
 			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
 
@@ -249,21 +259,7 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 
 		viewPropertyAnimator.startAnimation()
-//		fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
 
-//		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!)
-		/*
-		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!) { (productArray, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					self.masterProductArray = productArray
-					self.updateInventoryCollectionView()
-				}
-			}
-		}
-		*/
 		CloudKitManager.shared.setupProductCKQuerySubscription()
 		/*
 		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
