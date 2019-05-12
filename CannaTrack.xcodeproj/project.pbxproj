@@ -38,6 +38,7 @@
 		9F3B809D224E96610059294B /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809C224E96610059294B /* Dose.swift */; };
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
+		9F45307A22875B9600861222 /* InventoryManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F45307922875B9600861222 /* InventoryManagerDelegate.swift */; };
 		9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */; };
 		9F4AD00A22861C3B00079BC7 /* CloudKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4AD00922861C3B00079BC7 /* CloudKitController.swift */; };
 		9F4B9D872257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */; };
@@ -102,6 +103,7 @@
 		9F3B809C224E96610059294B /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		9F45307922875B9600861222 /* InventoryManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryManagerDelegate.swift; sourceTree = "<group>"; };
 		9F4A330822823FC70092D8AC /* AddProductFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductFloatingButton.swift; sourceTree = "<group>"; };
 		9F4AD00922861C3B00079BC7 /* CloudKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitController.swift; sourceTree = "<group>"; };
 		9F4B9D862257A5A100FCD8FB /* LogDoseFromCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDoseFromCalendarViewController.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				9F0F0BD72284E5C300DFFFC4 /* EditMassDelegate.swift */,
 				9F0F0BD92284E5F900DFFFC4 /* MultipleDoseDelegate.swift */,
 				9F0F0BDB2284E62800DFFFC4 /* InventoryFilterDelegate.swift */,
+				9F45307922875B9600861222 /* InventoryManagerDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
 				9F3B809D224E96610059294B /* Dose.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
+				9F45307A22875B9600861222 /* InventoryManagerDelegate.swift in Sources */,
 				9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */,
 				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,

@@ -25,6 +25,7 @@ class ProductDetailViewController: UIViewController {
 	var doseArray: [Dose] = []
 
 	unowned var editMassDelegate: EditMassDelegate!
+	unowned var inventoryManagerDelegate: InventoryManagerDelegate!
 
 	var doseCKRecords = [CKRecord]()
 
@@ -231,13 +232,35 @@ class ProductDetailViewController: UIViewController {
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a reference to the product data container") }
 
-			masterInventory.removeProductFromInventoryMaster(product: product)
+//			masterInventory.removeProductFromInventoryMaster(product: product)
 			/*
 			//Need to re-implement new cloud delete method here, once I make it
 			if let record = self.recordForProduct {
 				self.deleteProductFromCloud(with: record)
 			}
 			*/
+			/*
+			CloudKitManager.shared.deleteProduct(product: product, completion: { (_, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						print("\(product) deleted from inventory")
+
+					}
+				}
+			})
+			*/
+			CloudKitManager.shared.deleteProductUsingModifyRecords(product: product, completion: { (success, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						self.inventoryManagerDelegate.deleteProductFromLocalInventory(product: product)
+						print(success, "Was a success deleting product")
+					}
+				}
+			})
 		}
 
 		let editMassAction = UIPreviewAction(title: "Edit Mass", style: .default) { [unowned self] (_, _) in
@@ -453,6 +476,7 @@ extension ProductDetailViewController {
 	}
 
 	fileprivate func saveChangesToProduct() {
+		/*
 		var record: CKRecord!
 		if let productRecordID = self.activeDetailProduct.recordID {
 			record = CKRecord(recordType: "Product", recordID: productRecordID)
@@ -491,6 +515,7 @@ extension ProductDetailViewController {
 		let configuration = CKModifyRecordsOperation.Configuration()
 		configuration.timeoutIntervalForResource = 20
 		configuration.timeoutIntervalForRequest = 20
+		operation.savePolicy = .allKeys
 		operation.configuration = configuration
 
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
@@ -510,8 +535,19 @@ extension ProductDetailViewController {
 			}
 
 		}
-
-		privateDatabase.add(operation)
+*/
+		CloudKitManager.shared.updateProduct(product: self.activeDetailProduct) { (success, productUpdated, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					if success == true {
+						self.navigationController?.popViewController(animated: true)
+						print(productUpdated.debugDescription)
+					}
+				}
+			}
+		}
 
 	}
 

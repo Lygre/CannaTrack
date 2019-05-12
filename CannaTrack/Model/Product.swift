@@ -122,6 +122,7 @@ extension Product {
 	}
 
 	func saveNewProductToCloud() {
+		/*
 		let newProduct = CKRecord(recordType: "Product")
 
 		let encoder = PropertyListEncoder()
@@ -168,6 +169,16 @@ extension Product {
 				} else {
 					self.recordID = newProduct.recordID
 					print("Record was saved in private DB by Product.swift method")
+				}
+			}
+		}
+		*/
+		CloudKitManager.shared.createCKRecord(for: self) { (success, productCreated, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("created ck record")
 				}
 			}
 		}

@@ -58,15 +58,7 @@ class InventoryViewController: UIViewController {
 	var masterProductArray: [Product]?
 
 
-	var categoriesInInventory: [Product.ProductType] = {
-
-			let inventory = globalMasterInventory
-			var categories: Set<Product.ProductType> = []
-			for product in inventory {
-				categories.insert(product.productType)
-			}
-		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
-		}()
+	var categoriesInInventory: [Product.ProductType] = []
 
 
 
@@ -132,14 +124,11 @@ class InventoryViewController: UIViewController {
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		snapBehavior.damping = 0.8
 		animator.addBehavior(snapBehavior)
-		
-//		setupDynamicItemBehavior()
-
 
 		//activity view setup and CKQuery, other
 		setupActivityView()
 
-		fetchProductCKQuerySubscriptions()
+		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
 
 		masterProductArray = []
 		activityView.startAnimating()
@@ -149,7 +138,7 @@ class InventoryViewController: UIViewController {
 					guard let productsArray = self.masterProductArray else { return }
 					if !productsArray.contains(product) {
 						print("retreieved product, about to call update collectionview")
-						//						self.currentInventory?.append(product)
+
 						self.masterProductArray?.append(product)
 						self.updateInventoryCollectionView()
 					}
@@ -254,15 +243,27 @@ class InventoryViewController: UIViewController {
 		super.viewWillAppear(animated)
 
 		viewPropertyAnimator.startAnimation()
-//			queryCloudForProductRecords()
-
 		fetchProductDatabaseChanges(inventoryDatabaseChangeToken)
-		addFetchOperationForProductsToDatabase(with: (masterProductArray?.compactMap({ $0.recordID }))!)
+//		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!)
+		/*
+		CloudKitManager.shared.setupFetchOperation(with: (masterProductArray?.compactMap({ $0.recordID }))!) { (productArray, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					self.masterProductArray = productArray
+					self.updateInventoryCollectionView()
+				}
+			}
+		}
+		*/
+		CloudKitManager.shared.setupProductCKQuerySubscription()
 
-//		addFetchOperationForProductsToDatabase(with: )
+	}
 
-		print(categoriesInInventory)
-
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
 
 	func updateCurrentInventory() -> [Product.ProductType] {
@@ -296,10 +297,7 @@ class InventoryViewController: UIViewController {
 
 			guard let productDetailViewController = segue.destination as? ProductDetailViewController
 				else { preconditionFailure("Expected a ColorItemViewController") }
-
-			// Pass over a reference to the CKRecord object, Product object, and assign self as the editMassDelegate object of the productDetailVC
-
-
+			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
 		}
@@ -316,9 +314,7 @@ class InventoryViewController: UIViewController {
 		filterOptionsVC.popoverPresentationController?.barButtonItem = filterButton
 		filterOptionsVC.filterDelegate = self
 
-		self.present(filterOptionsVC, animated: true) {
-			print("do nothing for now")
-		}
+		self.present(filterOptionsVC, animated: true)
 
 	}
 
@@ -469,95 +465,6 @@ extension InventoryViewController {
 	}
 
 
-
-
-/*
-	fileprivate func queryCloudForProductRecords() {
-		let query = CKQuery(recordType: "Product", predicate: NSPredicate(value: true))
-		self.activityView.startAnimating()
-		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					self.productCKRecords = recordsRetrieved ?? []
-					var productObjectsArray: [Product] = []
-					for record in self.productCKRecords {
-						let propertyListDecoder = PropertyListDecoder()
-						do {
-							let data = record["ProductData"] as! Data
-							let productToAdd = try propertyListDecoder.decode(Product.self, from: data)
-
-							guard let asset = record["ProductImageData"] as? CKAsset else {
-								print("Image Missing from Record")
-								return
-							}
-							guard let imageData = NSData(contentsOf: asset.fileURL!) else {
-								print("Invalid Image")
-								return
-							}
-							let image = UIImage(data: imageData as Data)
-							productToAdd.productLabelImage = image
-							productObjectsArray.append(productToAdd)
-						}
-						catch { print(error) }
-					}
-					globalMasterInventory = productObjectsArray
-					self.updateInventoryCollectionView()
-					self.activityView.stopAnimating()
-					print("product records loaded: # \(recordsRetrieved?.count ?? 0)")
-					self.addFetchOperationForProductsToDatabase(with: self.productCKRecords.map({ $0.recordID }))
-				}
-			}
-		}
-	}
-*/
-
-
-	fileprivate func addFetchOperationForProductsToDatabase(with recordIDs: [CKRecord.ID]) {
-		//need to save the recordIDs locally
-		let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
-		operation.perRecordProgressBlock = { (recordID, progress) in
-			DispatchQueue.main.async {
-				print("Record with \(recordID) is \(progress) done")
-			}
-		}
-
-		operation.perRecordCompletionBlock = { (record, recordID, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else if let record = record, let id = recordID {
-					print("Record \(record) fetch completed with ID \(id)")
-
-
-					self.updateInventoryCollectionView()
-				}
-			}
-		}
-
-		operation.fetchRecordsCompletionBlock = { (recordsByID, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-
-					print("Records fetch completed")
-				}
-
-			}
-		}
-
-		let config = CKFetchRecordsOperation.Configuration()
-		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForResource = 10
-		config.timeoutIntervalForRequest = 10
-		operation.configuration = config
-
-		privateDatabase.add(operation)
-
-	}
-
 	fileprivate func fetchProductDatabaseChanges(_ previousChangeToken: CKServerChangeToken?) {
 		//client is responsible for saving the change token at the end of the operation and passing it into the next call to CKFetchDatabaseChangesOperation
 
@@ -590,7 +497,7 @@ extension InventoryViewController {
 		}
 
 		let config = CKFetchDatabaseChangesOperation.Configuration()
-		config.qualityOfService = .utility
+		config.qualityOfService = .userInitiated
 		config.timeoutIntervalForRequest = 10
 		config.timeoutIntervalForResource = 10
 		operation.configuration = config
@@ -618,63 +525,8 @@ extension InventoryViewController {
 		}
 	}
 	*/
-	//!!MARK -- CKSubscription work
-
-	func fetchProductCKQuerySubscriptions() {
-
-		let _: [CKSubscription.ID] = ["product-changes"]
-
-		privateDatabase.fetchAllSubscriptions { (subscriptions, error) in
-			DispatchQueue.main.async {
-				if error == nil {
-					if let subscriptions = subscriptions {
-						if subscriptions.isEmpty {
-							self.setupProductCKQuerySubscription()
-						} else {
-							print("\(subscriptions.debugDescription) retrieved")
-						}
-						//more code to come!
-
-					}
-				} else {
-					print(error!.localizedDescription)
-				}
-			}
-		}
-
-	}
-
-	func setupProductCKQuerySubscription() {
-		let predicate = NSPredicate(value: true)
-		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: "product-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
 
 
-		let config = CKModifySubscriptionsOperation.Configuration()
-		config.timeoutIntervalForRequest = 20
-		config.timeoutIntervalForResource = 20
-
-
-		let notification = CKSubscription.NotificationInfo()
-		notification.alertBody = "There's a new product in Inventory"
-		notification.soundName = "default"
-		notification.shouldSendContentAvailable = true
-		notification.shouldBadge = true
-
-		subscription.notificationInfo = notification
-		config.qualityOfService = .utility
-
-		privateDatabase.save(subscription) { (subscription, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error.localizedDescription)
-				} else {
-					print("Subscription Saved to Server from InventoryViewController.swift!")
-				}
-			}
-		}
-
-
-	}
 }
 
 
@@ -879,6 +731,18 @@ extension InventoryViewController: AddButtonDelegate {
 
 
 }
+
+extension InventoryViewController: InventoryManagerDelegate {
+	func deleteProductFromLocalInventory(product: Product) {
+		self.masterProductArray?.removeAll(where: { (someProduct) -> Bool in
+			return someProduct == product
+		})
+		self.updateInventoryCollectionView()
+	}
+
+
+}
+
 
 
 extension InventoryViewController: UIDynamicAnimatorDelegate {
