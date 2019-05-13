@@ -34,8 +34,6 @@ class InventoryViewController: UIViewController {
 
 	var inventoryDatabaseChangeToken: CKServerChangeToken?
 
-//	var productCKRecords = [CKRecord]()
-
 	var inventoryFilterOption: FilterOption = .none
 
 
@@ -69,27 +67,6 @@ class InventoryViewController: UIViewController {
 
 	@IBOutlet var addProductButton: AddProductFloatingButton!
 
-
-	fileprivate func setupActivityView() {
-		activityView.center = self.view.center
-		activityView.hidesWhenStopped = true
-		activityView.style = .gray
-
-		self.view.addSubview(activityView)
-	}
-
-	fileprivate func setupAddButtonPanGesture() {
-		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
-		addProductButton.addGestureRecognizer(pan)
-		addProductButton.isUserInteractionEnabled = true
-	}
-
-	fileprivate func setupDynamicItemBehavior() {
-		itemBehavior = UIDynamicItemBehavior(items: [addProductButton])
-		itemBehavior.resistance = 0.5
-		itemBehavior.allowsRotation = true
-		animator.addBehavior(itemBehavior)
-	}
 
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,109 +131,6 @@ class InventoryViewController: UIViewController {
 
     }
 
-	fileprivate func stopAndFinishCurrentAnimations() {
-		viewPropertyAnimator.stopAnimation(false)
-		viewPropertyAnimator.finishAnimation(at: .end)
-	}
-
-	fileprivate func snapAddButtonToInitialPosition() {
-		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addProductButton.transform = .identity
-		})
-		viewPropertyAnimator.startAnimation()
-
-		animator.addBehavior(snapBehavior)
-	}
-
-	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
-		let location = recognizer.location(in: self.view)
-		let translation = recognizer.translation(in: self.view)
-
-		switch recognizer.state {
-		case .changed:
-			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
-			recognizer.setTranslation(.zero, in: view)
-			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) else {
-				print("no cell)")
-				return
-			}
-			addProductButton.sendActions(for: .overEligibleContainerRegion)
-			print("collision with \(cell.debugDescription)")
-		case .began:
-			stopAndFinishCurrentAnimations()
-			recognizer.setTranslation(.zero, in: view)
-
-			animator.removeBehavior(snapBehavior)
-
-			addProductButton.center = location
-
-		case .ended:
-			recognizer.setTranslation(.zero, in: view)
-
-			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
-				print("no cell to segue to product from, pulling button back t position")
-				snapAddButtonToInitialPosition()
-				return
-			}
-
-			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
-
-
-
-			//whole lot has to be implemented here
-			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
-
-		case .cancelled, .failed:
-			recognizer.setTranslation(.zero, in: view)
-			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addProductButton.transform = .identity
-			})
-			viewPropertyAnimator.startAnimation()
-			animator.addBehavior(snapBehavior)
-
-
-		case .possible:
-			print("possible pan gesture state case. No implementation")
-		@unknown default:
-			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
-		}
-
-	}
-
-	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
-//		let selectionFeedbackGenerator: UISelectionFeedbackGenerator = .init()
-//		selectionFeedbackGenerator.selectionChanged()
-
-		let generator = UIImpactFeedbackGenerator(style: .medium)
-
-
-		let targets = sender.allControlEvents
-		switch targets {
-		case .backToAnchorPoint:
-			print("back to anchor point haptic action triggered")
-			generator.impactOccurred()
-		case .overEligibleContainerRegion:
-			print("over eligible container region haptic action")
-			generator.impactOccurred()
-		default:
-			generator.impactOccurred()
-			print("do nothing")
-		}
-
-
-	}
-
-	fileprivate func updateInventoryCollectionView() {
-		DispatchQueue.main.async {
-			self.productsCollectionView.collectionViewLayout.invalidateLayout()
-			self.productsCollectionView.performBatchUpdates({
-				self.categoriesInInventory = self.updateCurrentInventory()
-				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-			}, completion: nil)
-		}
-
-	}
-
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		snapAddButtonToInitialPosition()
@@ -284,62 +158,11 @@ class InventoryViewController: UIViewController {
 
 	}
 
-	@objc func handleNotificationForInventoryChanges() {
-		DispatchQueue.main.async {
-//			self.activityView.stopAnimating()
-			self.updateInventoryCollectionView()
-		}
-
-	}
-
-	func handleSubscriptionNotification(ckqn: CKQueryNotification) {
-		if ckqn.subscriptionID == CloudKitManager.subscriptionID {
-			if let recordID = ckqn.recordID {
-				switch ckqn.queryNotificationReason {
-				case .recordCreated:
-					DispatchQueue.main.async {
-						print("record created notification received")
-						self.updateInventoryCollectionView()
-					}
-				case .recordUpdated:
-					DispatchQueue.main.async {
-						print("record updated notification received")
-						self.updateInventoryCollectionView()
-					}
-				case .recordDeleted:
-					DispatchQueue.main.async {
-						print("record deleted notification received")
-//						self.masterProductArray = self.masterProductArray?.filter({$0.recordID != recordID})
-						self.updateInventoryCollectionView()
-					}
-				}
-			}
-		}
-	}
 
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
-
-	func updateCurrentInventory() -> [Product.ProductType] {
-		if inventoryFilterOption == .none {
-			self.currentInventory = masterProductArray
-		}
-		guard let inventory = masterProductArray else { return [] }
-		var categories: Set<Product.ProductType> = []
-		for product in inventory {
-			categories.insert(product.productType)
-		}
-		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
-	}
-
-
-
-
-
-
-
 
 
     // MARK: - Navigation
@@ -383,7 +206,7 @@ class InventoryViewController: UIViewController {
 }
 
 
-
+// !!MARK - CollectionView Delegate and Data Source methods
 
 extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -515,12 +338,123 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 }
 
+extension InventoryViewController: UICollectionViewDelegateFlowLayout {
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
+
+		switch sectionForCell {
+		case .category:
+			return CGSize(width: 100, height: 50)
+		case .product:
+			return CGSize(width: 120, height: 120)
+		}
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+		return 8
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+	}
+
+}
+
+//!!MARK -- Helper methods for VC
 
 extension InventoryViewController {
 
 	func refreshUI() {
 		loadViewIfNeeded()
 		productsCollectionView.reloadData()
+	}
+
+	func updateCurrentInventory() -> [Product.ProductType] {
+		if inventoryFilterOption == .none {
+			self.currentInventory = masterProductArray
+		}
+		guard let inventory = masterProductArray else { return [] }
+		var categories: Set<Product.ProductType> = []
+		for product in inventory {
+			categories.insert(product.productType)
+		}
+		return Array(categories).sorted(by: { $0.rawValue < $1.rawValue })
+	}
+
+	func handleSubscriptionNotification(ckqn: CKQueryNotification) {
+		if ckqn.subscriptionID == CloudKitManager.subscriptionID {
+			if let recordID = ckqn.recordID {
+				switch ckqn.queryNotificationReason {
+				case .recordCreated:
+					DispatchQueue.main.async {
+						print("record created notification received")
+						self.updateInventoryCollectionView()
+					}
+				case .recordUpdated:
+					DispatchQueue.main.async {
+						print("record updated notification received")
+						self.updateInventoryCollectionView()
+					}
+				case .recordDeleted:
+					DispatchQueue.main.async {
+						print("record deleted notification received")
+						self.updateInventoryCollectionView()
+					}
+				}
+			}
+		}
+	}
+
+
+	fileprivate func stopAndFinishCurrentAnimations() {
+		viewPropertyAnimator.stopAnimation(false)
+		viewPropertyAnimator.finishAnimation(at: .end)
+	}
+
+	fileprivate func snapAddButtonToInitialPosition() {
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addProductButton.transform = .identity
+		})
+		viewPropertyAnimator.startAnimation()
+
+		animator.addBehavior(snapBehavior)
+	}
+
+	fileprivate func updateInventoryCollectionView() {
+		DispatchQueue.main.async {
+			self.productsCollectionView.collectionViewLayout.invalidateLayout()
+			self.productsCollectionView.performBatchUpdates({
+				self.categoriesInInventory = self.updateCurrentInventory()
+				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+			}, completion: nil)
+		}
+
+	}
+
+	fileprivate func setupActivityView() {
+		activityView.center = self.view.center
+		activityView.hidesWhenStopped = true
+		activityView.style = .gray
+
+		self.view.addSubview(activityView)
+	}
+
+	fileprivate func setupAddButtonPanGesture() {
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
+		addProductButton.addGestureRecognizer(pan)
+		addProductButton.isUserInteractionEnabled = true
+	}
+
+	fileprivate func setupDynamicItemBehavior() {
+		itemBehavior = UIDynamicItemBehavior(items: [addProductButton])
+		itemBehavior.resistance = 0.5
+		itemBehavior.allowsRotation = true
+		animator.addBehavior(itemBehavior)
 	}
 
 
@@ -565,56 +499,104 @@ extension InventoryViewController {
 
 	}
 
-	/*
 
-	func deleteProductFromCloud(product: Product) {
-		guard let recordID = product.recordID else { return }
 
-		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					print("Record was deleted from InventoryViewController.swift method")
-					guard let indexPathForRecordToRemove = self.productCKRecords.firstIndex(of: CKRecord(recordType: "Product", recordID: recordID)) else { return }
-					self.productCKRecords.remove(at: indexPathForRecordToRemove)
-					self.updateInventoryCollectionView()
-				}
+
+}
+
+//!!MARK -- Objc methods
+
+extension InventoryViewController {
+
+	@objc func handleNotificationForInventoryChanges() {
+		DispatchQueue.main.async {
+			self.updateInventoryCollectionView()
+		}
+
+	}
+
+
+	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
+		let location = recognizer.location(in: self.view)
+		let translation = recognizer.translation(in: self.view)
+
+		switch recognizer.state {
+		case .changed:
+			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
+			recognizer.setTranslation(.zero, in: view)
+			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) else {
+				print("no cell)")
+				return
 			}
-		}
-	}
-	*/
+			addProductButton.sendActions(for: .overEligibleContainerRegion)
+			print("collision with \(cell.debugDescription)")
+		case .began:
+			stopAndFinishCurrentAnimations()
+			recognizer.setTranslation(.zero, in: view)
 
+			animator.removeBehavior(snapBehavior)
+
+			addProductButton.center = location
+
+		case .ended:
+			recognizer.setTranslation(.zero, in: view)
+
+			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
+				print("no cell to segue to product from, pulling button back t position")
+				snapAddButtonToInitialPosition()
+				return
+			}
+
+			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
+
+
+
+			//whole lot has to be implemented here
+			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
+
+		case .cancelled, .failed:
+			recognizer.setTranslation(.zero, in: view)
+			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+				self.addProductButton.transform = .identity
+			})
+			viewPropertyAnimator.startAnimation()
+			animator.addBehavior(snapBehavior)
+
+
+		case .possible:
+			print("possible pan gesture state case. No implementation")
+		@unknown default:
+			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
+		}
+
+	}
+
+	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
+		//		let selectionFeedbackGenerator: UISelectionFeedbackGenerator = .init()
+		//		selectionFeedbackGenerator.selectionChanged()
+
+		let generator = UIImpactFeedbackGenerator(style: .medium)
+
+
+		let targets = sender.allControlEvents
+		switch targets {
+		case .backToAnchorPoint:
+			print("back to anchor point haptic action triggered")
+			generator.impactOccurred()
+		case .overEligibleContainerRegion:
+			print("over eligible container region haptic action")
+			generator.impactOccurred()
+		default:
+			generator.impactOccurred()
+			print("do nothing")
+		}
+
+
+	}
 
 }
 
 
-extension InventoryViewController: UICollectionViewDelegateFlowLayout {
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let sectionForCell = InventoryCollectionSection(indexPathSection: indexPath.section)
-
-		switch sectionForCell {
-		case .category:
-			return CGSize(width: 100, height: 50)
-		case .product:
-			return CGSize(width: 120, height: 120)
-		}
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return 8
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-		return 8
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
-	}
-
-}
 
 extension InventoryViewController: InventoryFilterDelegate {
 	func filterInventory(using filterOption: FilterOption) {
@@ -800,12 +782,6 @@ extension InventoryViewController: InventoryManagerDelegate {
 	}
 
 	func deleteProductFromLocalInventory(product: Product) {
-//		self.masterProductArray?.removeAll(where: { (someProduct) -> Bool in
-//			return someProduct == product
-//		})
-//		self.masterProductArray = self.masterProductArray?.filter({ (someProduct) -> Bool in
-//			return someProduct != product
-//		})
 		guard let matchingProductToRemoveIndex = masterProductArray?.firstIndex(of: product) else {
 			print("there was no matching product to obtain an index to remove")
 			return
