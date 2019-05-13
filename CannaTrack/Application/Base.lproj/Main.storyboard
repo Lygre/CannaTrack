@@ -982,7 +982,7 @@
                                             <outlet property="productStrainNameLabel" destination="Sk3-zi-bLJ" id="kM9-Bs-Cz4"/>
                                             <segue destination="ZKP-z6-ymb" kind="show" identifier="ProductDetailSegue" id="tx6-PA-Bt3">
                                                 <segue key="commit" inheritsFrom="parent" id="gqs-Gx-hmz"/>
-                                                <segue key="preview" inheritsFrom="commit" id="yBk-u2-wbf"/>
+                                                <segue key="preview" destination="ZKP-z6-ymb" identifier="ProductDetailSegue" id="yBk-u2-wbf"/>
                                             </segue>
                                         </connections>
                                     </collectionViewCell>

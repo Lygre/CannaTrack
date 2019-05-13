@@ -6,13 +6,88 @@
 //  Copyright © 2019 Lygre. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import CloudKit
+
+protocol ProductDetailViewControllerDelegate {
+	func productDetailDid(delete product: Product)
+	func productDetailDid(doseWith product: Product)
+}
+
+
 
 class ProductDetailViewController: UIViewController {
 
 	var activeDetailProduct: Product!
-//	var recordForProduct: CKRecord?
+	var previewDelegate: ProductDetailViewControllerDelegate?
+	//	@IBOutlet weak var label: UILabel!
+	//	@IBOutlet weak var containerView: UIView!
+
+	var selectedAction: UIPreviewAction?
+	var firstLocation: CGPoint?
+	var firstIndex: Int?
+	var requiresMovement: Bool = false
+	var previewingEnded: Bool = false
+
+	override var previewActionItems: [UIPreviewActionItem] {
+		get {
+//			return [UIPreviewActionItem]()
+
+			//part 2a
+			return self.actions
+			//part 2b
+			//return [UIPreviewActionItem]()
+		}
+	}
+
+	override func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+
+		//establish 2 constants for label and container height
+		/*
+		let labelHeight = label.frame.size.height
+		let containerHeight = labelHeight + 40.0
+		self.containerView.frame = CGRect(x: containerView.frame.origin.x, y: containerView.frame.origin.y, width: containerView.frame.size.width, height: containerHeight)
+		*/
+
+		// Part 1
+		self.preferredContentSize = CGSize(width: self.view.frame.size.height, height: 120)
+
+		// Part 2
+		self.preferredContentSize = CGSize(width: self.view.frame.size.width, height: 120 + (5 * 60))
+
+		// Hack to avoid issues with frame math in updating the selections
+		firstLocation = nil
+
+
+	}
+
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		commitAction()
+	}
+
+	var actions: [UIPreviewAction] {
+		get {
+			let dose = UIPreviewAction(title: "Dose", style: .default) { (_, viewController: UIViewController) in
+				if let vc = viewController as? ProductDetailViewController, let product = vc.activeDetailProduct {
+					vc.previewDelegate?.productDetailDid(doseWith: product)
+				}
+			}
+			let delete = UIPreviewAction(title: "Delete", style: .destructive) { (_, viewController) in
+				if let vc = viewController as? ProductDetailViewController, let product = vc.activeDetailProduct {
+					vc.previewDelegate?.productDetailDid(delete: product)
+				}
+			}
+
+			return [ dose, delete ]
+		}
+	}
+
+
+
+	//---------------------------------------------
 
 	var dateFormatter: DateFormatter = DateFormatter()
 
@@ -199,6 +274,7 @@ class ProductDetailViewController: UIViewController {
 
 	}
 
+	/*
 	// MARK: - Supporting Peek Quick Actions
 
 	/// - Tag: PreviewActionItems
@@ -287,6 +363,7 @@ class ProductDetailViewController: UIViewController {
 		}
 	}
 
+	*/
 
 	@IBAction func unwindToProduct(unwindSegue: UIStoryboardSegue) {
 
@@ -305,6 +382,47 @@ class ProductDetailViewController: UIViewController {
 		openDetailProduct()
 	}
 
+
+
+}
+
+
+
+//!!MARK -- Dealing with Previewing foray in this extension
+extension ProductDetailViewController {
+
+	func updateUI(for preview: UIPreviewInteraction) {
+		//updateButtonSelectionState(for: preview)
+
+	}
+
+	func finishedPreviewing() {
+		previewingEnded = true
+	}
+
+	func updateUI(with gesture: UIGestureRecognizer) {
+		if previewingEnded {
+			//updateButtonSelectionState(for: gesture)
+		}
+	}
+
+	func updateToCommittedUI() {
+		selectedAction = nil
+		/*
+		for i in 0...actions.count - 1 {
+			let indexPath = IndexPath(row: i, section: 0)
+			let cell = tableView.cellForRow(at: indexPath) as! OptionCell
+			cell.setHighlighted(false, animated: true)
+		}
+		*/
+	}
+
+	func commitAction() {
+		if let action = selectedAction {
+			action.handler(action, self)
+			selectedAction = nil
+		}
+	}
 
 
 }

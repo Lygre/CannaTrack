@@ -59,7 +59,18 @@ class InventoryViewController: UIViewController {
 
 	var categoriesInInventory: [Product.ProductType] = []
 
+	//Preview Interaction work
 
+	var productPreviewInteraction: UIPreviewInteraction? {
+		didSet {
+			print("setup product UIPreviewInteraction")
+		}
+	}
+
+	var presentedProductDetailViewController: ProductDetailViewController?
+
+
+	//------------------------------------------
 
 	@IBOutlet var productsCollectionView: UICollectionView!
 
@@ -86,6 +97,13 @@ class InventoryViewController: UIViewController {
 		self.addProductButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
 
 
+		//previewInteraction setup
+		registerForPreviewing(with: self, sourceView: productsCollectionView)
+		productPreviewInteraction = UIPreviewInteraction(view: productsCollectionView)
+		productPreviewInteraction?.delegate = self
+
+
+		//property animator initial setup
 		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
@@ -176,9 +194,15 @@ class InventoryViewController: UIViewController {
 
 			guard let productDetailViewController = segue.destination as? ProductDetailViewController
 				else { preconditionFailure("Expected a ColorItemViewController") }
+
+			productDetailViewController.previewDelegate = self
 			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
+
+			presentedProductDetailViewController = productDetailViewController
+
+
 		} else if segue.destination is AddProductUsingTextViewController {
 			guard let addProductVC = segue.destination as? AddProductUsingTextViewController else { preconditionFailure("Expected AddProductUsingTextVC") }
 			addProductVC.inventoryManagerDelegate = self
@@ -594,6 +618,12 @@ extension InventoryViewController {
 
 	}
 
+
+
+	@objc func handleTouches(sender: UIGestureRecognizer) {
+		presentedProductDetailViewController?.updateUI(with: sender)
+	}
+
 }
 
 
@@ -816,6 +846,71 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 		}
 
 		button.sendActions(for: .backToAnchorPoint)
+	}
+
+}
+
+
+extension InventoryViewController: UIViewControllerPreviewingDelegate, ProductDetailViewControllerDelegate {
+	func productDetailDid(delete product: Product) {
+		print("Action to Delete Product Executed by DetailDelegate")
+	}
+
+	func productDetailDid(doseWith product: Product) {
+		print("Action to Dose with Product Executed by DetailDelegate")
+	}
+
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+
+		previewingContext.previewingGestureRecognizerForFailureRelationship.addTarget(self, action: #selector(handleTouches(sender:)))
+
+		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return nil }
+		previewingContext.sourceRect = cell.frame
+
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let productDetailViewController = storyboard.instantiateViewController(withIdentifier: "ProductDetailViewController") as! ProductDetailViewController
+		let product = currentInventory?[indexPath.item]
+
+		productDetailViewController.previewDelegate = self
+		productDetailViewController.activeDetailProduct = product
+		presentedProductDetailViewController = productDetailViewController
+
+		return productDetailViewController
+
+	}
+
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+		self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+
+		if let vc = viewControllerToCommit as? ProductDetailViewController {
+			vc.updateToCommittedUI()
+		}
+	}
+
+
+}
+
+extension InventoryViewController: UIPreviewInteractionDelegate {
+
+	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
+		presentedProductDetailViewController?.updateUI(for: previewInteraction)
+	}
+
+	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
+		presentedProductDetailViewController?.commitAction()
+		presentedProductDetailViewController = nil
+	}
+
+	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdateCommitTransition transitionProgress: CGFloat, ended: Bool) {
+		presentedProductDetailViewController?.updateUI(for: previewInteraction)
+
+		if ended {
+			presentedProductDetailViewController?.finishedPreviewing()
+		}
+	}
+
+	func previewInteractionShouldBegin(_ previewInteraction: UIPreviewInteraction) -> Bool {
+		return true
 	}
 
 }

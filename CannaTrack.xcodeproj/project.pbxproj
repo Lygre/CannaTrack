@@ -63,6 +63,7 @@
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
 		9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4F2224B584001407D8 /* AddProductViewController.swift */; };
 		9FAB54D4226611180012248F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FAB54D3226611180012248F /* CloudKit.framework */; };
+		9FB215FC2289FE58004962A9 /* TouchLocationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB215FB2289FE58004962A9 /* TouchLocationProtocols.swift */; };
 		9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */; };
 		9FB8F7F222761A9800823CDC /* FilterOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */; };
 		9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */; };
@@ -131,6 +132,7 @@
 		9F922A4F2224B584001407D8 /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
 		9FAB54D2226610D20012248F /* CannaTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CannaTrack.entitlements; sourceTree = "<group>"; };
 		9FAB54D3226611180012248F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		9FB215FB2289FE58004962A9 /* TouchLocationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocationProtocols.swift; sourceTree = "<group>"; };
 		9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewCell.swift; sourceTree = "<group>"; };
 		9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonProtocol.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				9F0F0BD92284E5F900DFFFC4 /* MultipleDoseDelegate.swift */,
 				9F0F0BDB2284E62800DFFFC4 /* InventoryFilterDelegate.swift */,
 				9F45307922875B9600861222 /* InventoryManagerDelegate.swift */,
+				9FB215FB2289FE58004962A9 /* TouchLocationProtocols.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FB215FC2289FE58004962A9 /* TouchLocationProtocols.swift in Sources */,
 				9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */,
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
 				9F0F0BDA2284E5F900DFFFC4 /* MultipleDoseDelegate.swift in Sources */,
