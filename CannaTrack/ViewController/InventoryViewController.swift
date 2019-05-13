@@ -133,7 +133,7 @@ class InventoryViewController: UIViewController {
 
 		masterProductArray = []
 		activityView.startAnimating()
-		CloudKitManager.shared.retrieveAllProducts { (product) in
+		CloudKitManager.shared.retrieveAllProducts { (product, shouldStopAnimating) in
 			DispatchQueue.main.async {
 				if let product = product {
 					guard let productsArray = self.masterProductArray else { return }
@@ -143,10 +143,11 @@ class InventoryViewController: UIViewController {
 						self.masterProductArray?.append(product)
 						self.updateInventoryCollectionView()
 					}
-
-					self.activityView.stopAnimating()
-
-
+				}
+				if let stopAnimating = shouldStopAnimating {
+					if stopAnimating {
+						self.activityView.stopAnimating()
+					}
 				}
 			}
 		}
@@ -285,7 +286,7 @@ class InventoryViewController: UIViewController {
 
 	@objc func handleNotificationForInventoryChanges() {
 		DispatchQueue.main.async {
-			self.activityView.stopAnimating()
+//			self.activityView.stopAnimating()
 			self.updateInventoryCollectionView()
 		}
 

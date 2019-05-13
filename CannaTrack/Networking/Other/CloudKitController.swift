@@ -16,7 +16,7 @@ typealias CreateProductCompletion = (_ success: Bool, _ resultingCloudProduct: P
 typealias RetrieveProductsCompletion = (_ products: [Product]?, _ error: Error?) -> Void
 typealias UpdateProductCompletion = (_ success: Bool, _ resultingCloudProduct: Product?, _ error: Error?) -> Void
 typealias DeleteProductCompletion = (_ success: Bool, _ error: Error?) -> Void
-typealias RetrieveProductCompletion = (_ product: Product?) -> Void
+typealias RetrieveProductCompletion = (_ product: Product?, _ moreComing: Bool?) -> Void
 
 
 struct CloudKitNotifications {
@@ -67,9 +67,16 @@ struct CloudKitManager {
 		queryOperation.queryCompletionBlock = { (operationCursor, error) in
 			DispatchQueue.main.async {
 				if let error = error {
+
 					print(error.localizedDescription)
 				} else {
-					print("query completed by CKManager")
+					if let _ = operationCursor {
+						completion(nil, true)
+						print("query has finished executing, but did not obtain all records. Received operationCursor object as marker to use to receive rest of records")
+					} else {
+						completion(nil, true)
+						print("query completed by CKManager")
+					}
 				}
 			}
 
@@ -78,7 +85,7 @@ struct CloudKitManager {
 			DispatchQueue.main.async {
 				guard let product = Product.fromCKRecord(record: record) else { return }
 				print("record fetched by query in CKManager")
-				completion(product)
+				completion(product, false)
 			}
 		}
 		let config = CKQueryOperation.Configuration()
