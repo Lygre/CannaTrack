@@ -158,6 +158,15 @@ class InventoryViewController: UIViewController {
 		viewPropertyAnimator.finishAnimation(at: .end)
 	}
 
+	fileprivate func snapAddButtonToInitialPosition() {
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addProductButton.transform = .identity
+		})
+		viewPropertyAnimator.startAnimation()
+
+		animator.addBehavior(snapBehavior)
+	}
+
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let translation = recognizer.translation(in: self.view)
@@ -185,12 +194,7 @@ class InventoryViewController: UIViewController {
 
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
 				print("no cell to segue to product from, pulling button back t position")
-				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-					self.addProductButton.transform = .identity
-				})
-				viewPropertyAnimator.startAnimation()
-
-				animator.addBehavior(snapBehavior)
+				snapAddButtonToInitialPosition()
 				return
 			}
 
@@ -252,13 +256,17 @@ class InventoryViewController: UIViewController {
 
 	}
 
-
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		snapAddButtonToInitialPosition()
+		
+	}
 
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		viewPropertyAnimator.startAnimation()
+//		viewPropertyAnimator.startAnimation()
 
 		CloudKitManager.shared.setupProductCKQuerySubscription()
 		/*
