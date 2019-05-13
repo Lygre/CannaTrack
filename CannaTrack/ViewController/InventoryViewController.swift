@@ -259,7 +259,7 @@ class InventoryViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		snapAddButtonToInitialPosition()
-		
+
 	}
 
 
@@ -619,7 +619,9 @@ extension InventoryViewController: InventoryFilterDelegate {
 	func filterInventory(using filterOption: FilterOption) {
 		//not implemented
 
-		var masterInventory = globalMasterInventory
+//		var masterInventory = masterProductArray
+		guard var masterInventory = masterProductArray else { return }
+
 		self.inventoryFilterOption = filterOption
 		switch filterOption {
 
