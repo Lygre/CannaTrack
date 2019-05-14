@@ -129,10 +129,13 @@ class InventoryViewController: UIViewController {
 			}
 		}
 
+		registerForPreviewing(with: self, sourceView: productsCollectionView)
+
     }
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 		snapAddButtonToInitialPosition()
 
 	}
@@ -164,6 +167,19 @@ class InventoryViewController: UIViewController {
 		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
 
+
+
+
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+
+		originalAddButtonPosition = CGPoint(x: size.width - 25 - ((size.width * 0.145) / 2.0), y: size.height - 60 - ((size.height * 0.067) / 2.0))
+		animator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
+		animator.addBehavior(snapBehavior)
+		print("view is transitioning orientation")
+//		animator.
+	}
 
     // MARK: - Navigation
 
@@ -422,6 +438,8 @@ extension InventoryViewController {
 		})
 		viewPropertyAnimator.startAnimation()
 
+		animator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		animator.addBehavior(snapBehavior)
 	}
 
@@ -817,5 +835,29 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 
 		button.sendActions(for: .backToAnchorPoint)
 	}
+
+}
+
+
+extension InventoryViewController: UIViewControllerPreviewingDelegate {
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath), let product = currentInventory?[indexPath.item] else { return nil }
+
+		previewingContext.sourceRect = cell.frame
+
+		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
+
+		viewController.activeDetailProduct = product
+
+		return viewController
+	}
+
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
+
+
+
+
 
 }
