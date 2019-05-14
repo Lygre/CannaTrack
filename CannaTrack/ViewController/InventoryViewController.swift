@@ -147,10 +147,13 @@ class InventoryViewController: UIViewController {
 			}
 		}
 
+		registerForPreviewing(with: self, sourceView: productsCollectionView)
+		print("registered for previewing")
     }
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 		snapAddButtonToInitialPosition()
 
 	}
@@ -182,6 +185,19 @@ class InventoryViewController: UIViewController {
 		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
 
+
+
+
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+
+		originalAddButtonPosition = CGPoint(x: size.width - 25 - ((size.width * 0.145) / 2.0), y: size.height - 60 - ((size.height * 0.067) / 2.0))
+		animator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
+		animator.addBehavior(snapBehavior)
+		print("view is transitioning orientation")
+//		animator.
+	}
 
     // MARK: - Navigation
 
@@ -446,6 +462,8 @@ extension InventoryViewController {
 		})
 		viewPropertyAnimator.startAnimation()
 
+		animator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		animator.addBehavior(snapBehavior)
 	}
 
@@ -851,66 +869,25 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 }
 
 
-extension InventoryViewController: UIViewControllerPreviewingDelegate, ProductDetailViewControllerDelegate {
-	func productDetailDid(delete product: Product) {
-		print("Action to Delete Product Executed by DetailDelegate")
-	}
-
-	func productDetailDid(doseWith product: Product) {
-		print("Action to Dose with Product Executed by DetailDelegate")
-	}
-
+extension InventoryViewController: UIViewControllerPreviewingDelegate {
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath), let product = currentInventory?[indexPath.item] else { return nil }
 
-		previewingContext.previewingGestureRecognizerForFailureRelationship.addTarget(self, action: #selector(handleTouches(sender:)))
-
-		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return nil }
 		previewingContext.sourceRect = cell.frame
 
-		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let productDetailViewController = storyboard.instantiateViewController(withIdentifier: "ProductDetailViewController") as! ProductDetailViewController
-		let product = currentInventory?[indexPath.item]
+		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
 
-		productDetailViewController.previewDelegate = self
-		productDetailViewController.activeDetailProduct = product
-		presentedProductDetailViewController = productDetailViewController
+		viewController.activeDetailProduct = product
 
-		return productDetailViewController
-
+		return viewController
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-		self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-
-		if let vc = viewControllerToCommit as? ProductDetailViewController {
-			vc.updateToCommittedUI()
-		}
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 
 
-}
 
-extension InventoryViewController: UIPreviewInteractionDelegate {
 
-	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
-		presentedProductDetailViewController?.updateUI(for: previewInteraction)
-	}
-
-	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
-		presentedProductDetailViewController?.commitAction()
-		presentedProductDetailViewController = nil
-	}
-
-	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdateCommitTransition transitionProgress: CGFloat, ended: Bool) {
-		presentedProductDetailViewController?.updateUI(for: previewInteraction)
-
-		if ended {
-			presentedProductDetailViewController?.finishedPreviewing()
-		}
-	}
-
-	func previewInteractionShouldBegin(_ previewInteraction: UIPreviewInteraction) -> Bool {
-		return true
-	}
 
 }
