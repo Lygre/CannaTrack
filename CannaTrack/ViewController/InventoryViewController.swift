@@ -130,7 +130,7 @@ class InventoryViewController: UIViewController {
 		}
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
-
+		print("registered for previewing")
     }
 
 	override func viewDidAppear(_ animated: Bool) {
