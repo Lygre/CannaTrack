@@ -54,7 +54,11 @@ class InventoryViewController: UIViewController {
 		}
 	}
 
-	var masterProductArray: [Product]?
+	var masterProductArray: [Product]? {
+		didSet(newProductArray) {
+			globalMasterInventory = newProductArray ?? []
+		}
+	}
 
 
 	var categoriesInInventory: [Product.ProductType] = []

@@ -12,7 +12,7 @@ import CloudKit
 
 var doseLogDictionaryGLOBAL: [Dose] = []
 
-
+	
 
 
 class CalendarLogViewController: UIViewController {
@@ -138,6 +138,7 @@ class CalendarLogViewController: UIViewController {
 			self.addButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		originalAddButtonSize = addButton.bounds.size
 		setupAddButtonPanGesture(button: addButton)
 		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
 //		dynamicAnimator.delegate = self
@@ -164,7 +165,15 @@ class CalendarLogViewController: UIViewController {
 		}
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-		originalAddButtonSize = addButton.bounds.size
+
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addButton.bounds = CGRect(origin: self.originalAddButtonPosition, size: self.originalAddButtonSize)
+			self.addButton.layer.shadowOpacity = 1.0
+			//					self.addButton.layer.cornerRadius
+		})
+
+		viewPropertyAnimator.startAnimation()
+
 		snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
@@ -606,7 +615,7 @@ extension CalendarLogViewController {
 
 //			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
 			print("pan ended on a dose table cell", doseCell.debugDescription)
-
+			performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 
 			//whole lot has to be implemented here
 			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
