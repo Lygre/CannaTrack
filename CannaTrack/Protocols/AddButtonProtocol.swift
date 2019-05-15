@@ -23,4 +23,8 @@ protocol AddButtonDelegate: class {
 
 	func setupAddButtonPanGesture(button: AddProductFloatingButton)
 
+	//there also must be 2 objc methods to handle the Pan for the add button, and to handle the haptic feedback for it
+	//@handlePanForAddButton(recognizer:) @handleHapticsForAddButton(sender:Button)
+
+
 }

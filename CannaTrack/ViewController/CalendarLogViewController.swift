@@ -25,6 +25,20 @@ class CalendarLogViewController: UIViewController {
 	@IBOutlet weak var year: UILabel!
 	@IBOutlet weak var month: UILabel!
 
+
+	//add button stuff
+	@IBOutlet var addButton: AddProductFloatingButton!
+
+	var viewPropertyAnimator: UIViewPropertyAnimator!
+
+	var dynamicAnimator: UIDynamicAnimator!
+
+	var snapBehavior: UISnapBehavior!
+
+	var originalAddButtonPosition: CGPoint!
+
+	//------------------------------
+
 	let tableCellIdentifier: String = "DoseCell"
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
@@ -114,6 +128,19 @@ class CalendarLogViewController: UIViewController {
 		// Do any additional setup after loading the view.
 		setupDoseLoggingDateFormatter()
 
+		//add button setup
+		self.addButton.addButtonDelegate = self
+//		self.addButton.addTarget(, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addButton.transform = .init(scaleX: 2.0, y: 2.0)
+		})
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		setupAddButtonPanGesture(button: addButton)
+		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
+//		dynamicAnimator.delegate = self
+		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
+		snapBehavior.damping = 0.8
+		dynamicAnimator.addBehavior(snapBehavior)
 
     }
 
@@ -133,10 +160,20 @@ class CalendarLogViewController: UIViewController {
 			self.calendarCollectionView.selectDates([Date()])
 		}
 
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
 		calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
+
+		originalAddButtonPosition = CGPoint(x: size.width - 25 - ((size.width * 0.145) / 2.0), y: size.height - 60 - ((size.height * 0.067) / 2.0))
+		dynamicAnimator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
+		dynamicAnimator.addBehavior(snapBehavior)
+		print("view is transitioning orientation")
 	}
 
 
@@ -458,6 +495,99 @@ extension CalendarLogViewController {
 		activityView.style = .gray
 
 		self.view.addSubview(activityView)
+	}
+
+}
+
+extension CalendarLogViewController: AddButtonDelegate {
+
+
+	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator) {
+		viewPropertyAnimator = animator
+		viewPropertyAnimator.startAnimation()
+	}
+
+	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addButton.transform = .identity
+		})
+		viewPropertyAnimator.startAnimation()
+
+		dynamicAnimator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
+		dynamicAnimator.addBehavior(snapBehavior)
+	}
+
+	func setupAddButtonPanGesture(button: AddProductFloatingButton) {
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
+		addButton.addGestureRecognizer(pan)
+		addButton.isUserInteractionEnabled = true
+	}
+
+
+}
+
+//objc methods
+extension CalendarLogViewController {
+
+	func stopAndFinishCurrentAnimations() {
+		viewPropertyAnimator.stopAnimation(false)
+		viewPropertyAnimator.finishAnimation(at: .end)
+	}
+
+	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
+		let location = recognizer.location(in: self.view)
+		let translation = recognizer.translation(in: self.view)
+
+		switch recognizer.state {
+		case .changed:
+			addButton.center = CGPoint(x: addButton.center.x + translation.x, y: addButton.center.y + translation.y)
+			recognizer.setTranslation(.zero, in: view)
+
+			guard let indexPath = self.calendarCollectionView.indexPathForItem(at: location), let dateCell = self.calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
+				print("no date cell")
+				return
+			}
+			addButton.sendActions(for: .overEligibleContainerRegion)
+			print("collision with \(dateCell.debugDescription)")
+		case .began:
+			stopAndFinishCurrentAnimations()
+			recognizer.setTranslation(.zero, in: view)
+
+			dynamicAnimator.removeBehavior(snapBehavior)
+
+			addButton.center = location
+
+		case .ended:
+			recognizer.setTranslation(.zero, in: view)
+
+
+			guard let indexPath = self.calendarCollectionView.indexPathForItem(at: location), let dateCell = self.calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
+				print("no date cell")
+				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+				return
+			}
+//			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
+			print("pan ended on a date cell")
+
+
+			//whole lot has to be implemented here
+			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
+
+		case .cancelled, .failed:
+			recognizer.setTranslation(.zero, in: view)
+			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+				self.addButton.transform = .identity
+			})
+			viewPropertyAnimator.startAnimation()
+			dynamicAnimator.addBehavior(snapBehavior)
+
+
+		case .possible:
+			print("possible pan gesture state case. No implementation")
+		@unknown default:
+			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
+		}
 	}
 
 }

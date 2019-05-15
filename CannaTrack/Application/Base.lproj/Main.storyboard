@@ -1336,6 +1336,14 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKb-B8-qok" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                <rect key="frame" x="300" y="725" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="tintColor" name="indicaColor"/>
+                                <state key="normal" title="+"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -1372,6 +1380,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="CKb-B8-qok" id="Krr-9a-xCF"/>
                         <outlet property="calendarCollectionView" destination="LyD-gB-HQ3" id="qHM-mQ-iRS"/>
                         <outlet property="doseTableView" destination="wyH-xj-qr0" id="Qdt-K9-0yo"/>
                         <outlet property="month" destination="Ebn-38-Adq" id="avK-gJ-uvd"/>
