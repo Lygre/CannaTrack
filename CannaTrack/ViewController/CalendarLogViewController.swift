@@ -538,6 +538,7 @@ extension CalendarLogViewController {
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let translation = recognizer.translation(in: self.view)
+		//create secondary location variable to get location on the recognizer in the tableview, then check using this
 
 		switch recognizer.state {
 		case .changed:
