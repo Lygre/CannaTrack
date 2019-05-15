@@ -21,7 +21,7 @@ class InventoryViewController: UIViewController {
 
 	var viewPropertyAnimator: UIViewPropertyAnimator!
 
-	var animator: UIDynamicAnimator!
+	var dynamicAnimator: UIDynamicAnimator!
 	var snapBehavior: UISnapBehavior!
 	var itemBehavior: UIDynamicItemBehavior!
 
@@ -100,7 +100,7 @@ class InventoryViewController: UIViewController {
 		//previewInteraction setup
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
 		productPreviewInteraction = UIPreviewInteraction(view: productsCollectionView)
-		productPreviewInteraction?.delegate = self
+//		productPreviewInteraction?.delegate = self
 
 
 		//property animator initial setup
@@ -112,14 +112,14 @@ class InventoryViewController: UIViewController {
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 
-		setupAddButtonPanGesture()
+		setupAddButtonPanGesture(button: addProductButton)
 
 		//dynamic animator work
-		animator = UIDynamicAnimator(referenceView: self.view)
-		animator.delegate = self
+		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
+		dynamicAnimator.delegate = self
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		snapBehavior.damping = 0.8
-		animator.addBehavior(snapBehavior)
+		dynamicAnimator.addBehavior(snapBehavior)
 
 		//activity view setup and CKQuery, other
 		setupActivityView()
@@ -154,7 +154,7 @@ class InventoryViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-		snapAddButtonToInitialPosition()
+		snapAddButtonToInitialPosition(button: addProductButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
 
@@ -192,9 +192,9 @@ class InventoryViewController: UIViewController {
 		super.viewWillTransition(to: size, with: coordinator)
 
 		originalAddButtonPosition = CGPoint(x: size.width - 25 - ((size.width * 0.145) / 2.0), y: size.height - 60 - ((size.height * 0.067) / 2.0))
-		animator.removeBehavior(snapBehavior)
+		dynamicAnimator.removeBehavior(snapBehavior)
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
-		animator.addBehavior(snapBehavior)
+		dynamicAnimator.addBehavior(snapBehavior)
 		print("view is transitioning orientation")
 //		animator.
 	}
@@ -211,7 +211,7 @@ class InventoryViewController: UIViewController {
 			guard let productDetailViewController = segue.destination as? ProductDetailViewController
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
-			productDetailViewController.previewDelegate = self
+//			productDetailViewController.previewDelegate = self
 			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
@@ -456,16 +456,7 @@ extension InventoryViewController {
 		viewPropertyAnimator.finishAnimation(at: .end)
 	}
 
-	fileprivate func snapAddButtonToInitialPosition() {
-		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addProductButton.transform = .identity
-		})
-		viewPropertyAnimator.startAnimation()
 
-		animator.removeBehavior(snapBehavior)
-		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
-		animator.addBehavior(snapBehavior)
-	}
 
 	fileprivate func updateInventoryCollectionView() {
 		DispatchQueue.main.async {
@@ -486,17 +477,13 @@ extension InventoryViewController {
 		self.view.addSubview(activityView)
 	}
 
-	fileprivate func setupAddButtonPanGesture() {
-		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
-		addProductButton.addGestureRecognizer(pan)
-		addProductButton.isUserInteractionEnabled = true
-	}
+
 
 	fileprivate func setupDynamicItemBehavior() {
 		itemBehavior = UIDynamicItemBehavior(items: [addProductButton])
 		itemBehavior.resistance = 0.5
 		itemBehavior.allowsRotation = true
-		animator.addBehavior(itemBehavior)
+		dynamicAnimator.addBehavior(itemBehavior)
 	}
 
 
@@ -576,7 +563,7 @@ extension InventoryViewController {
 			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 
-			animator.removeBehavior(snapBehavior)
+			dynamicAnimator.removeBehavior(snapBehavior)
 
 			addProductButton.center = location
 
@@ -585,7 +572,7 @@ extension InventoryViewController {
 
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
 				print("no cell to segue to product from, pulling button back t position")
-				snapAddButtonToInitialPosition()
+				snapAddButtonToInitialPosition(button: addProductButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 				return
 			}
 
@@ -602,7 +589,7 @@ extension InventoryViewController {
 				self.addProductButton.transform = .identity
 			})
 			viewPropertyAnimator.startAnimation()
-			animator.addBehavior(snapBehavior)
+			dynamicAnimator.addBehavior(snapBehavior)
 
 
 		case .possible:
@@ -813,12 +800,28 @@ extension InventoryViewController: EditMassDelegate {
 
 
 extension InventoryViewController: AddButtonDelegate {
+	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addProductButton.transform = .identity
+		})
+		viewPropertyAnimator.startAnimation()
+
+		dynamicAnimator.removeBehavior(snapBehavior)
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
+		dynamicAnimator.addBehavior(snapBehavior)
+	}
+
+	func setupAddButtonPanGesture(button: AddProductFloatingButton) {
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanForAddButton(recognizer:)))
+		addProductButton.addGestureRecognizer(pan)
+		addProductButton.isUserInteractionEnabled = true
+	}
+
 	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator) {
 		viewPropertyAnimator = animator
 		viewPropertyAnimator.startAnimation()
 //		button.frame = CGRect(x: button.frame.minX, y: button.frame.maxY, width: button.frame.width * 2, height: button.frame.height * 2)
 	}
-
 
 
 }

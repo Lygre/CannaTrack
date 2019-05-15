@@ -30,16 +30,7 @@ class ProductDetailViewController: UIViewController {
 	var requiresMovement: Bool = false
 	var previewingEnded: Bool = false
 
-	override var previewActionItems: [UIPreviewActionItem] {
-		get {
-//			return [UIPreviewActionItem]()
 
-			//part 2a
-			return self.actions
-			//part 2b
-			//return [UIPreviewActionItem]()
-		}
-	}
 
 	override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
@@ -51,8 +42,6 @@ class ProductDetailViewController: UIViewController {
 		self.containerView.frame = CGRect(x: containerView.frame.origin.x, y: containerView.frame.origin.y, width: containerView.frame.size.width, height: containerHeight)
 		*/
 
-		// Part 1
-		self.preferredContentSize = CGSize(width: self.view.frame.size.height, height: 120)
 
 		// Part 2
 		self.preferredContentSize = CGSize(width: self.view.frame.size.width, height: 120 + (5 * 60))
@@ -63,27 +52,7 @@ class ProductDetailViewController: UIViewController {
 
 	}
 
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		commitAction()
-	}
 
-	var actions: [UIPreviewAction] {
-		get {
-			let dose = UIPreviewAction(title: "Dose", style: .default) { (_, viewController: UIViewController) in
-				if let vc = viewController as? ProductDetailViewController, let product = vc.activeDetailProduct {
-					vc.previewDelegate?.productDetailDid(doseWith: product)
-				}
-			}
-			let delete = UIPreviewAction(title: "Delete", style: .destructive) { (_, viewController) in
-				if let vc = viewController as? ProductDetailViewController, let product = vc.activeDetailProduct {
-					vc.previewDelegate?.productDetailDid(delete: product)
-				}
-			}
-
-			return [ dose, delete ]
-		}
-	}
 
 
 
@@ -274,7 +243,7 @@ class ProductDetailViewController: UIViewController {
 
 	}
 
-	/*
+
 	// MARK: - Supporting Peek Quick Actions
 
 	/// - Tag: PreviewActionItems
@@ -363,7 +332,7 @@ class ProductDetailViewController: UIViewController {
 		}
 	}
 
-	*/
+
 
 	@IBAction func unwindToProduct(unwindSegue: UIStoryboardSegue) {
 
