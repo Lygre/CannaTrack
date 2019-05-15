@@ -37,6 +37,8 @@ class CalendarLogViewController: UIViewController {
 
 	var originalAddButtonPosition: CGPoint!
 
+	var originalAddButtonSize: CGSize! = CGSize(width: 60, height: 60)
+
 	//------------------------------
 
 	let tableCellIdentifier: String = "DoseCell"
@@ -130,7 +132,8 @@ class CalendarLogViewController: UIViewController {
 
 		//add button setup
 		self.addButton.addButtonDelegate = self
-//		self.addButton.addTarget(, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+		self.addButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+
 		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
@@ -161,6 +164,7 @@ class CalendarLogViewController: UIViewController {
 		}
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		originalAddButtonSize = addButton.bounds.size
 		snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
@@ -423,6 +427,13 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 		return UISwipeActionsConfiguration(actions: [delete])
 	}
 
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		guard let cell = tableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else { return }
+
+		print(cell.frame)
+
+	}
+
 }
 
 
@@ -525,6 +536,15 @@ extension CalendarLogViewController: AddButtonDelegate {
 	}
 
 
+	func animateButtonForTableRegion(button: AddProductFloatingButton, cell: UITableViewCell) {
+		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			button.bounds = CGRect(origin: cell.center, size: cell.bounds.size)
+			button.layer.shadowOpacity = 0.0
+			button.layer.cornerRadius = 0.0
+		})
+		viewPropertyAnimator.startAnimation()
+	}
+
 }
 
 //objc methods
@@ -538,18 +558,34 @@ extension CalendarLogViewController {
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let translation = recognizer.translation(in: self.view)
+		let locationInTableView = recognizer.location(in: self.doseTableView)
+		let locationInCalendarView = recognizer.location(in: self.calendarCollectionView)
 
 		switch recognizer.state {
 		case .changed:
 			addButton.center = CGPoint(x: addButton.center.x + translation.x, y: addButton.center.y + translation.y)
 			recognizer.setTranslation(.zero, in: view)
 
-			guard let indexPath = self.calendarCollectionView.indexPathForItem(at: location), let dateCell = self.calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
-				print("no date cell")
+			guard let indexPath = self.doseTableView.indexPathForRow(at: locationInTableView), let doseCell = self.doseTableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else {
+
+				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+					self.addButton.bounds = CGRect(origin: location, size: self.originalAddButtonSize)
+					self.addButton.layer.shadowOpacity = 1.0
+//					self.addButton.layer.cornerRadius
+				})
+
+				viewPropertyAnimator.startAnimation()
+
+				print("no dose table cell")
 				return
 			}
+
+
 			addButton.sendActions(for: .overEligibleContainerRegion)
-			print("collision with \(dateCell.debugDescription)")
+			animateButtonForTableRegion(button: addButton, cell: doseCell)
+
+
+			print("collision with \(doseCell.debugDescription)")
 		case .began:
 			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
@@ -561,14 +597,15 @@ extension CalendarLogViewController {
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 
-
-			guard let indexPath = self.calendarCollectionView.indexPathForItem(at: location), let dateCell = self.calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
-				print("no date cell")
+			guard let indexPath = self.doseTableView.indexPathForRow(at: locationInTableView), let doseCell = self.doseTableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else {
+				print("no dose table cell")
 				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 				return
 			}
+
+
 //			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
-			print("pan ended on a date cell")
+			print("pan ended on a dose table cell", doseCell.debugDescription)
 
 
 			//whole lot has to be implemented here
@@ -589,5 +626,30 @@ extension CalendarLogViewController {
 			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
 		}
 	}
+
+
+	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
+		//		let selectionFeedbackGenerator: UISelectionFeedbackGenerator = .init()
+		//		selectionFeedbackGenerator.selectionChanged()
+
+		let generator = UIImpactFeedbackGenerator(style: .medium)
+
+
+		let targets = sender.allControlEvents
+		switch targets {
+		case .backToAnchorPoint:
+			print("back to anchor point haptic action triggered")
+			generator.impactOccurred()
+		case .overEligibleContainerRegion:
+			print("over eligible container region haptic action")
+			generator.impactOccurred()
+		default:
+			generator.impactOccurred()
+			print("do nothing")
+		}
+
+
+	}
+
 
 }

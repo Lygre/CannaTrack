@@ -1278,19 +1278,19 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-xj-qr0">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-xj-qr0">
                                 <rect key="frame" x="0.0" y="497.5" width="414" height="315.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DoseCell" id="env-Ub-SUz" customClass="DoseCalendarTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DoseCell" rowHeight="50" id="env-Ub-SUz" customClass="DoseCalendarTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="env-Ub-SUz" id="ZIT-OV-oAK">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-2Y-dPq">
-                                                    <rect key="frame" x="20" y="11.5" width="374" height="20.5"/>
+                                                    <rect key="frame" x="20" y="14.5" width="374" height="20.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzm-iP-QXI">
                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="20.5"/>
@@ -1336,10 +1336,14 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKb-B8-qok" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
-                                <rect key="frame" x="300" y="725" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKb-B8-qok" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                <rect key="frame" x="329" y="728" width="60" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="0EW-sB-PDB"/>
+                                    <constraint firstAttribute="height" constant="60" id="Eyo-Lr-3Nj"/>
+                                    <constraint firstAttribute="width" secondItem="CKb-B8-qok" secondAttribute="height" multiplier="1:1" id="NZa-G3-TOZ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="tintColor" name="indicaColor"/>
                                 <state key="normal" title="+"/>
@@ -1356,10 +1360,13 @@
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" id="PIM-KR-vTJ"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="trailing" secondItem="RQH-vf-3YV" secondAttribute="trailing" id="Q2h-qP-ZmO"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" id="QUg-Y9-JXB"/>
+                            <constraint firstItem="CKb-B8-qok" firstAttribute="trailing" secondItem="RQH-vf-3YV" secondAttribute="trailing" constant="-25" id="VA1-kE-U7r"/>
+                            <constraint firstItem="CKb-B8-qok" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" constant="-25" id="aYZ-Yj-I2t"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="height" secondItem="VXG-G1-bQi" secondAttribute="height" multiplier="0.4" id="bkF-rR-If3"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="diD-pA-BZJ"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.66" id="kjZ-L8-foa"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="n40-26-xhW"/>
+                            <constraint firstItem="CKb-B8-qok" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.145" priority="750" id="qwt-Mr-kS7"/>
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="trailing" secondItem="LyD-gB-HQ3" secondAttribute="trailing" id="us5-I1-ULX"/>
                             <constraint firstItem="pY2-k0-YUO" firstAttribute="centerX" secondItem="VXG-G1-bQi" secondAttribute="centerX" id="x0M-ae-KtQ"/>
                         </constraints>

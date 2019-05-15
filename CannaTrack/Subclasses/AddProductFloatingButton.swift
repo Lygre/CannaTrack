@@ -15,6 +15,7 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
+
 	override var transform: CGAffineTransform {
 		get { return super.transform }
 		set(newTransform) {
@@ -67,8 +68,8 @@ class AddProductFloatingButton: UIButton {
 		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
+		self.layer.masksToBounds = true
 		self.translatesAutoresizingMaskIntoConstraints = false
-//		self.layer.masksToBounds = true
 		setupShadowMotionEffectForAddButton()
 
 	}
@@ -128,23 +129,27 @@ extension AddProductFloatingButton {
 	}
 
 	fileprivate func setupShadowMotionEffectForAddButton() {
-		let horizontalEffect = UIInterpolatingMotionEffect(
-			keyPath: "layer.shadowOffset.width",
-			type: .tiltAlongHorizontalAxis)
-		horizontalEffect.minimumRelativeValue = 3
-		horizontalEffect.maximumRelativeValue = -3
+		if self.motionEffects.count > 0 {
+			self.removeMotionEffect(self.motionEffects[0])
+		} else {
+			let horizontalEffect = UIInterpolatingMotionEffect(
+				keyPath: "layer.shadowOffset.width",
+				type: .tiltAlongHorizontalAxis)
+			horizontalEffect.minimumRelativeValue = 3
+			horizontalEffect.maximumRelativeValue = -3
 
-		let verticalEffect = UIInterpolatingMotionEffect(
-			keyPath: "layer.shadowOffset.height",
-			type: .tiltAlongVerticalAxis)
-		verticalEffect.minimumRelativeValue = 3
-		verticalEffect.maximumRelativeValue = -3
+			let verticalEffect = UIInterpolatingMotionEffect(
+				keyPath: "layer.shadowOffset.height",
+				type: .tiltAlongVerticalAxis)
+			verticalEffect.minimumRelativeValue = 3
+			verticalEffect.maximumRelativeValue = -3
 
-		let effectGroup = UIMotionEffectGroup()
-		effectGroup.motionEffects = [ horizontalEffect,
-									  verticalEffect ]
+			let effectGroup = UIMotionEffectGroup()
+			effectGroup.motionEffects = [ horizontalEffect,
+										  verticalEffect ]
 
-		self.addMotionEffect(effectGroup)
+			self.addMotionEffect(effectGroup)
+		}
 	}
 
 
