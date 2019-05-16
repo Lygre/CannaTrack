@@ -499,6 +499,8 @@ extension CalendarLogViewController {
 					self.doseCKRecords = recordsRetrieved ?? []
 					print("dose records loaded: # \(recordsRetrieved?.count ?? 0)")
 					self.doseTableView.reloadData()
+					self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+					self.calendarCollectionView.reloadData()
 					self.activityView.stopAnimating()
 				}
 
