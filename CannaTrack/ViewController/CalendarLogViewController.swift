@@ -545,11 +545,11 @@ extension CalendarLogViewController: AddButtonDelegate {
 	}
 
 
-	func animateButtonForTableRegion(button: AddProductFloatingButton, size: CGSize) {
+	func animateButtonForRegion(button: AddProductFloatingButton, size: CGSize) {
 		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			button.bounds = CGRect(origin: button.center, size: size)
 			button.layer.shadowOpacity = 0.0
-			button.layer.cornerRadius = 0.0
+//			button.layer.cornerRadius = 0.0
 		})
 		viewPropertyAnimator.startAnimation()
 	}
@@ -575,24 +575,20 @@ extension CalendarLogViewController {
 			addButton.center = CGPoint(x: addButton.center.x + translation.x, y: addButton.center.y + translation.y)
 			recognizer.setTranslation(.zero, in: view)
 
-//			guard let indexPath = self.doseTableView.indexPathForRow(at: locationInTableView), let doseCell = self.doseTableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else {
-//
-//				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-//					self.addButton.bounds = CGRect(origin: location, size: self.originalAddButtonSize)
-//					self.addButton.layer.shadowOpacity = 1.0
-//				})
-//
-//				viewPropertyAnimator.startAnimation()
-//
-//				print("no dose table cell")
-//				return
-//			}
 
-			let xAndYForTouch: (CGFloat, CGFloat) = (locationInTableView.x, locationInTableView.y)
-			let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
-			if (xAndYForTouch.0 > 0) && (xAndYForTouch.1 > 0) {
+
+			if (locationInTableView.x > 0) && (locationInTableView.y > 0) {
+				let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
+
 				addButton.sendActions(for: .overEligibleContainerRegion)
-				animateButtonForTableRegion(button: addButton, size: sizeForAnimation)
+				animateButtonForRegion(button: addButton, size: sizeForAnimation)
+			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y <= calendarCollectionView.bounds.size.height) {
+				guard let indexPath = calendarCollectionView.indexPathForItem(at: locationInCalendarView), let cell = calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
+					print("no date custom cell")
+					return
+				}
+				addButton.sendActions(for: .overEligibleContainerRegion)
+				animateButtonForRegion(button: addButton, size: cell.bounds.size)
 			} else {
 				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 					self.addButton.bounds = CGRect(origin: location, size: self.originalAddButtonSize)
@@ -602,15 +598,10 @@ extension CalendarLogViewController {
 
 				viewPropertyAnimator.startAnimation()
 
-				print("not in tableview")
+				print("not in tableview, or collectionview")
 			}
 
 
-
-
-
-
-//			print("collision with \(doseCell.debugDescription)")
 		case .began:
 			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
@@ -621,12 +612,7 @@ extension CalendarLogViewController {
 
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
-//
-//			guard let indexPath = self.doseTableView.indexPathForRow(at: locationInTableView), let doseCell = self.doseTableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else {
-//				print("no dose table cell")
-//				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
-//				return
-//			}
+
 
 			let xAndYForTouch: (CGFloat, CGFloat) = (locationInTableView.x, locationInTableView.y)
 			let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
@@ -634,13 +620,17 @@ extension CalendarLogViewController {
 				addButton.sendActions(for: .overEligibleContainerRegion)
 				print("pan ended on tableview")
 				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
-//				animateButtonForTableRegion(button: addButton, size: sizeForAnimation)
+				//				animateButtonForTableRegion(button: addButton, size: sizeForAnimation)
+			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y < calendarCollectionView.bounds.height) {
+				addButton.sendActions(for: .overEligibleContainerRegion)
+				print("pan ended on calendar collection")
+				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 			} else {
 				print("no dose tableview")
 				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 			}
 
-//			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
+			//			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
 			//whole lot has to be implemented here
 			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
 
