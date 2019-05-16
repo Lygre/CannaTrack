@@ -268,6 +268,8 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 
 		let myCustomCell = cell as! CustomCell
 		sharedFunctionToConfigureCell(cell: myCustomCell, cellState: cellState, date: date)
+		handleCellSelected(cell: myCustomCell, cellState: cellState)
+		handleCellTextColor(cell: myCustomCell, cellState: cellState)
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
@@ -632,7 +634,7 @@ extension CalendarLogViewController {
 		case .began:
 			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
-
+			print("add button pan began")
 			dynamicAnimator.removeBehavior(snapBehavior)
 
 			addButton.center = location
@@ -656,7 +658,7 @@ extension CalendarLogViewController {
 				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
 				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 			} else {
-				print("no dose tableview")
+				print("no dose tableview; add button pan ended")
 				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 			}
 

@@ -89,6 +89,7 @@ class AddProductFloatingButton: UIButton {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
+		super.draw(rect)
 		self.createCircle()
 
 		UIColor.purple.setFill()
