@@ -587,6 +587,14 @@ extension CalendarLogViewController {
 					print("no date custom cell")
 					return
 				}
+				print(indexPath, cell)
+
+				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else {
+					print("no cell state for point \(locationInCalendarView)")
+					return
+				}
+				print(cellState)
+				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
 				addButton.sendActions(for: .overEligibleContainerRegion)
 				animateButtonForRegion(button: addButton, size: cell.bounds.size)
 			} else {

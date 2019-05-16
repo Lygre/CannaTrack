@@ -22,6 +22,8 @@ class CustomCell: JTAppleCell {
 
 	}
 
+	
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		var frame = self.bounds
