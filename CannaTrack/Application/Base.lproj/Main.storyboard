@@ -1373,18 +1373,11 @@
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
                     </view>
                     <navigationItem key="navigationItem" id="tNb-gC-NIf">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="compose" id="sDr-BV-U6J">
-                                <connections>
-                                    <segue destination="Xss-jA-LBU" kind="presentation" identifier="LogDoseFromCalendarSegue" modalPresentationStyle="pageSheet" id="cGB-W6-WAb"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="xqf-e1-LdD">
-                                <connections>
-                                    <action selector="refreshDoseLogDataClicked:" destination="2LI-yC-dew" id="xmk-Qj-zRS"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="sDr-BV-U6J">
+                            <connections>
+                                <segue destination="Xss-jA-LBU" kind="presentation" identifier="LogDoseFromCalendarSegue" modalPresentationStyle="pageSheet" id="cGB-W6-WAb"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="CKb-B8-qok" id="Krr-9a-xCF"/>

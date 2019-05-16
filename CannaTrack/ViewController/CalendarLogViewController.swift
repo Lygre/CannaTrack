@@ -25,6 +25,7 @@ class CalendarLogViewController: UIViewController {
 	@IBOutlet weak var year: UILabel!
 	@IBOutlet weak var month: UILabel!
 
+	var dosePreviewInteraction: UIPreviewInteraction?
 
 	//add button stuff
 	@IBOutlet var addButton: AddProductFloatingButton!
@@ -146,6 +147,11 @@ class CalendarLogViewController: UIViewController {
 		snapBehavior.damping = 0.8
 		dynamicAnimator.addBehavior(snapBehavior)
 
+
+		//preview interaction work
+		dosePreviewInteraction = UIPreviewInteraction(view: addButton)
+		dosePreviewInteraction?.delegate = self
+		selectedDate = Date()
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -159,9 +165,9 @@ class CalendarLogViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		selectedDate = Date()
-		calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
-			self.calendarCollectionView.selectDates([Date()])
+		guard let selectedDate = selectedDate else { return }
+		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
+			self.calendarCollectionView.selectDates([selectedDate])
 		}
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
@@ -176,6 +182,11 @@ class CalendarLogViewController: UIViewController {
 
 		snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 
+	}
+
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		selectedDate = calendarCollectionView.selectedDates[0]
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -260,6 +271,7 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
+
 		selectedDate = date
 		handleCellSelected(cell: cell, cellState: cellState)
 		handleCellTextColor(cell: cell, cellState: cellState)
@@ -281,6 +293,10 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	}
 
 	func calendar(_ calendar: JTAppleCalendarView, shouldSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) -> Bool {
+		if cellState.selectionType != nil {
+			calendar.deselectAllDates()
+			return true
+		}
 		if cellState.dateBelongsTo != .thisMonth {
 			return false
 		} else {
@@ -320,8 +336,10 @@ extension CalendarLogViewController {
 			return dateFromDose == currentDate
 		}
 		if !dosesOnDate.isEmpty {
+			validCell.dosesPresentOnDate = true
 			validCell.dosesPresentIndicatorView.isHidden = false
 		} else {
+			validCell.dosesPresentOnDate = false
 			validCell.dosesPresentIndicatorView.isHidden = true
 		}
 
@@ -587,15 +605,16 @@ extension CalendarLogViewController {
 					print("no date custom cell")
 					return
 				}
-				print(indexPath, cell)
 
 				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else {
 					print("no cell state for point \(locationInCalendarView)")
 					return
 				}
-				print(cellState)
+				calendarCollectionView.deselectAllDates()
 				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
-				addButton.sendActions(for: .overEligibleContainerRegion)
+				if cell.dosesPresentOnDate {
+					addButton.sendActions(for: .overEligibleContainerRegion)
+				}
 				animateButtonForRegion(button: addButton, size: cell.bounds.size)
 			} else {
 				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
@@ -630,9 +649,12 @@ extension CalendarLogViewController {
 				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 				//				animateButtonForTableRegion(button: addButton, size: sizeForAnimation)
 			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y < calendarCollectionView.bounds.height) {
-				addButton.sendActions(for: .overEligibleContainerRegion)
+//				addButton.sendActions(for: .overEligibleContainerRegion)
 				print("pan ended on calendar collection")
-				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
+//				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
+				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else { return }
+				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
+				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
 			} else {
 				print("no dose tableview")
 				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
@@ -650,6 +672,7 @@ extension CalendarLogViewController {
 			viewPropertyAnimator.startAnimation()
 			dynamicAnimator.addBehavior(snapBehavior)
 
+			print("pan gesture cancelled or failed")
 
 		case .possible:
 			print("possible pan gesture state case. No implementation")
@@ -681,6 +704,26 @@ extension CalendarLogViewController {
 
 
 	}
+
+
+}
+
+
+extension CalendarLogViewController: UIPreviewInteractionDelegate {
+	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
+		//code to update preview
+
+		if ended {
+			//complete preview
+
+		}
+	}
+
+	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
+
+		//uiviewanimate
+	}
+
 
 
 }
