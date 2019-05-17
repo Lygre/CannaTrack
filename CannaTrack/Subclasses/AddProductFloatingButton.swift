@@ -10,6 +10,9 @@ import UIKit
 
 class AddProductFloatingButton: UIButton {
 
+
+	var actionOptionSubviews: [UIView]!
+
 	let indicaColor = UIColor(named: "indicaColor")
 	unowned var addButtonDelegate: AddButtonDelegate?
 
@@ -66,6 +69,8 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
+		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: frame)]
+
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
 		}
@@ -94,6 +99,11 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
+		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: frame)]
+		for view in actionOptionSubviews {
+			view.backgroundColor = .yellow
+		}
+
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
 		}
@@ -102,6 +112,7 @@ class AddProductFloatingButton: UIButton {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		self.backgroundColor = .purple
 		self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
 		self.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
 		self.layer.shadowOpacity = 1.0
