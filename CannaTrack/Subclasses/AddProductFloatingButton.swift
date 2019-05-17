@@ -200,19 +200,20 @@ extension AddProductFloatingButton {
 extension AddProductFloatingButton {
 
 	func updateAnimationProgress(with progress: CGFloat) {
-		if !self.propertyAnimator.isRunning {
-			self.propertyAnimator.fractionComplete = progress
-			self.propertyAnimator.startAnimation()
-		} else {
-			self.propertyAnimator.fractionComplete = progress
-		}
+
+		self.propertyAnimator.fractionComplete = progress
+
 	}
 
 	func completePreview() {
+		self.updateAnimationProgress(with: 0)
 		if self.propertyAnimator.isRunning {
 			self.propertyAnimator.stopAnimation(false)
 			self.propertyAnimator.finishAnimation(at: .end)
-		} else { print("tried to complete preview, but animator was still running?")}
+		} else {
+			self.propertyAnimator.stopAnimation(false)
+			self.propertyAnimator.finishAnimation(at: .end)
+			print("tried to complete preview, but animator was still running?")}
 	}
 
 	func animateButtonToRegularSize() {

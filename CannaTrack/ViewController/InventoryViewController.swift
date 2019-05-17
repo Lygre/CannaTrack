@@ -923,10 +923,7 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 	}
 
 	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
-		UIView.animate(withDuration: 0.2) {
-			self.addProductButton.updateAnimationProgress(with: 0)
-			self.addProductButton.completePreview()
-		}
+		addProductButton.completePreview()
 	}
 
 
