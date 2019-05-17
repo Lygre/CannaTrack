@@ -550,11 +550,12 @@ extension CalendarLogViewController: AddButtonDelegate {
 	}
 
 	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
+	/*
 		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addButton.transform = .identity
 		})
 		viewPropertyAnimator.startAnimation()
-
+	*/
 		dynamicAnimator.removeBehavior(snapBehavior)
 		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
 		dynamicAnimator.addBehavior(snapBehavior)
