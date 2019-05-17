@@ -15,6 +15,15 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
+	var propertyAnimator: UIViewPropertyAnimator = {
+		let propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+
+		})
+		propertyAnimator.isUserInteractionEnabled = true
+		propertyAnimator.isInterruptible = true
+		propertyAnimator.scrubsLinearly = true
+		return propertyAnimator
+	}()
 
 	override var transform: CGAffineTransform {
 		get { return super.transform }
@@ -55,10 +64,37 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
+		propertyAnimator.addAnimations {
+			self.transform = .init(scaleX: 2.0, y: 2.0)
+		}
+
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+
+		self.backgroundColor = .clear
+
+		self.setTitle("+", for: .normal)
+		self.setTitle("+", for: .disabled)
+		self.setTitle("+", for: .focused)
+		self.setTitle("+", for: .application)
+		self.setTitle("+", for: .highlighted)
+		self.setTitle("+", for: .reserved)
+		self.setTitle("+", for: .selected)
+
+		self.setTitleColor(indicaColor, for: .normal)
+		self.setTitleColor(indicaColor, for: .disabled)
+		self.setTitleColor(indicaColor, for: .focused)
+		self.setTitleColor(indicaColor, for: .application)
+		self.setTitleColor(indicaColor, for: .highlighted)
+		self.setTitleColor(indicaColor, for: .reserved)
+		self.setTitleColor(indicaColor, for: .selected)
+		self.clipsToBounds = true
+
+		propertyAnimator.addAnimations {
+			self.transform = .init(scaleX: 2.0, y: 2.0)
+		}
 
 	}
 
@@ -80,7 +116,7 @@ class AddProductFloatingButton: UIButton {
 
 			self.transform = .init(scaleX: 2.0, y: 2.0)
 		}
-		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
+//		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
 
 
@@ -156,4 +192,12 @@ extension AddProductFloatingButton {
 
 }
 
+//property animator extensions
 
+extension AddProductFloatingButton {
+
+	func updateAnimationProgress(with progress: CGFloat) {
+		self.propertyAnimator.fractionComplete = progress
+	}
+
+}

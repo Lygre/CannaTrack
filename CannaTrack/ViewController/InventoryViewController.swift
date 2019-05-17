@@ -103,8 +103,8 @@ class InventoryViewController: UIViewController {
 
 		//previewInteraction setup
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
-		productPreviewInteraction = UIPreviewInteraction(view: productsCollectionView)
-//		productPreviewInteraction?.delegate = self
+		productPreviewInteraction = UIPreviewInteraction(view: addProductButton)
+		productPreviewInteraction?.delegate = self
 
 
 		//property animator initial setup
@@ -893,6 +893,31 @@ extension InventoryViewController: UIViewControllerPreviewingDelegate {
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 
+
+
+
+
+}
+
+extension InventoryViewController: UIPreviewInteractionDelegate {
+	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool) {
+
+		addProductButton.updateAnimationProgress(with: transitionProgress)
+
+		if ended && addProductButton.propertyAnimator.isRunning {
+			addProductButton.propertyAnimator.stopAnimation(false)
+		}
+
+	}
+
+	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
+		if addProductButton.propertyAnimator.isRunning {
+			viewPropertyAnimator.stopAnimation(false)
+			viewPropertyAnimator.finishAnimation(at: .start)
+			addProductButton.propertyAnimator.stopAnimation(false)
+			addProductButton.propertyAnimator.finishAnimation(at: .start)
+		}
+	}
 
 
 
