@@ -28,6 +28,7 @@ class InventoryViewController: UIViewController {
 	var cloudKitObserver: NSObjectProtocol?
 
 	var originalAddButtonPosition: CGPoint!
+	var originalAddButtonSize: CGSize! = CGSize(width: 60, height: 60)
 
 	var dateFormatter = DateFormatter()
 	var activityView = UIActivityIndicatorView()
@@ -109,12 +110,14 @@ class InventoryViewController: UIViewController {
 
 		//property animator initial setup
 		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
+//			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
 
 
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+
+		originalAddButtonSize = addProductButton.bounds.size
 
 		setupAddButtonPanGesture(button: addProductButton)
 
@@ -158,7 +161,7 @@ class InventoryViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-		snapAddButtonToInitialPosition(button: addProductButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
 
@@ -456,8 +459,10 @@ extension InventoryViewController {
 
 
 	fileprivate func stopAndFinishCurrentAnimations() {
-		viewPropertyAnimator.stopAnimation(false)
-		viewPropertyAnimator.finishAnimation(at: .end)
+		if addProductButton.propertyAnimator.isRunning {
+			addProductButton.propertyAnimator.stopAnimation(false)
+		}
+//		addProductButton.propertyAnimator.finishAnimation(at: .end)
 	}
 
 
@@ -576,7 +581,7 @@ extension InventoryViewController {
 
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
 				print("no cell to segue to product from, pulling button back t position")
-				snapAddButtonToInitialPosition(button: addProductButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+				snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 				return
 			}
 
@@ -805,11 +810,17 @@ extension InventoryViewController: EditMassDelegate {
 
 extension InventoryViewController: AddButtonDelegate {
 	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
-		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addProductButton.transform = .identity
-		})
-		viewPropertyAnimator.startAnimation()
+//		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+//			self.addProductButton.transform = .identity
+//		})
+//		viewPropertyAnimator.startAnimation()
+		if animator.isRunning {
+			animator.stopAnimation(false)
+			animator.finishAnimation(at: .end)
+		}
 
+
+//		animator.finishAnimation(at: .start)
 		dynamicAnimator.removeBehavior(snapBehavior)
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		dynamicAnimator.addBehavior(snapBehavior)
@@ -905,17 +916,17 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 		addProductButton.updateAnimationProgress(with: transitionProgress)
 
 		if ended && addProductButton.propertyAnimator.isRunning {
-			addProductButton.propertyAnimator.stopAnimation(false)
+			addProductButton.propertyAnimator.stopAnimation(true)
 		}
 
 	}
 
 	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
 		if addProductButton.propertyAnimator.isRunning {
-			viewPropertyAnimator.stopAnimation(false)
-			viewPropertyAnimator.finishAnimation(at: .start)
+//			viewPropertyAnimator.stopAnimation(false)
+//			viewPropertyAnimator.finishAnimation(at: .start)
 			addProductButton.propertyAnimator.stopAnimation(false)
-			addProductButton.propertyAnimator.finishAnimation(at: .start)
+			addProductButton.propertyAnimator.finishAnimation(at: .end)
 		}
 	}
 

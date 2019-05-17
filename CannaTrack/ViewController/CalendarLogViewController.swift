@@ -184,9 +184,9 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		selectedDate = calendarCollectionView.selectedDates[0]
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.selectedDate = calendarCollectionView.selectedDates[0]
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
