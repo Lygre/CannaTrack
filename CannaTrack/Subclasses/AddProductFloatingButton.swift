@@ -16,7 +16,10 @@ class AddProductFloatingButton: UIButton {
 	let indicaColor = UIColor(named: "indicaColor")
 	unowned var addButtonDelegate: AddButtonDelegate?
 
+
 	var path: UIBezierPath!
+
+	var dynamicAnimator: UIDynamicAnimator!
 
 	var propertyAnimator: UIViewPropertyAnimator = {
 		let propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
@@ -28,6 +31,8 @@ class AddProductFloatingButton: UIButton {
 		return propertyAnimator
 	}()
 
+	var snapBehavior1: UISnapBehavior!
+	var snapBehavior2: UISnapBehavior!
 
 	override var transform: CGAffineTransform {
 		get { return super.transform }
@@ -107,6 +112,20 @@ class AddProductFloatingButton: UIButton {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
 		}
+
+		guard let superView = superview else {
+			print("no superview")
+			return
+		}
+		dynamicAnimator = UIDynamicAnimator(referenceView: superView)
+
+		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
+
+		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
+
+		dynamicAnimator.addBehavior(snapBehavior1)
+		dynamicAnimator.addBehavior(snapBehavior2)
+	
 
 	}
 
