@@ -180,7 +180,7 @@ class CalendarLogViewController: UIViewController {
 
 		viewPropertyAnimator.startAnimation()
 
-		snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
 
@@ -567,16 +567,15 @@ extension CalendarLogViewController: AddButtonDelegate {
 		addButton.isUserInteractionEnabled = true
 	}
 
-
+	/*
 	func animateButtonForRegion(button: AddProductFloatingButton, size: CGSize) {
 		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			button.bounds = CGRect(origin: button.center, size: size)
 			button.layer.shadowOpacity = 0.0
-//			button.layer.cornerRadius = 0.0
 		})
 		viewPropertyAnimator.startAnimation()
 	}
-
+	*/
 }
 
 //objc methods
@@ -604,7 +603,7 @@ extension CalendarLogViewController {
 				let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
 
 				addButton.sendActions(for: .overEligibleContainerRegion)
-				animateButtonForRegion(button: addButton, size: sizeForAnimation)
+				addButton.animateButtonForRegion(for: sizeForAnimation)
 			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y <= calendarCollectionView.bounds.size.height) {
 				guard let indexPath = calendarCollectionView.indexPathForItem(at: locationInCalendarView), let cell = calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
 					print("no date custom cell")
@@ -620,22 +619,18 @@ extension CalendarLogViewController {
 				if cell.dosesPresentOnDate {
 					addButton.sendActions(for: .overEligibleContainerRegion)
 				}
-				animateButtonForRegion(button: addButton, size: cell.bounds.size)
+				addButton.animateButtonForRegion(for: cell.bounds.size)
 			} else {
-				viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-					self.addButton.bounds = CGRect(origin: location, size: self.originalAddButtonSize)
-					self.addButton.layer.shadowOpacity = 1.0
+				addButton.propertyAnimator.isReversed = true
 
-				})
-
-				viewPropertyAnimator.startAnimation()
+//				addButton.propertyAnimator.startAnimation()
 
 				print("not in tableview, or collectionview")
 			}
 
 
 		case .began:
-			stopAndFinishCurrentAnimations()
+//			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 			print("add button pan began")
 			dynamicAnimator.removeBehavior(snapBehavior)
