@@ -599,34 +599,36 @@ extension CalendarLogViewController {
 
 
 
-			if (locationInTableView.x > 0) && (locationInTableView.y > 0) {
-				let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
+			if !addButton.propertyAnimator.isRunning {
+				if (locationInTableView.x > 0) && (locationInTableView.y > 0) {
+					let sizeForAnimation: CGSize = CGSize(width: doseTableView.bounds.width, height: 50)
 
-				addButton.sendActions(for: .overEligibleContainerRegion)
-				addButton.animateButtonForRegion(for: sizeForAnimation)
-			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y <= calendarCollectionView.bounds.size.height) {
-				guard let indexPath = calendarCollectionView.indexPathForItem(at: locationInCalendarView), let cell = calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
-					print("no date custom cell")
-					return
-				}
-
-				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else {
-					print("no cell state for point \(locationInCalendarView)")
-					return
-				}
-				calendarCollectionView.deselectAllDates()
-				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
-				if cell.dosesPresentOnDate {
 					addButton.sendActions(for: .overEligibleContainerRegion)
+					addButton.animateButtonForRegion(for: sizeForAnimation)
+				} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y <= calendarCollectionView.bounds.size.height) {
+					guard let indexPath = calendarCollectionView.indexPathForItem(at: locationInCalendarView), let cell = calendarCollectionView.cellForItem(at: indexPath) as? CustomCell else {
+						print("no date custom cell")
+						return
+					}
+
+					guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else {
+						print("no cell state for point \(locationInCalendarView)")
+						return
+					}
+					calendarCollectionView.deselectAllDates()
+					calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
+					if cell.dosesPresentOnDate {
+						addButton.sendActions(for: .overEligibleContainerRegion)
+					}
+					addButton.animateButtonForRegion(for: cell.bounds.size)
+				} else {
+					addButton.propertyAnimator.isReversed = true
+
+					//				addButton.propertyAnimator.startAnimation()
+
+					print("not in tableview, or collectionview")
 				}
-				addButton.animateButtonForRegion(for: cell.bounds.size)
-			} else {
-				addButton.propertyAnimator.isReversed = true
-
-//				addButton.propertyAnimator.startAnimation()
-
-				print("not in tableview, or collectionview")
-			}
+			} else { print("button animator is still running") }
 
 
 		case .began:
@@ -654,10 +656,10 @@ extension CalendarLogViewController {
 //				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else { return }
 				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
-				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+				snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 			} else {
 				print("no dose tableview; add button pan ended")
-				snapAddButtonToInitialPosition(button: addButton, animator: viewPropertyAnimator, dynamicAnimator: dynamicAnimator)
+				snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 			}
 
 			//			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
