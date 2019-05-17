@@ -2,6 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.Lygre.CannaTrack.dose</string>
+			<key>UIApplicationShortcutIconType</key>
+			<string>UIApplicationShortcutIconTypeCompose</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Dose</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Add a dose for the current date and time</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Search for a Strain</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Search</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>SearchAction</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeSearch</string>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -21,15 +44,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>"Need media library"</string>
+	<string>&quot;Need media library&quot;</string>
 	<key>NSCameraUsageDescription</key>
-	<string>"Need camera to scan and detect 3D product objects"</string>
+	<string>&quot;Need camera to scan and detect 3D product objects&quot;</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>"Need location always?"</string>
+	<string>&quot;Need location always?&quot;</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>"Need Location when in use"</string>
+	<string>&quot;Need Location when in use&quot;</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>"Need to use photo library"</string>
+	<string>&quot;Need to use photo library&quot;</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

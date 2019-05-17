@@ -37,6 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
 		// Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+
+		//dynamic quick items setup
+		/*
+		application.shortcutItems = {
+			let shortcutItems: [UIApplicationShortcutItem] = [
+				UIApplicationShortcutItem(type: "com.Lygre.CannaTrack.dose", localizedTitle: "Dose", localizedSubtitle: "Can dose now", icon: UIApplicationShortcutIcon(type: .compose), userInfo: nil),
+				UIApplicationShortcutItem(type: "SearchAction", localizedTitle: "Search", localizedSubtitle: "Can search", icon: UIApplicationShortcutIcon(type: .search), userInfo: nil)
+			]
+			return shortcutItems
+		}()
+		*/
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
