@@ -21,10 +21,11 @@ class AddProductFloatingButton: UIButton {
 		propertyAnimator.isUserInteractionEnabled = true
 		propertyAnimator.isInterruptible = true
 		propertyAnimator.scrubsLinearly = true
+		propertyAnimator.pausesOnCompletion = true
 		return propertyAnimator
 	}()
 
-	/*
+
 	override var transform: CGAffineTransform {
 		get { return super.transform }
 		set(newTransform) {
@@ -32,7 +33,7 @@ class AddProductFloatingButton: UIButton {
 
 		}
 	}
-	*/
+
 
 	override var bounds: CGRect {
 		get { return super.bounds }
@@ -112,13 +113,14 @@ class AddProductFloatingButton: UIButton {
 	}
 
 
-//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//		let animator = UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
-//
-//			self.transform = .init(scaleX: 2.0, y: 2.0)
-//		}
-////		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
-//	}
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
+			self.transform = .init(scaleX: 2.5, y: 2.5)
+		}
+		propertyAnimator.startAnimation()
+		propertyAnimator.pauseAnimation()
+//		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
+	}
 
 
 
@@ -198,11 +200,19 @@ extension AddProductFloatingButton {
 extension AddProductFloatingButton {
 
 	func updateAnimationProgress(with progress: CGFloat) {
-		self.propertyAnimator.fractionComplete = progress
+		if !self.propertyAnimator.isRunning {
+			self.propertyAnimator.fractionComplete = progress
+			self.propertyAnimator.startAnimation()
+		} else {
+			self.propertyAnimator.fractionComplete = progress
+		}
 	}
 
 	func completePreview() {
-		
+		if self.propertyAnimator.isRunning {
+			self.propertyAnimator.stopAnimation(false)
+			self.propertyAnimator.finishAnimation(at: .end)
+		} else { print("tried to complete preview, but animator was still running?")}
 	}
 
 	func animateButtonToRegularSize() {

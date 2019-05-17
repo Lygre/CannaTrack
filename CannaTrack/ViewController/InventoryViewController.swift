@@ -461,8 +461,8 @@ extension InventoryViewController {
 	fileprivate func stopAndFinishCurrentAnimations() {
 		if addProductButton.propertyAnimator.isRunning {
 			addProductButton.propertyAnimator.stopAnimation(false)
+			addProductButton.propertyAnimator.finishAnimation(at: .start)
 		}
-//		addProductButton.propertyAnimator.finishAnimation(at: .end)
 	}
 
 
@@ -569,7 +569,7 @@ extension InventoryViewController {
 			addProductButton.sendActions(for: .overEligibleContainerRegion)
 			print("collision with \(cell.debugDescription)")
 		case .began:
-			stopAndFinishCurrentAnimations()
+//			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 
 			dynamicAnimator.removeBehavior(snapBehavior)
@@ -594,10 +594,10 @@ extension InventoryViewController {
 
 		case .cancelled, .failed:
 			recognizer.setTranslation(.zero, in: view)
-			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addProductButton.transform = .identity
-			})
-			viewPropertyAnimator.startAnimation()
+//			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+//				self.addProductButton.transform = .identity
+//			})
+//			viewPropertyAnimator.startAnimation()
 			dynamicAnimator.addBehavior(snapBehavior)
 
 
@@ -814,11 +814,12 @@ extension InventoryViewController: AddButtonDelegate {
 //			self.addProductButton.transform = .identity
 //		})
 //		viewPropertyAnimator.startAnimation()
+		/*
 		if animator.isRunning {
 			animator.stopAnimation(false)
 			animator.finishAnimation(at: .end)
 		}
-
+		*/
 
 //		animator.finishAnimation(at: .start)
 		dynamicAnimator.removeBehavior(snapBehavior)
@@ -915,18 +916,16 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 
 		addProductButton.updateAnimationProgress(with: transitionProgress)
 
-		if ended && addProductButton.propertyAnimator.isRunning {
-			addProductButton.propertyAnimator.stopAnimation(true)
+		if ended {
+			addProductButton.completePreview()
 		}
 
 	}
 
 	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {
-		if addProductButton.propertyAnimator.isRunning {
-//			viewPropertyAnimator.stopAnimation(false)
-//			viewPropertyAnimator.finishAnimation(at: .start)
-			addProductButton.propertyAnimator.stopAnimation(false)
-			addProductButton.propertyAnimator.finishAnimation(at: .end)
+		UIView.animate(withDuration: 0.2) {
+			self.addProductButton.updateAnimationProgress(with: 0)
+			self.addProductButton.completePreview()
 		}
 	}
 
