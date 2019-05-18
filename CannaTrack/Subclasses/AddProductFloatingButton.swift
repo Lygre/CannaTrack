@@ -22,13 +22,21 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
-	var propertyAnimator: UIViewPropertyAnimator = {
-		let propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-		})
-		propertyAnimator.isUserInteractionEnabled = true
-		propertyAnimator.isInterruptible = true
+	lazy var propertyAnimator: UIViewPropertyAnimator = {
+		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
+			self.transform = .init(scaleX: 2.5, y: 2.5)
+			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
+			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
+
+			self.addOptionSubview.alpha = 1.0
+			self.deleteOptionSubview.alpha = 1.0
+			self.addOptionSubview.frame = addFrame
+			self.deleteOptionSubview.frame = deleteFrame
+		}, completion: nil)
+
+//		propertyAnimator.isUserInteractionEnabled = true
+//		propertyAnimator.isInterruptible = true
 		propertyAnimator.scrubsLinearly = true
-		propertyAnimator.pausesOnCompletion = true
 		return propertyAnimator
 	}()
 
@@ -119,16 +127,7 @@ class AddProductFloatingButton: UIButton {
 			view.alpha = 0.0
 		}
 
-		propertyAnimator.addAnimations {
-			self.transform = .init(scaleX: 2.5, y: 2.5)
-			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
-			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
 
-			self.addOptionSubview.alpha = 1.0
-			self.deleteOptionSubview.alpha = 1.0
-			self.addOptionSubview.frame = addFrame
-			self.deleteOptionSubview.frame = deleteFrame
-		}
 
 //		guard let _ = superview else {
 //			print("no superview")
@@ -149,6 +148,10 @@ class AddProductFloatingButton: UIButton {
 		self.layer.masksToBounds = true
 		self.translatesAutoresizingMaskIntoConstraints = false
 		setupShadowMotionEffectForAddButton()
+
+		propertyAnimator.pausesOnCompletion = false
+		propertyAnimator.pauseAnimation()
+//		propertyAnimator.pauseAnimation()
 //
 //		dynamicAnimator = UIDynamicAnimator(referenceView: (self.superview ?? nil)!)
 //
@@ -163,7 +166,7 @@ class AddProductFloatingButton: UIButton {
 
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
+		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
 			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
 			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
@@ -172,7 +175,8 @@ class AddProductFloatingButton: UIButton {
 			self.addOptionSubview.frame = addFrame
 			self.deleteOptionSubview.frame = deleteFrame
 		}
-		propertyAnimator.startAnimation()
+//		propertyAnimator.startAnimation()
+
 		propertyAnimator.pauseAnimation()
 //		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
@@ -195,7 +199,7 @@ class AddProductFloatingButton: UIButton {
     }
 
 	func createCircle() {
-		self.path = UIBezierPath(ovalIn: CGRect(x: self.frame.size.width / 2 - self.frame.size.height / 2, y: 0.0, width: self.bounds.size.height, height: self.bounds.size.height))
+		self.path = UIBezierPath(ovalIn: CGRect(x: self.bounds.size.width / 2 - self.bounds.size.height / 2, y: 0.0, width: self.bounds.size.height, height: self.bounds.size.height))
 	}
 
 }
