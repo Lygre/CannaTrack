@@ -104,28 +104,25 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
-		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: frame)]
+		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: self.frame)]
 		for view in actionOptionSubviews {
+			self.addSubview(view)
 			view.backgroundColor = .yellow
+			view.layer.cornerRadius = 12
+			view.layer.masksToBounds = true
+			view.layer.opacity = 0.0
 		}
 
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
 		}
 
-		guard let superView = superview else {
+		guard let _ = superview else {
 			print("no superview")
 			return
 		}
-		dynamicAnimator = UIDynamicAnimator(referenceView: superView)
 
-		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
 
-		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
-
-		dynamicAnimator.addBehavior(snapBehavior1)
-		dynamicAnimator.addBehavior(snapBehavior2)
-	
 
 	}
 
@@ -140,6 +137,15 @@ class AddProductFloatingButton: UIButton {
 		self.translatesAutoresizingMaskIntoConstraints = false
 		setupShadowMotionEffectForAddButton()
 
+		dynamicAnimator = UIDynamicAnimator(referenceView: (self.superview ?? nil)!)
+
+		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
+
+		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x - self.bounds.width / 2, y: self.center.y))
+		snapBehavior1.damping = 1.0
+		snapBehavior2.damping = 1.0
+		dynamicAnimator.addBehavior(snapBehavior1)
+		dynamicAnimator.addBehavior(snapBehavior2)
 	}
 
 
