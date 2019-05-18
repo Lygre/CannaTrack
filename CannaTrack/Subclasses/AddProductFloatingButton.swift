@@ -23,15 +23,15 @@ class AddProductFloatingButton: UIButton {
 	var path: UIBezierPath!
 
 	lazy var propertyAnimator: UIViewPropertyAnimator = {
-		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
+		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.layoutSubviews,.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
-			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
+//			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
+//			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
 
 			self.addOptionSubview.alpha = 1.0
 			self.deleteOptionSubview.alpha = 1.0
-			self.addOptionSubview.frame = addFrame
-			self.deleteOptionSubview.frame = deleteFrame
+//			self.addOptionSubview.frame = addFrame
+//			self.deleteOptionSubview.frame = deleteFrame
 		}, completion: nil)
 
 //		propertyAnimator.isUserInteractionEnabled = true
@@ -114,20 +114,21 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = false
 
-		addOptionSubview = UIView(frame: self.bounds)
-		deleteOptionSubview = UIView(frame: self.bounds)
+		addOptionSubview = UIView(frame: CGRect(origin: self.center, size: CGSize(width: (self.bounds.width / 2), height: (self.bounds.width / 2))))
+		deleteOptionSubview = UIView(frame: CGRect(origin: self.center, size: CGSize(width: (self.bounds.width / 2), height: (self.bounds.width / 2))))
 
 		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
 
 		for view in actionOptionSubviews {
 			self.addSubview(view)
 			view.backgroundColor = .yellow
-			view.layer.cornerRadius = 12
+			view.layer.cornerRadius = view.bounds.width / 2
 			view.layer.masksToBounds = true
 			view.alpha = 0.0
 		}
 
-
+		propertyAnimator.pausesOnCompletion = false
+		propertyAnimator.pauseAnimation()
 
 //		guard let _ = superview else {
 //			print("no superview")
@@ -149,36 +150,22 @@ class AddProductFloatingButton: UIButton {
 		self.translatesAutoresizingMaskIntoConstraints = false
 		setupShadowMotionEffectForAddButton()
 
-		propertyAnimator.pausesOnCompletion = false
-		propertyAnimator.pauseAnimation()
-//		propertyAnimator.pauseAnimation()
-//
-//		dynamicAnimator = UIDynamicAnimator(referenceView: (self.superview ?? nil)!)
-//
-//		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
-//
-//		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x - self.bounds.width / 2, y: self.center.y))
-//		snapBehavior1.damping = 1.0
-//		snapBehavior2.damping = 1.0
-//		dynamicAnimator.addBehavior(snapBehavior1)
-//		dynamicAnimator.addBehavior(snapBehavior2)
+
+
 	}
 
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
-			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
+//			let addFrame: CGRect = self.bounds.offsetBy(dx: self.bounds.width / 2, dy: 0)
+//			let deleteFrame = self.bounds.offsetBy(dx: (self.bounds.width / -2), dy: 0)
 			self.addOptionSubview.alpha = 1.0
 			self.deleteOptionSubview.alpha = 1.0
-			self.addOptionSubview.frame = addFrame
-			self.deleteOptionSubview.frame = deleteFrame
+//			self.addOptionSubview.frame = addFrame
+//			self.deleteOptionSubview.frame = deleteFrame
 		}
-//		propertyAnimator.startAnimation()
-
 		propertyAnimator.pauseAnimation()
-//		addButtonDelegate?.animateTouchesBegan(button: self, animator: animator)
 	}
 
 
@@ -301,7 +288,6 @@ extension AddProductFloatingButton {
 		})
 		print("starting animator with new added animations")
 		self.propertyAnimator.startAnimation()
-//		self.propertyAnimator.pauseAnimation()
 	}
 
 }
