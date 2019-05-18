@@ -669,11 +669,7 @@ extension CalendarLogViewController {
 
 		case .cancelled, .failed:
 			recognizer.setTranslation(.zero, in: view)
-			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-				self.addButton.transform = .identity
-			})
-			viewPropertyAnimator.startAnimation()
-			dynamicAnimator.addBehavior(snapBehavior)
+			snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 			print("pan gesture cancelled or failed")
 
