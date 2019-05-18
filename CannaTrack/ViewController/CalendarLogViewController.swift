@@ -593,6 +593,10 @@ extension CalendarLogViewController {
 		let locationInTableView = recognizer.location(in: self.doseTableView)
 		let locationInCalendarView = recognizer.location(in: self.calendarCollectionView)
 
+		if dynamicAnimator.isRunning {
+			return
+		}
+
 		switch recognizer.state {
 		case .changed:
 			addButton.center = CGPoint(x: addButton.center.x + translation.x, y: addButton.center.y + translation.y)

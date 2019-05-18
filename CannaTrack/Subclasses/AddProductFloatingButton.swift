@@ -152,7 +152,6 @@ class AddProductFloatingButton: UIButton {
 			self.deleteOptionSubview.alpha = 1.0
 
 		}
-		propertyAnimator.pauseAnimation()
 	}
 
 
@@ -256,12 +255,13 @@ extension AddProductFloatingButton {
 	}
 
 	func animateButtonForRegion(for size: CGSize) {
-		self.propertyAnimator.stopAnimation(false)
-		self.propertyAnimator.finishAnimation(at: .start)
-		self.propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+		self.propertyAnimator.stopAnimation(true)
+		self.propertyAnimator.addAnimations {
 			self.bounds = CGRect(origin: self.center, size: size)
-		})
+			self.transform = .identity
+		}
 		self.propertyAnimator.startAnimation()
+
 	}
 
 	func animateButtonForPreviewInteractionChoice() {

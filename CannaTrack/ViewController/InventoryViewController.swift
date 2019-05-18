@@ -557,6 +557,9 @@ extension InventoryViewController {
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {
 		let location = recognizer.location(in: self.view)
 		let translation = recognizer.translation(in: self.view)
+		if dynamicAnimator.isRunning {
+			return
+		}
 
 		switch recognizer.state {
 		case .changed:
