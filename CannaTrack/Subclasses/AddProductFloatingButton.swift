@@ -104,10 +104,10 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .highlighted)
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
-		self.clipsToBounds = true
+		self.clipsToBounds = false
 
-		addOptionSubview = UIView(frame: self.frame)
-		deleteOptionSubview = UIView(frame: self.frame)
+		addOptionSubview = UIView(frame: self.bounds)
+		deleteOptionSubview = UIView(frame: self.bounds)
 
 		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
 
@@ -116,12 +116,17 @@ class AddProductFloatingButton: UIButton {
 			view.backgroundColor = .yellow
 			view.layer.cornerRadius = 12
 			view.layer.masksToBounds = true
-			view.layer.opacity = 0.0
+			view.layer.opacity = 0.8
 		}
 
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-			
+			self.addOptionSubview.alpha = 0.5
+			self.deleteOptionSubview.alpha = 0.5
+			self.addOptionSubview.layer.opacity = 0.5
+			self.deleteOptionSubview.layer.opacity = 0.5
+			self.addOptionSubview.frame = CGRect(origin: CGPoint(x: self.bounds.minX, y: self.center.y), size: self.addOptionSubview.bounds.size)
+			self.deleteOptionSubview.frame = CGRect(origin: CGPoint(x: self.bounds.maxX, y: self.center.y), size: self.deleteOptionSubview.bounds.size)
 		}
 
 //		guard let _ = superview else {

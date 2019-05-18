@@ -190,6 +190,7 @@ class CalendarLogViewController: UIViewController {
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
 
 		calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
 
