@@ -13,13 +13,14 @@ class AddProductFloatingButton: UIButton {
 
 	var actionOptionSubviews: [UIView]!
 
+	var addOptionSubview: UIView!
+	var deleteOptionSubview: UIView!
+
 	let indicaColor = UIColor(named: "indicaColor")
 	unowned var addButtonDelegate: AddButtonDelegate?
 
 
 	var path: UIBezierPath!
-
-	var dynamicAnimator: UIDynamicAnimator!
 
 	var propertyAnimator: UIViewPropertyAnimator = {
 		let propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
@@ -31,8 +32,6 @@ class AddProductFloatingButton: UIButton {
 		return propertyAnimator
 	}()
 
-	var snapBehavior1: UISnapBehavior!
-	var snapBehavior2: UISnapBehavior!
 
 	override var transform: CGAffineTransform {
 		get { return super.transform }
@@ -74,7 +73,10 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
-		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: frame)]
+		addOptionSubview = UIView(frame: self.frame)
+		deleteOptionSubview = UIView(frame: self.frame)
+
+		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
 
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
@@ -104,7 +106,11 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
-		actionOptionSubviews = [UIView(frame: self.frame), UIView(frame: self.frame)]
+		addOptionSubview = UIView(frame: self.frame)
+		deleteOptionSubview = UIView(frame: self.frame)
+
+		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
+
 		for view in actionOptionSubviews {
 			self.addSubview(view)
 			view.backgroundColor = .yellow
@@ -115,12 +121,13 @@ class AddProductFloatingButton: UIButton {
 
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
+			
 		}
 
-		guard let _ = superview else {
-			print("no superview")
-			return
-		}
+//		guard let _ = superview else {
+//			print("no superview")
+//			return
+//		}
 
 
 
@@ -136,16 +143,16 @@ class AddProductFloatingButton: UIButton {
 		self.layer.masksToBounds = true
 		self.translatesAutoresizingMaskIntoConstraints = false
 		setupShadowMotionEffectForAddButton()
-
-		dynamicAnimator = UIDynamicAnimator(referenceView: (self.superview ?? nil)!)
-
-		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
-
-		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x - self.bounds.width / 2, y: self.center.y))
-		snapBehavior1.damping = 1.0
-		snapBehavior2.damping = 1.0
-		dynamicAnimator.addBehavior(snapBehavior1)
-		dynamicAnimator.addBehavior(snapBehavior2)
+//
+//		dynamicAnimator = UIDynamicAnimator(referenceView: (self.superview ?? nil)!)
+//
+//		snapBehavior1 = UISnapBehavior(item: actionOptionSubviews[0], snapTo: CGPoint(x: self.center.x + self.bounds.width / 2, y: self.center.y))
+//
+//		snapBehavior2 = UISnapBehavior(item: actionOptionSubviews[1], snapTo: CGPoint(x: self.center.x - self.bounds.width / 2, y: self.center.y))
+//		snapBehavior1.damping = 1.0
+//		snapBehavior2.damping = 1.0
+//		dynamicAnimator.addBehavior(snapBehavior1)
+//		dynamicAnimator.addBehavior(snapBehavior2)
 	}
 
 
@@ -265,6 +272,20 @@ extension AddProductFloatingButton {
 			self.bounds = CGRect(origin: self.center, size: size)
 		})
 		self.propertyAnimator.startAnimation()
+	}
+
+	func animateButtonForPreviewInteractionChoice() {
+		self.propertyAnimator.stopAnimation(false)
+		self.propertyAnimator.finishAnimation(at: .start)
+		self.propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
+			self.addOptionSubview.layer.opacity = 1.0
+			self.deleteOptionSubview.layer.opacity = 1.0
+			self.addOptionSubview.frame = CGRect(origin: CGPoint(x: self.frame.minX, y: self.frame.midY), size: self.bounds.size)
+			self.deleteOptionSubview.frame = CGRect(origin: CGPoint(x: self.frame.minX, y: self.frame.midY), size: self.bounds.size)
+		})
+		print("starting animator with new added animations")
+		self.propertyAnimator.startAnimation()
+//		self.propertyAnimator.pauseAnimation()
 	}
 
 }

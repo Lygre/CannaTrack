@@ -926,6 +926,10 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 		addProductButton.completePreview()
 	}
 
+	func previewInteractionShouldBegin(_ previewInteraction: UIPreviewInteraction) -> Bool {
+//		addProductButton.animateButtonForPreviewInteractionChoice()
+		return true
+	}
 
 
 
