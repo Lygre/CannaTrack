@@ -37,7 +37,7 @@ class InventoryViewController: UIViewController {
 			return imageView
 		})
 		let stackView = UIStackView(arrangedSubviews: imageViewArray)
-		stackView.spacing = 15
+		stackView.spacing = 10
 		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
 		stackView.isLayoutMarginsRelativeArrangement = true
 		stackView.distribution = .fillEqually
@@ -199,12 +199,14 @@ class InventoryViewController: UIViewController {
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 		viewPropertyAnimator.addAnimations {
-			guard let stackView = self.containerOptionsView.subviews[0] as? UIStackView else {
-				print("no stack view")
-				return
-			}
+//			guard let stackView = self.containerOptionsView.subviews[0] as? UIStackView else {
+//				print("no stack view")
+//				return
+//			}
+
 			print("added button to container stack view")
-			stackView.addArrangedSubview(self.addProductButton)
+			self.containerOptionsView.addSubview(self.addProductButton)
+			self.addProductButton.alpha = 0.5
 			self.containerOptionsView.alpha = 1.0
 //			self.containerOptionsView.bounds.size = CGSize(width: self.view.frame.width, height: 60)
 		}
@@ -639,7 +641,7 @@ extension InventoryViewController {
 				print("no cell to segue to product from, pulling button back t position")
 				self.viewPropertyAnimator.fractionComplete = 0
 				if self.addProductButton.superview != view {
-					self.addProductButton.removeFromSuperview()
+//					self.addProductButton.removeFromSuperview()
 					self.view.addSubview(self.addProductButton)
 				}
 				snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
