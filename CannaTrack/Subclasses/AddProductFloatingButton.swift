@@ -11,11 +11,6 @@ import UIKit
 class AddProductFloatingButton: UIButton {
 
 
-	var actionOptionSubviews: [UIView]!
-
-	var addOptionSubview: UIView!
-	var deleteOptionSubview: UIView!
-
 	let indicaColor = UIColor(named: "indicaColor")
 	unowned var addButtonDelegate: AddButtonDelegate?
 
@@ -25,8 +20,7 @@ class AddProductFloatingButton: UIButton {
 	lazy var propertyAnimator: UIViewPropertyAnimator = {
 		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.layoutSubviews,.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-			self.addOptionSubview.alpha = 1.0
-			self.deleteOptionSubview.alpha = 1.0
+
 		}, completion: nil)
 
 		propertyAnimator.scrubsLinearly = true
@@ -74,10 +68,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = true
 
-		addOptionSubview = UIView(frame: self.frame)
-		deleteOptionSubview = UIView(frame: self.frame)
 
-		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
 
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
@@ -107,18 +98,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .selected)
 		self.clipsToBounds = false
 
-		addOptionSubview = UIView(frame: CGRect(origin: self.center, size: CGSize(width: (self.bounds.width / 2), height: (self.bounds.width / 2))))
-		deleteOptionSubview = UIView(frame: CGRect(origin: self.center, size: CGSize(width: (self.bounds.width / 2), height: (self.bounds.width / 2))))
 
-		actionOptionSubviews = [addOptionSubview, deleteOptionSubview]
-
-		for view in actionOptionSubviews {
-			self.addSubview(view)
-			view.backgroundColor = .yellow
-			view.layer.cornerRadius = view.bounds.width / 2
-			view.layer.masksToBounds = true
-			view.alpha = 0.0
-		}
 
 		propertyAnimator.pausesOnCompletion = false
 		propertyAnimator.pauseAnimation()
@@ -147,10 +127,6 @@ class AddProductFloatingButton: UIButton {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-
-			self.addOptionSubview.alpha = 1.0
-			self.deleteOptionSubview.alpha = 1.0
-
 		}
 	}
 
@@ -267,14 +243,9 @@ extension AddProductFloatingButton {
 	func animateButtonForPreviewInteractionChoice() {
 		self.propertyAnimator.stopAnimation(false)
 		self.propertyAnimator.finishAnimation(at: .start)
-		self.propertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addOptionSubview.layer.opacity = 1.0
-			self.deleteOptionSubview.layer.opacity = 1.0
-			self.addOptionSubview.frame = CGRect(origin: CGPoint(x: self.frame.minX, y: self.frame.midY), size: self.bounds.size)
-			self.deleteOptionSubview.frame = CGRect(origin: CGPoint(x: self.frame.minX, y: self.frame.midY), size: self.bounds.size)
-		})
+
 		print("starting animator with new added animations")
-		self.propertyAnimator.startAnimation()
+//		self.propertyAnimator.startAnimation()
 	}
 
 }
