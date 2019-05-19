@@ -19,7 +19,35 @@ class InventoryViewController: UIViewController {
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
 	let headerIdentifier = "ProductSectionHeaderView"
 
-	var viewPropertyAnimator: UIViewPropertyAnimator!
+	//preview action container view work
+	let viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut)
+
+	let containerOptionsView: UIView = {
+		let containerView = UIView()
+		let imagesForOptions: [UIImage] = [#imageLiteral(resourceName: "addIcon"), #imageLiteral(resourceName: "deleteIcon")]
+
+		let imageViewArray: [UIImageView] = imagesForOptions.map({ (image) -> UIImageView in
+			let imageView = UIImageView(image: image)
+//			imageView.layer.cornerRadius = 20
+			imageView.backgroundColor = .yellow
+			imageView.isUserInteractionEnabled = true
+
+			return imageView
+		})
+
+		let stackView = UIStackView(arrangedSubviews: imageViewArray)
+		stackView.spacing = 8
+		stackView.distribution = .fillEqually
+		stackView.axis = .horizontal
+
+		containerView.addSubview(stackView)
+		containerView.frame = CGRect(origin: .zero, size: CGSize(width: 200, height: 140))
+		stackView.frame = containerView.frame
+		containerView.alpha = 0.0
+		containerView.backgroundColor = .blue
+
+		return containerView
+	}()
 
 	var dynamicAnimator: UIDynamicAnimator!
 	var snapBehavior: UISnapBehavior!
@@ -109,9 +137,7 @@ class InventoryViewController: UIViewController {
 
 
 		//property animator initial setup
-		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-//			self.addProductButton.transform = .init(scaleX: 2.0, y: 2.0)
-		})
+
 
 
 
@@ -155,6 +181,8 @@ class InventoryViewController: UIViewController {
 		}
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
+
+		self.view.addSubview(containerOptionsView)
 		print("registered for previewing")
     }
 
@@ -163,6 +191,10 @@ class InventoryViewController: UIViewController {
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		viewPropertyAnimator.addAnimations {
+			self.containerOptionsView.alpha = 1.0
+			self.containerOptionsView.transform = .init(translationX: self.view.frame.width / 2, y: self.view.frame.height / 2)
+		}
 	}
 
 
@@ -539,6 +571,19 @@ extension InventoryViewController {
 
 
 
+	func updateForCommit(progress: CGFloat) {
+		self.viewPropertyAnimator.fractionComplete = progress
+	}
+
+	func completeCommit() {
+		guard let stackView = self.containerOptionsView.subviews[0] as? UIStackView else {
+			print("no stack view")
+			return
+		}
+//		addProductButton.
+		print("added button to container stack view")
+		stackView.addArrangedSubview(addProductButton)
+	}
 
 }
 
@@ -572,7 +617,6 @@ extension InventoryViewController {
 			addProductButton.sendActions(for: .overEligibleContainerRegion)
 			print("collision with \(cell.debugDescription)")
 		case .began:
-//			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 
 			dynamicAnimator.removeBehavior(snapBehavior)
@@ -587,20 +631,14 @@ extension InventoryViewController {
 				snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 				return
 			}
-
 			performSegue(withIdentifier: "ProductDetailSegue", sender: cell)
-
-
 
 			//whole lot has to be implemented here
 			//have to handle checking to see if the location passes a hit test for any appropriate views in the view hierarchy
 
 		case .cancelled, .failed:
 			recognizer.setTranslation(.zero, in: view)
-//			viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-//				self.addProductButton.transform = .identity
-//			})
-//			viewPropertyAnimator.startAnimation()
+
 			dynamicAnimator.addBehavior(snapBehavior)
 
 
@@ -640,6 +678,7 @@ extension InventoryViewController {
 	@objc func handleTouches(sender: UIGestureRecognizer) {
 		presentedProductDetailViewController?.updateUI(with: sender)
 	}
+
 
 }
 
@@ -812,19 +851,9 @@ extension InventoryViewController: EditMassDelegate {
 
 
 extension InventoryViewController: AddButtonDelegate {
-	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
-//		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-//			self.addProductButton.transform = .identity
-//		})
-//		viewPropertyAnimator.startAnimation()
-		/*
-		if animator.isRunning {
-			animator.stopAnimation(false)
-			animator.finishAnimation(at: .end)
-		}
-		*/
 
-//		animator.finishAnimation(at: .start)
+
+	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
 		dynamicAnimator.removeBehavior(snapBehavior)
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		dynamicAnimator.addBehavior(snapBehavior)
@@ -837,9 +866,8 @@ extension InventoryViewController: AddButtonDelegate {
 	}
 
 	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator) {
-		viewPropertyAnimator = animator
-		viewPropertyAnimator.startAnimation()
-//		button.frame = CGRect(x: button.frame.minX, y: button.frame.maxY, width: button.frame.width * 2, height: button.frame.height * 2)
+//		viewPropertyAnimator = animator
+//		viewPropertyAnimator.startAnimation()
 	}
 
 
@@ -923,6 +951,13 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 			addProductButton.completePreview()
 		}
 
+	}
+
+	func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdateCommitTransition transitionProgress: CGFloat, ended: Bool) {
+		updateForCommit(progress: transitionProgress)
+		if ended {
+			completeCommit()
+		}
 	}
 
 	func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction) {

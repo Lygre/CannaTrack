@@ -11,7 +11,7 @@ import UIKit
 
 protocol AddButtonDelegate: class {
 
-	var viewPropertyAnimator: UIViewPropertyAnimator! { get set }
+//	var viewPropertyAnimator: UIViewPropertyAnimator! { get set }
 	var dynamicAnimator: UIDynamicAnimator! { get set }
 	var snapBehavior: UISnapBehavior! { get set }
 
