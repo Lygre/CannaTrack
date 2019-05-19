@@ -37,17 +37,17 @@ class InventoryViewController: UIViewController {
 			return imageView
 		})
 		let stackView = UIStackView(arrangedSubviews: imageViewArray)
-		stackView.spacing = padding
+		stackView.spacing = 15
 		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
 		stackView.isLayoutMarginsRelativeArrangement = true
 		stackView.distribution = .fillEqually
 		stackView.axis = .horizontal
 
 		containerView.addSubview(stackView)
-		containerView.frame = CGRect(origin: .zero, size: CGSize(width: 200, height: imageSize))
+		containerView.frame = CGRect(origin: .zero, size: CGSize(width: 250, height: imageSize))
 		stackView.frame = containerView.frame
 		containerView.alpha = 0.0
-		containerView.backgroundColor = .blue
+		containerView.backgroundColor = .clear
 
 		return containerView
 	}()
@@ -206,6 +206,7 @@ class InventoryViewController: UIViewController {
 			print("added button to container stack view")
 			stackView.addArrangedSubview(self.addProductButton)
 			self.containerOptionsView.alpha = 1.0
+//			self.containerOptionsView.bounds.size = CGSize(width: self.view.frame.width, height: 60)
 		}
 	}
 
