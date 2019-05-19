@@ -25,7 +25,9 @@ class InventoryViewController: UIViewController {
 	let containerOptionsView: UIView = {
 		let containerView = UIView()
 		let imagesForOptions: [UIImage] = [#imageLiteral(resourceName: "addIcon"), #imageLiteral(resourceName: "deleteIcon")]
-		let imageSize = imagesForOptions[0].size.height
+		let imageSize: CGFloat = 60
+		let padding: CGFloat = 6
+
 		let imageViewArray: [UIImageView] = imagesForOptions.map({ (image) -> UIImageView in
 			let imageView = UIImageView(image: image)
 //			imageView.layer.cornerRadius = 20
@@ -35,7 +37,9 @@ class InventoryViewController: UIViewController {
 			return imageView
 		})
 		let stackView = UIStackView(arrangedSubviews: imageViewArray)
-		stackView.spacing = 8
+		stackView.spacing = padding
+		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+		stackView.isLayoutMarginsRelativeArrangement = true
 		stackView.distribution = .fillEqually
 		stackView.axis = .horizontal
 
@@ -612,6 +616,8 @@ extension InventoryViewController {
 		case .changed:
 			addProductButton.center = CGPoint(x: addProductButton.center.x + translation.x, y: addProductButton.center.y + translation.y)
 			recognizer.setTranslation(.zero, in: view)
+
+			handleGestureChanged(gesture: recognizer)
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) else {
 				print("no cell)")
 				return
@@ -655,6 +661,22 @@ extension InventoryViewController {
 			fatalError("unknown default handling of unknown case in switch: InventoryViewController.swift")
 		}
 
+	}
+
+	func handleGestureChanged(gesture: UIGestureRecognizer) {
+		let pressedLocation = gesture.location(in: self.containerOptionsView)
+		let hitTestView = containerOptionsView.hitTest(pressedLocation, with: nil)
+		if hitTestView is UIImageView {
+			UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+
+				guard let stackView = self.containerOptionsView.subviews.first as? UIStackView else { return }
+				stackView.subviews.forEach({ (imageView) in
+					imageView.transform = .identity
+				})
+				hitTestView?.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+
+			}, completion: nil)
+		}
 	}
 
 	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
