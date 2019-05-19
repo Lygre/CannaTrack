@@ -12,10 +12,10 @@ import UIKit
 protocol AddButtonDelegate: class {
 
 //	var viewPropertyAnimator: UIViewPropertyAnimator! { get set }
-	var dynamicAnimator: UIDynamicAnimator! { get set }
-	var snapBehavior: UISnapBehavior! { get set }
+//	var dynamicAnimator: UIDynamicAnimator! { get set }
+//	var snapBehavior: UISnapBehavior! { get set }
 
-	var originalAddButtonPosition: CGPoint! { get set }
+//	var originalAddButtonPosition: CGPoint! { get set }
 
 	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator)
 

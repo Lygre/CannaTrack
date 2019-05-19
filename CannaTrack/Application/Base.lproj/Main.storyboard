@@ -851,10 +851,10 @@
             </objects>
             <point key="canvasLocation" x="-541" y="1802"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--MasterTabController-->
         <scene sceneID="1al-Vh-kn8">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="02a-3n-CQh" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MasterTabController" title="MasterTabController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="02a-3n-CQh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eau-tc-aBW">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -871,10 +871,10 @@
             </objects>
             <point key="canvasLocation" x="355" y="162"/>
         </scene>
-        <!--Inventory View Controller-->
+        <!--InventoryViewController-->
         <scene sceneID="7Dw-hz-Gfi">
             <objects>
-                <viewController id="2sp-3f-4Lb" customClass="InventoryViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InventoryViewController" title="InventoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2sp-3f-4Lb" customClass="InventoryViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tHn-6P-u27">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

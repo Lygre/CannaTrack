@@ -36,6 +36,10 @@ class InventoryViewController: UIViewController {
 
 			return imageView
 		})
+		//add tag
+		imageViewArray[0].tag = 0
+		//delete tag
+		imageViewArray[1].tag = 1
 		let stackView = UIStackView(arrangedSubviews: imageViewArray)
 		stackView.spacing = 10
 		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
@@ -637,6 +641,8 @@ extension InventoryViewController {
 		case .ended:
 			recognizer.setTranslation(.zero, in: view)
 
+			handleGestureEnded(gesture: recognizer)
+
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
 				print("no cell to segue to product from, pulling button back t position")
 				self.viewPropertyAnimator.fractionComplete = 0
@@ -680,6 +686,54 @@ extension InventoryViewController {
 
 			}, completion: nil)
 		}
+	}
+
+	func handleGestureEnded(gesture: UIGestureRecognizer) {
+		let pressedLocation = gesture.location(in: self.containerOptionsView)
+		let hitTestView = containerOptionsView.hitTest(pressedLocation, with: nil)
+		guard let hitOption = hitTestView as? UIImageView else {
+			print("ended on a hit view that is not image view. returning")
+			return
+		}
+		switch hitOption.tag {
+		case 0:
+			self.addProductButton.setImage(nil, for: .normal)
+			self.addProductButton.setImage(nil, for: .disabled)
+			self.addProductButton.setImage(nil, for: .focused)
+			self.addProductButton.setImage(nil, for: .application)
+			self.addProductButton.setImage(nil, for: .highlighted)
+			self.addProductButton.setImage(nil, for: .reserved)
+			self.addProductButton.setImage(nil, for: .selected)
+			self.addProductButton.setTitle("+", for: .normal)
+			self.addProductButton.setTitle("+", for: .disabled)
+			self.addProductButton.setTitle("+", for: .focused)
+			self.addProductButton.setTitle("+", for: .application)
+			self.addProductButton.setTitle("+", for: .highlighted)
+			self.addProductButton.setTitle("+", for: .reserved)
+			self.addProductButton.setTitle("+", for: .selected)
+			print("ended over add option")
+		case 1:
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .normal)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .disabled)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .focused)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .application)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .highlighted)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .reserved)
+			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .selected)
+			self.addProductButton.setTitle(nil, for: .normal)
+			self.addProductButton.setTitle(nil, for: .disabled)
+			self.addProductButton.setTitle(nil, for: .focused)
+			self.addProductButton.setTitle(nil, for: .application)
+			self.addProductButton.setTitle(nil, for: .highlighted)
+			self.addProductButton.setTitle(nil, for: .reserved)
+			self.addProductButton.setTitle(nil, for: .selected)
+			print("ended over delete option")
+		default:
+			break
+		}
+
+
+
 	}
 
 	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
@@ -982,7 +1036,7 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 		if ended {
 			addProductButton.completePreview()
 			let centeredX = (view.frame.width - containerOptionsView.frame.width) / 2
-			self.containerOptionsView.transform = .init(translationX: centeredX, y: addProductButton.center.y - self.containerOptionsView.frame.height)
+			self.containerOptionsView.transform = .init(translationX: addProductButton.center.x - (self.containerOptionsView.frame.width / 2), y: addProductButton.center.y - self.containerOptionsView.frame.height)
 		}
 
 	}

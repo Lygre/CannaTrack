@@ -32,11 +32,11 @@ class CalendarLogViewController: UIViewController {
 
 	var viewPropertyAnimator: UIViewPropertyAnimator!
 
-	var dynamicAnimator: UIDynamicAnimator!
+	var dynamicAnimator: UIDynamicAnimator?
 
-	var snapBehavior: UISnapBehavior!
+	var snapBehavior: UISnapBehavior?
 
-	var originalAddButtonPosition: CGPoint!
+	var originalAddButtonPosition: CGPoint! = .zero
 
 	var originalAddButtonSize: CGSize! = CGSize(width: 60, height: 60)
 
@@ -144,8 +144,8 @@ class CalendarLogViewController: UIViewController {
 		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
 //		dynamicAnimator.delegate = self
 		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
-		snapBehavior.damping = 0.8
-		dynamicAnimator.addBehavior(snapBehavior)
+		snapBehavior?.damping = 0.8
+		dynamicAnimator?.addBehavior(snapBehavior!)
 
 
 		//preview interaction work
@@ -179,7 +179,7 @@ class CalendarLogViewController: UIViewController {
 		})
 
 		viewPropertyAnimator.startAnimation()
-
+		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 	}
@@ -190,14 +190,18 @@ class CalendarLogViewController: UIViewController {
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransition(to: size, with: coordinator)
+//		super.viewWillTransition(to: size, with: coordinator)
+		if let selectedDate = selectedDate {
+			calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
+		} else {
+			calendarCollectionView.viewWillTransition(to: size, with: coordinator, anchorDate: Date())
+		}
 
-		calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
-
+		guard let snapBehavior = snapBehavior else { return }
 		originalAddButtonPosition = CGPoint(x: size.width - 25 - ((size.width * 0.145) / 2.0), y: size.height - 60 - ((size.height * 0.067) / 2.0))
-		dynamicAnimator.removeBehavior(snapBehavior)
-		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
-		dynamicAnimator.addBehavior(snapBehavior)
+		dynamicAnimator?.removeBehavior(snapBehavior)
+		self.snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
+		dynamicAnimator?.addBehavior(self.snapBehavior!)
 		print("view is transitioning orientation")
 	}
 
@@ -557,9 +561,10 @@ extension CalendarLogViewController: AddButtonDelegate {
 		})
 		viewPropertyAnimator.startAnimation()
 	*/
+		guard let snapBehavior = snapBehavior else { return }
 		dynamicAnimator.removeBehavior(snapBehavior)
-		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
-		dynamicAnimator.addBehavior(snapBehavior)
+		self.snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
+		dynamicAnimator.addBehavior(self.snapBehavior!)
 	}
 
 	func setupAddButtonPanGesture(button: AddProductFloatingButton) {
@@ -593,6 +598,8 @@ extension CalendarLogViewController {
 		let locationInTableView = recognizer.location(in: self.doseTableView)
 		let locationInCalendarView = recognizer.location(in: self.calendarCollectionView)
 
+		guard let dynamicAnimator = self.dynamicAnimator else { return }
+		guard let snapBehavior = snapBehavior else { return }
 		if dynamicAnimator.isRunning {
 			return
 		}
@@ -661,6 +668,7 @@ extension CalendarLogViewController {
 //				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else { return }
 				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
+
 				snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 			} else {
 				print("no dose tableview; add button pan ended")
@@ -673,6 +681,7 @@ extension CalendarLogViewController {
 
 		case .cancelled, .failed:
 			recognizer.setTranslation(.zero, in: view)
+			guard let dynamicAnimator = self.dynamicAnimator else { return }
 			snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 			print("pan gesture cancelled or failed")
