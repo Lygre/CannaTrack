@@ -647,7 +647,16 @@ extension CalendarLogViewController {
 					calendarCollectionView.deselectAllDates()
 					calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
 					if cell.dosesPresentOnDate {
-						addButton.sendActions(for: .overEligibleContainerRegion)
+						guard let previousHapticView = addButton.previousHapticView as? CustomCell else {
+							addButton.previousHapticView = cell
+							addButton.sendActions(for: .overEligibleContainerRegion)
+							print("previous hapticView for button was not this CustomCell OR nil; returning after sending haptic and setting previousHapticView as cell")
+							return
+						}
+						if previousHapticView != cell {
+							addButton.previousHapticView = cell
+							addButton.sendActions(for: .overEligibleContainerRegion)
+						}
 					}
 					addButton.animateButtonForRegion(for: cell.bounds.size)
 				} else {

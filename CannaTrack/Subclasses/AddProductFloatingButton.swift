@@ -18,6 +18,8 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
+	var previousHapticView: UIView? = nil
+
 	var propertyAnimator: UIViewPropertyAnimator = {
 		let propertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
