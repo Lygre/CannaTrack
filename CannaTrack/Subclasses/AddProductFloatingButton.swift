@@ -96,6 +96,7 @@ class AddProductFloatingButton: UIButton {
 		self.setTitleColor(indicaColor, for: .highlighted)
 		self.setTitleColor(indicaColor, for: .reserved)
 		self.setTitleColor(indicaColor, for: .selected)
+		self.translatesAutoresizingMaskIntoConstraints = false
 		self.clipsToBounds = false
 
 
@@ -116,7 +117,6 @@ class AddProductFloatingButton: UIButton {
 		self.layer.shadowOpacity = 1.0
 		self.layer.shadowRadius = 0.0
 		self.layer.masksToBounds = true
-		self.translatesAutoresizingMaskIntoConstraints = false
 		setupShadowMotionEffectForAddButton()
 
 
@@ -127,10 +127,21 @@ class AddProductFloatingButton: UIButton {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-			self.alpha = 0.5
+//			self.alpha = 0.5
 		}
 	}
 
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		UIView.animate(withDuration: 0.15) {
+			self.alpha = 1.0
+		}
+	}
+
+	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+		UIView.animate(withDuration: 0.15) {
+			self.alpha = 1.0
+		}
+	}
 
 
     // Only override draw() if you perform custom drawing.
