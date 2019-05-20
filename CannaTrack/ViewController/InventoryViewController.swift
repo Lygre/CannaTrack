@@ -569,7 +569,10 @@ extension InventoryViewController {
 	}
 
 	func completeCommit() {
-		self.viewPropertyAnimator.fractionComplete = 1
+		UIView.animate(withDuration: 0.15) {
+			self.viewPropertyAnimator.fractionComplete = 1
+			
+		}
 	}
 
 }
@@ -970,7 +973,9 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 			print("There is no button; not able to be cast as The Button, anyway")
 			return
 		}
-
+		UIView.animate(withDuration: 0.1) {
+			self.addProductButton.alpha = 1
+		}
 		button.sendActions(for: .backToAnchorPoint)
 	}
 
@@ -1026,6 +1031,7 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 		updateForCommit(progress: transitionProgress)
 		if ended {
 			completeCommit()
+			self.addProductButton.updateAnimationProgress(with: 0.0)
 		}
 	}
 

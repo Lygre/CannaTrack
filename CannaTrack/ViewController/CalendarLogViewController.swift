@@ -142,7 +142,7 @@ class CalendarLogViewController: UIViewController {
 		originalAddButtonSize = addButton.bounds.size
 		setupAddButtonPanGesture(button: addButton)
 		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-//		dynamicAnimator.delegate = self
+		dynamicAnimator!.delegate = self
 		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
 		snapBehavior?.damping = 0.8
 		dynamicAnimator?.addBehavior(snapBehavior!)
@@ -582,6 +582,23 @@ extension CalendarLogViewController: AddButtonDelegate {
 		viewPropertyAnimator.startAnimation()
 	}
 	*/
+}
+
+
+extension CalendarLogViewController: UIDynamicAnimatorDelegate {
+
+	func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+
+		guard let button = animator.items(in: self.view.frame).first as? AddProductFloatingButton else {
+			print("There is no button; not able to be cast as The Button, anyway")
+			return
+		}
+		UIView.animate(withDuration: 0.1) {
+			self.addButton.alpha = 1
+		}
+		button.sendActions(for: .backToAnchorPoint)
+	}
+
 }
 
 //objc methods

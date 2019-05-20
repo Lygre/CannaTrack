@@ -229,7 +229,7 @@ extension AddProductFloatingButton {
 	}
 
 	func completePreview() {
-		self.updateAnimationProgress(with: 1)
+//		self.updateAnimationProgress(with: 1)
 		if self.propertyAnimator.isRunning {
 			self.propertyAnimator.stopAnimation(false)
 			self.propertyAnimator.finishAnimation(at: .end)
