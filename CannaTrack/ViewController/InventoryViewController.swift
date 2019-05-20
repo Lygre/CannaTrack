@@ -157,7 +157,9 @@ class InventoryViewController: UIViewController {
 		}
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
-		viewPropertyAnimator.pausesOnCompletion = true
+		viewPropertyAnimator.pausesOnCompletion = false
+		viewPropertyAnimator.isInterruptible = true
+		viewPropertyAnimator.scrubsLinearly = true
 		viewPropertyAnimator.addAnimations {
 
 			print("added button to container stack view")
@@ -1007,6 +1009,7 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 			addProductButton.completePreview()
 //			view.bringSubviewToFront(containerOptionsView)
 			self.containerOptionsView.transform = .init(translationX: addProductButton.center.x - (self.containerOptionsView.frame.width / 2), y: addProductButton.center.y - self.containerOptionsView.frame.height)
+//			viewPropertyAnimator.stopAnimation(<#T##withoutFinishing: Bool##Bool#>)
 			viewPropertyAnimator.addAnimations {
 
 				print("added button to container stack view")
