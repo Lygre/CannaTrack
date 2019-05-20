@@ -20,7 +20,7 @@ class InventoryViewController: UIViewController {
 	let headerIdentifier = "ProductSectionHeaderView"
 
 	//preview action container view work
-	let viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
 
 	@IBOutlet var containerOptionsView: OptionsContainerView!
@@ -157,6 +157,7 @@ class InventoryViewController: UIViewController {
 		}
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
+		viewPropertyAnimator.pausesOnCompletion = true
 		viewPropertyAnimator.addAnimations {
 
 			print("added button to container stack view")
@@ -178,8 +179,9 @@ class InventoryViewController: UIViewController {
 
 
 		view.bringSubviewToFront(containerOptionsView)
+		self.containerOptionsView.alpha = 0.0
 		view.bringSubviewToFront(addProductButton)
-		viewPropertyAnimator.startAnimation()
+//		viewPropertyAnimator.pauseAnimation()
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 
@@ -1004,7 +1006,13 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 			addProductButton.completePreview()
 //			view.bringSubviewToFront(containerOptionsView)
 			self.containerOptionsView.transform = .init(translationX: addProductButton.center.x - (self.containerOptionsView.frame.width / 2), y: addProductButton.center.y - self.containerOptionsView.frame.height)
+			viewPropertyAnimator.addAnimations {
 
+				print("added button to container stack view")
+				self.containerOptionsView.addSubview(self.addProductButton)
+				self.addProductButton.alpha = 0.5
+				self.containerOptionsView.alpha = 1.0
+			}
 
 		}
 
