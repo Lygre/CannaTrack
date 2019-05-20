@@ -167,6 +167,7 @@ class InventoryViewController: UIViewController {
 		}
 		viewPropertyAnimator.addCompletion { (animatingPosition) in
 			self.view.addSubview(self.addProductButton)
+			self.containerOptionsView.layoutSubviews()
 		}
 
 		print("registered for previewing")
@@ -178,7 +179,6 @@ class InventoryViewController: UIViewController {
 		self.view.addSubview(containerOptionsView)
 
 
-		view.bringSubviewToFront(containerOptionsView)
 		self.containerOptionsView.alpha = 0.0
 		view.bringSubviewToFront(addProductButton)
 //		viewPropertyAnimator.pauseAnimation()
@@ -213,6 +213,7 @@ class InventoryViewController: UIViewController {
 		super.viewDidDisappear(animated)
 		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
+
 
 
 
@@ -665,7 +666,7 @@ extension InventoryViewController {
 			return
 		}
 		switch hitOption.tag {
-		case 0:
+		case 1:
 			self.addProductButton.setImage(nil, for: .normal)
 			self.addProductButton.setImage(nil, for: .disabled)
 			self.addProductButton.setImage(nil, for: .focused)
@@ -681,7 +682,7 @@ extension InventoryViewController {
 			self.addProductButton.setTitle("+", for: .reserved)
 			self.addProductButton.setTitle("+", for: .selected)
 			print("ended over add option")
-		case 1:
+		case 2:
 			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .normal)
 			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .disabled)
 			self.addProductButton.setImage(#imageLiteral(resourceName: "deleteButtonImage"), for: .focused)

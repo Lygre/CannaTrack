@@ -26,9 +26,9 @@ class OptionsContainerView: UIView {
 			return imageView
 		})
 		//add tag
-		imageViewArray[0].tag = 0
+		imageViewArray[0].tag = 1
 		//delete tag
-		imageViewArray[1].tag = 1
+		imageViewArray[1].tag = 2
 		let stackView = UIStackView(arrangedSubviews: imageViewArray)
 		stackView.spacing = 10
 		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
