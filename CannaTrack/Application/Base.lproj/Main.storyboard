@@ -1004,6 +1004,11 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QvM-gf-Cbe" customClass="OptionsContainerView" customModule="CannaTrackSpecial" customModuleProvider="target">
+                                <rect key="frame" x="15" y="525" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="60" placeholderIntrinsicHeight="60" restorationIdentifier="AddButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jH-0z-N1d" customClass="AddProductFloatingButton" customModule="CannaTrackSpecial" customModuleProvider="target">
                                 <rect key="frame" x="329" y="728" width="60" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1054,6 +1059,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addProductButton" destination="4jH-0z-N1d" id="c73-4z-o6k"/>
+                        <outlet property="containerOptionsView" destination="QvM-gf-Cbe" id="Qfp-AP-Adx"/>
                         <outlet property="filterButton" destination="aCX-cy-zNL" id="m5I-oo-tiQ"/>
                         <outlet property="productsCollectionView" destination="KZT-4n-qef" id="gcC-sc-qqP"/>
                     </connections>

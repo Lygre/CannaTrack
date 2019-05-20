@@ -20,8 +20,9 @@ class InventoryViewController: UIViewController {
 	let headerIdentifier = "ProductSectionHeaderView"
 
 	//preview action container view work
-	let viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut)
+	let viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
+	/*
 	let containerOptionsView: UIView = {
 		let containerView = UIView()
 		let imagesForOptions: [UIImage] = [#imageLiteral(resourceName: "addIcon"), #imageLiteral(resourceName: "deleteIcon")]
@@ -47,14 +48,18 @@ class InventoryViewController: UIViewController {
 		stackView.distribution = .fillEqually
 		stackView.axis = .horizontal
 
-		containerView.addSubview(stackView)
 		containerView.frame = CGRect(origin: .zero, size: CGSize(width: 250, height: imageSize))
+
+		containerView.addSubview(stackView)
 		stackView.frame = containerView.frame
 		containerView.alpha = 0.0
 		containerView.backgroundColor = .clear
 
 		return containerView
 	}()
+	*/
+
+	@IBOutlet var containerOptionsView: OptionsContainerView!
 
 	var dynamicAnimator: UIDynamicAnimator!
 	var snapBehavior: UISnapBehavior!
@@ -189,31 +194,27 @@ class InventoryViewController: UIViewController {
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
 
-		self.view.addSubview(containerOptionsView)
+
 		print("registered for previewing")
     }
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-		if !view.subviews.contains(addProductButton) {
-			addProductButton.removeFromSuperview()
-			view.addSubview(addProductButton)
-		}
-		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
-
+		self.view.addSubview(containerOptionsView)
 		viewPropertyAnimator.addAnimations {
-//			guard let stackView = self.containerOptionsView.subviews[0] as? UIStackView else {
-//				print("no stack view")
-//				return
-//			}
 
 			print("added button to container stack view")
 			self.containerOptionsView.addSubview(self.addProductButton)
 			self.addProductButton.alpha = 0.5
 			self.containerOptionsView.alpha = 1.0
-//			self.containerOptionsView.bounds.size = CGSize(width: self.view.frame.width, height: 60)
 		}
+
+		view.bringSubviewToFront(containerOptionsView)
+		view.bringSubviewToFront(addProductButton)
+		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
+
+
 	}
 
 
@@ -646,9 +647,7 @@ extension InventoryViewController {
 			guard let indexPath = self.productsCollectionView.indexPathForItem(at: location), let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
 				print("no cell to segue to product from, pulling button back t position")
 				self.viewPropertyAnimator.fractionComplete = 0
-				if self.addProductButton.superview != view {
-//					self.addProductButton.removeFromSuperview()
-					self.view.addSubview(self.addProductButton)
+				if self.addProductButton.superview != view {	self.view.addSubview(self.addProductButton)
 				}
 				snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 				return
@@ -676,7 +675,7 @@ extension InventoryViewController {
 		let pressedLocation = gesture.location(in: self.containerOptionsView)
 		let hitTestView = containerOptionsView.hitTest(pressedLocation, with: nil)
 		if hitTestView is UIImageView {
-			UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+			UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
 
 				guard let stackView = self.containerOptionsView.subviews.first as? UIStackView else { return }
 				stackView.subviews.forEach({ (imageView) in
@@ -1035,8 +1034,10 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 
 		if ended {
 			addProductButton.completePreview()
-			let centeredX = (view.frame.width - containerOptionsView.frame.width) / 2
+//			view.bringSubviewToFront(containerOptionsView)
 			self.containerOptionsView.transform = .init(translationX: addProductButton.center.x - (self.containerOptionsView.frame.width / 2), y: addProductButton.center.y - self.containerOptionsView.frame.height)
+
+
 		}
 
 	}
