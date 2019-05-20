@@ -712,22 +712,17 @@ extension CalendarLogViewController {
 
 
 	@objc func handleHapticsForAddButton(sender: AddProductFloatingButton) {
-		//		let selectionFeedbackGenerator: UISelectionFeedbackGenerator = .init()
-		//		selectionFeedbackGenerator.selectionChanged()
-
-		let generator = UIImpactFeedbackGenerator(style: .medium)
-
 
 		let targets = sender.allControlEvents
 		switch targets {
 		case .backToAnchorPoint:
 			print("back to anchor point haptic action triggered")
-			generator.impactOccurred()
+			sender.generator.impactOccurred()
 		case .overEligibleContainerRegion:
 			print("over eligible container region haptic action")
-			generator.impactOccurred()
+			sender.generator.impactOccurred()
 		default:
-			generator.impactOccurred()
+			sender.generator.impactOccurred()
 			print("do nothing")
 		}
 

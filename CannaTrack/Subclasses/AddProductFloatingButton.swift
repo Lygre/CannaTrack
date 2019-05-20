@@ -14,6 +14,7 @@ class AddProductFloatingButton: UIButton {
 	let indicaColor = UIColor(named: "indicaColor")
 	unowned var addButtonDelegate: AddButtonDelegate?
 
+	let generator = UIImpactFeedbackGenerator(style: .medium)
 
 	var path: UIBezierPath!
 
