@@ -17,12 +17,11 @@ class AddProductFloatingButton: UIButton {
 
 	var path: UIBezierPath!
 
-	lazy var propertyAnimator: UIViewPropertyAnimator = {
-		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.layoutSubviews,.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
-			self.transform = .init(scaleX: 2.5, y: 2.5)
-//			self.alpha = 0.5
-		}, completion: nil)
+	var propertyAnimator: UIViewPropertyAnimator = {
+		let propertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
+//		propertyAnimator.isInterruptible = true
+		propertyAnimator.pausesOnCompletion = true
 		propertyAnimator.scrubsLinearly = true
 		return propertyAnimator
 	}()
@@ -70,10 +69,6 @@ class AddProductFloatingButton: UIButton {
 
 
 
-		propertyAnimator.addAnimations {
-			self.transform = .init(scaleX: 2.5, y: 2.5)
-		}
-
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -99,11 +94,19 @@ class AddProductFloatingButton: UIButton {
 		self.translatesAutoresizingMaskIntoConstraints = false
 		self.clipsToBounds = false
 
+		self.propertyAnimator.pausesOnCompletion = true
+		self.propertyAnimator.isInterruptible = true
+		self.propertyAnimator.scrubsLinearly = true
+
+		self.propertyAnimator.addAnimations {
+			self.transform = .init(scaleX: 2.5, y: 2.5)
+			self.alpha = 0.5
+		}
 
 
-		propertyAnimator.pausesOnCompletion = false
-		propertyAnimator.pauseAnimation()
-		propertyAnimator.fractionComplete = 0.0
+
+//		propertyAnimator.pauseAnimation()
+//		propertyAnimator.fractionComplete = 0.0
 
 
 
@@ -127,19 +130,19 @@ class AddProductFloatingButton: UIButton {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-//			self.alpha = 0.5
+			self.alpha = 0.5
 		}
 	}
 
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		UIView.animate(withDuration: 0.15) {
-			self.alpha = 1.0
+			self.propertyAnimator.fractionComplete = 0.0
 		}
 	}
 
 	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 		UIView.animate(withDuration: 0.15) {
-			self.alpha = 1.0
+			self.propertyAnimator.fractionComplete = 0.0
 		}
 	}
 
