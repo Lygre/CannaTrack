@@ -22,42 +22,6 @@ class InventoryViewController: UIViewController {
 	//preview action container view work
 	let viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
-	/*
-	let containerOptionsView: UIView = {
-		let containerView = UIView()
-		let imagesForOptions: [UIImage] = [#imageLiteral(resourceName: "addIcon"), #imageLiteral(resourceName: "deleteIcon")]
-		let imageSize: CGFloat = 60
-		let padding: CGFloat = 6
-
-		let imageViewArray: [UIImageView] = imagesForOptions.map({ (image) -> UIImageView in
-			let imageView = UIImageView(image: image)
-//			imageView.layer.cornerRadius = 20
-			imageView.backgroundColor = .clear
-			imageView.isUserInteractionEnabled = true
-
-			return imageView
-		})
-		//add tag
-		imageViewArray[0].tag = 0
-		//delete tag
-		imageViewArray[1].tag = 1
-		let stackView = UIStackView(arrangedSubviews: imageViewArray)
-		stackView.spacing = 10
-		stackView.layoutMargins = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-		stackView.isLayoutMarginsRelativeArrangement = true
-		stackView.distribution = .fillEqually
-		stackView.axis = .horizontal
-
-		containerView.frame = CGRect(origin: .zero, size: CGSize(width: 250, height: imageSize))
-
-		containerView.addSubview(stackView)
-		stackView.frame = containerView.frame
-		containerView.alpha = 0.0
-		containerView.backgroundColor = .clear
-
-		return containerView
-	}()
-	*/
 
 	@IBOutlet var containerOptionsView: OptionsContainerView!
 
@@ -193,7 +157,16 @@ class InventoryViewController: UIViewController {
 		}
 
 		registerForPreviewing(with: self, sourceView: productsCollectionView)
+		viewPropertyAnimator.addAnimations {
 
+			print("added button to container stack view")
+			self.containerOptionsView.addSubview(self.addProductButton)
+			self.addProductButton.alpha = 0.5
+			self.containerOptionsView.alpha = 1.0
+		}
+		viewPropertyAnimator.addCompletion { (animatingPosition) in
+			self.view.addSubview(self.addProductButton)
+		}
 
 		print("registered for previewing")
     }
@@ -202,16 +175,11 @@ class InventoryViewController: UIViewController {
 		super.viewDidAppear(animated)
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 		self.view.addSubview(containerOptionsView)
-		viewPropertyAnimator.addAnimations {
 
-			print("added button to container stack view")
-			self.containerOptionsView.addSubview(self.addProductButton)
-			self.addProductButton.alpha = 0.5
-			self.containerOptionsView.alpha = 1.0
-		}
 
 		view.bringSubviewToFront(containerOptionsView)
 		view.bringSubviewToFront(addProductButton)
+		viewPropertyAnimator.startAnimation()
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 
