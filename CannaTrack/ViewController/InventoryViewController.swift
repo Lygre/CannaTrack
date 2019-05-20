@@ -164,7 +164,7 @@ class InventoryViewController: UIViewController {
 
 			print("added button to container stack view")
 			self.containerOptionsView.addSubview(self.addProductButton)
-			self.addProductButton.alpha = 0.5
+//			self.addProductButton.alpha = 0.5
 			self.containerOptionsView.alpha = 1.0
 		}
 		viewPropertyAnimator.addCompletion { (animatingPosition) in
@@ -1009,12 +1009,12 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 			addProductButton.completePreview()
 //			view.bringSubviewToFront(containerOptionsView)
 			self.containerOptionsView.transform = .init(translationX: addProductButton.center.x - (self.containerOptionsView.frame.width / 2), y: addProductButton.center.y - self.containerOptionsView.frame.height)
-//			viewPropertyAnimator.stopAnimation(<#T##withoutFinishing: Bool##Bool#>)
+//			viewPropertyAnimator.stopAnimation()
 			viewPropertyAnimator.addAnimations {
 
 				print("added button to container stack view")
 				self.containerOptionsView.addSubview(self.addProductButton)
-				self.addProductButton.alpha = 0.5
+//				self.addProductButton.alpha = 0.5
 				self.containerOptionsView.alpha = 1.0
 			}
 

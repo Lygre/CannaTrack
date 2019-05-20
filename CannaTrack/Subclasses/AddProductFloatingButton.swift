@@ -20,7 +20,7 @@ class AddProductFloatingButton: UIButton {
 	lazy var propertyAnimator: UIViewPropertyAnimator = {
 		let propertyAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0, options: [.layoutSubviews,.allowUserInteraction, .allowAnimatedContent, .curveEaseOut, .beginFromCurrentState], animations: {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
-
+//			self.alpha = 0.5
 		}, completion: nil)
 
 		propertyAnimator.scrubsLinearly = true
@@ -102,7 +102,7 @@ class AddProductFloatingButton: UIButton {
 
 		propertyAnimator.pausesOnCompletion = false
 		propertyAnimator.pauseAnimation()
-		propertyAnimator.fractionComplete = 0.5
+		propertyAnimator.fractionComplete = 0.0
 
 
 
@@ -127,6 +127,7 @@ class AddProductFloatingButton: UIButton {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		propertyAnimator.addAnimations {
 			self.transform = .init(scaleX: 2.5, y: 2.5)
+			self.alpha = 0.5
 		}
 	}
 
