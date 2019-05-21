@@ -83,7 +83,7 @@ class CalendarLogViewController: UIViewController {
 			return dateRecords
 		}
 		set {
-			self.doseTableView.reloadData()
+			self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
 		}
 	}
 
@@ -91,7 +91,7 @@ class CalendarLogViewController: UIViewController {
 		didSet {
 			print(self.dosesForDate?.debugDescription ?? "No doses for selected Date")
 			DispatchQueue.main.async {
-				self.doseTableView.reloadData()
+				self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
 			}
 		}
 	}
@@ -144,7 +144,7 @@ class CalendarLogViewController: UIViewController {
 		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
 		dynamicAnimator!.delegate = self
 		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
-		snapBehavior?.damping = 0.8
+		snapBehavior?.damping = 0.9
 		dynamicAnimator?.addBehavior(snapBehavior!)
 
 
@@ -167,7 +167,7 @@ class CalendarLogViewController: UIViewController {
 		super.viewDidAppear(animated)
 		guard let selectedDate = selectedDate else { return }
 		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
-			self.calendarCollectionView.selectDates([selectedDate])
+//			self.calendarCollectionView.selectDates([selectedDate])
 		}
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
@@ -186,7 +186,12 @@ class CalendarLogViewController: UIViewController {
 
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		self.selectedDate = calendarCollectionView.selectedDates[0]
+		if calendarCollectionView.selectedDates.isEmpty {
+			selectedDate = nil
+		} else {
+			selectedDate = calendarCollectionView.selectedDates[0]
+		}
+
 	}
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -644,21 +649,23 @@ extension CalendarLogViewController {
 						print("no cell state for point \(locationInCalendarView)")
 						return
 					}
-					calendarCollectionView.deselectAllDates()
-					calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
-					if cell.dosesPresentOnDate {
-						guard let previousHapticView = addButton.previousHapticView as? CustomCell else {
-							addButton.previousHapticView = cell
-							addButton.sendActions(for: .overEligibleContainerRegion)
-							print("previous hapticView for button was not this CustomCell OR nil; returning after sending haptic and setting previousHapticView as cell")
-							return
-						}
-						if previousHapticView != cell {
-							addButton.previousHapticView = cell
-							addButton.sendActions(for: .overEligibleContainerRegion)
-						}
+
+
+					guard let previousHapticView = addButton.previousHapticView as? CustomCell else {
+						addButton.previousHapticView = cell
+						calendarCollectionView.deselectAllDates()
+						calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
+						addButton.sendActions(for: .overEligibleContainerRegion)
+						print("previous hapticView for button was not this CustomCell OR nil; returning after sending haptic and setting previousHapticView as cell")
+						return
 					}
-					addButton.animateButtonForRegion(for: cell.bounds.size)
+					if previousHapticView != cell {
+						addButton.previousHapticView = cell
+						cell.dosesPresentOnDate ? calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false) : calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: false)
+						cell.dosesPresentOnDate ? addButton.sendActions(for: .overEligibleContainerRegion) : print("do nothing")
+					}
+
+				addButton.animateButtonForRegion(for: cell.bounds.size)
 				} else {
 					addButton.propertyAnimator.isReversed = true
 

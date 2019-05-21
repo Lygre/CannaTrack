@@ -9,10 +9,10 @@ import UIKit
 
 extension UIControl {
     func disable() {
-        enabled = false
+		isEnabled = false
     }
 
     func enable() {
-        enabled = true
+		isEnabled = true
     }
 }
