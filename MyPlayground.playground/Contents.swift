@@ -125,3 +125,31 @@ func loadDoseFromData(data: Data) -> CKRecord? {
 saveDoseToCloud()
 
 loadDoseFromData(data: data!)
+
+var array: [Int] = []
+
+class Object {
+
+	var array: [Int]? {
+		willSet(oldArray) {
+			print(oldArray)
+		}
+	}
+
+	init(with array: [Int]?) {
+		self.array = array
+	}
+
+	init() {
+		self.array = []
+	}
+
+	func addNumbersToArray(numbers: Int...) {
+		self.array?.append(contentsOf: numbers)
+	}
+
+}
+
+let object = Object()
+object.addNumbersToArray(numbers: 1)
+object.addNumbersToArray(numbers: 2)

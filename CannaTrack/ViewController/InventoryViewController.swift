@@ -60,7 +60,7 @@ final class InventoryViewController: UIViewController {
 	}
 
 	var masterProductArray: [Product]? {
-		didSet(newProductArray) {
+		willSet(newProductArray) {
 			globalMasterInventory = newProductArray ?? []
 		}
 	}
