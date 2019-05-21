@@ -119,7 +119,15 @@ class DoseViewController: UIViewController {
 
 //		saveDoseInformation(product: productForDose, doseDate: Date(), updatedMass: doseMassToUpdate, updatedProductImage: productDoseImage.image)
 		let dose = Dose(timestamp: Date(), product: productForDose, mass: doseMassToUpdate ?? 0.0, route: .inhalation, otherProductDictionary: [:])
-		dose.saveDoseLogToCloud()
+		CloudKitManager.shared.createCKRecord(for: dose) { (success, doseCreated, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print(success, doseCreated, "dose saved by CKManager")
+				}
+			}
+		}
 		dose.logDoseToCalendar(dose)
 		productForDose.numberOfDosesTakenFromProduct += 1
 		print("dose saved")

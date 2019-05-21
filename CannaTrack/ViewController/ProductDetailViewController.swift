@@ -254,7 +254,6 @@ class ProductDetailViewController: UIViewController {
 			guard let _ = product.dateOpened else { return }
 
 			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
-//			dose.saveDoseLogToCloud()
 			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
 				DispatchQueue.main.async {
 					if let error = error {

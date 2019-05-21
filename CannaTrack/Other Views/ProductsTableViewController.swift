@@ -102,7 +102,6 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 			}
 		}
 		
-//		compositeDose.saveDoseLogToCloud()
 	}
 
 	// MARK - DO THIS NEXT

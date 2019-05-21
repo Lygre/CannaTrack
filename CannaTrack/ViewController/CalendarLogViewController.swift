@@ -46,7 +46,7 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var doseCKRecords = [CKRecord]()
+	var masterDoseArray: [Dose] = []
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
 	fileprivate func updateDosesForSelectedDate() {
@@ -64,32 +64,24 @@ class CalendarLogViewController: UIViewController {
 
 	var selectedDate: Date? {
 		didSet(newlySelectedDate) {
-//			updateDosesForSelectedDate()
-			self.recordsForDate = doseCKRecords.filter { (someRecord) -> Bool in
-				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+			self.dosesForDate = masterDoseArray.filter { (someDose) -> Bool in
+				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
 				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: newlySelectedDate ?? Date())
 				return dateFromDose == currentDate
 			}
 		}
 	}
 
-	var recordsForDate: [CKRecord] {
+	var dosesForDate: [Dose] {
 		get {
-			let dateRecords = doseCKRecords.filter { (someRecord) -> Bool in
-				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someRecord.creationDate!)
+			let dateDoses = masterDoseArray.filter { (someDose) -> Bool in
+				let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
 				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
 				return dateFromDose == currentDate
 			}
-			return dateRecords
+			return dateDoses
 		}
 		set {
-			self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
-		}
-	}
-
-	var dosesForDate: [Dose]? {
-		didSet {
-			print(self.dosesForDate?.debugDescription ?? "No doses for selected Date")
 			DispatchQueue.main.async {
 				self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
 			}
@@ -125,9 +117,6 @@ class CalendarLogViewController: UIViewController {
 		self.doseTableView.delegate = self
 		self.doseTableView.dataSource = self
 		setupActivityView()
-//		savePrivateDatabase()
-		queryCloudForDoseRecords()
-//		loadDoseCalendarInfo()
 		// Do any additional setup after loading the view.
 		setupDoseLoggingDateFormatter()
 
@@ -152,12 +141,37 @@ class CalendarLogViewController: UIViewController {
 		dosePreviewInteraction = UIPreviewInteraction(view: addButton)
 		dosePreviewInteraction?.delegate = self
 		selectedDate = Date()
+
+		doseLogDictionaryGLOBAL = []
+
+		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
+		masterDoseArray = []
+		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
+			DispatchQueue.main.async {
+				if let dose = dose {
+					if !self.masterDoseArray.contains(dose) {
+						print("retrieved dose.")
+						self.masterDoseArray.append(dose)
+						self.doseTableView.reloadData()
+						self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+						self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
+
+					}
+				}
+				if let stopAnimating = shouldStopAnimating {
+					if stopAnimating {
+						self.activityView.stopAnimating()
+					}
+				}
+			}
+		}
+
     }
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		queryCloudForDoseRecords()
 		setupCalendarView()
+		CloudKitManager.shared.setupDoseCKQuerySubscription()
 		calendarCollectionView.collectionViewLayout.invalidateLayout()
 		calendarCollectionView.reloadData()
 
@@ -165,7 +179,12 @@ class CalendarLogViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		guard let selectedDate = selectedDate else { return }
+		guard let selectedDate = selectedDate else {
+			self.calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
+				//			self.calendarCollectionView.selectDates([selectedDate])
+			}
+			return
+		}
 		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
 //			self.calendarCollectionView.selectDates([selectedDate])
 		}
@@ -224,28 +243,6 @@ class CalendarLogViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-	@IBAction func saveDoseLogClicked(_ sender: Any) {
-		saveDoseCalendarInfo()
-	}
-
-
-	@IBAction func printDoseLogClicked(_ sender: Any) {
-		print(doseLogDictionaryGLOBAL.debugDescription)
-		loadDoseCalendarInfo()
-
-	}
-
-	@IBAction func logNewDose(_ sender: Any) {
-
-	}
-
-	@IBAction func refreshDoseLogDataClicked(_ sender: Any) {
-		queryCloudForDoseRecords()
-		print("querying cloud for dose records")
-	}
-
-
 
 }
 
@@ -341,9 +338,9 @@ extension CalendarLogViewController {
 
 		guard let validCell = cell as? CustomCell else { return }
 
-		let dosesOnDate = doseCKRecords.filter { (someDoseRecord) -> Bool in
-			guard let dateFromRecord = someDoseRecord.creationDate else { return false }
-			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: dateFromRecord)
+		let dosesOnDate = masterDoseArray.filter { (someDose) -> Bool in
+
+			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
 			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: date)
 			return dateFromDose == currentDate
 		}
@@ -410,14 +407,23 @@ extension CalendarLogViewController {
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let doseRecord = doseCKRecords[indexPath.row]
+		let doseToDelete = masterDoseArray[indexPath.row]
 
 		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-			let indexInRecords = self.doseCKRecords.firstIndex(of: doseRecord)
-			guard let indexToRemove = indexInRecords else { return }
-			self.doseCKRecords.remove(at: indexToRemove)
-			self.deleteDoseRecordFromCloud(with: doseRecord)
-			self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
+			CloudKitManager.shared.deleteDoseUsingModifyRecords(dose: doseToDelete, completion: { (success, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						let indexInRecords = self.masterDoseArray.firstIndex(of: doseToDelete)
+						guard let indexToRemove = indexInRecords else { return }
+						self.masterDoseArray.remove(at: indexToRemove)
+//						self.deleteDoseRecordFromCloud(with: doseToDelete)
+						self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
+					}
+				}
+			})
+
 		}
 		action.backgroundColor = .red
 		return action
@@ -429,7 +435,7 @@ extension CalendarLogViewController {
 
 extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return recordsForDate.count
+		return dosesForDate.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -439,11 +445,7 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 		formatter.dateStyle = .none
 		formatter.timeStyle = .medium
 
-		let data = recordsForDate[indexPath.row]["DoseData"] as! Data
-		let propertylistDecoder = PropertyListDecoder()
-
-		guard let doseForIndex = try? propertylistDecoder.decode(Dose.self, from: data) else { return cell }
-
+		let doseForIndex = dosesForDate[indexPath.row]
 		cell.timeLabel.text = formatter.string(from: doseForIndex.timestamp)
 		cell.productLabel.text = doseForIndex.product.productType.rawValue
 		cell.strainLabel.text = doseForIndex.product.strain.name
@@ -495,33 +497,6 @@ extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension CalendarLogViewController {
-
-	fileprivate func queryCloudForDoseRecords() {
-
-		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
-		self.activityView.startAnimating()
-		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
-
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					self.doseCKRecords = recordsRetrieved ?? []
-					print("dose records loaded: # \(recordsRetrieved?.count ?? 0)")
-					self.doseTableView.reloadData()
-					self.calendarCollectionView.collectionViewLayout.invalidateLayout()
-					self.calendarCollectionView.reloadData()
-					self.activityView.stopAnimating()
-				}
-
-
-				
-			}
-		}
-
-	}
-
-
 
 	fileprivate func deleteDoseRecordFromCloud(with record: CKRecord) {
 		let recordID = record.recordID
@@ -695,11 +670,8 @@ extension CalendarLogViewController {
 				addButton.sendActions(for: .overEligibleContainerRegion)
 				print("pan ended on tableview")
 				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
-				//				animateButtonForTableRegion(button: addButton, size: sizeForAnimation)
 			} else if (locationInCalendarView.y > 0) && (locationInCalendarView.y < calendarCollectionView.bounds.height) {
-//				addButton.sendActions(for: .overEligibleContainerRegion)
 				print("pan ended on calendar collection")
-//				performSegue(withIdentifier: logDoseFromCalendarSegueIdentifier, sender: nil)
 				guard let cellState = calendarCollectionView.cellStatus(at: locationInCalendarView) else { return }
 				calendarCollectionView.selectDates([cellState.date], triggerSelectionDelegate: true, keepSelectionIfMultiSelectionAllowed: false)
 

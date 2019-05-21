@@ -214,3 +214,11 @@ extension Dose {
 	}
 
 }
+
+extension Dose: Equatable {
+
+	static func == (lhs: Dose, rhs: Dose) -> Bool {
+		return lhs.timestamp == rhs.timestamp && lhs.product == rhs.product && lhs.otherProducts == rhs.otherProducts && lhs.mass == rhs.mass
+	}
+
+}
