@@ -67,6 +67,12 @@
 		9FB215FC2289FE58004962A9 /* TouchLocationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB215FB2289FE58004962A9 /* TouchLocationProtocols.swift */; };
 		9FB8F7F0227607C300823CDC /* FilterOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */; };
 		9FB8F7F222761A9800823CDC /* FilterOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */; };
+		9FBF4A8F2293774B008F9D3E /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A892293774A008F9D3E /* UITableViewExtensions.swift */; };
+		9FBF4A902293774B008F9D3E /* UIViewExtentsions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8A2293774A008F9D3E /* UIViewExtentsions.swift */; };
+		9FBF4A912293774B008F9D3E /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8B2293774A008F9D3E /* UIConstants.swift */; };
+		9FBF4A922293774B008F9D3E /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8C2293774B008F9D3E /* UIColorExtensions.swift */; };
+		9FBF4A932293774B008F9D3E /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */; };
+		9FBF4A942293774B008F9D3E /* UIControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8E2293774B008F9D3E /* UIControlExtensions.swift */; };
 		9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */; };
 		9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3DCD7226CD00600C2C517 /* Constants.swift */; };
 		9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */; };
@@ -137,6 +143,12 @@
 		9FB215FB2289FE58004962A9 /* TouchLocationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchLocationProtocols.swift; sourceTree = "<group>"; };
 		9FB8F7EF227607C300823CDC /* FilterOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewController.swift; sourceTree = "<group>"; };
 		9FB8F7F122761A9800823CDC /* FilterOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOptionsTableViewCell.swift; sourceTree = "<group>"; };
+		9FBF4A892293774A008F9D3E /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
+		9FBF4A8A2293774A008F9D3E /* UIViewExtentsions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtentsions.swift; sourceTree = "<group>"; };
+		9FBF4A8B2293774A008F9D3E /* UIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
+		9FBF4A8C2293774B008F9D3E /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
+		9FBF4A8E2293774B008F9D3E /* UIControlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlExtensions.swift; sourceTree = "<group>"; };
 		9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonProtocol.swift; sourceTree = "<group>"; };
 		9FF3DCD7226CD00600C2C517 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9FFEF842221C727D0077F57F /* StrainDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailViewController.swift; sourceTree = "<group>"; };
@@ -360,6 +372,7 @@
 				9F4A3305228233FF0092D8AC /* Subclasses */,
 				9F52F033221DC313007E6330 /* Other Views */,
 				9F52F032221DC2FA007E6330 /* Cells */,
+				9FBF4A8822937722008F9D3E /* Extensions */,
 				9F52F031221DC2BC007E6330 /* ViewController */,
 				9FB6F307224983B200C18BD3 /* Deprecated Objects */,
 				9F825C262214A2C300FC2327 /* Assets.xcassets */,
@@ -375,6 +388,19 @@
 				9F825C212214A2C200FC2327 /* SearchViewController.swift */,
 			);
 			path = "Deprecated Objects";
+			sourceTree = "<group>";
+		};
+		9FBF4A8822937722008F9D3E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9FBF4A8C2293774B008F9D3E /* UIColorExtensions.swift */,
+				9FBF4A8B2293774A008F9D3E /* UIConstants.swift */,
+				9FBF4A8E2293774B008F9D3E /* UIControlExtensions.swift */,
+				9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */,
+				9FBF4A892293774A008F9D3E /* UITableViewExtensions.swift */,
+				9FBF4A8A2293774A008F9D3E /* UIViewExtentsions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,6 +543,7 @@
 				9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */,
 				9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */,
 				9F4AD00A22861C3B00079BC7 /* CloudKitController.swift in Sources */,
+				9FBF4A922293774B008F9D3E /* UIColorExtensions.swift in Sources */,
 				9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */,
 				9F22F122224D458700C67D69 /* CustomCell.swift in Sources */,
 				9F0F0BE22284E9B400DFFFC4 /* HTTPTask.swift in Sources */,
@@ -534,6 +561,7 @@
 				9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */,
 				9F50065E222988E90061FD11 /* ProductHeaderCollectionReusableView.swift in Sources */,
 				9F922A502224B584001407D8 /* AddProductViewController.swift in Sources */,
+				9FBF4A8F2293774B008F9D3E /* UITableViewExtensions.swift in Sources */,
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */,
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
@@ -551,17 +579,21 @@
 				9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */,
 				9F4A330922823FC70092D8AC /* AddProductFloatingButton.swift in Sources */,
 				9F0F0BE62284EB8300DFFFC4 /* URLParameterEncoder.swift in Sources */,
+				9FBF4A912293774B008F9D3E /* UIConstants.swift in Sources */,
 				9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */,
+				9FBF4A942293774B008F9D3E /* UIControlExtensions.swift in Sources */,
 				9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */,
 				9F3B809D224E96610059294B /* Dose.swift in Sources */,
 				9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */,
 				9F45307A22875B9600861222 /* InventoryManagerDelegate.swift in Sources */,
+				9FBF4A902293774B008F9D3E /* UIViewExtentsions.swift in Sources */,
 				9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */,
 				9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */,
 				9FFEF843221C727D0077F57F /* StrainDetailViewController.swift in Sources */,
 				9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */,
 				9F0F0BDE2284E74500DFFFC4 /* EndPointType.swift in Sources */,
 				9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */,
+				9FBF4A932293774B008F9D3E /* UIImageExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
