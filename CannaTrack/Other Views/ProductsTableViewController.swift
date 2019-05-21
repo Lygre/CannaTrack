@@ -88,8 +88,21 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		guard let firstProductEntry = dictionaryForProductsInDose.popFirst() else { return }
 		let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, otherProductDictionary: dictionaryForProductsInDose)
 
-		compositeDose.saveDoseLogToCloud()
-		print("composite dose saved to cloud \(compositeDose)")
+		CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print(success, createdDose,
+						  "composite dose saved to cloud")
+					if success {
+						self.dismiss(animated: true, completion: nil)
+					}
+				}
+			}
+		}
+		
+//		compositeDose.saveDoseLogToCloud()
 	}
 
 	// MARK - DO THIS NEXT
@@ -97,7 +110,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 	@IBAction func saveCompositeDoseTapped(_ sender: Any) {
 		//need to implement this
 		saveCompositeDose()
-		dismiss(animated: true, completion: nil)
+		print("save composite dose method executed")
+//		dismiss(animated: true, completion: nil)
 	}
 
 

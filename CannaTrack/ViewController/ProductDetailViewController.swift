@@ -69,7 +69,7 @@ class ProductDetailViewController: UIViewController {
 	var doseArray: [Dose] = []
 
 	unowned var editMassDelegate: EditMassDelegate!
-	unowned var inventoryManagerDelegate: InventoryManagerDelegate!
+	unowned var inventoryManagerDelegate: InventoryManagerDelegate?
 
 	var doseCKRecords = [CKRecord]()
 
@@ -254,7 +254,20 @@ class ProductDetailViewController: UIViewController {
 			guard let _ = product.dateOpened else { return }
 
 			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
-			dose.saveDoseLogToCloud()
+//			dose.saveDoseLogToCloud()
+			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						if success {
+							print("Dose Record saved from PReview action in ProductDetailViewController")
+						} else {
+							print("Dose record could not be saved, but didn't throw error")
+						}
+					}
+				}
+			})
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
@@ -301,7 +314,7 @@ class ProductDetailViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate.deleteProductFromLocalInventory(product: product)
+						self.inventoryManagerDelegate?.deleteProductFromLocalInventory(product: product)
 						print(success, "Was a success deleting product")
 					}
 				}
@@ -633,7 +646,7 @@ extension ProductDetailViewController {
 							print("could not get product To be updated")
 							return
 						}
-						self.inventoryManagerDelegate.updateProduct(product: productUpdated)
+						self.inventoryManagerDelegate?.updateProduct(product: productUpdated)
 						self.navigationController?.popViewController(animated: true)
 						print(productUpdated)
 					}
