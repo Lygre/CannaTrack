@@ -13,7 +13,7 @@ import Foundation
 
 
 
-class InventoryViewController: UIViewController {
+final class InventoryViewController: UIViewController {
 
 	let productCategoryCellIdentifier = "ProductCategoryCollectionViewCell"
 	let inventoryCellIdentifier = "InventoryCollectionViewCell"
