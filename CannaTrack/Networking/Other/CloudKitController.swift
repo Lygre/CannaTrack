@@ -41,6 +41,7 @@ struct CloudKitManager {
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
 
 	static let productsFetchOperation = CKFetchRecordsOperation()
+	static let doseFetchOperation = CKFetchRecordsOperation()
 //	static let subscriptionID = "cloudkit-product-changes"
 	static let subscriptionID = "product-changes"
 	static let dosesSubscriptionID = "dose-changes"

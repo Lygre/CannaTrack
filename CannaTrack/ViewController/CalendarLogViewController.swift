@@ -46,11 +46,15 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var masterDoseArray: [Dose] = []
+	var masterDoseArray: [Dose] = [] {
+		willSet(newDoseArray) {
+			doseLogDictionaryGLOBAL = newDoseArray
+		}
+	}
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
 	fileprivate func updateDosesForSelectedDate() {
-		self.dosesForDate = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
+		self.dosesForDate = masterDoseArray.filter({ (someDose) -> Bool in
 			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
 			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
 			return dateFromDose == currentDate
@@ -83,6 +87,7 @@ class CalendarLogViewController: UIViewController {
 		}
 		set {
 			DispatchQueue.main.async {
+//				self.doseTableView.reloadData()
 				self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
 			}
 		}
@@ -171,6 +176,7 @@ class CalendarLogViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		setupCalendarView()
+
 		CloudKitManager.shared.setupDoseCKQuerySubscription()
 		calendarCollectionView.collectionViewLayout.invalidateLayout()
 		calendarCollectionView.reloadData()
@@ -179,6 +185,8 @@ class CalendarLogViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		masterDoseArray = []
+		activityView.startAnimating()
 		guard let selectedDate = selectedDate else {
 			self.calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
 				//			self.calendarCollectionView.selectDates([selectedDate])
@@ -187,6 +195,26 @@ class CalendarLogViewController: UIViewController {
 		}
 		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
 //			self.calendarCollectionView.selectDates([selectedDate])
+		}
+
+		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
+			DispatchQueue.main.async {
+				if let dose = dose {
+					if !self.masterDoseArray.contains(dose) {
+						print("retrieved dose.")
+						self.masterDoseArray.append(dose)
+						self.doseTableView.reloadData()
+						self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+						self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
+
+					}
+				}
+				if let stopAnimating = shouldStopAnimating {
+					if stopAnimating {
+						self.activityView.stopAnimating()
+					}
+				}
+			}
 		}
 
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
@@ -201,6 +229,11 @@ class CalendarLogViewController: UIViewController {
 		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+	}
+
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		CloudKitManager.shared.unsubscribeToDoseUpdates()
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
@@ -415,9 +448,12 @@ extension CalendarLogViewController {
 					if let error = error {
 						print(error)
 					} else {
-						let indexInRecords = self.masterDoseArray.firstIndex(of: doseToDelete)
-						guard let indexToRemove = indexInRecords else { return }
-						self.masterDoseArray.remove(at: indexToRemove)
+						guard let indexInRecords = self.masterDoseArray.firstIndex(of: doseToDelete) else {
+							print("no index for Dose found in master dose array: deleteAction")
+							return
+						}
+						print(indexInRecords, doseToDelete)
+						self.masterDoseArray.remove(at: indexInRecords)
 //						self.deleteDoseRecordFromCloud(with: doseToDelete)
 						self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
 					}

@@ -260,6 +260,7 @@ class ProductDetailViewController: UIViewController {
 						print(error)
 					} else {
 						if success {
+							doseLogDictionaryGLOBAL.append(dose)
 							print("Dose Record saved from PReview action in ProductDetailViewController")
 						} else {
 							print("Dose record could not be saved, but didn't throw error")

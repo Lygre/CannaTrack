@@ -93,6 +93,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 				if let error = error {
 					print(error)
 				} else {
+					doseLogDictionaryGLOBAL.append(compositeDose)
 					print(success, createdDose,
 						  "composite dose saved to cloud")
 					if success {
