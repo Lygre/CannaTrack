@@ -83,6 +83,7 @@ class CalendarLogViewController: UIViewController {
 				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
 				return dateFromDose == currentDate
 			}
+			//add a sorted here
 			return dateDoses
 		}
 		set {
