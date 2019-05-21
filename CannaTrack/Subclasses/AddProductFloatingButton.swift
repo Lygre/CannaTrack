@@ -136,7 +136,7 @@ class AddProductFloatingButton: UIButton {
 			self.alpha = 0.5
 		}
 	}
-
+	/*
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		UIView.animate(withDuration: 0.15) {
 			self.propertyAnimator.fractionComplete = 0.0
@@ -148,7 +148,7 @@ class AddProductFloatingButton: UIButton {
 			self.propertyAnimator.fractionComplete = 0.0
 		}
 	}
-
+	*/
 
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
