@@ -251,8 +251,9 @@ extension AddProductFloatingButton {
 	func animateButtonForRegion(for size: CGSize) {
 		self.propertyAnimator.stopAnimation(true)
 		self.propertyAnimator.addAnimations {
-			self.bounds = CGRect(origin: self.center, size: size)
 			self.transform = .identity
+			self.bounds = CGRect(origin: self.center, size: size)
+
 		}
 		self.propertyAnimator.startAnimation()
 

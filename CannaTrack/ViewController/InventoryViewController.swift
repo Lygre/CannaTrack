@@ -304,6 +304,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 			cell.categoryLabel.text = categoriesPresent
 
+
 			//!MARK: - Generalized Cell Setup perform here
 			cell.backgroundColor = .lightGray
 			cell.layer.cornerRadius = 12
@@ -969,9 +970,11 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 			print("There is no button; not able to be cast as The Button, anyway")
 			return
 		}
-		UIView.animate(withDuration: 0.1) {
+		self.addProductButton.animateButtonForRegion(for: originalAddButtonSize)
+		UIView.animate(withDuration: 0.25) {
 			self.addProductButton.alpha = 1
 		}
+
 		button.sendActions(for: .backToAnchorPoint)
 	}
 

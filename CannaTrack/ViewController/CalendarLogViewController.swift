@@ -598,9 +598,10 @@ extension CalendarLogViewController: UIDynamicAnimatorDelegate {
 			print("There is no button; not able to be cast as The Button, anyway")
 			return
 		}
-		UIView.animate(withDuration: 0.1) {
+		UIView.animate(withDuration: 0.25) {
 			self.addButton.alpha = 1
 		}
+		self.addButton.animateButtonForRegion(for: originalAddButtonSize)
 		button.sendActions(for: .backToAnchorPoint)
 	}
 
