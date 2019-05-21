@@ -18,6 +18,13 @@ typealias UpdateProductCompletion = (_ success: Bool, _ resultingCloudProduct: P
 typealias DeleteProductCompletion = (_ success: Bool, _ error: Error?) -> Void
 typealias RetrieveProductCompletion = (_ product: Product?, _ moreComing: Bool?) -> Void
 
+//Dose record typealiases
+typealias CreateDoseCompletion = (_ success: Bool, _ resultingCloudDose: Dose?, _ error: Error?) -> Void
+typealias RetrieveDosesCompletion = (_ doses: [Dose]?, _ error: Error?) -> Void
+typealias UpdateDoseCompletion = (_ success: Bool, _ resultingCloudDose: Dose?, _ error: Error?) -> Void
+typealias DeleteDoseCompletion = (_ success: Bool, _ error: Error?) -> Void
+typealias RetrieveDoseCompletion = (_ dose: Dose?, _ moreComing: Bool?) -> Void
+
 
 struct CloudKitNotifications {
 	static let NotificationReceived = "iCloudRemoteNotificationReceived"
@@ -159,6 +166,10 @@ struct CloudKitManager {
 
 	}
 
+
+
+
+	//fetch operation for products
 	func setupFetchOperation(with recordIDs: [CKRecord.ID], completion: @escaping RetrieveProductsCompletion) {
 		//need to save the recordIDs locally
 		let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
@@ -372,7 +383,29 @@ struct CloudKitManager {
 }
 
 
+extension CloudKitManager {
 
+
+	func createCKRecord(for dose: Dose, completion: @escaping CreateDoseCompletion) {
+		let record = dose.toCKRecord()
+
+		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
+			guard let serverRecord = serverRecord else {
+				DispatchQueue.main.async {
+					completion(false, nil, error)
+				}
+				return
+			}
+			DispatchQueue.main.async {
+				completion(true, Dose.fromCKRecord(record: serverRecord), nil)
+			}
+		}
+	}
+
+
+
+
+}
 
 
 

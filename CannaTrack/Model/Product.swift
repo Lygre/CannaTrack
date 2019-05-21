@@ -261,7 +261,7 @@ extension Product {
 		guard let decodedProduct = try? plistDecoder.decode(Product.self, from: productData) else { return nil }
 
 		guard let asset = record["ProductImageData"] as? CKAsset else {
-			print("Image missing from record")
+			print("Image missing from Product record")
 			return nil
 		}
 		guard let imageData = NSData(contentsOf: asset.fileURL!) else {
