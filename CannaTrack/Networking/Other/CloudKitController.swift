@@ -30,6 +30,9 @@ struct CloudKitNotifications {
 	static let NotificationReceived = "iCloudRemoteNotificationReceived"
 	static let NotificationKey = "Notification"
 	static let ProductChange = "ProductChangeReceived"
+
+	static let DoseChange = "DoseChangeReceived"
+
 }
 
 struct CloudKitManager {
@@ -40,6 +43,7 @@ struct CloudKitManager {
 	static let productsFetchOperation = CKFetchRecordsOperation()
 //	static let subscriptionID = "cloudkit-product-changes"
 	static let subscriptionID = "product-changes"
+	static let dosesSubscriptionID = "dose-changes"
 	static let subscriptionSavedKey = "ckSubscriptionSaved"
 	static let serverChangeTokenKey = "ckServerChangeToken"
 	var cloudKitObserver: NSObjectProtocol?
@@ -304,14 +308,14 @@ struct CloudKitManager {
 		notification.shouldBadge = true
 
 		subscription.notificationInfo = notification
-		config.qualityOfService = .utility
+		config.qualityOfService = .userInitiated
 
 		CloudKitManager.privateDatabase.save(subscription) { (subscription, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error.localizedDescription)
 				} else {
-					print("Subscription Saved to Server from CloudKitManager!")
+					print("Product Subscription Saved to Server from CloudKitManager!")
 				}
 			}
 		}
@@ -404,6 +408,173 @@ extension CloudKitManager {
 
 
 
+	func retrieveAllDoses(completion: @escaping RetrieveDoseCompletion) {
+		let predicate = NSPredicate(format: "TRUEPREDICATE")
+		let query = CKQuery(recordType: "Dose", predicate: predicate)
+
+
+		let queryOperation = CKQueryOperation(query: query)
+		queryOperation.queryCompletionBlock = { (operationCursor, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+
+					print(error.localizedDescription)
+				} else {
+					if let _ = operationCursor {
+						completion(nil, true)
+						print("query has finished executing, but did not obtain all records. Received operationCursor object as marker to use to receive rest of records")
+					} else {
+						completion(nil, true)
+						print("dose query completed by CKManager")
+					}
+				}
+			}
+
+		}
+		queryOperation.recordFetchedBlock = { record in
+			DispatchQueue.main.async {
+				guard let dose = Dose.fromCKRecord(record: record) else { return }
+				print("dose record fetched by query in CKManager")
+				completion(dose, false)
+			}
+		}
+		let config = CKQueryOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+		queryOperation.configuration = config
+
+		CloudKitManager.privateDatabase.add(queryOperation)
+
+	}
+
+
+	func updateDose(dose: Dose, completion: @escaping UpdateDoseCompletion) {
+		let record = dose.toCKRecord()
+		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+		let config = CKModifyRecordsOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+		operation.configuration = config
+		operation.savePolicy = .allKeys
+		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+					completion(false, nil, error)
+				} else {
+					if dose.recordID != nil {
+						completion(true, dose, nil)
+						print("Dose Records wwere updated")
+					} else {
+						completion(true, nil, nil)
+						print("okay. Nothing updates")
+					}
+				}
+			}
+		}
+
+		CloudKitManager.privateDatabase.add(operation)
+
+	}
+
+	func deleteDoseUsingModifyRecords(dose: Dose, completion: @escaping DeleteDoseCompletion) {
+		guard let doseRecordID = dose.recordID else {
+			completion(false, nil)
+			return
+		}
+
+		let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [doseRecordID])
+		let config = CKModifyRecordsOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 10
+
+		operation.configuration = config
+
+		operation.modifyRecordsCompletionBlock = { (_, deletedRecordIDs, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					if let deletedRecordIDs = deletedRecordIDs {
+						print(deletedRecordIDs, "deleted")
+						completion(true, nil)
+					}
+				}
+			}
+		}
+
+		CloudKitManager.privateDatabase.add(operation)
+
+	}
+
+
+	func fetchDoseCKQuerySubscriptions() {
+
+		let _: [CKSubscription.ID] = ["dose-changes"]
+
+		CloudKitManager.privateDatabase.fetchAllSubscriptions { (subscriptions, error) in
+			DispatchQueue.main.async {
+				if error == nil {
+					if let subscriptions = subscriptions {
+						if subscriptions.isEmpty {
+							self.setupDoseCKQuerySubscription()
+						} else {
+							print("\(subscriptions.debugDescription) retrieved by CloudKitManager")
+						}
+						//more code to come!
+
+					}
+				} else {
+					print(error!.localizedDescription)
+				}
+			}
+		}
+
+	}
+
+	func setupDoseCKQuerySubscription() {
+		let predicate = NSPredicate(value: true)
+		let subscription = CKQuerySubscription(recordType: "Dose", predicate: predicate, subscriptionID: "dose-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
+
+
+		let config = CKModifySubscriptionsOperation.Configuration()
+		config.timeoutIntervalForRequest = 20
+		config.timeoutIntervalForResource = 20
+
+
+		let notification = CKSubscription.NotificationInfo()
+		notification.alertBody = "There's a new dose in Inventory"
+		notification.soundName = "default"
+		notification.shouldSendContentAvailable = true
+		notification.shouldBadge = false
+
+		subscription.notificationInfo = notification
+		config.qualityOfService = .userInitiated
+
+		CloudKitManager.privateDatabase.save(subscription) { (subscription, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+				} else {
+					print("Dose Subscription Saved to Server from CloudKitManager!")
+				}
+			}
+		}
+	}
+
+
+	func unsubscribeToDoseUpdates() {
+		CloudKitManager.privateDatabase.delete(withSubscriptionID: CloudKitManager.dosesSubscriptionID) { (subscription, error) in
+			if let error = error {
+				print(error)
+			} else {
+				print(subscription, "saved unsubscription")
+			}
+		}
+	}
 
 }
 
