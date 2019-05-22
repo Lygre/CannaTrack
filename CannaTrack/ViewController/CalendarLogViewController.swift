@@ -492,7 +492,7 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 		cell.timeLabel.text = formatter.string(from: doseForIndex.timestamp)
 		cell.productLabel.text = doseForIndex.product.productType.rawValue
 		cell.strainLabel.text = doseForIndex.product.strain.name
-
+		cell.massLabel.text = "\(doseForIndex.mass ?? 0)g"
 		switch doseForIndex.product.strain.race {
 		case .hybrid:
 			cell.backgroundColor = UIColor(named: "hybridColor")

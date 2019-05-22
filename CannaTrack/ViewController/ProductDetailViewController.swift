@@ -479,6 +479,8 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 
 		cell.productLabel.text = activeDetailProduct.productType.rawValue
 		cell.strainLabel.text = activeDetailProduct.strain.name
+		guard let dose = Dose.fromCKRecord(record: doseCKRecords[indexPath.row]) else { return cell }
+		cell.massLabel.text = "\(dose.mass ?? 0)g"
 		switch activeDetailProduct.strain.race {
 		case .hybrid:
 			cell.backgroundColor = UIColor(named: "hybridColor")
