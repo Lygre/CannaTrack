@@ -442,7 +442,7 @@ extension CalendarLogViewController {
 
 	func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
 
-		let doseToDelete = masterDoseArray[indexPath.row]
+		let doseToDelete = dosesForDate[indexPath.row]
 
 		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
 			CloudKitManager.shared.deleteDoseUsingModifyRecords(dose: doseToDelete, completion: { (success, error) in

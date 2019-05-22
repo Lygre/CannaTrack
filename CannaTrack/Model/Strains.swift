@@ -11,7 +11,7 @@ import UIKit
 
 
 var masterStrainDatabase: [Strain] = [] {
-	didSet(updatedDatabase) {
+	willSet(updatedDatabase) {
 		saveStrainDatabaseData(strainDB: updatedDatabase)
 	}
 }
@@ -161,6 +161,7 @@ class Strain: Codable {
 	let race: StrainVariety
 	let desc: String?
 	//	var flavors: ???
+	var favorite: Bool
 	var effects: Effects?
 	var flavors: [String]?
 
@@ -169,39 +170,13 @@ class Strain: Codable {
 		self.name = name
 		self.race = race
 		self.desc = description
+		self.favorite = false
 		self.effects = nil
-//		sendRequestForEffects(forStrain: id, completion: { effectParsed in })
 
 
 	}
 
 
-
-
-
-
-	/*
-	func sendRequestForEffects(forStrain id: Int, completion: @escaping ((Effects) ->Void)) {
-		let urlForId = "https://strainapi.evanbusse.com/oJ5GvWc/strains/data/effects/" + String("\(id)").trimmingCharacters(in: .whitespaces)
-		guard let urlObj = URL(string: urlForId) else { return }
-
-		URLSession.shared.dataTask(with: urlObj) {(data, response, error) in
-
-			guard let data = data else { return }
-
-			do {
-				let effectsDictionary = try JSONDecoder().decode(Effects.self, from: data)
-				//				self.effects = intermediateBasestrainArray.effects
-				self.effects = effectsDictionary
-				completion(effectsDictionary)
-				print("effect parsed from strain database")
-			} catch let jsonError {
-				print("Error serializing json: ", jsonError)
-			}
-
-			}.resume()
-	}
-	*/
 
 
 }

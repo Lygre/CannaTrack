@@ -22,6 +22,19 @@ class StrainCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var varietyLabel: UILabel!
 
+	var isFavorite: Bool = false {
+		didSet {
+			self.layer.borderWidth = isFavorite ? 2 : 0
+		}
+	}
+
+
+
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		isFavorite = false
+		self.layer.borderColor = UIColor.green.cgColor
+	}
 
 
 }

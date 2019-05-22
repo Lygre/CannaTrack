@@ -105,6 +105,17 @@ class StrainDetailViewController: UIViewController {
 
 	}
 
+	override var previewActionItems: [UIPreviewActionItem] {
+		let favoriteAction = UIPreviewAction(title: "Toggle Favorite Strain", style: .default) { [unowned self](_, _) in
+			guard let strain = self.activeDetailStrain else { preconditionFailure("Need a strain to favorite it; crashing from StrainDetailViewController quick action/preview action")}
+				//do any UI work here
+				strain.favorite = strain.favorite ? false : true
+				print("toggled favorite property for product by quick action")
+
+		}
+		return [favoriteAction]
+	}
+
     /*
     // MARK: - Navigation
 

@@ -160,6 +160,8 @@ class StrainsCollectionViewController: UICollectionViewController {
 			}
 		}()
 
+		cell.isFavorite = strainForIndexPath.favorite ? true : false
+
         return cell
     }
 
