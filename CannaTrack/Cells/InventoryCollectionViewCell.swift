@@ -20,6 +20,9 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var dateOpenedLabel: UILabel!
 
+	@IBOutlet var confirmationIndicator: UIImageView!
+
+//	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
 
 	override var isSelected: Bool {
 		didSet {
@@ -31,6 +34,16 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 		super.awakeFromNib()
 		isSelected = false
 		self.layer.borderColor = UIColor.blue.cgColor
+
+		self.confirmationIndicator.alpha = 0.0
+
 	}
 
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+
+	}
+
+
 }
+

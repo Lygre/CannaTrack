@@ -884,8 +884,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" axis="vertical" distribution="equalSpacing" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-NP-09E" userLabel="inventoryProductInformationStackView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="139" height="94"/>
+                                                <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-NP-09E" userLabel="inventoryProductInformationStackView">
+                                                    <rect key="frame" x="1" y="4" width="98.5" height="92"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="im1-K2-pyY">
                                                             <rect key="frame" x="0.0" y="0.0" width="98.5" height="16"/>
@@ -931,14 +931,24 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
+                                                    <rect key="frame" x="72" y="0.0" width="28" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="sHF-hd-SHX" secondAttribute="height" multiplier="1:1" id="iSe-Aq-Nch"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="sHF-hd-SHX" firstAttribute="top" secondItem="xoa-2g-BQ6" secondAttribute="top" id="AUm-XW-PfW"/>
+                                            <constraint firstItem="sHF-hd-SHX" firstAttribute="height" secondItem="xoa-2g-BQ6" secondAttribute="height" multiplier="0.28" id="Aam-Gn-sT5"/>
                                             <constraint firstItem="xDS-NP-09E" firstAttribute="centerY" secondItem="xoa-2g-BQ6" secondAttribute="centerY" id="EHA-of-Ccp"/>
+                                            <constraint firstAttribute="trailing" secondItem="sHF-hd-SHX" secondAttribute="trailing" id="Ltf-OF-dQN"/>
                                             <constraint firstItem="xDS-NP-09E" firstAttribute="centerX" secondItem="xoa-2g-BQ6" secondAttribute="centerX" id="m3U-ss-ceE"/>
                                         </constraints>
                                         <size key="customSize" width="100" height="100"/>
                                         <connections>
+                                            <outlet property="confirmationIndicator" destination="sHF-hd-SHX" id="Lge-zq-hNo"/>
                                             <outlet property="dateOpenedLabel" destination="UzB-zf-wV8" id="q3I-eO-cH2"/>
                                             <outlet property="doseCountLabel" destination="XiA-YU-b7H" id="IAT-bP-czP"/>
                                             <outlet property="inventoryProductLabel" destination="im1-K2-pyY" id="SoZ-v2-F9l"/>
@@ -1342,8 +1352,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" axis="vertical" distribution="fillEqually" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-mS-gMH">
-                                                    <rect key="frame" x="11" y="4" width="99" height="112"/>
+                                                <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-mS-gMH">
+                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="XYt-XK-huU">
                                                             <rect key="frame" x="43.5" y="0.0" width="33" height="23"/>
@@ -1378,16 +1388,25 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </stackView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="98j-wQ-EEB">
+                                                    <rect key="frame" x="86.5" y="0.0" width="33.5" height="33.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="98j-wQ-EEB" secondAttribute="height" multiplier="1:1" id="BFx-Nd-Vvr"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="98j-wQ-EEB" firstAttribute="top" secondItem="76d-Ea-QoB" secondAttribute="top" id="0lR-PY-WRn"/>
                                             <constraint firstAttribute="bottom" secondItem="Vdv-mS-gMH" secondAttribute="bottom" id="C6j-ZM-DRd"/>
                                             <constraint firstItem="Vdv-mS-gMH" firstAttribute="centerX" secondItem="76d-Ea-QoB" secondAttribute="centerX" id="IXk-om-0vG"/>
                                             <constraint firstAttribute="trailing" secondItem="Vdv-mS-gMH" secondAttribute="trailing" id="ZT0-w6-GQ4"/>
+                                            <constraint firstAttribute="trailing" secondItem="98j-wQ-EEB" secondAttribute="trailing" id="d4i-17-EEP"/>
                                             <constraint firstItem="Vdv-mS-gMH" firstAttribute="top" secondItem="76d-Ea-QoB" secondAttribute="top" id="dHO-tS-fuD"/>
                                             <constraint firstItem="Vdv-mS-gMH" firstAttribute="centerY" secondItem="76d-Ea-QoB" secondAttribute="centerY" id="jQY-rI-Zts"/>
                                             <constraint firstItem="Vdv-mS-gMH" firstAttribute="leading" secondItem="76d-Ea-QoB" secondAttribute="leading" id="sXh-Kh-Uw1"/>
+                                            <constraint firstItem="98j-wQ-EEB" firstAttribute="height" secondItem="76d-Ea-QoB" secondAttribute="height" multiplier="0.28" id="tnK-gq-PU0"/>
                                         </constraints>
                                         <size key="customSize" width="120" height="120"/>
                                         <connections>

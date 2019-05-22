@@ -22,6 +22,9 @@ final class InventoryViewController: UIViewController {
 	//preview action container view work
 	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
+	var productChangeConfirmationAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 1.5, curve: .easeInOut)
+
+	var cellForUpdateAction: InventoryCollectionViewCell?
 
 	@IBOutlet var containerOptionsView: OptionsContainerView!
 
@@ -170,6 +173,17 @@ final class InventoryViewController: UIViewController {
 		viewPropertyAnimator.addCompletion { (animatingPosition) in
 			self.view.addSubview(self.addProductButton)
 			self.containerOptionsView.layoutSubviews()
+		}
+
+		productChangeConfirmationAnimator.isInterruptible = true
+		productChangeConfirmationAnimator.isUserInteractionEnabled = true
+		productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+			if animatingPosition == .end {
+				self.productChangeConfirmationAnimator.pauseAnimation()
+				self.productChangeConfirmationAnimator.isReversed = true
+				self.productChangeConfirmationAnimator.startAnimation()
+				print("animating position was at end. reversed and started")
+			} else { print("animation was not add end. completion failed")}
 		}
 
 		print("registered for previewing")
@@ -948,13 +962,33 @@ extension InventoryViewController: InventoryManagerDelegate {
 	}
 
 	func updateProduct(product: Product) {
-		guard let matchingProductToUpdateIndex = masterProductArray?.firstIndex(where: { (someProduct) -> Bool in
+		guard let matchingProductToUpdateIndexFirst = masterProductArray?.firstIndex(where: { (someProduct) -> Bool in
 			return (someProduct.productType == product.productType) && (someProduct.numberOfDosesTakenFromProduct == product.numberOfDosesTakenFromProduct) && (someProduct.recordID == product.recordID)
 		}) else { return }
-		masterProductArray?.remove(at: matchingProductToUpdateIndex)
+		masterProductArray?.remove(at: matchingProductToUpdateIndexFirst)
 
 		masterProductArray?.append(product)
-		updateInventoryCollectionView()
+		DispatchQueue.main.async {
+			self.productsCollectionView.collectionViewLayout.invalidateLayout()
+			self.productsCollectionView.performBatchUpdates({
+				self.categoriesInInventory = self.updateCurrentInventory()
+				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+			}, completion: { finishedAnimations in
+				if finishedAnimations {
+					guard let cell = self.cellForUpdateAction else {
+						print("could not get cellForUpdateActions as a INventory cell?")
+						return
+					}
+
+					self.productChangeConfirmationAnimator.addAnimations {
+						cell.confirmationIndicator.alpha = 1.0
+					}
+
+					self.productChangeConfirmationAnimator.startAnimation()
+
+				}
+			})
+		}
 
 	}
 
@@ -983,8 +1017,8 @@ extension InventoryViewController: UIDynamicAnimatorDelegate {
 
 extension InventoryViewController: UIViewControllerPreviewingDelegate {
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath), let product = currentInventory?[indexPath.item] else { return nil }
-
+		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell, let product = currentInventory?[indexPath.item] else { return nil }
+		cellForUpdateAction = cell
 		previewingContext.sourceRect = cell.frame
 
 		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
