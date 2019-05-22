@@ -56,13 +56,21 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		cell.productDoseCountLabel.text = "\(productForCell.numberOfDosesTakenFromProduct)"
 		cell.productStrainLabel.text = productForCell.strain.name
 		cell.productTypeLabel.text = productForCell.productType.rawValue
-		cell.massForProductInDoseLabel.text = String(dictionaryForProductsInDose[productForCell] ?? 0.0)
+		cell.massForProductInDoseLabel.text = String(dictionaryForProductsInDose[productForCell] ?? 0.0) + " g"
+		switch productForCell.strain.race {
+		case .hybrid:
+			cell.backgroundColor = UIColor(named: "hybridColor")
+		case .indica:
+			cell.backgroundColor = UIColor(named: "indicaColor")
+		case .sativa:
+			cell.backgroundColor = UIColor(named: "sativaColor")
+		}
 		return cell
 	}
 
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 50
-	}
+//	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//		return 50
+//	}
 
     /*
     // Override to support conditional editing of the table view.

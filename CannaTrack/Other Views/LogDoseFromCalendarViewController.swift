@@ -145,7 +145,7 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 		case .indica:
 			cell.backgroundColor = UIColor(named: "indicaColor")
 		case .sativa:
-			cell.backgroundColor = UIColor(named: "indicaColor")
+			cell.backgroundColor = UIColor(named: "sativaColor")
 		}
 
 		cell.layer.cornerRadius = cell.frame.width / 5

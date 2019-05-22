@@ -1454,53 +1454,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qxD-HS-udO" id="GXt-IP-QL7">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxT-P8-QY3">
-                                                    <rect key="frame" x="72.5" y="0.0" width="45" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khe-5w-ecn">
-                                                    <rect key="frame" x="394" y="0.0" width="15" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWt-vn-1Mk">
-                                                    <rect key="frame" x="5" y="0.0" width="37.5" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0g" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1LT-hu-3O5">
-                                                    <rect key="frame" x="320" y="0.0" width="34" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Khe-5w-ecn" secondAttribute="bottom" id="1DF-bu-YBO"/>
-                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="leading" secondItem="1LT-hu-3O5" secondAttribute="trailing" constant="40" id="AAi-vs-sj0"/>
-                                                <constraint firstAttribute="trailing" secondItem="Khe-5w-ecn" secondAttribute="trailing" constant="5" id="BKI-yn-KbN"/>
-                                                <constraint firstAttribute="bottom" secondItem="ZWt-vn-1Mk" secondAttribute="bottom" id="FuC-Zb-chk"/>
-                                                <constraint firstAttribute="bottom" secondItem="mxT-P8-QY3" secondAttribute="bottom" id="NQY-Ra-I9o"/>
-                                                <constraint firstItem="ZWt-vn-1Mk" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="TYf-Gj-Nom"/>
-                                                <constraint firstItem="1LT-hu-3O5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mxT-P8-QY3" secondAttribute="trailing" constant="30" id="fas-FA-Q8B"/>
-                                                <constraint firstItem="mxT-P8-QY3" firstAttribute="leading" secondItem="ZWt-vn-1Mk" secondAttribute="trailing" constant="30" id="gPG-me-Qd4"/>
-                                                <constraint firstItem="mxT-P8-QY3" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="ogl-oc-rzb"/>
-                                                <constraint firstAttribute="bottom" secondItem="1LT-hu-3O5" secondAttribute="bottom" id="pUY-Jh-Yc1"/>
-                                                <constraint firstItem="1LT-hu-3O5" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="qTz-7w-tkK"/>
-                                                <constraint firstItem="ZWt-vn-1Mk" firstAttribute="leading" secondItem="GXt-IP-QL7" secondAttribute="leading" constant="5" id="wfc-IV-gw5"/>
-                                                <constraint firstItem="Khe-5w-ecn" firstAttribute="top" secondItem="GXt-IP-QL7" secondAttribute="top" id="zm1-aD-ffJ"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="massForProductInDoseLabel" destination="1LT-hu-3O5" id="Tm6-AG-3nd"/>
-                                            <outlet property="productDoseCountLabel" destination="Khe-5w-ecn" id="hbq-vP-gLM"/>
-                                            <outlet property="productStrainLabel" destination="mxT-P8-QY3" id="zUs-9I-41G"/>
-                                            <outlet property="productTypeLabel" destination="ZWt-vn-1Mk" id="tfW-XX-TIm"/>
                                             <segue destination="F6T-cV-1Hw" kind="show" id="3zQ-9u-F0C">
                                                 <segue key="commit" inheritsFrom="parent" id="Cmw-oq-Jpv"/>
                                                 <segue key="preview" inheritsFrom="commit" id="4iX-iN-h4W"/>
