@@ -16,6 +16,8 @@ class StrainDetailViewController: UIViewController {
 		}
 	}
 
+	weak var strainCollectionDelegate: StrainCollectionDelegate?
+
 	var networkManager: NetworkManager!
 
 	@IBOutlet var strainAbbreviation: UILabel!
@@ -111,6 +113,9 @@ class StrainDetailViewController: UIViewController {
 				//do any UI work here
 				strain.favorite = strain.favorite ? false : true
 				print("toggled favorite property for product by quick action")
+				self.strainCollectionDelegate?.updateItems()
+
+
 
 		}
 		return [favoriteAction]

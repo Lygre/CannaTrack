@@ -10,7 +10,18 @@ import UIKit
 
 private let reuseIdentifier = "StrainCell"
 
-class StrainsCollectionViewController: UICollectionViewController {
+class StrainsCollectionViewController: UICollectionViewController, StrainCollectionDelegate {
+
+	func updateItems() {
+		guard let indexPaths = self.selectedIndexPaths else {
+			print("no indexPaths to update")
+			return
+		}
+		print("updating item in strains collection from delegate method for preview action")
+		self.collectionView.reloadItems(at: indexPaths)
+	}
+
+	var selectedIndexPaths: [IndexPath]?
 
 	let detailSegueIdentifier = "strainDetailSegue"
 
@@ -118,6 +129,8 @@ class StrainsCollectionViewController: UICollectionViewController {
         // Pass the selected object to the new view controller.
 		guard let selectedCollectionViewCell = sender as? StrainCollectionViewCell, let indexPath = collectionView.indexPath(for: selectedCollectionViewCell) else { preconditionFailure("could not get selected cell and indexPath")}
 		guard let detailVC = segue.destination as? StrainDetailViewController else { preconditionFailure("could not get segue destination as StrainDetailVC")}
+		self.selectedIndexPaths = [indexPath]
+		detailVC.strainCollectionDelegate = self
 		detailVC.networkManager = self.networkManager
 		detailVC.activeDetailStrain = strainsToDisplay[indexPath.item]
 
