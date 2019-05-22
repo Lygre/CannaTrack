@@ -83,7 +83,9 @@ class CalendarLogViewController: UIViewController {
 				let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
 				return dateFromDose == currentDate
 			}
-			return dateDoses
+			return dateDoses.sorted(by: { (doseOne, doseTwo) -> Bool in
+				return doseOne.timestamp < doseTwo.timestamp
+			})
 		}
 		set {
 			DispatchQueue.main.async {
