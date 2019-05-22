@@ -153,6 +153,7 @@ class CalendarLogViewController: UIViewController {
 
 		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
 		masterDoseArray = []
+		/*
 		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
 			DispatchQueue.main.async {
 				if let dose = dose {
@@ -172,6 +173,7 @@ class CalendarLogViewController: UIViewController {
 				}
 			}
 		}
+		*/
 
     }
 
@@ -445,23 +447,26 @@ extension CalendarLogViewController {
 		let doseToDelete = dosesForDate[indexPath.row]
 
 		let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+			guard let indexInRecords = self.masterDoseArray.firstIndex(of: doseToDelete) else {
+				print("no index for Dose found in master dose array or dateDoseArray: deleteAction")
+				return
+			}
 			CloudKitManager.shared.deleteDoseUsingModifyRecords(dose: doseToDelete, completion: { (success, error) in
+
 				DispatchQueue.main.async {
 					if let error = error {
 						print(error)
 					} else {
-						guard let indexInRecords = self.masterDoseArray.firstIndex(of: doseToDelete) else {
-							print("no index for Dose found in master dose array: deleteAction")
-							return
-						}
-						print(indexInRecords, doseToDelete)
-						self.masterDoseArray.remove(at: indexInRecords)
-//						self.deleteDoseRecordFromCloud(with: doseToDelete)
-						self.doseTableView.deleteRows(at: [indexPath], with: .automatic)
+						print(indexInRecords, doseToDelete, "deleted dose")
+
 					}
 				}
+				if success {
+					print("success")
+				} else { print("not success") }
 			})
-
+			self.masterDoseArray.remove(at: indexInRecords)
+			self.doseTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
 		}
 		action.backgroundColor = .red
 		return action
