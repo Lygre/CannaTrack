@@ -18,7 +18,7 @@ class AddProductUsingTextViewController: UIViewController {
 
 	@IBOutlet var productMassTextField: UITextField!
 
-	unowned var inventoryManagerDelegate: InventoryManagerDelegate!
+	unowned var inventoryManagerDelegate: InventoryManagerDelegate?
 
 	var selectedVariety: StrainVariety! {
 		get {
@@ -27,6 +27,7 @@ class AddProductUsingTextViewController: UIViewController {
 			return varietyArray[selectionIndex]
 		}
 		set(newVarietyValue) {
+			self.productComponentsDictionary["strainVariety"] = newVarietyValue as AnyObject
 			switch newVarietyValue {
 			case .hybrid?:
 				self.view.backgroundColor = UIColor(named: "hybridColor")
@@ -68,6 +69,7 @@ class AddProductUsingTextViewController: UIViewController {
 		self.strainNameTextField.delegate = self
 
 		setupView()
+		selectedVariety = .indica
         // Do any additional setup after loading the view.
     }
 
@@ -92,14 +94,18 @@ class AddProductUsingTextViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+	fileprivate func handleSettingProductComponent<T>(_ component: T) {
 
+	}
 
-	@IBAction func strainVarietyControlChanged(_ sender: UISegmentedControl) {
-		guard let strainVarietyTitle = sender.titleForSegment(at: sender.selectedSegmentIndex)?.lowercased() else { return }
-		print(strainVarietyTitle)
-		let strainVariety = StrainVariety(rawValue: strainVarietyTitle)!
-		productComponentsDictionary["strainVariety"] = strainVariety as AnyObject
-		switch strainVariety {
+	func handleSettingProductComponents<T>(_ component: T) {
+		guard let variety = StrainVariety(rawValue: component as! String) else { return }
+		productComponentsDictionary["strainVariety"] = variety as AnyObject
+	}
+
+	func handleBackgroundColor<T>(for strainVariety: T) {
+		guard let variety = StrainVariety(rawValue: strainVariety as! String) else { return }
+		switch variety {
 		case .hybrid:
 			view.backgroundColor = UIColor(named: "hybridColor")
 		case .indica:
@@ -107,6 +113,15 @@ class AddProductUsingTextViewController: UIViewController {
 		case .sativa:
 			view.backgroundColor = UIColor(named: "sativaColor")
 		}
+	}
+
+
+	@IBAction func strainVarietyControlChanged(_ sender: UISegmentedControl) {
+		guard let strainVarietyTitle = sender.titleForSegment(at: sender.selectedSegmentIndex)?.lowercased() else { return }
+		print(strainVarietyTitle)
+		let strainVariety = StrainVariety(rawValue: strainVarietyTitle)!
+		handleSettingProductComponents(strainVariety)
+		handleBackgroundColor(for: strainVariety)
 	}
 
 
@@ -126,7 +141,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate.addProductToInventory(product: product)
+						self.inventoryManagerDelegate?.addProductToInventory(product: product)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}
@@ -143,7 +158,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate.addProductToInventory(product: product)
+						self.inventoryManagerDelegate?.addProductToInventory(product: product)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}

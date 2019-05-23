@@ -69,7 +69,7 @@ class ProductDetailViewController: UIViewController {
 	var doseArray: [Dose] = []
 
 	unowned var editMassDelegate: EditMassDelegate!
-	unowned var inventoryManagerDelegate: InventoryManagerDelegate?
+	var inventoryManagerDelegate: InventoryManagerDelegate?
 
 	var doseCKRecords = [CKRecord]()
 
@@ -314,7 +314,9 @@ class ProductDetailViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate?.deleteProductFromLocalInventory(product: product)
+						guard let product2 = self.activeDetailProduct
+							else { preconditionFailure("Expected a reference to the product data container") }
+						self.inventoryManagerDelegate?.deleteProductFromLocalInventory(product: product2)
 						print(success, "Was a success deleting product")
 					}
 				}

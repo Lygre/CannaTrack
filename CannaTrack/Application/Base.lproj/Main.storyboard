@@ -931,8 +931,9 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
                                                     <rect key="frame" x="72" y="0.0" width="28" height="28"/>
+                                                    <color key="backgroundColor" name="indicaColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="sHF-hd-SHX" secondAttribute="height" multiplier="1:1" id="iSe-Aq-Nch"/>
                                                     </constraints>

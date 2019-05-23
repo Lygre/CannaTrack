@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/ProductDetailViewController.swift"
-            timestampString = "580254642.1523809"
+            timestampString = "580308364.867812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "272"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/CalendarLogViewController.swift"
-            timestampString = "580257545.429798"
+            timestampString = "580266684.648911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "181"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/CalendarLogViewController.swift"
-            timestampString = "580257545.430161"
+            timestampString = "580266684.649266"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "258"
@@ -58,12 +58,204 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/CalendarLogViewController.swift"
-            timestampString = "580257545.43025"
+            timestampString = "580266684.649353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "184"
             endingLineNumber = "184"
             landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.8679301"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "cellForUpdateAction"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.868318"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "cellForUpdateAction"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CannaTrackSpecial.InventoryViewController.cellForUpdateAction.didset : Swift.Optional&lt;CannaTrackSpecial.InventoryCollectionViewCell&gt;"
+                  moduleName = "CannaTrack"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
+                  timestampString = "580265128.25913"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "371">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in CannaTrackSpecial.InventoryViewController.cellForUpdateAction.didset : Swift.Optional&lt;CannaTrackSpecial.InventoryCollectionViewCell&gt;"
+                  moduleName = "CannaTrack"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
+                  timestampString = "580265128.262367"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "54">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.868584"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1010"
+            endingLineNumber = "1010"
+            landmarkName = "updateProduct(product:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.868854"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1007"
+            endingLineNumber = "1007"
+            landmarkName = "updateProduct(product:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.8691159"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1002"
+            endingLineNumber = "1002"
+            landmarkName = "updateProduct(product:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in CannaTrackSpecial.InventoryViewController.updateProduct(product: CannaTrackSpecial.Product) -&gt; ()"
+                  moduleName = "CannaTrack"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
+                  timestampString = "580265128.2804869"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "986"
+                  endingLineNumber = "986"
+                  offsetFromSymbolStart = "414">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #2 () -&gt; () in CannaTrackSpecial.InventoryViewController.updateProduct(product: CannaTrackSpecial.Product) -&gt; ()"
+                  moduleName = "CannaTrack"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
+                  timestampString = "580265128.283134"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "987"
+                  endingLineNumber = "987"
+                  offsetFromSymbolStart = "46">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/ProductDetailViewController.swift"
+            timestampString = "580308364.869375"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "653"
+            endingLineNumber = "653"
+            landmarkName = "saveChangesToProduct()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
+            timestampString = "580308364.869427"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "touchesBegan(_:with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CannaTrack/ViewController/AddProductUsingTextViewController.swift"
+            timestampString = "580308364.869702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "saveProductTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

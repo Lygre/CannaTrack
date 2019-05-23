@@ -22,9 +22,22 @@ final class InventoryViewController: UIViewController {
 	//preview action container view work
 	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
-	var productChangeConfirmationAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 1.5, curve: .easeInOut)
+	var productChangeConfirmationAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 1.5, curve: .linear)
 
-	var cellForUpdateAction: InventoryCollectionViewCell?
+	var cellForUpdateAction: InventoryCollectionViewCell? {
+		didSet(previousInventoryCell) {
+			if previousInventoryCell == nil {
+				guard let cell = self.cellForUpdateAction else {
+					print("this statement should never print; previous cellForUpdateAction was not nil, but current value is???")
+					return
+				}
+				self.productChangeConfirmationAnimator.addAnimations {
+					cell.confirmationIndicator.alpha = 1.0
+				}
+			}
+
+		}
+	}
 
 	@IBOutlet var containerOptionsView: OptionsContainerView!
 
@@ -203,6 +216,17 @@ final class InventoryViewController: UIViewController {
 
 	}
 
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		let touch = touches.first!
+		let location = touch.location(in: view)
+		let locationInCollectionView = touch.location(in: productsCollectionView)
+
+		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
+
+		cellForUpdateAction = cell
+		print("updated cellForUpdateAction")
+
+	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -258,6 +282,7 @@ final class InventoryViewController: UIViewController {
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
 //			productDetailViewController.previewDelegate = self
+			cellForUpdateAction = selectedCollectionViewCell
 			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
@@ -402,7 +427,11 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 					productType.productType == activeCategoryDisplayed
 				})
 		case .product:
-			print("do nothing")
+			guard let cell = collectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
+				return
+			}
+			print("setting cellForUpdate action by tapping cell")
+			cellForUpdateAction = cell
 		}
 
 	}
@@ -975,17 +1004,11 @@ extension InventoryViewController: InventoryManagerDelegate {
 				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
 			}, completion: { finishedAnimations in
 				if finishedAnimations {
-					guard let cell = self.cellForUpdateAction else {
-						print("could not get cellForUpdateActions as a INventory cell?")
-						return
-					}
-
-					self.productChangeConfirmationAnimator.addAnimations {
-						cell.confirmationIndicator.alpha = 1.0
-					}
-
+					self.productChangeConfirmationAnimator.fractionComplete = 0.0
 					self.productChangeConfirmationAnimator.startAnimation()
-
+				} else {
+					self.productChangeConfirmationAnimator.fractionComplete = 0.0
+					self.productChangeConfirmationAnimator.startAnimation()
 				}
 			})
 		}
