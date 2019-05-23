@@ -45,6 +45,7 @@ final class InventoryViewController: UIViewController {
 					}
 				}
 				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+				cell.confirmationIndicator.alpha = 0.0
 				productChangeConfirmationAnimator = handleAnimatorChange(using: cell)
 				productChangeConfirmationAnimator.startAnimation()
 
@@ -1037,7 +1038,6 @@ extension InventoryViewController: InventoryManagerDelegate {
 		guard let matchingProductToRemoveIndex = masterProductArray?.firstIndex(of: product) else {
 			print("there was no matching product to obtain an index to remove")
 			return
-
 		}
 		self.masterProductArray?.remove(at: matchingProductToRemoveIndex)
 		self.updateInventoryCollectionView()
