@@ -1058,64 +1058,7 @@ extension InventoryViewController: InventoryManagerDelegate {
 				})
 			}
 		})
-		//define animator here
-
-
-
-
-
-
-
-
-
-
-
-		/*
-		masterProductArray?.remove(at: matchingProductToUpdateIndexFirst)
-
-		masterProductArray?.append(product)
-		DispatchQueue.main.async {
-		self.productsCollectionView.collectionViewLayout.invalidateLayout()
-		self.productsCollectionView.performBatchUpdates({
-		self.categoriesInInventory = self.updateCurrentInventory()
-		self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-		}, completion: { finishedAnimations in
-		self.productChangeConfirmationAnimator.startAnimation()
-		if finishedAnimations {
-
-
-		self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-		if animatingPosition == .end {
-		self.productChangeConfirmationAnimator.pauseAnimation()
-		self.productChangeConfirmationAnimator.isReversed = true
-		self.productChangeConfirmationAnimator.startAnimation()
-		self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
-
-		print("animating position was at end. reversed and started")
-		} else { print("animation was not add end. completion failed")}
-		}
-		self.productChangeConfirmationAnimator.fractionComplete = 0.0
-		self.productChangeConfirmationAnimator.startAnimation()
-		} else {
-		self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-		if animatingPosition == .end {
-		self.productChangeConfirmationAnimator.pauseAnimation()
-		self.productChangeConfirmationAnimator.isReversed = true
-		self.productChangeConfirmationAnimator.startAnimation()
-		self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
-
-		print("animating position was at end. reversed and started")
-		} else { print("animation was not add end. completion failed")}
-		}
-		self.productChangeConfirmationAnimator.fractionComplete = 0.0
-		self.productChangeConfirmationAnimator.startAnimation()
-
-
-
-		}
-		})
-		}
-		*/
+		
 	}
 
 }
