@@ -1045,7 +1045,7 @@ extension InventoryViewController: UIViewControllerPreviewingDelegate {
 		previewingContext.sourceRect = cell.frame
 
 		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
-
+		viewController.inventoryManagerDelegate = self
 		viewController.activeDetailProduct = product
 
 		return viewController

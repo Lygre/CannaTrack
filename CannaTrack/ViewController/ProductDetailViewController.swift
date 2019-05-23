@@ -286,7 +286,7 @@ class ProductDetailViewController: UIViewController {
 		})
 
 
-		let deleteAction = UIPreviewAction(title: "Delete", style: .destructive) { [unowned self] (_, _) in
+		let deleteAction = UIPreviewAction(title: "Delete", style: .destructive) { (_, _) in
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a reference to the product data container") }
 
@@ -314,9 +314,7 @@ class ProductDetailViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						guard let product2 = self.activeDetailProduct
-							else { preconditionFailure("Expected a reference to the product data container") }
-						self.inventoryManagerDelegate?.deleteProductFromLocalInventory(product: product2)
+						self.inventoryManagerDelegate?.deleteProductFromLocalInventory(product: product)
 						print(success, "Was a success deleting product")
 					}
 				}
