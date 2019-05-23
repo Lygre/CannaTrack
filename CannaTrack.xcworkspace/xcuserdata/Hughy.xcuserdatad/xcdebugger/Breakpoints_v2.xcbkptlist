@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/ProductDetailViewController.swift"
-            timestampString = "580337878.5408289"
+            timestampString = "580346742.069423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "272"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.541364"
+            timestampString = "580346742.069803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "47"
@@ -50,11 +50,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.543162"
+            timestampString = "580346742.0705611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1075"
-            endingLineNumber = "1075"
+            startingLineNumber = "1083"
+            endingLineNumber = "1083"
             landmarkName = "updateProduct(product:)"
             landmarkType = "7">
             <Actions>
@@ -80,7 +80,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.54444"
+            timestampString = "580346742.070995"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "32"
@@ -95,56 +95,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.54545"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1051"
-            endingLineNumber = "1051"
-            landmarkName = "updateProduct(product:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.546433"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1052"
-            endingLineNumber = "1052"
-            landmarkName = "updateProduct(product:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580337878.5474091"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1055"
-            endingLineNumber = "1055"
-            landmarkName = "updateProduct(product:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/ProductDetailViewController.swift"
-            timestampString = "580337878.549134"
+            timestampString = "580346742.071334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "593"

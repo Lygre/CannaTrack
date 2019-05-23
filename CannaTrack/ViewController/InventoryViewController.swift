@@ -1049,9 +1049,17 @@ extension InventoryViewController: InventoryManagerDelegate {
 		}) else { return }
 		guard let indexPath = indexPathForUpdateActionCell, let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
 		self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
-		self.productChangeConfirmationAnimator.fractionComplete = 0.0
-		cell.confirmationIndicator.alpha = 0.0
-		self.productChangeConfirmationAnimator.startAnimation()
+		cell.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+			cell.confirmationIndicator.alpha = 1.0
+		}, completion: { (position) in
+			if position == .end {
+				UIView.animate(withDuration: 3, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+					cell.confirmationIndicator.alpha = 0.0
+				})
+			}
+		})
+		//define animator here
+
 
 
 

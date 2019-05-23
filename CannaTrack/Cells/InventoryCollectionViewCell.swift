@@ -22,7 +22,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var confirmationIndicator: UIImageView!
 
-//	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
+	var productChangeConfirmationAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 2, curve: .easeInOut)
 
 	override var isSelected: Bool {
 		didSet {
@@ -36,14 +36,16 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 		self.layer.borderColor = UIColor.blue.cgColor
 
 		self.confirmationIndicator.alpha = 0.0
-
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-
 	}
 
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		self.confirmationIndicator.alpha = 0.0
+	}
 
 }
 
