@@ -25,9 +25,12 @@ final class InventoryViewController: UIViewController {
 	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
 //		= UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
+	var indexPathForUpdateActionCell: IndexPath?
+
 	var cellForUpdateAction: InventoryCollectionViewCell? {
 		willSet(newUpdateConfirmationCell) {
 			if let cell = newUpdateConfirmationCell {
+				self.indexPathForUpdateActionCell = self.productsCollectionView?.indexPath(for: cell)
 				productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
 					if animatingPosition == .end {
 						//				self.productChangeConfirmationAnimator.pauseAnimation()
@@ -1044,48 +1047,67 @@ extension InventoryViewController: InventoryManagerDelegate {
 		guard let matchingProductToUpdateIndexFirst = masterProductArray?.firstIndex(where: { (someProduct) -> Bool in
 			return (someProduct.productType == product.productType) && (someProduct.numberOfDosesTakenFromProduct == product.numberOfDosesTakenFromProduct) && (someProduct.recordID == product.recordID)
 		}) else { return }
+		guard let indexPath = indexPathForUpdateActionCell, let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
+		self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
+		self.productChangeConfirmationAnimator.fractionComplete = 0.0
+		cell.confirmationIndicator.alpha = 0.0
+		self.productChangeConfirmationAnimator.startAnimation()
+
+
+
+
+
+
+
+
+
+
+		/*
 		masterProductArray?.remove(at: matchingProductToUpdateIndexFirst)
 
 		masterProductArray?.append(product)
 		DispatchQueue.main.async {
-			self.productsCollectionView.collectionViewLayout.invalidateLayout()
-			self.productsCollectionView.performBatchUpdates({
-				self.categoriesInInventory = self.updateCurrentInventory()
-				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-			}, completion: { finishedAnimations in
-				self.productChangeConfirmationAnimator.startAnimation()
-				if finishedAnimations {
-					/*
-					self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-						if animatingPosition == .end {
-							//				self.productChangeConfirmationAnimator.pauseAnimation()
-							//				self.productChangeConfirmationAnimator.isReversed = true
-							//				self.productChangeConfirmationAnimator.startAnimation()
-							self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+		self.productsCollectionView.collectionViewLayout.invalidateLayout()
+		self.productsCollectionView.performBatchUpdates({
+		self.categoriesInInventory = self.updateCurrentInventory()
+		self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+		}, completion: { finishedAnimations in
+		self.productChangeConfirmationAnimator.startAnimation()
+		if finishedAnimations {
 
-							print("animating position was at end. reversed and started")
-						} else { print("animation was not add end. completion failed")}
-					}
-					self.productChangeConfirmationAnimator.fractionComplete = 0.0
-					self.productChangeConfirmationAnimator.startAnimation()
-				} else {
-					self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-						if animatingPosition == .end {
-							//				self.productChangeConfirmationAnimator.pauseAnimation()
-							//				self.productChangeConfirmationAnimator.isReversed = true
-							//				self.productChangeConfirmationAnimator.startAnimation()
-							self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
 
-							print("animating position was at end. reversed and started")
-						} else { print("animation was not add end. completion failed")}
-					}
-					self.productChangeConfirmationAnimator.fractionComplete = 0.0
-					self.productChangeConfirmationAnimator.startAnimation()
-					*/
-				}
-			})
+		self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+		if animatingPosition == .end {
+		self.productChangeConfirmationAnimator.pauseAnimation()
+		self.productChangeConfirmationAnimator.isReversed = true
+		self.productChangeConfirmationAnimator.startAnimation()
+		self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+
+		print("animating position was at end. reversed and started")
+		} else { print("animation was not add end. completion failed")}
 		}
+		self.productChangeConfirmationAnimator.fractionComplete = 0.0
+		self.productChangeConfirmationAnimator.startAnimation()
+		} else {
+		self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+		if animatingPosition == .end {
+		self.productChangeConfirmationAnimator.pauseAnimation()
+		self.productChangeConfirmationAnimator.isReversed = true
+		self.productChangeConfirmationAnimator.startAnimation()
+		self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
 
+		print("animating position was at end. reversed and started")
+		} else { print("animation was not add end. completion failed")}
+		}
+		self.productChangeConfirmationAnimator.fractionComplete = 0.0
+		self.productChangeConfirmationAnimator.startAnimation()
+
+
+
+		}
+		})
+		}
+		*/
 	}
 
 }
