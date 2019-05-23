@@ -25,17 +25,26 @@ final class InventoryViewController: UIViewController {
 	var productChangeConfirmationAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 1.5, curve: .linear)
 
 	var cellForUpdateAction: InventoryCollectionViewCell? {
-		didSet(previousInventoryCell) {
-			if previousInventoryCell == nil {
-				guard let cell = self.cellForUpdateAction else {
-					print("this statement should never print; previous cellForUpdateAction was not nil, but current value is???")
-					return
-				}
-				self.productChangeConfirmationAnimator.addAnimations {
+		willSet(newUpdateConfirmationCell) {
+			if let cell = newUpdateConfirmationCell {
+				productChangeConfirmationAnimator.addAnimations {
 					cell.confirmationIndicator.alpha = 1.0
 				}
+				productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+					if animatingPosition == .end {
+						//				self.productChangeConfirmationAnimator.pauseAnimation()
+						//				self.productChangeConfirmationAnimator.isReversed = true
+						//				self.productChangeConfirmationAnimator.startAnimation()
+						cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+						self.productChangeConfirmationAnimator.startAnimation()
+						print("animating position was at end. reversed and started")
+					} else {
+						print("animation was not add end. completion failed")
+					}
+				}
+			} else {
+				print("could not unwrap newValue for cellForUpdateAction in its didSet")
 			}
-
 		}
 	}
 
@@ -188,18 +197,28 @@ final class InventoryViewController: UIViewController {
 			self.containerOptionsView.layoutSubviews()
 		}
 
-		productChangeConfirmationAnimator.isInterruptible = true
+		productChangeConfirmationAnimator.isInterruptible = false
 		productChangeConfirmationAnimator.isUserInteractionEnabled = true
+		productChangeConfirmationAnimator.pausesOnCompletion = false
+		/*
+		productChangeConfirmationAnimator.addAnimations {
+			self.cellForUpdateAction?.confirmationIndicator.alpha = 1.0
+		}
 		productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
 			if animatingPosition == .end {
 //				self.productChangeConfirmationAnimator.pauseAnimation()
 //				self.productChangeConfirmationAnimator.isReversed = true
 //				self.productChangeConfirmationAnimator.startAnimation()
-			self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+				guard let cell = self.cellForUpdateAction else {
+					print("there was no cell for update action to add the completion to")
+					return
+				}
+				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
 				
 				print("animating position was at end. reversed and started")
-			} else { print("animation was not add end. completion failed")}
+			} else { print("animation was not at end. completion could not be added")}
 		}
+		*/
 
 		print("registered for previewing")
     }
@@ -218,6 +237,7 @@ final class InventoryViewController: UIViewController {
 
 	}
 
+	/*
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		let touch = touches.first!
 		let location = touch.location(in: view)
@@ -229,6 +249,7 @@ final class InventoryViewController: UIViewController {
 		print("updated cellForUpdateAction")
 
 	}
+	*/
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -1005,12 +1026,35 @@ extension InventoryViewController: InventoryManagerDelegate {
 				self.categoriesInInventory = self.updateCurrentInventory()
 				self.productsCollectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
 			}, completion: { finishedAnimations in
+				self.productChangeConfirmationAnimator.startAnimation()
 				if finishedAnimations {
+					/*
+					self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+						if animatingPosition == .end {
+							//				self.productChangeConfirmationAnimator.pauseAnimation()
+							//				self.productChangeConfirmationAnimator.isReversed = true
+							//				self.productChangeConfirmationAnimator.startAnimation()
+							self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+
+							print("animating position was at end. reversed and started")
+						} else { print("animation was not add end. completion failed")}
+					}
 					self.productChangeConfirmationAnimator.fractionComplete = 0.0
 					self.productChangeConfirmationAnimator.startAnimation()
 				} else {
+					self.productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
+						if animatingPosition == .end {
+							//				self.productChangeConfirmationAnimator.pauseAnimation()
+							//				self.productChangeConfirmationAnimator.isReversed = true
+							//				self.productChangeConfirmationAnimator.startAnimation()
+							self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+
+							print("animating position was at end. reversed and started")
+						} else { print("animation was not add end. completion failed")}
+					}
 					self.productChangeConfirmationAnimator.fractionComplete = 0.0
 					self.productChangeConfirmationAnimator.startAnimation()
+					*/
 				}
 			})
 		}
