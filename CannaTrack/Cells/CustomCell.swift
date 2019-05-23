@@ -26,9 +26,15 @@ class CustomCell: JTAppleCell {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
+
+		let edgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+
+		self.selectedView.bounds.inset(by: edgeInsets)
+
 		var frame = self.bounds
 		frame.size.width = min(frame.width, frame.height)
 		frame.size.height = frame.width
+
 		self.selectedView.layer.cornerRadius = frame.width * 0.5
 		self.selectedView.clipsToBounds = true
 		self.dosesPresentIndicatorView.layer.cornerRadius = self.dosesPresentIndicatorView.bounds.size.height / 2.0

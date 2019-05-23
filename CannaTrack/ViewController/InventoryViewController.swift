@@ -192,9 +192,11 @@ final class InventoryViewController: UIViewController {
 		productChangeConfirmationAnimator.isUserInteractionEnabled = true
 		productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
 			if animatingPosition == .end {
-				self.productChangeConfirmationAnimator.pauseAnimation()
-				self.productChangeConfirmationAnimator.isReversed = true
-				self.productChangeConfirmationAnimator.startAnimation()
+//				self.productChangeConfirmationAnimator.pauseAnimation()
+//				self.productChangeConfirmationAnimator.isReversed = true
+//				self.productChangeConfirmationAnimator.startAnimation()
+			self.cellForUpdateAction?.contentView.bringSubviewToFront(self.cellForUpdateAction?.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+				
 				print("animating position was at end. reversed and started")
 			} else { print("animation was not add end. completion failed")}
 		}
