@@ -131,6 +131,14 @@ extension LogDoseFromCalendarViewController: UICollectionViewDataSource {
 			guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
 				return "Unopened"
 			}
+			if openedProductDate == Date() {
+				return "Today"
+			} else {
+				let yesterday = Calendar.current.isDateInYesterday(openedProductDate)
+				if yesterday {
+					return "Yesterday"
+				}
+			}
 			return dateFormatter.string(from: openedProductDate)
 		}()
 		cell.dateOpenedLabel.text = dateString
