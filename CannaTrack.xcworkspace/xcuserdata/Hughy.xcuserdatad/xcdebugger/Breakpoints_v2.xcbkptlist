@@ -6,49 +6,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/ViewController/InventoryViewController.swift"
-            timestampString = "580404663.137069"
+            timestampString = "580415546.480711"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1016"
-            endingLineNumber = "1016"
+            startingLineNumber = "1031"
+            endingLineNumber = "1031"
             landmarkName = "updateProduct(product:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CannaTrackSpecial.InventoryViewController.updateProduct(product: CannaTrackSpecial.Product) -&gt; ()"
-                  moduleName = "CannaTrack"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
-                  timestampString = "580404663.632509"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1016"
-                  endingLineNumber = "1016"
-                  offsetFromSymbolStart = "1396">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in CannaTrackSpecial.InventoryViewController.updateProduct(product: CannaTrackSpecial.Product) -&gt; ()"
-                  moduleName = "CannaTrack"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/ViewController/InventoryViewController.swift"
-                  timestampString = "580404663.63561"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1017"
-                  endingLineNumber = "1017"
-                  offsetFromSymbolStart = "124">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

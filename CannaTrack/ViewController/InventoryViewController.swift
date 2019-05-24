@@ -20,7 +20,7 @@ final class InventoryViewController: UIViewController {
 	let headerIdentifier = "ProductSectionHeaderView"
 
 	//preview action container view work
-	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 2, curve: .easeInOut)
 
 	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
 
@@ -42,7 +42,7 @@ final class InventoryViewController: UIViewController {
 				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
 				cell.confirmationIndicator.alpha = 0.0
 				productChangeConfirmationAnimator = handleAnimatorChange(using: cell)
-				productChangeConfirmationAnimator.startAnimation()
+//				productChangeConfirmationAnimator.startAnimation()
 
 			} else {
 				print("could not unwrap newValue for cellForUpdateAction in its didSet")
@@ -507,8 +507,16 @@ extension InventoryViewController {
 	}
 
 	func handleAnimatorChange(using cell: InventoryCollectionViewCell) -> UIViewPropertyAnimator {
-		var animator = UIViewPropertyAnimator(duration: 2, dampingRatio: 0.5, animations: {
+		let animator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
 			cell.confirmationIndicator.alpha = 1.0
+		}, completion: { (animatingPosition) in
+			if animatingPosition == .end {
+			UIView.animate(withDuration: 5, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+				cell.confirmationIndicator.alpha = 0.0
+			})
+			} else {
+				print("animating position is not at end, but closure it executing")
+			}
 		})
 		guard let existingAnimator = self.productChangeConfirmationAnimator else { return animator }
 		let animatorState = existingAnimator.state
@@ -630,10 +638,11 @@ extension InventoryViewController {
 	}
 
 	fileprivate func setupAnimatorForProductChangeConfirmation() {
-		productChangeConfirmationAnimator = UIViewPropertyAnimator(duration: 2, dampingRatio: 0.5, animations: {})
+		productChangeConfirmationAnimator = UIViewPropertyAnimator(duration: 2, curve: .easeInOut)
 		productChangeConfirmationAnimator.isInterruptible = true
-		productChangeConfirmationAnimator.isUserInteractionEnabled = true
-		productChangeConfirmationAnimator.pausesOnCompletion = false
+		productChangeConfirmationAnimator.isUserInteractionEnabled = false
+		productChangeConfirmationAnimator.startAnimation()
+//		productChangeConfirmationAnimator.pausesOnCompletion = false
 	}
 
 	fileprivate func setupDynamicAnimator() {
@@ -1017,7 +1026,7 @@ extension InventoryViewController: InventoryManagerDelegate {
 			self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
 		}) { (didCompleteAnimations) in
 			if didCompleteAnimations {
-				cell.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+				self.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
 					cell.confirmationIndicator.alpha = 1.0
 				}, completion: { (_) in
 					UIView.animate(withDuration: 5, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
