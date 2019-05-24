@@ -14,7 +14,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
 	var window: UIWindow?
-
+	var shortcutItemToProcess: UIApplicationShortcutItem?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
@@ -31,8 +31,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 		}
 		UNUserNotificationCenter.current().delegate = self
 
+		if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+			shortcutItemToProcess = shortcutItem
+		}
+
+
 		return true
 	}
+
+	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+		// Alternatively, a shortcut item may be passed in through this delegate method if the app was
+		// still in memory when the Home screen quick action was used. Again, store it for processing.
+		shortcutItemToProcess = shortcutItem
+	}
+
+
 
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -61,6 +74,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+		if let shortcutItem = shortcutItemToProcess {
+			var message = "\(shortcutItem.type) triggered"
+			let alertController = UIAlertController(title: "Dose Quick Action", message: message, preferredStyle: .alert)
+			alertController.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
+			window?.rootViewController?.present(alertController, animated: true, completion: nil)
+			shortcutItemToProcess = nil
+		}
+
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
