@@ -1013,14 +1013,21 @@ extension InventoryViewController: InventoryManagerDelegate {
 			return (someProduct.productType == product.productType) && (someProduct.numberOfDosesTakenFromProduct == product.numberOfDosesTakenFromProduct) && (someProduct.recordID == product.recordID)
 		}) else { return }
 		guard let indexPath = indexPathForUpdateActionCell, let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
-		self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
-		cell.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
-			cell.confirmationIndicator.alpha = 1.0
-		}, completion: { (_) in
-			UIView.animate(withDuration: 3, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
-				cell.confirmationIndicator.alpha = 0.0
-			})
-		})
+		self.productsCollectionView.performBatchUpdates({
+			self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
+		}) { (didCompleteAnimations) in
+			if didCompleteAnimations {
+				cell.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+					cell.confirmationIndicator.alpha = 1.0
+				}, completion: { (_) in
+					UIView.animate(withDuration: 5, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+						cell.confirmationIndicator.alpha = 0.0
+					})
+				})
+			}
+		}
+
+
 
 
 	}

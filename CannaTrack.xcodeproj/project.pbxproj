@@ -52,6 +52,7 @@
 		9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */; };
 		9F766E98221B7C1200713CB0 /* StrainsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */; };
 		9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */; };
+		9F81D58C2298465700509EA4 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81D58B2298465700509EA4 /* UINavigationController.swift */; };
 		9F825C202214A2C200FC2327 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C1F2214A2C200FC2327 /* AppDelegate.swift */; };
 		9F825C222214A2C200FC2327 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C212214A2C200FC2327 /* SearchViewController.swift */; };
 		9F825C252214A2C200FC2327 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F825C232214A2C200FC2327 /* Main.storyboard */; };
@@ -126,6 +127,7 @@
 		9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDoseProtocol.swift; sourceTree = "<group>"; };
 		9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsCollectionViewController.swift; sourceTree = "<group>"; };
 		9F766E99221B7C6100713CB0 /* StrainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainCollectionViewCell.swift; sourceTree = "<group>"; };
+		9F81D58B2298465700509EA4 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		9F825C1C2214A2C200FC2327 /* CannaTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannaTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F825C1F2214A2C200FC2327 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F825C212214A2C200FC2327 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 				9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */,
 				9FBF4A892293774A008F9D3E /* UITableViewExtensions.swift */,
 				9FBF4A8A2293774A008F9D3E /* UIViewExtentsions.swift */,
+				9F81D58B2298465700509EA4 /* UINavigationController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				9F0F0BDA2284E5F900DFFFC4 /* MultipleDoseDelegate.swift in Sources */,
 				9F2FDF6B225A802200ECC26B /* DoseProductsTableView.swift in Sources */,
 				9F0F0BE02284E95900DFFFC4 /* HTTPMethod.swift in Sources */,
+				9F81D58C2298465700509EA4 /* UINavigationController.swift in Sources */,
 				9F766E9A221B7C6100713CB0 /* StrainCollectionViewCell.swift in Sources */,
 				9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */,
 				9F0F0BEC2284EE7900DFFFC4 /* Router.swift in Sources */,
