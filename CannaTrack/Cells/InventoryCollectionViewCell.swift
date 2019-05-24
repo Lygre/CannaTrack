@@ -34,17 +34,18 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 		super.awakeFromNib()
 		isSelected = false
 		self.layer.borderColor = UIColor.blue.cgColor
-
-		self.confirmationIndicator.alpha = 0.0
+		guard let confirmationIndicator = confirmationIndicator else { return }
+		confirmationIndicator.alpha = 0.0
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+
 	}
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		self.confirmationIndicator.alpha = 0.0
+//		self.confirmationIndicator.alpha = 0.0
 	}
 
 }

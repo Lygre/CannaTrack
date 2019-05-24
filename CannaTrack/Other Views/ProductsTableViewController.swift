@@ -17,6 +17,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 	var dictionaryForProductsInDose: [Product: Double]! = [:]
 
+	var imageForDose: UIImage?
+
 	@IBOutlet var doseProductsTableView: DoseProductsTableView!
 
 	override func viewDidLoad() {
@@ -94,23 +96,42 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 	func saveCompositeDose() {
 		guard let firstProductEntry = dictionaryForProductsInDose.popFirst() else { return }
-		let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, otherProductDictionary: dictionaryForProductsInDose)
 
-		CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					doseLogDictionaryGLOBAL.append(compositeDose)
-					print(success, createdDose,
-						  "composite dose saved to cloud")
-					if success {
-						self.dismiss(animated: true, completion: nil)
+		if let doseImage = imageForDose {
+			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, imageForDose: doseImage, otherProductDictionary: dictionaryForProductsInDose)
+
+			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						doseLogDictionaryGLOBAL.append(compositeDose)
+						print(success, createdDose,
+							  "composite dose saved to cloud")
+						if success {
+							self.dismiss(animated: true, completion: nil)
+						}
+					}
+				}
+			}
+		} else {
+			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, otherProductDictionary: dictionaryForProductsInDose)
+
+			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						doseLogDictionaryGLOBAL.append(compositeDose)
+						print(success, createdDose,
+							  "composite dose saved to cloud")
+						if success {
+							self.dismiss(animated: true, completion: nil)
+						}
 					}
 				}
 			}
 		}
-		
 	}
 
 	// MARK - DO THIS NEXT
@@ -120,6 +141,14 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		saveCompositeDose()
 		print("save composite dose method executed")
 //		dismiss(animated: true, completion: nil)
+	}
+
+
+	@IBAction func addCameraImageToDose(_ sender: Any) {
+		let imagePicker = UIImagePickerController()
+		imagePicker.sourceType = .camera
+		imagePicker.allowsEditing = false
+		imagePicker.delegate = self
 	}
 
 
@@ -160,5 +189,21 @@ extension ProductsTableViewController: MultipleDoseDelegate {
 	}
 
 
+
+}
+
+
+extension ProductsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+
+		imageForDose = originalImage
+
+		dismiss(animated: true, completion: {
+			print("doing nothing in dismissing dose image picker animation comlpetion at the moment")
+		})
+
+	}
 
 }

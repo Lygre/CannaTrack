@@ -40,6 +40,15 @@ class Dose: Codable {
 		self.otherProducts = otherProductDictionary
 	}
 
+	init(timestamp: Date, product: Product, mass: Double, route: AdministrationRoute?, imageForDose: UIImage, otherProductDictionary: [Product: Double]) {
+		self.timestamp = timestamp
+		self.product = product
+		self.mass = mass
+		self.administrationRoute = route
+		self.otherProducts = otherProductDictionary
+		self.doseImage = imageForDose
+	}
+
 	required init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
 		timestamp = try values.decode(Date.self, forKey: .timestamp)

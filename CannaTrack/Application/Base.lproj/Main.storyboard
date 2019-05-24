@@ -931,7 +931,7 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
                                                     <rect key="frame" x="72" y="0.0" width="28" height="28"/>
                                                     <color key="backgroundColor" name="indicaColor"/>
                                                     <constraints>
@@ -1368,7 +1368,7 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="98j-wQ-EEB">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="98j-wQ-EEB">
                                                     <rect key="frame" x="86.5" y="0.0" width="33.5" height="33.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="98j-wQ-EEB" secondAttribute="height" multiplier="1:1" id="BFx-Nd-Vvr"/>
@@ -1475,11 +1475,18 @@
                     </view>
                     <navigationItem key="navigationItem" title="Log Mass" prompt="Add mass of Products used" id="Jsx-fq-j6G">
                         <barButtonItem key="backBarButtonItem" title="Choose Products" id="br3-hz-rH4"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="jaU-6p-B6L">
-                            <connections>
-                                <action selector="saveCompositeDoseTapped:" destination="VT6-8W-HKF" id="THf-4f-4Fb"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="save" id="jaU-6p-B6L">
+                                <connections>
+                                    <action selector="saveCompositeDoseTapped:" destination="VT6-8W-HKF" id="THf-4f-4Fb"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="camera" id="xq9-BX-Apg">
+                                <connections>
+                                    <action selector="addCameraImageToDose:" destination="VT6-8W-HKF" id="j6L-Ev-Pxs"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="doseProductsTableView" destination="XAw-4y-TcJ" id="8uc-al-PME"/>
