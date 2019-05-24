@@ -149,6 +149,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		imagePicker.sourceType = .camera
 		imagePicker.allowsEditing = false
 		imagePicker.delegate = self
+		self.present(imagePicker, animated: true, completion: nil)
 	}
 
 
