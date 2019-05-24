@@ -40,8 +40,6 @@ class CalendarLogViewController: UIViewController {
 
 	var originalAddButtonSize: CGSize! = CGSize(width: 60, height: 60)
 
-	//------------------------------
-
 	let tableCellIdentifier: String = "DoseCell"
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
@@ -53,19 +51,6 @@ class CalendarLogViewController: UIViewController {
 	}
 
 	//!!!!TODO -- need to provide getter and setters for these two properties
-	fileprivate func updateDosesForSelectedDate() {
-		self.dosesForDate = masterDoseArray.filter({ (someDose) -> Bool in
-			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
-			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
-			return dateFromDose == currentDate
-
-		})
-		DispatchQueue.main.async {
-			self.doseTableView.reloadData()
-		}
-		print("doses for date set")
-	}
-
 	var selectedDate: Date? {
 		didSet(newlySelectedDate) {
 			self.dosesForDate = masterDoseArray.filter { (someDose) -> Bool in
@@ -89,7 +74,6 @@ class CalendarLogViewController: UIViewController {
 		}
 		set {
 			DispatchQueue.main.async {
-//				self.doseTableView.reloadData()
 				self.doseTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
 			}
 		}
@@ -108,15 +92,6 @@ class CalendarLogViewController: UIViewController {
 
 
 
-	fileprivate func savePrivateDatabase() {
-		privateDatabase.save(doseZone) { (zone, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else { print("zone was saved")}
-			}
-		}
-	}
 
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,16 +102,12 @@ class CalendarLogViewController: UIViewController {
 		// Do any additional setup after loading the view.
 		setupDoseLoggingDateFormatter()
 
-		//add button setup
-		self.addButton.addButtonDelegate = self
-		self.addButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+		setupAddButtonForViewController()
 
 		self.viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
 			self.addButton.transform = .init(scaleX: 2.0, y: 2.0)
 		})
-		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-		originalAddButtonSize = addButton.bounds.size
-		setupAddButtonPanGesture(button: addButton)
+
 		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
 		dynamicAnimator!.delegate = self
 		snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
@@ -153,27 +124,7 @@ class CalendarLogViewController: UIViewController {
 
 		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
 		masterDoseArray = []
-		/*
-		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
-			DispatchQueue.main.async {
-				if let dose = dose {
-					if !self.masterDoseArray.contains(dose) {
-						print("retrieved dose.")
-						self.masterDoseArray.append(dose)
-						self.doseTableView.reloadData()
-						self.calendarCollectionView.collectionViewLayout.invalidateLayout()
-						self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
 
-					}
-				}
-				if let stopAnimating = shouldStopAnimating {
-					if stopAnimating {
-						self.activityView.stopAnimating()
-					}
-				}
-			}
-		}
-		*/
 
     }
 
@@ -255,7 +206,7 @@ class CalendarLogViewController: UIViewController {
 		if let selectedDate = selectedDate {
 			calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: selectedDate)
 		} else {
-			calendarCollectionView.viewWillTransition(to: size, with: coordinator, anchorDate: Date())
+			calendarCollectionView?.viewWillTransition(to: size, with: coordinator, anchorDate: Date())
 		}
 
 		guard let snapBehavior = snapBehavior else { return }
@@ -282,6 +233,71 @@ class CalendarLogViewController: UIViewController {
     */
 
 }
+
+
+
+//!! MARK -- HELPER METHODS
+
+extension CalendarLogViewController {
+
+	fileprivate func deleteDoseRecordFromCloud(with record: CKRecord) {
+		let recordID = record.recordID
+
+		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					print("Dose Record was deleted from ProductDetailViewController.swift method")
+					self.doseTableView?.reloadData()
+
+				}
+			}
+
+		}
+	}
+
+	fileprivate func updateDosesForSelectedDate() {
+		self.dosesForDate = masterDoseArray.filter({ (someDose) -> Bool in
+			let dateFromDose = Calendar.current.dateComponents([.year, .month, .day], from: someDose.timestamp)
+			let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: self.selectedDate ?? Date())
+			return dateFromDose == currentDate
+
+		})
+		DispatchQueue.main.async {
+			self.doseTableView.reloadData()
+		}
+		print("doses for date set")
+	}
+
+	fileprivate func setupAddButtonForViewController() {
+		//add button setup
+		self.addButton.addButtonDelegate = self
+		self.addButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		originalAddButtonSize = addButton.bounds.size
+		setupAddButtonPanGesture(button: addButton)
+	}
+
+	fileprivate func setupActivityView() {
+		activityView.center = self.view.center
+		activityView.hidesWhenStopped = true
+		activityView.style = .gray
+
+		self.view.addSubview(activityView)
+	}
+
+	fileprivate func setupDoseLoggingDateFormatter() {
+		logFormatter.locale = .current
+		logFormatter.timeZone = .current
+		logFormatter.calendar = .current
+		logFormatter.dateFormat = "yyy-MM-dd"
+	}
+
+
+
+}
+
 
 
 extension CalendarLogViewController: JTAppleCalendarViewDataSource {
@@ -521,54 +537,6 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 
-extension CalendarLogViewController {
-
-	fileprivate func setupDoseLoggingDateFormatter() {
-		logFormatter.locale = .current
-		logFormatter.timeZone = .current
-		logFormatter.calendar = .current
-		logFormatter.dateFormat = "yyy-MM-dd"
-	}
-
-
-}
-
-extension CalendarLogViewController: UICollectionViewDelegateFlowLayout {
-	//nothing implemented, nor do I know that anything needs to be
-
-}
-
-
-extension CalendarLogViewController {
-
-	fileprivate func deleteDoseRecordFromCloud(with record: CKRecord) {
-		let recordID = record.recordID
-
-		privateDatabase.delete(withRecordID: recordID) { (deletedRecordID, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					print("Dose Record was deleted from ProductDetailViewController.swift method")
-					self.doseTableView?.reloadData()
-
-				}
-			}
-
-		}
-	}
-
-
-	fileprivate func setupActivityView() {
-		activityView.center = self.view.center
-		activityView.hidesWhenStopped = true
-		activityView.style = .gray
-
-		self.view.addSubview(activityView)
-	}
-
-}
-
 extension CalendarLogViewController: AddButtonDelegate {
 
 
@@ -578,12 +546,6 @@ extension CalendarLogViewController: AddButtonDelegate {
 	}
 
 	func snapAddButtonToInitialPosition(button: AddProductFloatingButton, animator: UIViewPropertyAnimator, dynamicAnimator: UIDynamicAnimator) {
-	/*
-		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			self.addButton.transform = .identity
-		})
-		viewPropertyAnimator.startAnimation()
-	*/
 		guard let snapBehavior = snapBehavior else { return }
 		dynamicAnimator.removeBehavior(snapBehavior)
 		self.snapBehavior = UISnapBehavior(item: addButton, snapTo: originalAddButtonPosition)
@@ -596,15 +558,6 @@ extension CalendarLogViewController: AddButtonDelegate {
 		addButton.isUserInteractionEnabled = true
 	}
 
-	/*
-	func animateButtonForRegion(button: AddProductFloatingButton, size: CGSize) {
-		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
-			button.bounds = CGRect(origin: button.center, size: size)
-			button.layer.shadowOpacity = 0.0
-		})
-		viewPropertyAnimator.startAnimation()
-	}
-	*/
 }
 
 
@@ -688,15 +641,12 @@ extension CalendarLogViewController {
 				} else {
 					addButton.propertyAnimator.isReversed = true
 
-					//				addButton.propertyAnimator.startAnimation()
-
 					print("not in tableview, or collectionview")
 				}
 			} else { print("button animator is still running") }
 
 
 		case .began:
-//			stopAndFinishCurrentAnimations()
 			recognizer.setTranslation(.zero, in: view)
 			print("add button pan began")
 			dynamicAnimator.removeBehavior(snapBehavior)
@@ -783,3 +733,6 @@ extension CalendarLogViewController: UIPreviewInteractionDelegate {
 
 
 }
+
+
+

@@ -290,25 +290,6 @@ class ProductDetailViewController: UIViewController {
 			guard let product = self.activeDetailProduct
 				else { preconditionFailure("Expected a reference to the product data container") }
 
-//			masterInventory.removeProductFromInventoryMaster(product: product)
-			/*
-			//Need to re-implement new cloud delete method here, once I make it
-			if let record = self.recordForProduct {
-				self.deleteProductFromCloud(with: record)
-			}
-			*/
-			/*
-			CloudKitManager.shared.deleteProduct(product: product, completion: { (_, error) in
-				DispatchQueue.main.async {
-					if let error = error {
-						print(error)
-					} else {
-						print("\(product) deleted from inventory")
-
-					}
-				}
-			})
-			*/
 			CloudKitManager.shared.deleteProductUsingModifyRecords(product: product, completion: { (success, error) in
 				DispatchQueue.main.async {
 					if let error = error {
@@ -323,16 +304,12 @@ class ProductDetailViewController: UIViewController {
 
 		let editMassAction = UIPreviewAction(title: "Edit Mass", style: .default) { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct else { preconditionFailure("Expected a reference to the product data container") }
-//			guard let recordForProduct = self.recordForProduct else { preconditionFailure("Expected reference to record for product") }
 			//implement presenting place to edit the mass
 			guard let productRecordID = product.recordID else {
 				print("got product's record ID")
 				return
 			}
 			self.editMassDelegate.editMassForProduct(product: product, with: productRecordID)
-
-
-
 
 		}
 
@@ -371,43 +348,6 @@ class ProductDetailViewController: UIViewController {
 
 
 //!!MARK -- Dealing with Previewing foray in this extension
-extension ProductDetailViewController {
-
-	func updateUI(for preview: UIPreviewInteraction) {
-		//updateButtonSelectionState(for: preview)
-
-	}
-
-	func finishedPreviewing() {
-		previewingEnded = true
-	}
-
-	func updateUI(with gesture: UIGestureRecognizer) {
-		if previewingEnded {
-			//updateButtonSelectionState(for: gesture)
-		}
-	}
-
-	func updateToCommittedUI() {
-		selectedAction = nil
-		/*
-		for i in 0...actions.count - 1 {
-			let indexPath = IndexPath(row: i, section: 0)
-			let cell = tableView.cellForRow(at: indexPath) as! OptionCell
-			cell.setHighlighted(false, animated: true)
-		}
-		*/
-	}
-
-	func commitAction() {
-		if let action = selectedAction {
-			action.handler(action, self)
-			selectedAction = nil
-		}
-	}
-
-
-}
 
 
 extension ProductDetailViewController {

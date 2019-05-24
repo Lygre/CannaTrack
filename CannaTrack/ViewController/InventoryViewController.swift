@@ -23,7 +23,6 @@ final class InventoryViewController: UIViewController {
 	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
 	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
-//		= UIViewPropertyAnimator(duration: 0.3, curve: .linear)
 
 	var indexPathForUpdateActionCell: IndexPath?
 
@@ -33,10 +32,6 @@ final class InventoryViewController: UIViewController {
 				self.indexPathForUpdateActionCell = self.productsCollectionView?.indexPath(for: cell)
 				productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
 					if animatingPosition == .end {
-						//				self.productChangeConfirmationAnimator.pauseAnimation()
-						//				self.productChangeConfirmationAnimator.isReversed = true
-						//				self.productChangeConfirmationAnimator.startAnimation()
-
 						print("animating position was at end. reversed and started")
 					} else if animatingPosition == .start {
 						print("completion executed at start")
@@ -102,13 +97,7 @@ final class InventoryViewController: UIViewController {
 
 	//Preview Interaction work
 
-	var productPreviewInteraction: UIPreviewInteraction? {
-		didSet {
-			print("setup product UIPreviewInteraction")
-		}
-	}
-
-	var presentedProductDetailViewController: ProductDetailViewController?
+	var productPreviewInteraction: UIPreviewInteraction?
 
 
 	//------------------------------------------
@@ -120,47 +109,29 @@ final class InventoryViewController: UIViewController {
 	@IBOutlet var addProductButton: AddProductFloatingButton!
 
 
+
+
 	override func viewDidLoad() {
         super.viewDidLoad()
 
 		//obligatory random setup of view
-		self.definesPresentationContext = true
+
 		self.inventoryFilterOption = .none
 
-		//assign collection delegates and datasource
-		self.productsCollectionView.delegate = self
-		self.productsCollectionView.dataSource = self
+		setupInventoryCollectionView()
 
-		//add button work here
-		self.addProductButton.addButtonDelegate = self
-
-		//haptic setup for button here
-		self.addProductButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+		setupAddButtonForViewController()
 
 
-		//previewInteraction setup
-		registerForPreviewing(with: self, sourceView: productsCollectionView)
+
+		setupPeekAndPopForInventoryCollection()
+
+
 		productPreviewInteraction = UIPreviewInteraction(view: addProductButton)
 		productPreviewInteraction?.delegate = self
 
 
-		//property animator initial setup
-
-
-
-
-		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
-
-		originalAddButtonSize = addProductButton.bounds.size
-
-		setupAddButtonPanGesture(button: addProductButton)
-
-		//dynamic animator work
-		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-		dynamicAnimator.delegate = self
-		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
-		snapBehavior.damping = 0.8
-		dynamicAnimator.addBehavior(snapBehavior)
+		setupDynamicAnimator()
 
 		//activity view setup and CKQuery, other
 		setupActivityView()
@@ -168,7 +139,9 @@ final class InventoryViewController: UIViewController {
 		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
 
 		masterProductArray = []
+
 		activityView.startAnimating()
+
 		CloudKitManager.shared.retrieveAllProducts { (product, shouldStopAnimating) in
 			DispatchQueue.main.async {
 				if let product = product {
@@ -187,48 +160,9 @@ final class InventoryViewController: UIViewController {
 				}
 			}
 		}
+		setupAnimatorForButtonPreviewInteraction()
+		setupAnimatorForProductChangeConfirmation()
 
-		registerForPreviewing(with: self, sourceView: productsCollectionView)
-		viewPropertyAnimator.pausesOnCompletion = false
-		viewPropertyAnimator.isInterruptible = true
-		viewPropertyAnimator.scrubsLinearly = true
-		viewPropertyAnimator.addAnimations {
-
-			print("added button to container stack view")
-			self.containerOptionsView.addSubview(self.addProductButton)
-//			self.addProductButton.alpha = 0.5
-			self.containerOptionsView.alpha = 1.0
-		}
-		viewPropertyAnimator.addCompletion { (animatingPosition) in
-			self.view.addSubview(self.addProductButton)
-			self.containerOptionsView.layoutSubviews()
-		}
-		productChangeConfirmationAnimator = UIViewPropertyAnimator(duration: 1, dampingRatio: 0.5, animations: {
-		})
-		productChangeConfirmationAnimator.isInterruptible = true
-		productChangeConfirmationAnimator.isUserInteractionEnabled = true
-		productChangeConfirmationAnimator.pausesOnCompletion = false
-		/*
-		productChangeConfirmationAnimator.addAnimations {
-			self.cellForUpdateAction?.confirmationIndicator.alpha = 1.0
-		}
-		productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-			if animatingPosition == .end {
-//				self.productChangeConfirmationAnimator.pauseAnimation()
-//				self.productChangeConfirmationAnimator.isReversed = true
-//				self.productChangeConfirmationAnimator.startAnimation()
-				guard let cell = self.cellForUpdateAction else {
-					print("there was no cell for update action to add the completion to")
-					return
-				}
-				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
-				
-				print("animating position was at end. reversed and started")
-			} else { print("animation was not at end. completion could not be added")}
-		}
-		*/
-
-		print("registered for previewing")
     }
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -239,43 +173,25 @@ final class InventoryViewController: UIViewController {
 
 		self.containerOptionsView.alpha = 0.0
 		view.bringSubviewToFront(addProductButton)
-//		viewPropertyAnimator.pauseAnimation()
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
 
 	}
 
-	/*
-	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		let touch = touches.first!
-		let location = touch.location(in: view)
-		let locationInCollectionView = touch.location(in: productsCollectionView)
-
-		guard let indexPath = productsCollectionView.indexPathForItem(at: location), let cell = productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
-
-		cellForUpdateAction = cell
-		print("updated cellForUpdateAction")
-
-	}
-	*/
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
-//		viewPropertyAnimator.startAnimation()
-
 		CloudKitManager.shared.setupProductCKQuerySubscription()
+		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+
 		/*
 		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
-			DispatchQueue.main.async {
-				self.masterProductArray = fetchedProductArray
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
-			}
+		DispatchQueue.main.async {
+		self.masterProductArray = fetchedProductArray
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+		}})
+		*/
 
-		})
-	*/
-
-		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 
 	}
 
@@ -297,7 +213,6 @@ final class InventoryViewController: UIViewController {
 		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
 		dynamicAnimator.addBehavior(snapBehavior)
 		print("view is transitioning orientation")
-//		animator.
 	}
 
     // MARK: - Navigation
@@ -312,14 +227,10 @@ final class InventoryViewController: UIViewController {
 			guard let productDetailViewController = segue.destination as? ProductDetailViewController
 				else { preconditionFailure("Expected a ColorItemViewController") }
 
-//			productDetailViewController.previewDelegate = self
 			cellForUpdateAction = selectedCollectionViewCell
 			productDetailViewController.inventoryManagerDelegate = self
 			productDetailViewController.editMassDelegate = self
 			productDetailViewController.activeDetailProduct = currentInventory?[indexPath.item]
-
-			presentedProductDetailViewController = productDetailViewController
-
 
 		} else if segue.destination is AddProductUsingTextViewController {
 			guard let addProductVC = segue.destination as? AddProductUsingTextViewController else { preconditionFailure("Expected AddProductUsingTextVC") }
@@ -596,7 +507,7 @@ extension InventoryViewController {
 	}
 
 	func handleAnimatorChange(using cell: InventoryCollectionViewCell) -> UIViewPropertyAnimator {
-		var animator = UIViewPropertyAnimator(duration: 1, dampingRatio: 0.5, animations: {
+		var animator = UIViewPropertyAnimator(duration: 2, dampingRatio: 0.5, animations: {
 			cell.confirmationIndicator.alpha = 1.0
 		})
 		guard let existingAnimator = self.productChangeConfirmationAnimator else { return animator }
@@ -604,10 +515,8 @@ extension InventoryViewController {
 		switch animatorState {
 		case .inactive:
 			existingAnimator.stopAnimation(true)
-//			existingAnimator.finishAnimation(at: .start)
 		case .active:
 			existingAnimator.stopAnimation(true)
-//			existingAnimator.finishAnimation(at: .start)
 		case .stopped:
 			return animator
 		@unknown default:
@@ -671,6 +580,69 @@ extension InventoryViewController {
 			self.viewPropertyAnimator.fractionComplete = 1
 			
 		}
+	}
+
+
+	fileprivate func setupInventoryCollectionView() {
+		//assign collection delegates and datasource
+		self.productsCollectionView.delegate = self
+		self.productsCollectionView.dataSource = self
+	}
+
+	fileprivate func setupAddButtonForViewController() {
+		//add button work here
+		self.addProductButton.addButtonDelegate = self
+
+		//haptic setup for button here
+		self.addProductButton.addTarget(self, action: #selector(handleHapticsForAddButton(sender:)), for: [.backToAnchorPoint, .overEligibleContainerRegion])
+
+		//setting position and size in this vc
+		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
+		originalAddButtonSize = addProductButton.bounds.size
+
+		//setup pan gesture
+		setupAddButtonPanGesture(button: self.addProductButton)
+
+
+	}
+
+	fileprivate func setupPeekAndPopForInventoryCollection() {
+		//previewInteraction setup
+		self.definesPresentationContext = true
+		registerForPreviewing(with: self, sourceView: productsCollectionView)
+		print("registered for previewing")
+	}
+
+	fileprivate func setupAnimatorForButtonPreviewInteraction() {
+		viewPropertyAnimator.pausesOnCompletion = false
+		viewPropertyAnimator.isInterruptible = true
+		viewPropertyAnimator.scrubsLinearly = true
+		viewPropertyAnimator.addAnimations {
+
+			print("added button to container stack view")
+			self.containerOptionsView.addSubview(self.addProductButton)
+			self.containerOptionsView.alpha = 1.0
+		}
+		viewPropertyAnimator.addCompletion { (animatingPosition) in
+			self.view.addSubview(self.addProductButton)
+			self.containerOptionsView.layoutSubviews()
+		}
+	}
+
+	fileprivate func setupAnimatorForProductChangeConfirmation() {
+		productChangeConfirmationAnimator = UIViewPropertyAnimator(duration: 2, dampingRatio: 0.5, animations: {})
+		productChangeConfirmationAnimator.isInterruptible = true
+		productChangeConfirmationAnimator.isUserInteractionEnabled = true
+		productChangeConfirmationAnimator.pausesOnCompletion = false
+	}
+
+	fileprivate func setupDynamicAnimator() {
+		//dynamic animator work
+		dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
+		dynamicAnimator.delegate = self
+		snapBehavior = UISnapBehavior(item: addProductButton, snapTo: originalAddButtonPosition)
+		snapBehavior.damping = 0.8
+		dynamicAnimator.addBehavior(snapBehavior)
 	}
 
 }
@@ -830,10 +802,6 @@ extension InventoryViewController {
 
 
 
-	@objc func handleTouches(sender: UIGestureRecognizer) {
-		presentedProductDetailViewController?.updateUI(with: sender)
-	}
-
 
 }
 
@@ -841,9 +809,7 @@ extension InventoryViewController {
 
 extension InventoryViewController: InventoryFilterDelegate {
 	func filterInventory(using filterOption: FilterOption) {
-		//not implemented
 
-//		var masterInventory = masterProductArray
 		guard var masterInventory = masterProductArray else { return }
 
 		self.inventoryFilterOption = filterOption
@@ -1021,8 +987,7 @@ extension InventoryViewController: AddButtonDelegate {
 	}
 
 	func animateTouchesBegan(button: AddProductFloatingButton, animator: UIViewPropertyAnimator) {
-//		viewPropertyAnimator = animator
-//		viewPropertyAnimator.startAnimation()
+
 	}
 
 
