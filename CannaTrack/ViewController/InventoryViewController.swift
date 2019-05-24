@@ -1051,14 +1051,13 @@ extension InventoryViewController: InventoryManagerDelegate {
 		self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
 		cell.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
 			cell.confirmationIndicator.alpha = 1.0
-		}, completion: { (position) in
-			if position == .end {
-				UIView.animate(withDuration: 3, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
-					cell.confirmationIndicator.alpha = 0.0
-				})
-			}
+		}, completion: { (_) in
+			UIView.animate(withDuration: 3, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+				cell.confirmationIndicator.alpha = 0.0
+			})
 		})
-		
+
+
 	}
 
 }
@@ -1098,6 +1097,8 @@ extension InventoryViewController: UIViewControllerPreviewingDelegate {
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+		guard let vcAsDetailVC = viewControllerToCommit as? ProductDetailViewController else { return }
+		vcAsDetailVC.inventoryManagerDelegate = self
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 
