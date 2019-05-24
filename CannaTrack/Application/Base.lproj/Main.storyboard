@@ -1133,7 +1133,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LyD-gB-HQ3" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
-                                <rect key="frame" x="0.0" y="139" width="414" height="358.5"/>
+                                <rect key="frame" x="0.0" y="108.5" width="414" height="358.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GNK-pl-V6e">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1149,7 +1149,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FV4-hj-s0e">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FV4-hj-s0e" customClass="DateSelectedIndicatorView" customModule="CannaTrackSpecial" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <color key="backgroundColor" name="sativaColor"/>
                                                 </view>
@@ -1195,8 +1195,8 @@
                                     <outlet property="ibCalendarDelegate" destination="2LI-yC-dew" id="w7d-3n-F0V"/>
                                 </connections>
                             </collectionView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="9gZ-UB-B7s">
-                                <rect key="frame" x="0.0" y="118.5" width="414" height="20.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" distribution="fillEqually" alignment="center" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="9gZ-UB-B7s">
+                                <rect key="frame" x="0.0" y="88" width="414" height="20.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8IW-YZ-Ndb">
                                         <rect key="frame" x="0.0" y="0.0" width="51.5" height="20.5"/>
@@ -1242,25 +1242,8 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pY2-k0-YUO">
-                                <rect key="frame" x="70.5" y="88" width="273" height="20.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebn-38-Adq">
-                                        <rect key="frame" x="0.0" y="0.0" width="131.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gop-3r-fIL">
-                                        <rect key="frame" x="141.5" y="0.0" width="131.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyH-xj-qr0">
-                                <rect key="frame" x="0.0" y="497.5" width="414" height="315.5"/>
+                                <rect key="frame" x="0.0" y="467" width="414" height="346"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DoseCell" id="env-Ub-SUz" customClass="DoseCalendarTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
@@ -1288,12 +1271,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="pY2-k0-YUO" firstAttribute="top" secondItem="RQH-vf-3YV" secondAttribute="top" id="0tp-NA-hWZ"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="top" secondItem="9gZ-UB-B7s" secondAttribute="bottom" id="8Pf-Li-shI"/>
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="leading" secondItem="LyD-gB-HQ3" secondAttribute="leading" id="AgM-r9-sVA"/>
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="top" secondItem="LyD-gB-HQ3" secondAttribute="bottom" id="F5e-mz-RAW"/>
                             <constraint firstItem="RQH-vf-3YV" firstAttribute="trailing" secondItem="LyD-gB-HQ3" secondAttribute="trailing" id="Jex-Qa-e5L"/>
-                            <constraint firstItem="pY2-k0-YUO" firstAttribute="bottom" secondItem="9gZ-UB-B7s" secondAttribute="top" constant="-10" id="KJb-Db-dJc"/>
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" id="PIM-KR-vTJ"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="trailing" secondItem="RQH-vf-3YV" secondAttribute="trailing" id="Q2h-qP-ZmO"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" id="QUg-Y9-JXB"/>
@@ -1301,11 +1282,10 @@
                             <constraint firstItem="CKb-B8-qok" firstAttribute="bottom" secondItem="RQH-vf-3YV" secondAttribute="bottom" constant="-75" id="aYZ-Yj-I2t"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="height" secondItem="VXG-G1-bQi" secondAttribute="height" multiplier="0.4" id="bkF-rR-If3"/>
                             <constraint firstItem="9gZ-UB-B7s" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="diD-pA-BZJ"/>
-                            <constraint firstItem="pY2-k0-YUO" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.66" id="kjZ-L8-foa"/>
                             <constraint firstItem="LyD-gB-HQ3" firstAttribute="leading" secondItem="RQH-vf-3YV" secondAttribute="leading" id="n40-26-xhW"/>
                             <constraint firstItem="CKb-B8-qok" firstAttribute="width" secondItem="VXG-G1-bQi" secondAttribute="width" multiplier="0.145" priority="750" id="qwt-Mr-kS7"/>
+                            <constraint firstItem="9gZ-UB-B7s" firstAttribute="top" secondItem="RQH-vf-3YV" secondAttribute="top" id="tD3-8U-xA2"/>
                             <constraint firstItem="wyH-xj-qr0" firstAttribute="trailing" secondItem="LyD-gB-HQ3" secondAttribute="trailing" id="us5-I1-ULX"/>
-                            <constraint firstItem="pY2-k0-YUO" firstAttribute="centerX" secondItem="VXG-G1-bQi" secondAttribute="centerX" id="x0M-ae-KtQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
                     </view>
@@ -1319,9 +1299,8 @@
                     <connections>
                         <outlet property="addButton" destination="CKb-B8-qok" id="Krr-9a-xCF"/>
                         <outlet property="calendarCollectionView" destination="LyD-gB-HQ3" id="qHM-mQ-iRS"/>
+                        <outlet property="calendarNavigationItem" destination="tNb-gC-NIf" id="kHp-lp-pJ9"/>
                         <outlet property="doseTableView" destination="wyH-xj-qr0" id="Qdt-K9-0yo"/>
-                        <outlet property="month" destination="Ebn-38-Adq" id="avK-gJ-uvd"/>
-                        <outlet property="year" destination="gop-3r-fIL" id="1QT-oS-Hzf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BlL-7N-CYu" userLabel="First Responder" sceneMemberID="firstResponder"/>

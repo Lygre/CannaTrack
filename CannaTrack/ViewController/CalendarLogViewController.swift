@@ -25,6 +25,9 @@ class CalendarLogViewController: UIViewController {
 	@IBOutlet weak var year: UILabel!
 	@IBOutlet weak var month: UILabel!
 
+	@IBOutlet var calendarNavigationItem: UINavigationItem!
+
+
 	var dosePreviewInteraction: UIPreviewInteraction?
 
 	//add button stuff
@@ -370,11 +373,21 @@ extension CalendarLogViewController: JTAppleCalendarViewDelegate {
 	func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
 		let date = visibleDates.monthDates.first!.date
 
-		formatter.dateFormat = "yyyy"
-		year.text = formatter.string(from: date)
-
 		formatter.dateFormat = "MMMM"
-		month.text = formatter.string(from: date)
+
+		var monthAndYearTitleString = formatter.string(from: date)
+
+		formatter.dateFormat = "yyyy"
+		monthAndYearTitleString += " \(formatter.string(from: date))"
+
+		calendarNavigationItem.title = monthAndYearTitleString
+
+
+//		formatter.dateFormat = "yyyy"
+//		year.text = formatter.string(from: date)
+
+//		formatter.dateFormat = "MMMM"
+//		month.text = formatter.string(from: date)
 
 	}
 
@@ -450,11 +463,14 @@ extension CalendarLogViewController {
 	func setupViewsOfCalendar(from visibleDates: DateSegmentInfo) {
 		let date = visibleDates.monthDates.first!.date
 
-		formatter.dateFormat = "yyyy"
-		year.text = formatter.string(from: date)
-
 		formatter.dateFormat = "MMMM"
-		month.text = formatter.string(from: date)
+
+		var monthAndYearTitleString = formatter.string(from: date)
+
+		formatter.dateFormat = "yyyy"
+		monthAndYearTitleString += " \(formatter.string(from: date))"
+
+		calendarNavigationItem.title = monthAndYearTitleString
 
 	}
 
