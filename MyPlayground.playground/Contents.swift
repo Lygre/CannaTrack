@@ -1,5 +1,7 @@
 import UIKit
 import CloudKit
+import PlaygroundSupport
+
 
 var str = "Hello, playground"
 
@@ -80,55 +82,11 @@ dates.sorted { (date, otherDate) -> Bool in
 	return date > otherDate
 }
 
-var record: CKRecord?
-var data: Data?
-
-struct CstObj {
-	var name: String
-}
-
-func saveDoseToCloud() {
-
-	let newDose = CKRecord(recordType: "Dose")
-
-//	let objToEncode = CstObj(name: "myName")
-
-	//archive the ckrecord to nsdata
-	var archivedData = Data()
-	print(archivedData)
-	let archiver = NSKeyedArchiver(requiringSecureCoding: true)
-	newDose["content"] = Data()
-	newDose.encodeSystemFields(with: archiver)
-	archiver.finishEncoding()
-	archivedData = archiver.encodedData
-	//store data locally? where?
-	print(archivedData)
-
-	data = archivedData
-
-}
-
-
-func loadDoseFromData(data: Data) -> CKRecord? {
-	var record: CKRecord?
-
-	let unarchiver = try! NSKeyedUnarchiver(forReadingFrom: data)
-	unarchiver.requiresSecureCoding = true
-	do {
-		record = CKRecord(coder: unarchiver)
-	}
-
-
-	return record
-
-}
-saveDoseToCloud()
-
-loadDoseFromData(data: data!)
+//-----------------------------------
 
 var array: [Int] = []
 
-class Object {
+class ViewController: UIViewController {
 
 	var array: [Int]? {
 		willSet(oldArray) {
@@ -136,20 +94,81 @@ class Object {
 		}
 	}
 
-	init(with array: [Int]?) {
-		self.array = array
+	var animator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 3, curve: .easeInOut) {
+		willSet {
+			print(newValue)
+		}
+		didSet {
+			print(self.animator)
+		}
 	}
 
-	init() {
-		self.array = []
+	var madeView: UIView!
+
+	private func makeView() -> UIView {
+		let madeView = UIView()
+		madeView.frame = CGRect(origin: .zero, size: CGSize(width: 120, height: 120))
+		madeView.backgroundColor = .green
+		madeView.layer.masksToBounds = true
+		madeView.layer.cornerRadius = madeView.bounds.width / 2.0
+		return madeView
+	}
+
+	var property: String?
+
+	init(with array: [Int]?) {
+		super.init(nibName: nil, bundle: Bundle.main)
+		self.array = array
+		self.view.backgroundColor = .yellow
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		madeView = makeView()
+		view.addSubview(madeView)
+		madeView.alpha = 0.0
+		let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+		madeView.addGestureRecognizer(tap)
+		//		animator
+		animator.startAnimation()
+
+		let tapView = UITapGestureRecognizer(target: self, action: #selector(handleTapOnView(recognizer:)))
+		view.addGestureRecognizer(tapView)
+
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+
 	}
 
 	func addNumbersToArray(numbers: Int...) {
 		self.array?.append(contentsOf: numbers)
 	}
 
+
+	@objc func handleTap(recognizer: UIGestureRecognizer) {
+		animator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2, delay: 0, options: [], animations: {
+			self.madeView.transform = .init(scaleX: 3, y: 3)
+		}, completion: { (_) in
+			UIView.animate(withDuration: 2, animations: {
+				self.madeView.transform = .identity
+			})
+		})
+
+	}
+
+	@objc func handleTapOnView(recognizer: UIGestureRecognizer) {
+		animator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2, delay: 0, options: [], animations: {
+			self.madeView.alpha = 1.0
+		}, completion: { (_) in
+			UIView.animate(withDuration: 2, animations: {
+				self.madeView.alpha = 0.0
+			})
+		})
+	}
+
 }
 
-let object = Object()
-object.addNumbersToArray(numbers: 1)
-object.addNumbersToArray(numbers: 2)
+
+PlaygroundPage.current.liveView = ViewController(with: [1])

@@ -20,28 +20,24 @@ final class InventoryViewController: UIViewController {
 	let headerIdentifier = "ProductSectionHeaderView"
 
 	//preview action container view work
-	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 2, curve: .easeInOut)
+	var viewPropertyAnimator: UIViewPropertyAnimator = UIViewPropertyAnimator(duration: 3, curve: .easeInOut)
 
 	var productChangeConfirmationAnimator: UIViewPropertyAnimator!
 
-	var indexPathForUpdateActionCell: IndexPath?
+	var indexPathForUpdateActionCell: IndexPath? {
+		didSet {
+			print("new indexpath for update action cell is \(self.indexPathForUpdateActionCell!)")
+		}
+	}
 
 	var cellForUpdateAction: InventoryCollectionViewCell? {
-		willSet(newUpdateConfirmationCell) {
-			if let cell = newUpdateConfirmationCell {
+		didSet {
+			if let cell = self.cellForUpdateAction {
 				self.indexPathForUpdateActionCell = self.productsCollectionView?.indexPath(for: cell)
-				productChangeConfirmationAnimator.addCompletion { (animatingPosition) in
-					if animatingPosition == .end {
-						print("animating position was at end. reversed and started")
-					} else if animatingPosition == .start {
-						print("completion executed at start")
-					} else {
-						print("animation was not add end. completion failed")
-					}
-				}
-				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
-				cell.confirmationIndicator.alpha = 0.0
-				productChangeConfirmationAnimator = handleAnimatorChange(using: cell)
+				
+//				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+//				cell.confirmationIndicator.alpha = 0.0
+//				productChangeConfirmationAnimator = handleAnimatorChange(using: cell)
 //				productChangeConfirmationAnimator.startAnimation()
 
 			} else {
@@ -1021,18 +1017,29 @@ extension InventoryViewController: InventoryManagerDelegate {
 		guard let matchingProductToUpdateIndexFirst = masterProductArray?.firstIndex(where: { (someProduct) -> Bool in
 			return (someProduct.productType == product.productType) && (someProduct.numberOfDosesTakenFromProduct == product.numberOfDosesTakenFromProduct) && (someProduct.recordID == product.recordID)
 		}) else { return }
-		guard let indexPath = indexPathForUpdateActionCell, let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else { return }
+		guard let indexPath = indexPathForUpdateActionCell, let _ = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
+			print("could not get either cell or indexPAth to update and animate confirmation; returning")
+			return
+		}
 		self.productsCollectionView.performBatchUpdates({
 			self.productsCollectionView.reloadItems(at: [indexPathForUpdateActionCell!])
 		}) { (didCompleteAnimations) in
 			if didCompleteAnimations {
-				self.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 3, delay: 1, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+				guard let indexPath = self.indexPathForUpdateActionCell, let cell = self.productsCollectionView.cellForItem(at: indexPath) as? InventoryCollectionViewCell else {
+					print("could not get either cell or indexPAth to update and animate confirmation; returning")
+					return
+				}
+//				cell.layoutIfNeeded()
+				cell.contentView.bringSubviewToFront(cell.confirmationIndicator ?? UIImageView(image: #imageLiteral(resourceName: "greenCheck")))
+//				cell.confirmationIndicator.alpha = 0.0
+				self.productChangeConfirmationAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2, delay: 0, options: [], animations: {
 					cell.confirmationIndicator.alpha = 1.0
 				}, completion: { (_) in
-					UIView.animate(withDuration: 5, delay: 2, options: [.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews], animations: {
+					UIView.animate(withDuration: 2, animations: {
 						cell.confirmationIndicator.alpha = 0.0
 					})
 				})
+//				.allowAnimatedContent, .curveEaseInOut, .allowUserInteraction, .beginFromCurrentState, .layoutSubviews
 			}
 		}
 
