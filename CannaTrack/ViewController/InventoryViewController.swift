@@ -302,10 +302,16 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 			cell.doseCountLabel.text = "\(productForIndex.numberOfDosesTakenFromProduct)"
 
 			let dateString: String = {
-				dateFormatter.timeStyle = .none
-				dateFormatter.dateStyle = .short
-				guard let openedProductDate = productForIndex.dateOpened else {
+				guard let openedProductDate = globalMasterInventory[indexPath.row].dateOpened else {
 					return "Unopened"
+				}
+				if openedProductDate == Date() {
+					return "Today"
+				} else {
+					let yesterday = Calendar.current.isDateInYesterday(openedProductDate)
+					if yesterday {
+						return "Yesterday"
+					}
 				}
 				return dateFormatter.string(from: openedProductDate)
 			}()
