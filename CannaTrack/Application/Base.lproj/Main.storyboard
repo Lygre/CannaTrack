@@ -1310,13 +1310,13 @@
         <!--ChooseProducts-->
         <scene sceneID="tkX-oq-IfB">
             <objects>
-                <viewController title="ChooseProducts" id="3jN-sN-5Gw" customClass="LogDoseFromCalendarViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChooseProducts" title="ChooseProducts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3jN-sN-5Gw" customClass="LogDoseFromCalendarViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RJJ-nc-ezX">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6qQ-mm-o6Y">
-                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5AL-HW-yyc">
                                     <size key="itemSize" width="120" height="120"/>
@@ -1425,6 +1425,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="nextButton" destination="q2G-Ya-Obv" id="B1g-yM-wAg"/>
                         <outlet property="productsCollectionView" destination="6qQ-mm-o6Y" id="mDC-dN-OEP"/>
@@ -1440,11 +1441,11 @@
             <objects>
                 <viewController restorationIdentifier="ProductTableViewController" id="VT6-8W-HKF" customClass="ProductsTableViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nmz-6D-UAg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DoseProductsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XAw-4y-TcJ" customClass="DoseProductsTableView" customModule="CannaTrackSpecial" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductTableViewCell" id="qxD-HS-udO" customClass="ProductTableViewCell" customModule="CannaTrackSpecial" customModuleProvider="target">
@@ -1501,11 +1502,11 @@
             <objects>
                 <viewController title="DoseMass" id="F6T-cV-1Hw" customClass="DoseMassViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WdN-Hp-Jee">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="Qcs-gz-Yux">
-                                <rect key="frame" x="10.5" y="156" width="393" height="30"/>
+                                <rect key="frame" x="10.5" y="68" width="393" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass of Product in Dose" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nj-pg-drX">
                                         <rect key="frame" x="0.0" y="5" width="187" height="20.5"/>
@@ -1522,7 +1523,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="TJM-Qi-HKv">
-                                <rect key="frame" x="158.5" y="88" width="97.5" height="53"/>
+                                <rect key="frame" x="158.5" y="0.0" width="97.5" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProductType" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcL-XC-F2A">
                                         <rect key="frame" x="0.0" y="0.0" width="97.5" height="20.5"/>

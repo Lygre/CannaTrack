@@ -75,10 +75,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 		if let shortcutItem = shortcutItemToProcess {
-			var message = "\(shortcutItem.type) triggered"
-			let alertController = UIAlertController(title: "Dose Quick Action", message: message, preferredStyle: .alert)
-			alertController.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
-			window?.rootViewController?.present(alertController, animated: true, completion: nil)
+			let storyboard = UIStoryboard(name: "Main", bundle: nil)
+			guard let modalDoseVC = storyboard.instantiateViewController(withIdentifier: modalDoseViewControllerIdentifier) as? LogDoseFromCalendarViewController else { return }
+			let navController = UINavigationController(rootViewController: modalDoseVC)
+
+			window?.rootViewController?.present(navController, animated: true, completion: nil)
 			shortcutItemToProcess = nil
 		}
 

@@ -18,3 +18,4 @@ let filterOptionsTableViewIdentifier = "filterOptionsTableViewController"
 
 let filterOptionsTableViewCellIdentifier = "FilterOptionsTableViewCell"
 
+let modalDoseViewControllerIdentifier = "ChooseProducts"
