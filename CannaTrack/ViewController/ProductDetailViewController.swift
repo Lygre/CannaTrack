@@ -280,7 +280,7 @@ class ProductDetailViewController: UIViewController {
 				else { preconditionFailure("Expected a product item") }
 
 			//perform action to detail item in quick action
-//			product.openProduct()
+			product.openProduct()
 			product.dateOpened = Date()
 			self.saveChangesToProduct(product: product)
 			print("product opened via quick preview action")

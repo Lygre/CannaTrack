@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwifterSwift
 
 class AddProductUsingTextViewController: UIViewController {
 
@@ -145,7 +146,14 @@ class AddProductUsingTextViewController: UIViewController {
 				DispatchQueue.main.async {
 					if let error = error {
 						print(error)
+						let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+						DispatchQueue.main.async {
+							self.present(alertView, animated: true, completion:nil)
+						}
 					} else {
+						guard let productCreated = productCreated else {
+							return
+						}
 						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
@@ -158,8 +166,15 @@ class AddProductUsingTextViewController: UIViewController {
 			CloudKitManager.shared.createCKRecord(for: product) { (success, productCreated, error) in
 				DispatchQueue.main.async {
 					if let error = error {
+						let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+						DispatchQueue.main.async {
+							self.present(alertView, animated: true, completion:nil)
+						}
 						print(error)
 					} else {
+						guard let productCreated = productCreated else {
+							return
+						}
 						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
