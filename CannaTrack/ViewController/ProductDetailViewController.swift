@@ -271,7 +271,7 @@ class ProductDetailViewController: UIViewController {
 			dose.logDoseToCalendar(dose)
 			//perform action to detail item in quick action
 			product.numberOfDosesTakenFromProduct += 1
-			self.saveChangesToProduct()
+			self.saveChangesToProduct(product: product)
 			masterInventory.writeInventoryToUserData()
 		})
 
@@ -280,8 +280,9 @@ class ProductDetailViewController: UIViewController {
 				else { preconditionFailure("Expected a product item") }
 
 			//perform action to detail item in quick action
-			product.openProduct()
-			self.saveChangesToProduct()
+//			product.openProduct()
+			product.dateOpened = Date()
+			self.saveChangesToProduct(product: product)
 			print("product opened via quick preview action")
 		})
 
@@ -354,7 +355,7 @@ extension ProductDetailViewController {
 
 	func openDetailProduct() {
 		activeDetailProduct.openProduct()
-		saveChangesToProduct()
+		saveChangesToProduct(product: self.activeDetailProduct)
 	}
 
 
@@ -398,7 +399,7 @@ extension ProductDetailViewController: UITextFieldDelegate {
 			activeDetailProduct.dateOpened = dateToSave
 			saveCurrentProductInventoryToUserData()
 		}
-		saveChangesToProduct()
+		saveChangesToProduct(product: self.activeDetailProduct)
 	}
 
 }
@@ -469,7 +470,7 @@ extension ProductDetailViewController: UIImagePickerControllerDelegate, UINaviga
 		self.activeDetailProduct.productLabelImage = originalImage
 
 		dismiss(animated: true, completion: {
-			self.saveChangesToProduct()
+			self.saveChangesToProduct(product: self.activeDetailProduct)
 			saveCurrentProductInventoryToUserData()
 		})
 
@@ -504,7 +505,7 @@ extension ProductDetailViewController {
 					})
 					if self.doseCKRecords.count > self.activeDetailProduct.numberOfDosesTakenFromProduct {
 						self.activeDetailProduct.numberOfDosesTakenFromProduct = self.doseCKRecords.count
-						self.saveChangesToProduct()
+						self.saveChangesToProduct(product: self.activeDetailProduct)
 					}
 					self.productDoseLogTableView.reloadData()
 					print("dose records loaded: # \(recordsRetrieved?.count ?? 0) | Filtered: \(self.doseCKRecords.count)")
@@ -517,9 +518,9 @@ extension ProductDetailViewController {
 
 	}
 
-	fileprivate func saveChangesToProduct() {
+	fileprivate func saveChangesToProduct(product: Product) {
 
-		CloudKitManager.shared.updateProduct(product: self.activeDetailProduct) { (success, productUpdated, error) in
+		CloudKitManager.shared.updateProduct(product: product) { (success, productUpdated, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error)

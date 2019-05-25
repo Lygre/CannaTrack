@@ -20,7 +20,7 @@ class AddProductUsingTextViewController: UIViewController {
 
 	unowned var inventoryManagerDelegate: InventoryManagerDelegate?
 
-	var selectedVariety: StrainVariety! {
+	var selectedVariety: StrainVariety {
 		get {
 			let varietyArray: [StrainVariety] = [.indica, .sativa, .hybrid]
 			let selectionIndex = strainVarietyControl.selectedSegmentIndex
@@ -29,14 +29,12 @@ class AddProductUsingTextViewController: UIViewController {
 		set(newVarietyValue) {
 			self.productComponentsDictionary["strainVariety"] = newVarietyValue as AnyObject
 			switch newVarietyValue {
-			case .hybrid?:
+			case .hybrid:
 				self.view.backgroundColor = UIColor(named: "hybridColor")
-			case .indica?:
+			case .indica:
 				self.view.backgroundColor = UIColor(named: "indicaColor")
-			case .sativa?:
+			case .sativa:
 				self.view.backgroundColor = UIColor(named: "sativaColor")
-			case .none:
-				self.view.backgroundColor = UIColor(named: "hybridColor")
 			}
 		}
 	}
@@ -69,6 +67,7 @@ class AddProductUsingTextViewController: UIViewController {
 		self.strainNameTextField.delegate = self
 
 		setupView()
+		strainVarietyControl.selectedSegmentIndex = 0
 		selectedVariety = .indica
         // Do any additional setup after loading the view.
     }
@@ -120,8 +119,15 @@ class AddProductUsingTextViewController: UIViewController {
 		guard let strainVarietyTitle = sender.titleForSegment(at: sender.selectedSegmentIndex)?.lowercased() else { return }
 		print(strainVarietyTitle)
 		let strainVariety = StrainVariety(rawValue: strainVarietyTitle)!
-		handleSettingProductComponents(strainVariety)
-		handleBackgroundColor(for: strainVariety)
+		productComponentsDictionary["strainVariety"] = strainVariety as AnyObject
+		switch strainVariety {
+		case .hybrid:
+			view.backgroundColor = UIColor(named: "hybridColor")
+		case .indica:
+			view.backgroundColor = UIColor(named: "indicaColor")
+		case .sativa:
+			view.backgroundColor = UIColor(named: "sativaColor")
+		}
 	}
 
 
