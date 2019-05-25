@@ -146,7 +146,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate?.addProductToInventory(product: product)
+						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}
@@ -160,7 +160,7 @@ class AddProductUsingTextViewController: UIViewController {
 					if let error = error {
 						print(error)
 					} else {
-						self.inventoryManagerDelegate?.addProductToInventory(product: product)
+						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
 					}
