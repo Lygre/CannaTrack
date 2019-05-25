@@ -115,8 +115,8 @@ struct CloudKitManager {
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
 		let config = CKModifyRecordsOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 15
+		config.timeoutIntervalForResource = 15
 		operation.configuration = config
 		operation.savePolicy = .allKeys
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in

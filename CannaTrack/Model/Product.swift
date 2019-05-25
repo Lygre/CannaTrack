@@ -36,12 +36,12 @@ class Product: Codable {
 		productType = try values.decode(ProductType.self, forKey: .productType)
 		strain = try values.decode(Strain.self, forKey: .strain)
 
-		// new method of encoding the images for Cloud storage
-		let imgURL = try values.decode(URL.self, forKey: .productLabelImage)
-		let imgPath = imgURL.path
-		productLabelImage = UIImage(contentsOfFile: imgPath)
+//		// new method of encoding the images for Cloud storage
+//		let imgURL = try values.decode(URL.self, forKey: .productLabelImage)
+//		let imgPath = imgURL.path
+//		productLabelImage = UIImage(contentsOfFile: imgPath)
 
-		currentProductImage = nil
+//		currentProductImage = nil
 		mass = try values.decode(Double.self, forKey: .mass)
 		dateOpened = try? values.decode(Date.self, forKey: .dateOpened)
 		numberOfDosesTakenFromProduct = try values.decode(Int.self, forKey: .numberOfDosesTakenFromProduct)
@@ -54,16 +54,16 @@ class Product: Codable {
 		try container.encode(productType, forKey: .productType)
 		try container.encode(strain, forKey: .strain)
 
-		//trying different encoding method for image
-		let img = productLabelImage
-		let manager = FileManager.default
-		let dir = manager.urls(for: .documentDirectory, in: .userDomainMask)
-		let file = dir[0].appendingPathComponent(productType.rawValue + self.strain.name + (dateOpened?.description(with: .current) ?? "Unopened"))
-		try img?.jpegData(compressionQuality: 0.5)?.write(to: file, options: .atomic)
-		let imgURL = NSURL.fileURL(withPath: file.path)
-		try container.encode(imgURL, forKey: .productLabelImage)
+//		//trying different encoding method for image
+//		let img = productLabelImage
+//		let manager = FileManager.default
+//		let dir = manager.urls(for: .documentDirectory, in: .userDomainMask)
+//		let file = dir[0].appendingPathComponent(productType.rawValue + self.strain.name + (dateOpened?.description(with: .current) ?? "Unopened"))
+//		try img?.jpegData(compressionQuality: 0.5)?.write(to: file, options: .atomic)
+//		let imgURL = NSURL.fileURL(withPath: file.path)
+//		try container.encode(imgURL, forKey: .productLabelImage)
 
-		try container.encode(currentProductImage?.pngData(), forKey: .currentProductImage)
+//		try container.encode(currentProductImage?.pngData(), forKey: .currentProductImage)
 		try container.encode(mass, forKey: .mass)
 		try container.encode(dateOpened, forKey: .dateOpened)
 		try container.encode(numberOfDosesTakenFromProduct, forKey: .numberOfDosesTakenFromProduct)

@@ -480,6 +480,7 @@ extension ProductDetailViewController: UIImagePickerControllerDelegate, UINaviga
 
 		dismiss(animated: true, completion: {
 			self.saveChangesToProduct(product: self.activeDetailProduct)
+
 			saveCurrentProductInventoryToUserData()
 		})
 
