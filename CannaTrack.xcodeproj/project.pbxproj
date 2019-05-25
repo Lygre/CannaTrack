@@ -47,6 +47,7 @@
 		9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F52F034221DC335007E6330 /* InventoryViewController.swift */; };
 		9F563EC422452BB9003F557A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F563EC322452BB9003F557A /* UserInfo.swift */; };
 		9F5658652241598A0032902E /* ForceTouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */; };
+		9F5BED5E22999EA7009CC17F /* OrientedImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5BED5D22999EA7009CC17F /* OrientedImageExtension.swift */; };
 		9F71A9DC226A3B240019F08B /* DoseMassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */; };
 		9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7207BA2236C6AC009D6375 /* DoseViewController.swift */; };
 		9F7207BE22372DB8009D6375 /* SaveDoseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */; };
@@ -124,6 +125,7 @@
 		9F52F034221DC335007E6330 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		9F563EC322452BB9003F557A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9F5658642241598A0032902E /* ForceTouchGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceTouchGestureRecognizer.swift; sourceTree = "<group>"; };
+		9F5BED5D22999EA7009CC17F /* OrientedImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientedImageExtension.swift; sourceTree = "<group>"; };
 		9F71A9DB226A3B240019F08B /* DoseMassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseMassViewController.swift; sourceTree = "<group>"; };
 		9F7207BA2236C6AC009D6375 /* DoseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseViewController.swift; sourceTree = "<group>"; };
 		9F7207BD22372DB8009D6375 /* SaveDoseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDoseProtocol.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				9FBF4A892293774A008F9D3E /* UITableViewExtensions.swift */,
 				9FBF4A8A2293774A008F9D3E /* UIViewExtentsions.swift */,
 				9F81D58B2298465700509EA4 /* UINavigationController.swift */,
+				9F5BED5D22999EA7009CC17F /* OrientedImageExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */,
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
+				9F5BED5E22999EA7009CC17F /* OrientedImageExtension.swift in Sources */,
 				9F0F0BE42284EA6600DFFFC4 /* ParameterEncoding.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,
 				9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */,

@@ -212,6 +212,15 @@ class ProductDetailViewController: UIViewController {
 			var imageToReturn: UIImage?
 			if let productImage = self.activeDetailProduct.productLabelImage {
 				imageToReturn = productImage
+
+				let cgImageToGetOrientedUIImage: CGImage? = productImage.cgImage
+				let orientedCGImage: CGImage? = createMatchingBackingDataWithImage(imageRef: cgImageToGetOrientedUIImage, orienation: .up)
+				guard let orientedCGImageUnwrapped = orientedCGImage else {
+					return imageToReturn
+				}
+				let correctedUIImage: UIImage = UIImage(cgImage: orientedCGImageUnwrapped, scale: 1.0, orientation: .right)
+				imageToReturn = correctedUIImage
+				self.activeDetailProduct.productLabelImage = correctedUIImage
 			} else {
 				imageToReturn = UIImage(imageLiteralResourceName: "cannaleaf")
 			}
@@ -523,6 +532,11 @@ extension ProductDetailViewController {
 		CloudKitManager.shared.updateProduct(product: product) { (success, productUpdated, error) in
 			DispatchQueue.main.async {
 				if let error = error {
+					let alertView = UIAlertController(title: "Update Product Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						self.present(alertView, animated: true, completion:nil)
+					}
+
 					print(error)
 				} else {
 					if success == true {

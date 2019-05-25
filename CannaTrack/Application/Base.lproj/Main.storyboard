@@ -1012,8 +1012,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="k4E-R0-PJJ"/>
                     </view>
-                    <navigationItem key="navigationItem" id="pFP-Bp-r1i">
-                        <barButtonItem key="backBarButtonItem" title="Inventory" id="7rX-Dy-JXR"/>
+                    <navigationItem key="navigationItem" title="Inventory" id="pFP-Bp-r1i">
+                        <barButtonItem key="backBarButtonItem" title="Inventory" id="spa-IT-gcf"/>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="camera" id="lTm-9X-i7P">
                                 <connections>
