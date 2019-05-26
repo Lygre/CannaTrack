@@ -257,32 +257,68 @@ class ProductDetailViewController: UIViewController {
 
 	/// - Tag: PreviewActionItems
 	override var previewActionItems: [UIPreviewActionItem] {
-		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
-			guard let product = self.activeDetailProduct
-				else { preconditionFailure("Expected a product item") }
-			guard let _ = product.dateOpened else { return }
 
-			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
-			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
-				DispatchQueue.main.async {
-					if let error = error {
-						print(error)
-					} else {
-						if success {
-							doseLogDictionaryGLOBAL.append(dose)
-							print("Dose Record saved from PReview action in ProductDetailViewController")
+
+		let arrayOfAdministrationRoutes: [Dose.AdministrationRoute] = Dose.AdministrationRoute.allCases
+		let arrayOfPreviewActionsForProduct: [UIPreviewAction] = arrayOfAdministrationRoutes.map { (administrationRoute: Dose.AdministrationRoute) -> UIPreviewAction in
+			var doseActionForAdministrationRoute = UIPreviewAction(title: administrationRoute.rawValue, style: .default, handler: { [unowned self] (_, _) in
+				guard let product = self.activeDetailProduct
+					else { preconditionFailure("Expected a product item") }
+				guard let _ = product.dateOpened else { return }
+
+				let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: administrationRoute)
+				CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
+					DispatchQueue.main.async {
+						if let error = error {
+							print(error)
 						} else {
-							print("Dose record could not be saved, but didn't throw error")
+							if success {
+								guard let createdDose = createdDose else { return }
+								doseLogDictionaryGLOBAL.append(createdDose)
+								createdDose.logDoseToCalendar(createdDose)
+								print("Dose Record saved from PReview action in ProductDetailViewController")
+							} else {
+								print("Dose record could not be saved, but didn't throw error")
+							}
 						}
 					}
-				}
+				})
+//				dose.logDoseToCalendar(dose)
+				//perform action to detail item in quick action
+				product.numberOfDosesTakenFromProduct += 1
+				self.saveChangesToProduct(product: product)
+				masterInventory.writeInventoryToUserData()
 			})
-			dose.logDoseToCalendar(dose)
-			//perform action to detail item in quick action
-			product.numberOfDosesTakenFromProduct += 1
-			self.saveChangesToProduct(product: product)
-			masterInventory.writeInventoryToUserData()
-		})
+			return doseActionForAdministrationRoute
+		}
+		let doseActionGroup = UIPreviewActionGroup(title: "Dose with Product", style: .default, actions: arrayOfPreviewActionsForProduct)
+
+//		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
+//			guard let product = self.activeDetailProduct
+//				else { preconditionFailure("Expected a product item") }
+//			guard let _ = product.dateOpened else { return }
+//
+//			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
+//			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
+//				DispatchQueue.main.async {
+//					if let error = error {
+//						print(error)
+//					} else {
+//						if success {
+//							doseLogDictionaryGLOBAL.append(dose)
+//							print("Dose Record saved from PReview action in ProductDetailViewController")
+//						} else {
+//							print("Dose record could not be saved, but didn't throw error")
+//						}
+//					}
+//				}
+//			})
+//			dose.logDoseToCalendar(dose)
+//			//perform action to detail item in quick action
+//			product.numberOfDosesTakenFromProduct += 1
+//			self.saveChangesToProduct(product: product)
+//			masterInventory.writeInventoryToUserData()
+//		})
 
 		let openProductAction = UIPreviewAction(title: "Open Product", style: .default, handler: { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct
@@ -326,7 +362,8 @@ class ProductDetailViewController: UIViewController {
 		//add edit dose mass quick action here
 		
 		if let _ = self.activeDetailProduct.dateOpened {
-			return [ doseAction, editMassAction, deleteAction ]
+//			return [ doseAction, editMassAction, deleteAction ]
+				return [ doseActionGroup, editMassAction, deleteAction ]
 		} else {
 			return [ openProductAction, editMassAction, deleteAction ]
 		}
