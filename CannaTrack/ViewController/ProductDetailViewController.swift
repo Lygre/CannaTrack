@@ -424,6 +424,37 @@ extension ProductDetailViewController {
 
 	}
 
+	func doseAgainAction(at indexPath: IndexPath) -> UIContextualAction {
+		let doseToReplicate = Dose.fromCKRecord(record: doseCKRecords[indexPath.row])
+
+		let action = UIContextualAction(style: .normal, title: "Dose again!") { (action, view, completion) in
+			guard let doseToReplicate = doseToReplicate else { return }
+			let dose = Dose.replicateDoseWithCurrentTime(using: doseToReplicate)
+
+			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
+				DispatchQueue.main.async {
+					if let error = error {
+						let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+						DispatchQueue.main.async {
+							self.present(alertView, animated: true, completion:nil)
+						}
+						print(error)
+					} else {
+						guard let createdDose = createdDose else { return }
+						self.doseArray.append(createdDose)
+						DispatchQueue.main.async {
+							self.productDoseLogTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+						}
+					}
+				}
+			})
+		}
+		//		let edgeInsets = UIEdgeInsets(inset: 2)
+		action.image = UIImage(imageLiteralResourceName: "addIconSmall.png")
+		action.backgroundColor = .GreenWebColor()
+		return action
+	}
+
 }
 
 extension ProductDetailViewController: UITextFieldDelegate {
@@ -483,6 +514,12 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let delete = deleteAction(at: indexPath)
 		return UISwipeActionsConfiguration(actions: [delete])
+	}
+
+
+	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let doseAgain = doseAgainAction(at: indexPath)
+		return UISwipeActionsConfiguration(actions: [doseAgain])
 	}
 
 }

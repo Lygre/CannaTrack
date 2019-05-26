@@ -530,7 +530,8 @@ extension CalendarLogViewController {
 				}
 			})
 		}
-		action.image = #imageLiteral(resourceName: "addIcon")
+//		let edgeInsets = UIEdgeInsets(inset: 2)
+		action.image = UIImage(imageLiteralResourceName: "addIconSmall.png")
 		action.backgroundColor = .GreenWebColor()
 		return action
 
