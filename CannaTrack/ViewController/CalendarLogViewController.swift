@@ -170,6 +170,9 @@ class CalendarLogViewController: UIViewController {
 				if let stopAnimating = shouldStopAnimating {
 					if stopAnimating {
 						self.activityView.stopAnimating()
+						self.doseTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+						self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+						self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
 					}
 				}
 			}

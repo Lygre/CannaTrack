@@ -70,6 +70,13 @@ struct CloudKitManager {
 		}
 	}
 
+	func retrieveRemainingRecords(using operationCursor: CKQueryOperation.Cursor) {
+		let queryOperation = CKQueryOperation(cursor: operationCursor)
+		print("initialized new query using operation cursor")
+		CloudKitManager.privateDatabase.add(queryOperation)
+
+	}
+
 	func retrieveAllProducts(completion: @escaping RetrieveProductCompletion) {
 		let predicate = NSPredicate(format: "TRUEPREDICATE")
 		let query = CKQuery(recordType: "Product", predicate: predicate)
@@ -82,9 +89,12 @@ struct CloudKitManager {
 
 					print(error.localizedDescription)
 				} else {
-					if let _ = operationCursor {
+					if let operationCursor = operationCursor {
+						print("query has finished executing, but did not obtain all records. Received operationCursor object as marker to use to receive rest of records. Creating a new query to fetch the rest")
+						CloudKitManager.shared.retrieveRemainingRecords(using: operationCursor)
 						completion(nil, true)
-						print("query has finished executing, but did not obtain all records. Received operationCursor object as marker to use to receive rest of records")
+
+
 					} else {
 						completion(nil, true)
 						print("query completed by CKManager")
@@ -421,9 +431,10 @@ extension CloudKitManager {
 
 					print(error.localizedDescription)
 				} else {
-					if let _ = operationCursor {
+					if let operationCursor = operationCursor {
 						completion(nil, true)
 						print("query has finished executing, but did not obtain all records. Received operationCursor object as marker to use to receive rest of records")
+						CloudKitManager.shared.retrieveRemainingRecords(using: operationCursor)
 					} else {
 						completion(nil, true)
 						print("dose query completed by CKManager")
