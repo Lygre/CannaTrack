@@ -904,7 +904,7 @@
                                                 </stackView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenCheck" translatesAutoresizingMaskIntoConstraints="NO" id="sHF-hd-SHX">
                                                     <rect key="frame" x="72" y="0.0" width="28" height="28"/>
-                                                    <color key="backgroundColor" name="indicaColor"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="sHF-hd-SHX" secondAttribute="height" multiplier="1:1" id="iSe-Aq-Nch"/>
                                                     </constraints>
