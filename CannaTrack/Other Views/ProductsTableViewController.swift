@@ -166,8 +166,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		if destinationVC is DoseMassViewController {
 			guard let productTableCell = sender as? ProductTableViewCell, let indexPath = doseProductsTableView.indexPath(for: productTableCell) else { preconditionFailure("Expected sender to be a valid tableview cell") }
 			guard let doseMassVC = destinationVC as? DoseMassViewController else { preconditionFailure("Expected Destination to be DoseMassVC") }
-
-
+			doseMassVC.loadViewIfNeeded()
+			doseMassVC.imageForDose.image = imageForDose
 			doseMassVC.productForDose = selectedProductsForDose[indexPath.row]
 			doseMassVC.massForOtherProductInDose = dictionaryForProductsInDose[selectedProductsForDose[indexPath.row]] ?? 0.0
 			doseMassVC.multipleDoseDelegate = self

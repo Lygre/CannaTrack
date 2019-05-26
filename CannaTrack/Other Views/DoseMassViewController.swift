@@ -18,6 +18,8 @@ class DoseMassViewController: UIViewController {
 	@IBOutlet var strainNameLabel: UILabel!
 	@IBOutlet var productMassTextField: UITextField!
 	@IBOutlet var administrationRouteSelectorTextField: UITextField!
+	@IBOutlet var imageForDose: UIImageView!
+
 
 	unowned var multipleDoseDelegate: MultipleDoseDelegate!
 

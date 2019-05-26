@@ -1516,15 +1516,24 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="apy-go-nMg">
+                                <rect key="frame" x="103.5" y="172" width="207" height="207"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="apy-go-nMg" secondAttribute="height" multiplier="1:1" id="0RH-UM-E3x"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="RB7-YG-hgU" firstAttribute="width" secondItem="WdN-Hp-Jee" secondAttribute="width" multiplier="0.5" id="7pE-xK-Smv"/>
                             <constraint firstItem="RB7-YG-hgU" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="N53-2C-tCw"/>
+                            <constraint firstItem="apy-go-nMg" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="Pyg-96-aeB"/>
                             <constraint firstItem="Qcs-gz-Yux" firstAttribute="width" secondItem="WdN-Hp-Jee" secondAttribute="width" multiplier="0.95" id="Vpg-0O-cUQ"/>
                             <constraint firstItem="TJM-Qi-HKv" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="hCi-c6-Yuc"/>
                             <constraint firstItem="Qcs-gz-Yux" firstAttribute="top" secondItem="TJM-Qi-HKv" secondAttribute="bottom" constant="15" id="m0x-zd-eX0"/>
+                            <constraint firstItem="apy-go-nMg" firstAttribute="width" secondItem="RB7-YG-hgU" secondAttribute="width" id="nHX-g9-PuL"/>
                             <constraint firstItem="Qcs-gz-Yux" firstAttribute="centerX" secondItem="WdN-Hp-Jee" secondAttribute="centerX" id="pWQ-e0-T4e"/>
+                            <constraint firstItem="apy-go-nMg" firstAttribute="top" secondItem="RB7-YG-hgU" secondAttribute="bottom" constant="24" id="r9Y-Xl-2gl"/>
                             <constraint firstItem="TJM-Qi-HKv" firstAttribute="top" secondItem="Qnj-8p-Zxg" secondAttribute="top" id="toO-3M-nmt"/>
                             <constraint firstItem="RB7-YG-hgU" firstAttribute="top" secondItem="Qcs-gz-Yux" secondAttribute="bottom" constant="20" id="u07-Rr-XHQ"/>
                         </constraints>
@@ -1533,6 +1542,7 @@
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <connections>
                         <outlet property="administrationRouteSelectorTextField" destination="RB7-YG-hgU" id="PS4-w7-RLf"/>
+                        <outlet property="imageForDose" destination="apy-go-nMg" id="ap6-VR-hWG"/>
                         <outlet property="productMassTextField" destination="ATm-m8-yXE" id="OSF-mK-oCI"/>
                         <outlet property="productTypeLabel" destination="JcL-XC-F2A" id="c6l-8p-hQp"/>
                         <outlet property="strainNameLabel" destination="fwf-fb-mhB" id="aae-Hd-uHb"/>
@@ -1540,7 +1550,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dIk-Qz-dkd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4054" y="3350"/>
+            <point key="canvasLocation" x="4053.6231884057975" y="3349.5535714285711"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NWS-fX-43d">
