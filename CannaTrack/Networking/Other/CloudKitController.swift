@@ -58,14 +58,21 @@ struct CloudKitManager {
 		let record = product.toCKRecord()
 
 		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
-			guard let serverRecord = serverRecord else {
+			if let error = error {
+				let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 				DispatchQueue.main.async {
-					completion(false, nil, error)
+					UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
 				}
-				return
-			}
-			DispatchQueue.main.async {
-				completion(true, Product.fromCKRecord(record: serverRecord), nil)
+			} else {
+				guard let serverRecord = serverRecord else {
+					DispatchQueue.main.async {
+						completion(false, nil, error)
+					}
+					return
+				}
+				DispatchQueue.main.async {
+					completion(true, Product.fromCKRecord(record: serverRecord), nil)
+				}
 			}
 		}
 	}
