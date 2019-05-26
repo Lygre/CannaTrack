@@ -12,4 +12,5 @@ import Foundation
 
 protocol MultipleDoseDelegate: class {
 	func saveCompositeDoseProductEntry(product: Product, mass: Double)
+	func saveAdministrationRouteForCompositeDoseProductEntry(product: Product, adminRoute: Dose.AdministrationRoute)
 }

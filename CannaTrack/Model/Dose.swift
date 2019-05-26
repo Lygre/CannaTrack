@@ -90,7 +90,7 @@ class Dose: Codable {
 
 extension Dose {
 
-	enum AdministrationRoute: String, Codable {
+	enum AdministrationRoute: String, Codable, CaseIterable {
 		case oral = "Oral"
 		case inhalation = "Inhalation"
 	}

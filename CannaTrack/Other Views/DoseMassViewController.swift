@@ -17,6 +17,7 @@ class DoseMassViewController: UIViewController {
 	@IBOutlet var productTypeLabel: UILabel!
 	@IBOutlet var strainNameLabel: UILabel!
 	@IBOutlet var productMassTextField: UITextField!
+	@IBOutlet var administrationRouteSelectorTextField: UITextField!
 
 	unowned var multipleDoseDelegate: MultipleDoseDelegate!
 
@@ -26,6 +27,15 @@ class DoseMassViewController: UIViewController {
         super.viewDidLoad()
 		self.productMassTextField.delegate = self
         // Do any additional setup after loading the view.
+
+		let pickerView = UIPickerView()
+		pickerView.dataSource = self
+		pickerView.delegate = self
+		administrationRouteSelectorTextField.inputView = pickerView
+
+		productMassTextField.tag = 1
+		administrationRouteSelectorTextField.tag = 2
+
     }
 
 
@@ -71,15 +81,41 @@ extension DoseMassViewController {
 extension DoseMassViewController: UITextFieldDelegate {
 
 	func textFieldDidEndEditing(_ textField: UITextField) {
+		if textField.tag == 1 {
 		massForOtherProductInDose = Double(textField.text ?? "0.0") ?? 0.0
 
 		multipleDoseDelegate.saveCompositeDoseProductEntry(product: productForDose, mass: massForOtherProductInDose)
 		self.navigationController?.popViewController(animated: true)
 		print("ended editing textfield in DoseMassVC.swift. saving \(massForOtherProductInDose ?? 0) as dose mass for product")
+
+		} else if textField.tag == 2 {
+			guard let textForAdminRoute = textField.text else { return }
+
+			guard let adminRouteFromRawValue = Dose.AdministrationRoute(rawValue: textForAdminRoute) else { return }
+			multipleDoseDelegate.saveAdministrationRouteForCompositeDoseProductEntry(product: productForDose, adminRoute: adminRouteFromRawValue)
+		}
+	}
+}
+
+
+extension DoseMassViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
+		return 1
+	}
+
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		return Dose.AdministrationRoute.allCases.count
+	}
+
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		return Dose.AdministrationRoute.allCases[row].rawValue
+	}
+
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		administrationRouteSelectorTextField.text = Dose.AdministrationRoute.allCases[row].rawValue
 	}
 
 }
-
 
 
 

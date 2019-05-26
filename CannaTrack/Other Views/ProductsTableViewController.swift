@@ -17,6 +17,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 	var dictionaryForProductsInDose: [Product: Double]! = [:]
 
+	var administrationRouteForDose: Dose.AdministrationRoute = .inhalation
+
 	var imageForDose: UIImage?
 
 	@IBOutlet var doseProductsTableView: DoseProductsTableView!
@@ -98,7 +100,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 		guard let firstProductEntry = dictionaryForProductsInDose.popFirst() else { return }
 
 		if let doseImage = imageForDose {
-			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, imageForDose: doseImage, otherProductDictionary: dictionaryForProductsInDose)
+			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: administrationRouteForDose, imageForDose: doseImage, otherProductDictionary: dictionaryForProductsInDose)
 
 			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
 				DispatchQueue.main.async {
@@ -115,7 +117,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 				}
 			}
 		} else {
-			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: .inhalation, otherProductDictionary: dictionaryForProductsInDose)
+			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: administrationRouteForDose, otherProductDictionary: dictionaryForProductsInDose)
 
 			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
 				DispatchQueue.main.async {
@@ -184,6 +186,10 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 
 extension ProductsTableViewController: MultipleDoseDelegate {
+	func saveAdministrationRouteForCompositeDoseProductEntry(product: Product, adminRoute: Dose.AdministrationRoute) {
+		administrationRouteForDose = adminRoute
+	}
+
 	func saveCompositeDoseProductEntry(product: Product, mass: Double) {
 		dictionaryForProductsInDose[product] = mass
 		print("Composite entry into dict saved: \(product.strain.name) \(product.productType.rawValue) \(mass)")
