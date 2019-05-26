@@ -126,6 +126,8 @@ extension Dose {
 
 	static func replicateDoseWithCurrentTime(using referenceDose: Dose) -> Dose {
 		referenceDose.timestamp = Date()
+		referenceDose.recordID = nil
+		referenceDose.doseImage = nil
 		return referenceDose
 	}
 
