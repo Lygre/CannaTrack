@@ -124,31 +124,11 @@ extension Dose {
 
 	}
 
-
-	func saveDoseLogToCloud() {
-		let newDose = CKRecord(recordType: "Dose")
-		//archive the ckrecord to nsdata
-		let encoder = PropertyListEncoder()
-		let doseData: CKRecordValue = {
-			do {
-				let data = try encoder.encode(self)
-				return data as CKRecordValue
-			}
-			catch { print(error); return Data() as CKRecordValue }
-		}()
-
-		newDose.setObject(doseData, forKey: "DoseData")
-
-		privateDatabase.save(newDose) { (record, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					print("Record was saved in Private DB by Dose.swift method")
-				}
-			}
-		}
+	static func replicateDoseWithCurrentTime(using referenceDose: Dose) -> Dose {
+		referenceDose.timestamp = Date()
+		return referenceDose
 	}
+
 }
 
 
