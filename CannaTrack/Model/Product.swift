@@ -222,7 +222,7 @@ extension Product {
 		if let productRecordID = self.recordID {
 			record = CKRecord(recordType: "Product", recordID: productRecordID)
 		} else {
-			record = CKRecord(recordType: "Product")
+			record = CKRecord(recordType: "Product", zoneID: CloudKitManager.productZoneID)
 		}
 //		let record = CKRecord(recordType: "Product")
 		if let recordValue = self.encodeProductAsCKRecordValue() {

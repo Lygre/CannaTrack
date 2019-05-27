@@ -262,10 +262,7 @@ struct CloudKitManager {
 		for zoneID in zoneIDs {
 			let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
 			//			options.previousServerChangeToken =
-			guard let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey) as? CKServerChangeToken else {
-				print("failed to get change token")
-				return
-			}
+			options.previousServerChangeToken = CloudKitManager.privateDatabaseChangeToken
 			// Read change token from disk
 			optionsByRecordZoneID[zoneID] = options
 			print(options.debugDescription)
@@ -329,6 +326,7 @@ extension CloudKitManager {
 
 	//MARK: -- Create Product Record
 	func createCKRecord(for product: Product, completion: @escaping CreateProductCompletion) {
+		createCustomZone()
 		let record = product.toCKRecord()
 
 		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
