@@ -39,7 +39,8 @@ struct CloudKitManager {
 
 	//MARK: -- Static Constants
 	static let shared = CloudKitManager()
-	
+	static let createZoneGroup = DispatchGroup()
+
 	static let privateDatabase = CKContainer.default().privateCloudDatabase
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
 
@@ -105,7 +106,35 @@ struct CloudKitManager {
 		CKContainer.default().accountStatus(completionHandler: completion)
 	}
 
+	//MARK: -- Creation of Custom Zone 1 for Products
+	func createCustomZone() {
+		if !CloudKitManager.createdCustomZone {
+			CloudKitManager.createZoneGroup.enter()
 
+			let customZone = CKRecordZone(zoneID: CloudKitManager.productZoneID)
+
+			let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+
+			createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Custom Product Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					if let _ = saved {
+						CloudKitManager.createdCustomZone = true
+						print("Custom Zone for Products was saved to Server")
+					}
+				}
+				CloudKitManager.createZoneGroup.leave()
+			}
+
+			createZoneOperation.qualityOfService = .userInitiated
+
+			CloudKitManager.privateDatabase.add(createZoneOperation)
+		}
+	}
 
 
 
