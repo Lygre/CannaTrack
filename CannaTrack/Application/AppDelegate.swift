@@ -93,8 +93,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 		print("received remote notification for product changes; instantiating root view if possible")
 
-		let viewController = self.window?.rootViewController as? InventoryViewController
-		guard let inventoryViewController = viewController else { print("could not instantiate root as inventory"); return }
+		let viewController = self.window?.rootViewController
+
 
 		let dict = userInfo as! [String: NSObject]
 
@@ -103,12 +103,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 		if notification.subscriptionID == CloudKitManager.subscriptionID {
 			print(notification.debugDescription, notification.description)
-
+			guard let inventoryViewController = viewController as? InventoryViewController else { print("could not instantiate root as inventory"); return }
 			inventoryViewController.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
 				completionHandler(.newData)
 			}
 		}
+		else if notification.subscriptionID == CloudKitManager.dosesSubscriptionID {
+			guard let calendarViewController = viewController as? CalendarLogViewController else { print("could not instatntiate root as calendar"); return }
+			calendarViewController.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+				completionHandler(.newData)
+			}
+
+		}
 		else {
+			print("no data from notification in app delegate")
 			completionHandler(.noData)
 		}
 

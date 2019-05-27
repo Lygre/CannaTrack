@@ -101,7 +101,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 		if let doseImage = imageForDose {
 			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: administrationRouteForDose, imageForDose: doseImage, otherProductDictionary: dictionaryForProductsInDose)
-
+			CloudKitManager.shared.createCustomDoseLogZone()
 			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
 				DispatchQueue.main.async {
 					if let error = error {
@@ -118,7 +118,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 			}
 		} else {
 			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: administrationRouteForDose, otherProductDictionary: dictionaryForProductsInDose)
-
+			CloudKitManager.shared.createCustomDoseLogZone()
 			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
 				DispatchQueue.main.async {
 					if let error = error {

@@ -267,6 +267,7 @@ class ProductDetailViewController: UIViewController {
 				guard let _ = product.dateOpened else { return }
 
 				let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: administrationRoute)
+				CloudKitManager.shared.createCustomDoseLogZone()
 				CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
 					DispatchQueue.main.async {
 						if let error = error {

@@ -52,6 +52,8 @@ struct CloudKitManager {
 	static let dosesSubscriptionID = "dose-changes"
 
 
+	static let doseSubscriptionSavedKey = "doseCkSubscriptionSaved"
+	static let serverChangeTokenKeyForDoses = "doseCkServerChangeToken"
 
 	static let subscriptionSavedKey = "ckSubscriptionSaved"
 	static let serverChangeTokenKey = "ckServerChangeToken"
@@ -66,7 +68,7 @@ struct CloudKitManager {
 
 	var cloudKitObserver: NSObjectProtocol?
 
-	static var createdCustomZone: Bool {
+	static var createdCustomProductsZone: Bool {
 		get {
 			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.productZoneID.zoneName) as? Bool else {
 				return false
@@ -75,6 +77,18 @@ struct CloudKitManager {
 		}
 		set(newValue) {
 			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.productZoneID.zoneName)
+		}
+	}
+
+	static var createdCustomDoseLogZone: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.doseZoneID.zoneName) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.doseZoneID.zoneName)
 		}
 	}
 
@@ -91,8 +105,17 @@ struct CloudKitManager {
 		}
 	}
 
-	static var subscribedToDoseChanges = false
-
+	static var subscribedToDoseChanges: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.doseSubscriptionSavedKey) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.doseSubscriptionSavedKey)
+		}
+	}
 
 	//MARK: -- Right way variables
 
@@ -120,8 +143,8 @@ struct CloudKitManager {
 	}
 
 	//MARK: -- Creation of Custom Zone 1 for Products
-	func createCustomZone() {
-		if !CloudKitManager.createdCustomZone {
+	func createCustomProductsZone() {
+		if !CloudKitManager.createdCustomProductsZone {
 			CloudKitManager.createZoneGroup.enter()
 
 			let customZone = CKRecordZone(zoneID: CloudKitManager.productZoneID)
@@ -136,7 +159,37 @@ struct CloudKitManager {
 					}
 				} else {
 					if let _ = saved {
-						CloudKitManager.createdCustomZone = true
+						CloudKitManager.createdCustomProductsZone = true
+						print("Custom Zone for Products was saved to Server")
+					}
+				}
+				CloudKitManager.createZoneGroup.leave()
+			}
+
+			createZoneOperation.qualityOfService = .userInitiated
+
+			CloudKitManager.privateDatabase.add(createZoneOperation)
+		}
+	}
+
+	//MARK: -- Creating Custom Zone 2 for Doses
+	func createCustomDoseLogZone() {
+		if !CloudKitManager.createdCustomDoseLogZone {
+			CloudKitManager.createZoneGroup.enter()
+
+			let customZone = CKRecordZone(zoneID: CloudKitManager.doseZoneID)
+
+			let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+
+			createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Custom Product Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					if let _ = saved {
+						CloudKitManager.createdCustomDoseLogZone = true
 						print("Custom Zone for Products was saved to Server")
 					}
 				}
@@ -172,7 +225,37 @@ struct CloudKitManager {
 		}
 
 		CloudKitManager.createZoneGroup.notify(queue: DispatchQueue.global()) {
-			if CloudKitManager.createdCustomZone {
+			if CloudKitManager.createdCustomProductsZone {
+				CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {  }
+			}
+		}
+
+	}
+
+	//MARK: -- Subscribing to Zone Change Notifications; CKDatabaseSubscription object
+	func subscribeToDoseLogZoneChanges() {
+		if !CloudKitManager.subscribedToDoseChanges {
+
+			let createSubscriptionOperation = CloudKitManager.shared.createDatabaseSubscriptionOperation(subscriptionId: CloudKitManager.dosesSubscriptionID)
+
+			createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIDs, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						print(error)
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					CloudKitManager.subscribedToDoseChanges = true
+				}
+			}
+
+			CloudKitManager.privateDatabase.add(createSubscriptionOperation)
+
+		}
+
+		CloudKitManager.createZoneGroup.notify(queue: DispatchQueue.global()) {
+			if CloudKitManager.createdCustomDoseLogZone {
 				CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {  }
 			}
 		}
@@ -326,7 +409,7 @@ extension CloudKitManager {
 
 	//MARK: -- Create Product Record
 	func createCKRecord(for product: Product, completion: @escaping CreateProductCompletion) {
-		createCustomZone()
+		createCustomProductsZone()
 		let record = product.toCKRecord()
 
 		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
@@ -922,7 +1005,7 @@ extension CloudKitManager {
 
 	func setupDoseCKQuerySubscription() {
 		let predicate = NSPredicate(value: true)
-		let subscription = CKQuerySubscription(recordType: "Dose", predicate: predicate, subscriptionID: "dose-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
+		let subscription = CKQuerySubscription(recordType: "Dose", predicate: predicate, subscriptionID: CloudKitManager.dosesSubscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
 
 
 		let config = CKModifySubscriptionsOperation.Configuration()
@@ -960,6 +1043,60 @@ extension CloudKitManager {
 			}
 		}
 	}
+
+
+
+
+	func setupFetchOperationForDoses(with recordIDs: [CKRecord.ID], completion: @escaping RetrieveDosesCompletion) {
+		//need to save the recordIDs locally
+		let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+		operation.perRecordProgressBlock = { (recordID, progress) in
+			DispatchQueue.main.async {
+				print("Record with \(recordID) is \(progress) done")
+			}
+		}
+
+		operation.perRecordCompletionBlock = { (record, recordID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else if let record = record, let id = recordID {
+					print("Record \(record) fetch completed with ID \(id)")
+
+
+
+				}
+			}
+		}
+
+		operation.fetchRecordsCompletionBlock = { (recordsByID, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error)
+				} else {
+					guard let recordsByID = recordsByID else { return }
+					var doses: [Dose] = []
+					for (_, record) in recordsByID {
+						guard let dose = Dose.fromCKRecord(record: record) else { return }
+						doses.append(dose)
+					}
+					completion(doses,nil)
+					print("Records fetch completed")
+				}
+
+			}
+		}
+
+		let config = CKFetchRecordsOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 10
+		operation.configuration = config
+
+		CloudKitManager.privateDatabase.add(operation)
+
+	}
+
 
 }
 

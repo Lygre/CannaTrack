@@ -125,35 +125,8 @@ class CalendarLogViewController: UIViewController {
 
 		doseLogDictionaryGLOBAL = []
 
-		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
+//		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
 		masterDoseArray = []
-
-
-    }
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		setupCalendarView()
-
-		CloudKitManager.shared.setupDoseCKQuerySubscription()
-		calendarCollectionView.collectionViewLayout.invalidateLayout()
-		calendarCollectionView.reloadData()
-
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		masterDoseArray = []
-		activityView.startAnimating()
-		guard let selectedDate = selectedDate else {
-			self.calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
-				//			self.calendarCollectionView.selectDates([selectedDate])
-			}
-			return
-		}
-		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
-//			self.calendarCollectionView.selectDates([selectedDate])
-		}
 
 		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
 			DispatchQueue.main.async {
@@ -178,6 +151,35 @@ class CalendarLogViewController: UIViewController {
 			}
 		}
 
+
+    }
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setupCalendarView()
+
+//		CloudKitManager.shared.setupDoseCKQuerySubscription()
+		calendarCollectionView.collectionViewLayout.invalidateLayout()
+		calendarCollectionView.reloadData()
+
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+
+		activityView.startAnimating()
+		guard let selectedDate = selectedDate else {
+			self.calendarCollectionView.scrollToDate(Date(), triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
+				//			self.calendarCollectionView.selectDates([selectedDate])
+			}
+			return
+		}
+		calendarCollectionView.scrollToDate(selectedDate, triggerScrollToDateDelegate: true, animateScroll: true, preferredScrollPosition: nil, extraAddedOffset: 0) {
+//			self.calendarCollectionView.selectDates([selectedDate])
+		}
+
+
+
 		originalAddButtonPosition = CGPoint(x: view.frame.width - 25 - ((view.frame.width * 0.145) / 2.0), y: view.frame.height - 60 - ((view.frame.height * 0.067) / 2.0))
 
 		viewPropertyAnimator = UIViewPropertyAnimator(duration: 0.15, curve: .linear, animations: {
@@ -190,6 +192,35 @@ class CalendarLogViewController: UIViewController {
 		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		CloudKitManager.shared.setupFetchOperationForDoses(with: self.masterDoseArray.compactMap({$0.toCKRecord().recordID})) { (fetchedDoseArray, error) in
+			if let error = error {
+				let alertView = UIAlertController(title: "Setup Dose Fetch Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+				DispatchQueue.main.async {
+					self.present(alertView, animated: true, completion:nil)
+				}
+			} else if let fetchedDoseArray = fetchedDoseArray {
+				DispatchQueue.main.async {
+					self.masterDoseArray = fetchedDoseArray
+					print("master dose array fetched and updated")
+				}
+			}
+		}
+
+
+
+
+
+	}
+
+	func fetchChanges(in: CKDatabase.Scope, completion: @escaping () -> Void) {
+		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+			print("fetched database changed for dose calendar vc?")
+			DispatchQueue.main.async {
+				self.doseTableView.reloadData()
+				self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+				self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
+			}
+		}
 	}
 
 	override func viewDidDisappear(_ animated: Bool) {

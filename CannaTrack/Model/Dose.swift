@@ -148,7 +148,7 @@ extension Dose {
 		if let doseRecordID = self.recordID {
 			record = CKRecord(recordType: "Dose", recordID: doseRecordID)
 		} else {
-			record = CKRecord(recordType: "Dose")
+			record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
 		}
 
 
