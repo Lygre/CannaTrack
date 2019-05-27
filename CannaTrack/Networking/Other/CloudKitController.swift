@@ -374,6 +374,58 @@ struct CloudKitManager {
 
 	//MARK: -- Handle push notification - CKFetchRecordZoneChangesOperation
 
+	func handleNotificationForInventory() {
+		// Use the ChangeToken to fetch only whatever changes have occurred since the last
+		// time we asked, since intermediate push notifications might have been dropped.
+		var changeToken: CKServerChangeToken? = nil
+		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.serverChangeTokenKey)
+		if changeTokenData != nil {
+			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
+		}
+		let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+		options.previousServerChangeToken = changeToken
+		let optionsMap: [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]? = [CKRecordZone.default().zoneID: options]
+
+		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [CKRecordZone.default().zoneID], configurationsByRecordZoneID: optionsMap)
+
+		operation.fetchAllChanges = true
+		operation.recordChangedBlock = { record in
+			print(record, "updated: CKController.swift:handleNotification")
+		}
+		operation.recordZoneChangeTokensUpdatedBlock = { zoneID, changeToken, data in
+			guard let changeToken = changeToken else {
+				return
+			}
+
+			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
+			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
+			print("change token set in user defaults")
+		}
+		operation.recordZoneFetchCompletionBlock = { zoneID, changeToken, data, more, error in
+			guard error == nil else {
+				return
+			}
+			guard let changeToken = changeToken else {
+				return
+			}
+
+			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
+			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
+			print(zoneID, "changed fetch completed: CKManager: handlenotification")
+		}
+		operation.fetchRecordZoneChangesCompletionBlock = { error in
+			guard error == nil else {
+				print("Fetch Record Zone Changes completion block finished in CloudKitController:handlenotification method")
+				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+				return
+			}
+		}
+		operation.qualityOfService = .userInitiated
+
+		CloudKitManager.privateDatabase.add(operation)
+	}
+
+
 	func handleNotification() {
 		// Use the ChangeToken to fetch only whatever changes have occurred since the last
 		// time we asked, since intermediate push notifications might have been dropped.

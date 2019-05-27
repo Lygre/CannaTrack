@@ -180,6 +180,13 @@ final class InventoryViewController: UIViewController {
 		CloudKitManager.shared.setupProductCKQuerySubscription()
 		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 
+//		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+//			print("new shared fetch Changes completion block executed")
+//			DispatchQueue.main.async {
+//				self.updateInventoryCollectionView()
+//			}
+//		}
+
 		/*
 		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
 		DispatchQueue.main.async {
@@ -663,11 +670,20 @@ extension InventoryViewController {
 extension InventoryViewController {
 
 	@objc func handleNotificationForInventoryChanges() {
-		DispatchQueue.main.async {
-			self.updateInventoryCollectionView()
+		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+			print("fetch changes from notification observer in inventory view finished")
+			DispatchQueue.main.async {
+				self.updateInventoryCollectionView()
+			}
 		}
 
+
 	}
+
+
+
+
+
 
 
 	@objc func handlePanForAddButton(recognizer: UIPanGestureRecognizer) {

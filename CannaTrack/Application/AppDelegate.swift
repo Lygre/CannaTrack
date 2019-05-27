@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 
-		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (granted, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error.localizedDescription)
@@ -91,21 +91,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+		print("received remote notification")
 		let dict = userInfo as! [String: NSObject]
 		let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 		let db = CloudKitManager.shared
 		if notification?.subscriptionID == CloudKitManager.subscriptionID {
-			db.handleNotification()
+			db.handleNotificationForInventory()
 			completionHandler(.newData)
 		}
 		else {
 			completionHandler(.noData)
 		}
+
+		/*
+let dict = userInfo as! [String: NSObject]
+guard let notification: CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
+let db = CloudKitManager.shared
+if notification.subscriptionID == CloudKitManager.subscriptionID {
+//			guard let viewController = viewController as? InventoryViewController else { return }
+
+db.handleNotification()
+completionHandler(.newData)
+} else if notification.subscriptionID == CloudKitManager.dosesSubscriptionID {
+//			db.handleDoseNotification()
+print("notification received from dose subscription")
+}
+else {
+completionHandler(.noData)
+}
+*/
 	}
 
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 		//!!MARK -- change the nature of the notification, alter this array being passed by completion handler
-		completionHandler([.alert, .sound, .badge])
+		completionHandler([.alert, .badge])
 	}
 }
 
