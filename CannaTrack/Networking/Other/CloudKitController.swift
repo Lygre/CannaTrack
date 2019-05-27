@@ -34,8 +34,10 @@ struct CloudKitNotifications {
 	static let DoseChange = "DoseChangeReceived"
 
 }
-
+//MARK: -- CloudKitManager
 struct CloudKitManager {
+
+	//MARK: -- Static Constants
 	static let shared = CloudKitManager()
 	static let privateDatabase = CKContainer.default().privateCloudDatabase
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
@@ -45,15 +47,33 @@ struct CloudKitManager {
 //	static let subscriptionID = "cloudkit-product-changes"
 	static let subscriptionID = "product-changes"
 	static let dosesSubscriptionID = "dose-changes"
+
+
+
 	static let subscriptionSavedKey = "ckSubscriptionSaved"
 	static let serverChangeTokenKey = "ckServerChangeToken"
-	var cloudKitObserver: NSObjectProtocol?
 
+	static let zoneID = CKRecordZone.ID(zoneName: "Inventory", ownerName: CKCurrentUserDefaultName)
+
+	//MARK: -- Variables
+
+	static var cloudKitObserver: NSObjectProtocol?
+	static var createdCustomZone = false
+	static var subscribedToProductChanges = false
+	static var subscribedToDoseChanges = false
+
+	static var privateDatabaseTokenKey = "private"
+	//MARK: -- Constants
+
+
+	//MARK: -- Authentication
 	func requestCloudKitPermission(completion: @escaping RequestCKPermissionCompletion) {
 		CKContainer.default().accountStatus(completionHandler: completion)
 	}
 
 
+
+	//MARK: -- Create Product Record
 	func createCKRecord(for product: Product, completion: @escaping CreateProductCompletion) {
 		let record = product.toCKRecord()
 
@@ -77,6 +97,7 @@ struct CloudKitManager {
 		}
 	}
 
+	//MARK: -- Finish incomplete Query operation
 	func retrieveRemainingRecords(using operationCursor: CKQueryOperation.Cursor) {
 		let queryOperation = CKQueryOperation(cursor: operationCursor)
 		print("initialized new query using operation cursor")
@@ -84,6 +105,7 @@ struct CloudKitManager {
 
 	}
 
+	//MARK: -- Query Operation for Products
 	func retrieveAllProducts(completion: @escaping RetrieveProductCompletion) {
 		let predicate = NSPredicate(format: "TRUEPREDICATE")
 		let query = CKQuery(recordType: "Product", predicate: predicate)
@@ -127,6 +149,7 @@ struct CloudKitManager {
 
 	}
 
+	//MARK: -- Update and Delete Product with CKModifyRecordsOperation
 	func updateProduct(product: Product, completion: @escaping UpdateProductCompletion) {
 		let record = product.toCKRecord()
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
@@ -156,6 +179,7 @@ struct CloudKitManager {
 		CloudKitManager.privateDatabase.add(operation)
 
 	}
+
 
 	func deleteProductUsingModifyRecords(product: Product, completion: @escaping DeleteProductCompletion) {
 		guard let productRecordID = product.recordID else {
@@ -191,7 +215,7 @@ struct CloudKitManager {
 
 
 
-	//fetch operation for products
+	//MARK: -- fetch operation for products CKFetchRecordsOperation
 	func setupFetchOperation(with recordIDs: [CKRecord.ID], completion: @escaping RetrieveProductsCompletion) {
 		//need to save the recordIDs locally
 		let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
@@ -242,6 +266,8 @@ struct CloudKitManager {
 
 	}
 
+	//MARK: -- Saving Product-Changes subscription
+
 	mutating func saveSubscription() {
 		// Use a local flag to avoid saving the subscription more than once.
 		let alreadySaved = UserDefaults.standard.bool(forKey: CloudKitManager.subscriptionSavedKey)
@@ -283,7 +309,8 @@ struct CloudKitManager {
 	}
 
 
-
+	//MARK: -- Fetch Product Subscription
+	//This is actually fetching all though. Causing duplication
 
 	func fetchProductCKQuerySubscriptions() {
 
@@ -309,6 +336,7 @@ struct CloudKitManager {
 
 	}
 
+	//MARK: -- Setup Product CKModifySubscriptionsOperation
 	func setupProductCKQuerySubscription() {
 		let predicate = NSPredicate(value: true)
 		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: "product-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
@@ -321,7 +349,7 @@ struct CloudKitManager {
 
 		let notification = CKSubscription.NotificationInfo()
 		notification.alertBody = "There's a new product in Inventory"
-		notification.soundName = "default"
+//		notification.soundName = "default"
 		notification.shouldSendContentAvailable = true
 		notification.shouldBadge = true
 
@@ -339,6 +367,7 @@ struct CloudKitManager {
 		}
 	}
 
+	//MARK: -- Unsubscribe to Product Updates subscription
 	func unsubscribeToProductUpdates() {
 		CloudKitManager.privateDatabase.delete(withSubscriptionID: CloudKitManager.subscriptionID) { (subscription, error) in
 			if let error = error {
@@ -349,6 +378,59 @@ struct CloudKitManager {
 		}
 	}
 
+
+	//MARK: -- Handle push notification - CKFetchRecordZoneChangesOperation
+
+	func handleNotificationForInventory() {
+		// Use the ChangeToken to fetch only whatever changes have occurred since the last
+		// time we asked, since intermediate push notifications might have been dropped.
+		var changeToken: CKServerChangeToken? = nil
+		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.serverChangeTokenKey)
+		if changeTokenData != nil {
+			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
+		}
+		let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+		options.previousServerChangeToken = changeToken
+		let optionsMap: [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]? = [CKRecordZone.default().zoneID: options]
+
+		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [CKRecordZone.default().zoneID], configurationsByRecordZoneID: optionsMap)
+
+		operation.fetchAllChanges = true
+		operation.recordChangedBlock = { record in
+			print(record, "updated: CKController.swift:handleNotification")
+		}
+		operation.recordZoneChangeTokensUpdatedBlock = { zoneID, changeToken, data in
+			guard let changeToken = changeToken else {
+				return
+			}
+
+			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
+			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
+			print("change token set in user defaults")
+		}
+		operation.recordZoneFetchCompletionBlock = { zoneID, changeToken, data, more, error in
+			guard error == nil else {
+				return
+			}
+			guard let changeToken = changeToken else {
+				return
+			}
+
+			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
+			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
+			print(zoneID, "changed fetch completed: CKManager: handlenotification")
+		}
+		operation.fetchRecordZoneChangesCompletionBlock = { error in
+			guard error == nil else {
+				print("Fetch Record Zone Changes completion block finished in CloudKitController:handlenotification method")
+//				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+				return
+			}
+		}
+		operation.qualityOfService = .userInitiated
+
+		CloudKitManager.privateDatabase.add(operation)
+	}
 
 
 	func handleNotification() {
@@ -392,17 +474,173 @@ struct CloudKitManager {
 		operation.fetchRecordZoneChangesCompletionBlock = { error in
 			guard error == nil else {
 				print("Fetch Record Zone Changes completion block finished in CloudKitController:handlenotification method")
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+//				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 				return
 			}
 		}
-		operation.qualityOfService = .utility
+		operation.qualityOfService = .userInitiated
+
+		CloudKitManager.privateDatabase.add(operation)
+	}
+
+}
+
+
+//MARK: -- Handling Database changes the correct way
+extension CloudKitManager {
+
+	func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {
+		switch databaseScope {
+		case .private:
+			print("implemented this")
+			fetchDatabaseChanges(database: CloudKitManager.privateDatabase, databaseTokenKey: CloudKitManager.privateDatabaseTokenKey, completion: completion)
+		case .public:
+			print("not implemented to fetch changes from public database")
+		case .shared:
+			print("not implemented to fetch changes from shared database")
+		}
+	}
+
+	//MARK: -- Fetch Database Changes CKFetchDatabaseChangesOperation
+
+	func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
+		var changedZoneIDs: [CKRecordZone.ID] = []
+
+		var changeToken: CKServerChangeToken? = nil
+		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey)
+		if changeTokenData != nil {
+			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
+		}
+		// Read change token from disk
+		let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+		operation.recordZoneWithIDChangedBlock = { (zoneID) in
+			changedZoneIDs.append(zoneID)
+		}
+
+		operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+			// Write this zone deletion to memory
+		}
+
+		operation.changeTokenUpdatedBlock = { (token) in
+			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: token)
+			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.privateDatabaseTokenKey)
+			print("change token set in user defaults")
+			// Flush zone deletions for this database to disk
+			// Write this new database change token to memory
+		}
+
+		operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+			if let error = error {
+				print("Error during fetch shared database changes operation", error)
+				completion()
+				return
+			}
+			// Flush zone deletions for this database to disk
+			// Write this new database change token to memory
+
+			self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs) {
+				// Flush in-memory database change token to disk
+				completion()
+			}
+		}
+		operation.qualityOfService = .userInitiated
 
 		CloudKitManager.privateDatabase.add(operation)
 	}
 
 
+
+	//MARK: -- Fetch Zone Changes
+
+	func fetchZoneChanges(database: CKDatabase, databaseTokenKey: String, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
+
+		// Look up the previous change token for each zone
+		var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
+		for zoneID in zoneIDs {
+			let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
+//			options.previousServerChangeToken =
+			guard let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey) as? CKServerChangeToken else {
+				print("failed to get change token")
+				return
+			}
+				// Read change token from disk
+			optionsByRecordZoneID[zoneID] = options
+			print(options.debugDescription)
+		}
+		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
+
+		operation.recordChangedBlock = { (record) in
+			print("Record changed:", record)
+			// Write this record change to memory
+		}
+
+		operation.recordWithIDWasDeletedBlock = { (recordId, recordType) in
+			print("Record deleted:", recordId, recordType)
+			// Write this record deletion to memory
+		}
+
+		operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
+			// Flush record changes and deletions for this zone to disk
+			// Write this new zone change token to disk
+			print("Record zone with id \(zoneId) and token \(token)")
+		}
+
+		operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
+			if let error = error {
+				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
+				return
+			}
+			print("record zone fetch completed")
+			// Flush record changes and deletions for this zone to disk
+			// Write this new zone change token to disk
+		}
+
+		operation.fetchRecordZoneChangesCompletionBlock = { (error) in
+			if let error = error {
+				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
+			}
+			print("fetch record zone changes completion block executed")
+			completion()
+		}
+
+		CloudKitManager.privateDatabase.add(operation)
+	}
+
 }
+
+
+
+/*
+
+// obtain the metadata from the CKRecord
+let data = NSMutableData()
+let coder = NSKeyedArchiver.init(forWritingWith: data)
+coder.requiresSecureCoding = true
+record.encodeSystemFields(with: coder)
+coder.finishEncoding()
+
+// store this metadata on your local object
+yourLocalObject.encodedSystemFields = data
+
+
+
+// set up the CKRecord with its metadata
+let coder = NSKeyedUnarchiver(forReadingWith: yourLocalObject.encodedSystemFields!)
+coder.requiresSecureCoding = true
+let record = CKRecord(coder: coder)
+coder.finishDecoding()
+// write your custom fields...
+
+
+
+*/
+
+
+
+
+
+
+
 
 
 extension CloudKitManager {
