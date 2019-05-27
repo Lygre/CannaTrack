@@ -39,6 +39,7 @@ struct CloudKitManager {
 
 	//MARK: -- Static Constants
 	static let shared = CloudKitManager()
+	
 	static let privateDatabase = CKContainer.default().privateCloudDatabase
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
 
@@ -46,6 +47,7 @@ struct CloudKitManager {
 	static let doseFetchOperation = CKFetchRecordsOperation()
 //	static let subscriptionID = "cloudkit-product-changes"
 	static let subscriptionID = "product-changes"
+	//pretend this doesn't exist for now
 	static let dosesSubscriptionID = "dose-changes"
 
 
@@ -53,15 +55,41 @@ struct CloudKitManager {
 	static let subscriptionSavedKey = "ckSubscriptionSaved"
 	static let serverChangeTokenKey = "ckServerChangeToken"
 
-	static let zoneID = CKRecordZone.ID(zoneName: "Inventory", ownerName: CKCurrentUserDefaultName)
+	static let productZoneID = CKRecordZone.ID(zoneName: "Inventory", ownerName: CKCurrentUserDefaultName)
+	//only working with productZoneID for now
+	static let doseZoneID = CKRecordZone.ID(zoneName: "DoseLogs", ownerName: CKCurrentUserDefaultName)
 
 
 
 	//MARK: -- Variables
 
 	var cloudKitObserver: NSObjectProtocol?
-	static var createdCustomZone = false
-	static var subscribedToProductChanges = false
+
+	static var createdCustomZone: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.productZoneID.zoneName) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.productZoneID.zoneName)
+		}
+	}
+
+
+	static var subscribedToProductChanges: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.subscriptionSavedKey) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.subscriptionSavedKey)
+		}
+	}
+
 	static var subscribedToDoseChanges = false
 
 
