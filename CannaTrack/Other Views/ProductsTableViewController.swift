@@ -107,7 +107,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 					if let error = error {
 						print(error)
 					} else {
-						doseLogDictionaryGLOBAL.append(compositeDose)
+						guard let createdDose = createdDose else { return }
+						DoseController.shared.log(dose: createdDose)
 						print(success, createdDose,
 							  "composite dose saved to cloud")
 						if success {
@@ -124,7 +125,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 					if let error = error {
 						print(error)
 					} else {
-						doseLogDictionaryGLOBAL.append(compositeDose)
+						guard let createdDose = createdDose else { return }
+						DoseController.shared.log(dose: createdDose)
 						print(success, createdDose,
 							  "composite dose saved to cloud")
 						if success {

@@ -116,7 +116,8 @@ class ProductDetailViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-		doseArray = doseLogDictionaryGLOBAL.filter({ (someDose) -> Bool in
+		//this was doseLogDictionaryGLOBAL
+		doseArray = DoseController.doses.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
 		})
 
