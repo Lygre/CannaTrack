@@ -171,6 +171,23 @@ final class InventoryViewController: UIViewController {
 		view.bringSubviewToFront(addProductButton)
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
+			if let error = error {
+				let alertView = UIAlertController(title: "Fetch Operation Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+				DispatchQueue.main.async {
+					self.present(alertView, animated: true, completion:nil)
+				}
+
+			} else if let fetchedProductArray = fetchedProductArray {
+				DispatchQueue.main.async {
+					self.masterProductArray = fetchedProductArray
+					//					self.updateInventoryCollectionView()
+					NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+				}
+			} else {
+				print("wut happened")
+			}
+		})
 
 	}
 
@@ -187,13 +204,7 @@ final class InventoryViewController: UIViewController {
 //			}
 //		}
 
-		/*
-		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
-		DispatchQueue.main.async {
-		self.masterProductArray = fetchedProductArray
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
-		}})
-		*/
+
 
 
 	}
@@ -670,13 +681,16 @@ extension InventoryViewController {
 extension InventoryViewController {
 
 	@objc func handleNotificationForInventoryChanges() {
-		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
-			print("fetch changes from notification observer in inventory view finished")
-			DispatchQueue.main.async {
-				self.updateInventoryCollectionView()
-			}
+//		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+//			print("fetch changes from notification observer in inventory view finished")
+//			DispatchQueue.main.async {
+//				self.updateInventoryCollectionView()
+//			}
+//		}
+		DispatchQueue.main.async {
+			print("handling notification and updating collection view")
+			self.updateInventoryCollectionView()
 		}
-
 
 	}
 
