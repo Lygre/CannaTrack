@@ -136,7 +136,62 @@ struct CloudKitManager {
 		}
 	}
 
+	//MARK: -- Subscribing to Zone Change Notifications; CKDatabaseSubscription object
+	func subscribeToProductZoneChanges() {
+		if !CloudKitManager.subscribedToProductChanges {
 
+			let createSubscriptionOperation = CloudKitManager.shared.createDatabaseSubscriptionOperation(subscriptionId: CloudKitManager.subscriptionID)
+
+			createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIDs, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						print(error)
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					CloudKitManager.subscribedToProductChanges = true
+				}
+			}
+
+			CloudKitManager.privateDatabase.add(createSubscriptionOperation)
+
+		}
+
+		//shared changes; commenting this out for now
+		/*
+		if !self.subscribedToSharedChanges {
+		let createSubscriptionOperation = self.createDatabaseSubscriptionOperation(subscriptionId: sharedSubscriptionId)
+		createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+		if error == nil { self.subscribedToSharedChanges = true }
+		// else custom error handling
+		}
+		self.sharedDB.add(createSubscriptionOperation)
+		}
+		*/
+
+		CloudKitManager.createZoneGroup.notify(queue: DispatchQueue.global()) {
+			if CloudKitManager.createdCustomZone {
+				CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {  }
+			}
+		}
+
+	}
+
+	//MARK: -- Method to create the Database Subscription from Sub ID
+	func createDatabaseSubscriptionOperation(subscriptionId: String) -> CKModifySubscriptionsOperation {
+		let subscription = CKDatabaseSubscription.init(subscriptionID: subscriptionId)
+		//silent notification
+		let notificationInfo = CKSubscription.NotificationInfo()
+		notificationInfo.shouldSendContentAvailable = true
+		subscription.notificationInfo = notificationInfo
+
+		let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+		operation.qualityOfService = .utility
+
+		return operation
+
+	}
 
 
 }
