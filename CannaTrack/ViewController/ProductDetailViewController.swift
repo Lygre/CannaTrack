@@ -275,8 +275,9 @@ class ProductDetailViewController: UIViewController {
 						} else {
 							if success {
 								guard let createdDose = createdDose else { return }
-								doseLogDictionaryGLOBAL.append(createdDose)
-								createdDose.logDoseToCalendar(createdDose)
+//								doseLogDictionaryGLOBAL.append(createdDose)
+//								createdDose.logDoseToCalendar(createdDose)
+								DoseController.shared.log(dose: createdDose)
 								print("Dose Record saved from PReview action in ProductDetailViewController")
 							} else {
 								print("Dose record could not be saved, but didn't throw error")

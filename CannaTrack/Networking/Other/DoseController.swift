@@ -25,8 +25,24 @@ struct DoseController {
 		}
 		set {
 			UserDefaults.standard.set(object: newValue, forKey: DoseController.localDosesKey)
+
 		}
 	}
+
+
+	func log(dose: Dose) {
+		DoseController.doses.append(dose)
+		print("saved \(dose) locally from DoseController")
+	}
+
+	func delete(dose: Dose) {
+		guard let indexOfDoseInDoseArray = DoseController.doses.firstIndex(of: dose) else {
+			return
+		}
+		DoseController.doses.remove(at: indexOfDoseInDoseArray)
+		print("deleted dose \(dose) locally")
+	}
+
 
 
 	
