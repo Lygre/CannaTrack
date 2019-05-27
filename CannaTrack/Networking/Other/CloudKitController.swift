@@ -98,6 +98,19 @@ struct CloudKitManager {
 
 
 	static var privateDatabaseTokenKey = "private"
+
+	static var privateDatabaseChangeToken: CKServerChangeToken? {
+		get {
+			guard let storedTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey) else { return nil }
+			guard let unarchivedPrivateServerChangeToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: storedTokenData) else { return nil }
+			return unarchivedPrivateServerChangeToken
+		}
+		set(updatedServerChangeToken) {
+			guard let newTokenData = try? NSKeyedArchiver.archivedData(withRootObject: CKServerChangeToken.self, requiringSecureCoding: false) else { return }
+			UserDefaults.standard.set(object: newTokenData, forKey: CloudKitManager.privateDatabaseTokenKey)
+			print("server change token saved and written to user defaults")
+		}
+	}
 	//MARK: -- Constants
 
 
@@ -158,18 +171,6 @@ struct CloudKitManager {
 
 		}
 
-		//shared changes; commenting this out for now
-		/*
-		if !self.subscribedToSharedChanges {
-		let createSubscriptionOperation = self.createDatabaseSubscriptionOperation(subscriptionId: sharedSubscriptionId)
-		createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
-		if error == nil { self.subscribedToSharedChanges = true }
-		// else custom error handling
-		}
-		self.sharedDB.add(createSubscriptionOperation)
-		}
-		*/
-
 		CloudKitManager.createZoneGroup.notify(queue: DispatchQueue.global()) {
 			if CloudKitManager.createdCustomZone {
 				CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {  }
@@ -193,12 +194,7 @@ struct CloudKitManager {
 
 	}
 
-
-}
-
-
-//MARK: -- Handling Database changes the correct way
-extension CloudKitManager {
+	//MARK: -- Fetch Changes
 
 	func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {
 		switch databaseScope {
@@ -217,13 +213,11 @@ extension CloudKitManager {
 	func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
 		var changedZoneIDs: [CKRecordZone.ID] = []
 
-		var changeToken: CKServerChangeToken? = nil
-		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey)
-		if changeTokenData != nil {
-			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
-		}
+		var changeToken: CKServerChangeToken? = CloudKitManager.privateDatabaseChangeToken
+
 		// Read change token from disk
 		let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+
 		operation.recordZoneWithIDChangedBlock = { (zoneID) in
 			changedZoneIDs.append(zoneID)
 		}
@@ -233,9 +227,7 @@ extension CloudKitManager {
 		}
 
 		operation.changeTokenUpdatedBlock = { (token) in
-			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: token)
-			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.privateDatabaseTokenKey)
-			print("change token set in user defaults")
+			CloudKitManager.privateDatabaseChangeToken = token
 			// Flush zone deletions for this database to disk
 			// Write this new database change token to memory
 		}
@@ -269,12 +261,12 @@ extension CloudKitManager {
 		var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
 		for zoneID in zoneIDs {
 			let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
-//			options.previousServerChangeToken =
+			//			options.previousServerChangeToken =
 			guard let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey) as? CKServerChangeToken else {
 				print("failed to get change token")
 				return
 			}
-				// Read change token from disk
+			// Read change token from disk
 			optionsByRecordZoneID[zoneID] = options
 			print(options.debugDescription)
 		}
@@ -316,6 +308,17 @@ extension CloudKitManager {
 
 		CloudKitManager.privateDatabase.add(operation)
 	}
+
+}
+
+
+//MARK: -- Handling Database changes the correct way
+extension CloudKitManager {
+
+
+
+
+
 
 }
 

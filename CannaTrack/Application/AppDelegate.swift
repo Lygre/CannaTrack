@@ -91,35 +91,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-		print("received remote notification")
+		print("received remote notification for product changes; instantiating root view if possible")
+
+		let viewController = self.window?.rootViewController as? InventoryViewController
+		guard let inventoryViewController = viewController else { print("could not instantiate root as inventory"); return }
+
 		let dict = userInfo as! [String: NSObject]
-		let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-		let db = CloudKitManager.shared
-		if notification?.subscriptionID == CloudKitManager.subscriptionID {
-			db.handleNotificationForInventory()
-			completionHandler(.newData)
+
+		guard let notification: CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
+
+
+		if notification.subscriptionID == CloudKitManager.subscriptionID {
+			print(notification.debugDescription, notification.description)
+
+			inventoryViewController.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+				completionHandler(.newData)
+			}
 		}
 		else {
 			completionHandler(.noData)
 		}
 
-		/*
-let dict = userInfo as! [String: NSObject]
-guard let notification: CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary: dict) as? CKDatabaseNotification else { return }
-let db = CloudKitManager.shared
-if notification.subscriptionID == CloudKitManager.subscriptionID {
-//			guard let viewController = viewController as? InventoryViewController else { return }
-
-db.handleNotification()
-completionHandler(.newData)
-} else if notification.subscriptionID == CloudKitManager.dosesSubscriptionID {
-//			db.handleDoseNotification()
-print("notification received from dose subscription")
-}
-else {
-completionHandler(.noData)
-}
-*/
 	}
 
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

@@ -215,6 +215,11 @@ final class InventoryViewController: UIViewController {
 		CloudKitManager.shared.unsubscribeToProductUpdates()
 	}
 
+	func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {
+		CloudKitManager.shared.fetchChanges(in: databaseScope) {
+			print("CKManager fetchChanges method executed by remote notification")
+		}
+	}
 
 
 
