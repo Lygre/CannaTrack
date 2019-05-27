@@ -416,7 +416,7 @@ struct CloudKitManager {
 		operation.fetchRecordZoneChangesCompletionBlock = { error in
 			guard error == nil else {
 				print("Fetch Record Zone Changes completion block finished in CloudKitController:handlenotification method")
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+//				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 				return
 			}
 		}
@@ -467,7 +467,7 @@ struct CloudKitManager {
 		operation.fetchRecordZoneChangesCompletionBlock = { error in
 			guard error == nil else {
 				print("Fetch Record Zone Changes completion block finished in CloudKitController:handlenotification method")
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
+//				NotificationCenter.default.post(name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 				return
 			}
 		}
