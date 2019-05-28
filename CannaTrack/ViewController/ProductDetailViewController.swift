@@ -591,6 +591,11 @@ extension ProductDetailViewController {
 						return match
 					})
 					print("got dose query from DoseLog Zone")
+					if let recordsRetrievedFromQuery = recordsRetrieved {
+						DoseController.doses = recordsRetrievedFromQuery.compactMap({Dose.fromCKRecord(record: $0)})
+						print("saved DoseController array after completing dose query from DoseLog zone")
+					} else { print("record were not retrieved by query") }
+					
 					if self.doseCKRecords.count > self.activeDetailProduct.numberOfDosesTakenFromProduct {
 						self.activeDetailProduct.numberOfDosesTakenFromProduct = self.doseCKRecords.count
 						self.saveChangesToProduct(product: self.activeDetailProduct)
