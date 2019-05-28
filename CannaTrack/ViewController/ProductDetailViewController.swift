@@ -570,7 +570,7 @@ extension ProductDetailViewController {
 	fileprivate func queryCloudForDoseRecords() {
 
 		let query = CKQuery(recordType: "Dose", predicate: NSPredicate(value: true))
-		privateDatabase.perform(query, inZoneWith: nil) { (recordsRetrieved, error) in
+		privateDatabase.perform(query, inZoneWith: CloudKitManager.doseZoneID) { (recordsRetrieved, error) in
 
 			DispatchQueue.main.async {
 				if let error = error {
@@ -590,6 +590,7 @@ extension ProductDetailViewController {
 						let match = (dose?.product.productType == self.activeDetailProduct.productType) && (dose?.product.dateOpened == self.activeDetailProduct.dateOpened) && (dose?.product.strain.name == self.activeDetailProduct.strain.name)
 						return match
 					})
+					print("got dose query from DoseLog Zone")
 					if self.doseCKRecords.count > self.activeDetailProduct.numberOfDosesTakenFromProduct {
 						self.activeDetailProduct.numberOfDosesTakenFromProduct = self.doseCKRecords.count
 						self.saveChangesToProduct(product: self.activeDetailProduct)

@@ -183,14 +183,14 @@ struct CloudKitManager {
 
 			createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
 				if let error = error {
-					let alertView = UIAlertController(title: "Custom Product Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					let alertView = UIAlertController(title: "Custom Dose Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 					DispatchQueue.main.async {
 						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
 					}
 				} else {
 					if let _ = saved {
 						CloudKitManager.createdCustomDoseLogZone = true
-						print("Custom Zone for Products was saved to Server")
+						print("Custom Zone for Doses was saved to Server")
 					}
 				}
 				CloudKitManager.createZoneGroup.leave()
@@ -1084,13 +1084,18 @@ extension CloudKitManager {
 					print(error)
 				} else {
 					guard let recordsByID = recordsByID else { return }
-					var doses: [Dose] = []
-					for (_, record) in recordsByID {
+//					var doses: [Dose] = []
+					for (recordID, record) in recordsByID {
 						guard let dose = Dose.fromCKRecord(record: record) else { return }
-						doses.append(dose)
+						if !DoseController.doses.contains(dose) {
+							DoseController.shared.log(dose: dose)
+							print("logged dose from CKRecord in fetch records completion block")
+						} else { print("doses contained dose from CK Record already") }
 					}
-					DoseController.doses = doses
-					completion(doses,nil)
+
+
+//					DoseController.doses = doses
+					completion(DoseController.doses,nil)
 					print("Records fetch completed")
 				}
 
