@@ -323,6 +323,7 @@ struct CloudKitManager {
 			}
 			// Flush zone deletions for this database to disk
 			// Write this new database change token to memory
+			CloudKitManager.privateDatabaseChangeToken = token
 
 			self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs) {
 				// Flush in-memory database change token to disk
@@ -365,6 +366,8 @@ struct CloudKitManager {
 		operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
 			// Flush record changes and deletions for this zone to disk
 			// Write this new zone change token to disk
+			//MARK: -- need to make a new constant to track the individual zone changes and a token for them
+//			CloudKitManager.privateDatabase
 			print("Record zone with id \(zoneId) and token \(token)")
 		}
 
@@ -373,6 +376,7 @@ struct CloudKitManager {
 				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
 				return
 			}
+
 			print("record zone fetch completed")
 			// Flush record changes and deletions for this zone to disk
 			// Write this new zone change token to disk

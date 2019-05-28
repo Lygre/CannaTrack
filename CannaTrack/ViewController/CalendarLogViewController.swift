@@ -193,6 +193,16 @@ class CalendarLogViewController: UIViewController {
 		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+			DispatchQueue.main.async {
+				self.doseTableView.reloadData()
+				self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+				self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: {
+					self.activityView.stopAnimating()
+				})
+			}
+		}
+
 		/*
 		if !DoseController.doses.isEmpty {
 			CloudKitManager.shared.setupFetchOperationForDoses(with: DoseController.doses.compactMap({$0.toCKRecord().recordID})) { (fetchedDoseArray, error) in
@@ -222,11 +232,7 @@ class CalendarLogViewController: UIViewController {
 	func fetchChanges(in: CKDatabase.Scope, completion: @escaping () -> Void) {
 		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
 			print("fetched database changed for dose calendar vc?")
-			DispatchQueue.main.async {
-				self.doseTableView.reloadData()
-				self.calendarCollectionView.collectionViewLayout.invalidateLayout()
-				self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: nil)
-			}
+
 		}
 	}
 
