@@ -240,7 +240,7 @@ func loadDoseCalendarInfo() {
 		if let da = UserDefaults.standard.data(forKey: "doseLogData") {
 			let stored = try propertyListDecoder.decode([Dose].self, from: da)
 			print(stored)
-			doseLogDictionaryGLOBAL = stored
+//			doseLogDictionaryGLOBAL = stored
 		}
 	}
 	catch {
@@ -250,14 +250,14 @@ func loadDoseCalendarInfo() {
 
 func saveDoseCalendarInfo() {
 	let propertyListEncoder = PropertyListEncoder()
-	do {
-		let doseLogData: [Dose] = doseLogDictionaryGLOBAL
-		let data = try propertyListEncoder.encode(doseLogData)
-		UserDefaults.standard.set(data, forKey: "doseLogData")
-	}
-	catch {
-		print(error)
-	}
+//	do {
+//		let doseLogData: [Dose] = doseLogDictionaryGLOBAL
+//		let data = try propertyListEncoder.encode(doseLogData)
+//		UserDefaults.standard.set(data, forKey: "doseLogData")
+//	}
+//	catch {
+//		print(error)
+//	}
 }
 
 

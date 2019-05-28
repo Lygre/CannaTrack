@@ -908,8 +908,8 @@ extension CloudKitManager {
 		}
 		let config = CKQueryOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 15
+		config.timeoutIntervalForResource = 15
 		queryOperation.configuration = config
 
 		CloudKitManager.privateDatabase.add(queryOperation)
@@ -922,8 +922,8 @@ extension CloudKitManager {
 		let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
 		let config = CKModifyRecordsOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 15
+		config.timeoutIntervalForResource = 15
 		operation.configuration = config
 		operation.savePolicy = .allKeys
 		operation.modifyRecordsCompletionBlock = { (savedRecords, deletedRecordIDs, error) in
@@ -956,8 +956,8 @@ extension CloudKitManager {
 		let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [doseRecordID])
 		let config = CKModifyRecordsOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 15
+		config.timeoutIntervalForResource = 15
 
 		operation.configuration = config
 
@@ -1059,6 +1059,11 @@ extension CloudKitManager {
 		operation.perRecordCompletionBlock = { (record, recordID, error) in
 			DispatchQueue.main.async {
 				if let error = error {
+					let alertView = UIAlertController(title: "Fetch Record Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+
 					print(error)
 				} else if let record = record, let id = recordID {
 					print("Record \(record) fetch completed with ID \(id)")
@@ -1072,6 +1077,10 @@ extension CloudKitManager {
 		operation.fetchRecordsCompletionBlock = { (recordsByID, error) in
 			DispatchQueue.main.async {
 				if let error = error {
+					let alertView = UIAlertController(title: "Fetch Record Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
 					print(error)
 				} else {
 					guard let recordsByID = recordsByID else { return }
@@ -1080,6 +1089,7 @@ extension CloudKitManager {
 						guard let dose = Dose.fromCKRecord(record: record) else { return }
 						doses.append(dose)
 					}
+					DoseController.doses = doses
 					completion(doses,nil)
 					print("Records fetch completed")
 				}
@@ -1089,8 +1099,8 @@ extension CloudKitManager {
 
 		let config = CKFetchRecordsOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForResource = 10
-		config.timeoutIntervalForRequest = 10
+		config.timeoutIntervalForResource = 15
+		config.timeoutIntervalForRequest = 15
 		operation.configuration = config
 
 		CloudKitManager.privateDatabase.add(operation)

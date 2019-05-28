@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CloudKit
+import UserNotifications
 
 struct DoseController {
 
@@ -21,10 +22,13 @@ struct DoseController {
 				print("could not decode doses; returning empty dose array")
 				return []
 			}
+			print("returning locally stored doses")
 			return localDoses
 		}
 		set {
+			print("new locally stored doses value set")
 			UserDefaults.standard.set(object: newValue, forKey: DoseController.localDosesKey)
+
 
 		}
 	}

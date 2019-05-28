@@ -10,7 +10,7 @@ import UIKit
 import JTAppleCalendar
 import CloudKit
 
-var doseLogDictionaryGLOBAL: [Dose] = []
+//var doseLogDictionaryGLOBAL: [Dose] = []
 
 	
 
@@ -47,9 +47,10 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
-	var masterDoseArray: [Dose] = [] {
-		willSet(newDoseArray) {
-			doseLogDictionaryGLOBAL = newDoseArray
+	var masterDoseArray: [Dose] = DoseController.doses {
+		willSet(newArray) {
+			DoseController.doses = newArray
+			print("new array of doses set, writing back to user defaults")
 		}
 	}
 
@@ -123,15 +124,15 @@ class CalendarLogViewController: UIViewController {
 		dosePreviewInteraction?.delegate = self
 		selectedDate = Date()
 
-		doseLogDictionaryGLOBAL = []
+//		doseLogDictionaryGLOBAL = []
 
 //		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
-		masterDoseArray = []
+//		masterDoseArray = []
 
 		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
 			DispatchQueue.main.async {
 				if let dose = dose {
-					if !self.masterDoseArray.contains(dose) {
+					if !DoseController.doses.contains(dose) {
 						print("retrieved dose.")
 						self.masterDoseArray.append(dose)
 						self.doseTableView.reloadData()
@@ -192,17 +193,20 @@ class CalendarLogViewController: UIViewController {
 		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
-		CloudKitManager.shared.setupFetchOperationForDoses(with: self.masterDoseArray.compactMap({$0.toCKRecord().recordID})) { (fetchedDoseArray, error) in
+		CloudKitManager.shared.setupFetchOperationForDoses(with: DoseController.doses.compactMap({$0.toCKRecord().recordID})) { (fetchedDoseArray, error) in
 			if let error = error {
 				let alertView = UIAlertController(title: "Setup Dose Fetch Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 				DispatchQueue.main.async {
 					self.present(alertView, animated: true, completion:nil)
 				}
-			} else if let fetchedDoseArray = fetchedDoseArray {
-				DispatchQueue.main.async {
-					self.masterDoseArray = fetchedDoseArray
+			}
+			if let fetchedDoseArray = fetchedDoseArray {
+				DoseController.doses = fetchedDoseArray
+				print("assigned dose array to fetched Dose array from cloud")
+//				DispatchQueue.main.async {
+//					self.masterDoseArray = fetchedDoseArray
 					print("master dose array fetched and updated")
-				}
+//				}
 			}
 		}
 

@@ -117,7 +117,7 @@ extension Dose {
 		let componentsForDateKey: DateComponents = DateComponents(calendar: .current, timeZone: .current, era: nil, year: dateTimeComponents.year, month: dateTimeComponents.month, day: dateTimeComponents.day, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
 //		guard let constructedDateKey: Date = userCalendar.date(from: componentsForDateKey) else { return }
 
-		doseLogDictionaryGLOBAL.append(dose)
+//		doseLogDictionaryGLOBAL.append(dose)
 		//we should have the dose handle logging itself to CloudKit, but this needs revising and revisiting at a later time
 		saveDoseCalendarInfo()
 
