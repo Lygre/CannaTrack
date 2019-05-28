@@ -125,12 +125,18 @@ struct CloudKitManager {
 	static var privateDatabaseChangeToken: CKServerChangeToken? {
 		get {
 			guard let storedTokenData = UserDefaults.standard.data(forKey: CloudKitManager.privateDatabaseTokenKey) else { return nil }
-			guard let unarchivedPrivateServerChangeToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: storedTokenData) else { return nil }
-			return unarchivedPrivateServerChangeToken
+			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: storedTokenData) else { return nil }
+			decoder.requiresSecureCoding = true
+			guard let serverChangeTokenFromDecoder = CKServerChangeToken(coder: decoder) else { return nil }
+			return serverChangeTokenFromDecoder
 		}
 		set(updatedServerChangeToken) {
-			guard let newTokenData = try? NSKeyedArchiver.archivedData(withRootObject: CKServerChangeToken.self, requiringSecureCoding: false) else { return }
-			UserDefaults.standard.set(object: newTokenData, forKey: CloudKitManager.privateDatabaseTokenKey)
+			let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+			updatedServerChangeToken?.encode(with: coder)
+//			guard let newTokenData = try? NSKeyedArchiver.archivedData(withRootObject: CKServerChangeToken.self, requiringSecureCoding: true) else { return }
+			coder.finishEncoding()
+
+			UserDefaults.standard.set(object: coder.encodedData, forKey: CloudKitManager.privateDatabaseTokenKey)
 			print("server change token saved and written to user defaults")
 		}
 	}
@@ -342,6 +348,7 @@ struct CloudKitManager {
 	func fetchZoneChanges(database: CKDatabase, databaseTokenKey: String, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
 
 		// Look up the previous change token for each zone
+		var needsUpdatingZoneIDs: [CKRecordZone.ID] = []
 		var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
 		for zoneID in zoneIDs {
 			let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
@@ -353,13 +360,25 @@ struct CloudKitManager {
 		}
 		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
 
+		struct ChangedRecord {
+			var changedRecords: [CKRecord] = []
+			var deleteRecordIDs: [CKRecord.ID] = []
+		}
+
+		var recordChanges = ChangedRecord()
+
 		operation.recordChangedBlock = { (record) in
 			print("Record changed:", record)
+			recordChanges.changedRecords.append(record)
 			// Write this record change to memory
 		}
 
 		operation.recordWithIDWasDeletedBlock = { (recordId, recordType) in
 			print("Record deleted:", recordId, recordType)
+			if recordType == "Dose" {
+				recordChanges.deleteRecordIDs.append(recordId)
+//				DoseController.shared.delete(dose: <#T##Dose#>)
+			}
 			// Write this record deletion to memory
 		}
 
@@ -368,16 +387,25 @@ struct CloudKitManager {
 			// Write this new zone change token to disk
 			//MARK: -- need to make a new constant to track the individual zone changes and a token for them
 //			CloudKitManager.privateDatabase
+			needsUpdatingZoneIDs.append(zoneId)
 			print("Record zone with id \(zoneId) and token \(token)")
 		}
 
 		operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
 			if let error = error {
+				let alertView = UIAlertController(title: "Record Zone Fetch Completion", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+				DispatchQueue.main.async {
+					UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+				}
+
 				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
 				return
+			} else {
+				print("record zone fetch completed", needsUpdatingZoneIDs, "need updating")
+
+
 			}
 
-			print("record zone fetch completed")
 			// Flush record changes and deletions for this zone to disk
 			// Write this new zone change token to disk
 		}
@@ -385,6 +413,22 @@ struct CloudKitManager {
 		operation.fetchRecordZoneChangesCompletionBlock = { (error) in
 			if let error = error {
 				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
+			}
+			if !recordChanges.changedRecords.isEmpty {
+				print("changed records array is not empty. not doing anything with the changed records yet")
+			}
+			if !recordChanges.deleteRecordIDs.isEmpty {
+				print("deleted record IDs array was not empty. processing deletions.")
+				for recordID in recordChanges.deleteRecordIDs {
+					guard let doseToDelete = DoseController.doses.filter({ (someLocalDose) -> Bool in
+						if let localDoseRecordID = someLocalDose.recordID {
+							return localDoseRecordID == recordID
+						} else { return false }
+					}).first else { return }
+
+					DoseController.shared.delete(dose: doseToDelete)
+					print("processed server dose record deletions locally")
+				}
 			}
 			print("fetch record zone changes completion block executed")
 			completion()

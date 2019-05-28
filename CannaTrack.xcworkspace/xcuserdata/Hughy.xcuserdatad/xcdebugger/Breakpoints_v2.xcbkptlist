@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/DoseController.swift"
-            timestampString = "580749031.648093"
+            timestampString = "580753463.6271631"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/DoseController.swift"
-            timestampString = "580749031.648416"
+            timestampString = "580753463.62753"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/DoseController.swift"
-            timestampString = "580749031.648481"
+            timestampString = "580753463.627612"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/Model/Dose.swift"
-            timestampString = "580749031.648544"
+            timestampString = "580753463.627692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "202"
@@ -82,7 +82,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/DoseController.swift"
-            timestampString = "580749031.648737"
+            timestampString = "580753463.6283309"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
@@ -98,11 +98,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580749031.648798"
+            timestampString = "580753463.628413"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "871"
-            endingLineNumber = "871"
+            startingLineNumber = "919"
+            endingLineNumber = "919"
             landmarkName = "createCKRecord(for:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -114,11 +114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580749031.64933"
+            timestampString = "580753463.6290621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1090"
-            endingLineNumber = "1090"
+            startingLineNumber = "1138"
+            endingLineNumber = "1138"
             landmarkName = "setupFetchOperationForDoses(with:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -130,11 +130,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580749584.458611"
+            timestampString = "580753463.629439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
             landmarkName = "fetchDatabaseChanges(database:databaseTokenKey:completion:)"
             landmarkType = "7">
             <Actions>
@@ -145,38 +145,6 @@
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Swift.Optional&lt;__C.CKServerChangeToken&gt;, Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in CannaTrackSpecial.CloudKitManager.fetchDatabaseChanges(database: __C.CKDatabase, databaseTokenKey: Swift.String, completion: () -&gt; ()) -&gt; ()"
-                  moduleName = "CannaTrack"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/Networking/Other/CloudKitController.swift"
-                  timestampString = "580749584.8530869"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "327"
-                  endingLineNumber = "327"
-                  offsetFromSymbolStart = "768">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #4 (Swift.Optional&lt;__C.CKServerChangeToken&gt;, Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in CannaTrackSpecial.CloudKitManager.fetchDatabaseChanges(database: __C.CKDatabase, databaseTokenKey: Swift.String, completion: () -&gt; ()) -&gt; ()"
-                  moduleName = "CannaTrack"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Hughy/Developer/CannaTrack/CannaTrack/Networking/Other/CloudKitController.swift"
-                  timestampString = "580749584.856142"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "329"
-                  endingLineNumber = "329"
-                  offsetFromSymbolStart = "68">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
