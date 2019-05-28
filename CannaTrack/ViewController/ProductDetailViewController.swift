@@ -486,7 +486,8 @@ extension ProductDetailViewController: UITextFieldDelegate {
 
 extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return doseCKRecords.count
+//		return doseCKRecords.count
+		return doseArray.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -495,12 +496,14 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
 		let formatter = DateFormatter()
 		formatter.dateStyle = .short
 		formatter.timeStyle = .short
-		guard let date = doseCKRecords[indexPath.row].creationDate else { return cell }
+//		guard let date = doseCKRecords[indexPath.row].creationDate else { return cell }
+		guard let date = doseArray[indexPath.row].timestamp else { return cell }
 		cell.timeLabel.text = formatter.string(from: date)
 
 		cell.productLabel.text = activeDetailProduct.productType.rawValue
 		cell.strainLabel.text = activeDetailProduct.strain.name
-		guard let dose = Dose.fromCKRecord(record: doseCKRecords[indexPath.row]) else { return cell }
+//		guard let dose = Dose.fromCKRecord(record: doseCKRecords[indexPath.row]) else { return cell }
+		let dose = doseArray[indexPath.row]
 		cell.massLabel.text = "\(dose.mass ?? 0)g"
 		switch activeDetailProduct.strain.race {
 		case .hybrid:
@@ -593,15 +596,16 @@ extension ProductDetailViewController {
 					print("got dose query from DoseLog Zone")
 					if let recordsRetrievedFromQuery = recordsRetrieved {
 						DoseController.doses = recordsRetrievedFromQuery.compactMap({Dose.fromCKRecord(record: $0)})
+						self.doseArray = DoseController.doses.filter({ ($0.product.productType == self.activeDetailProduct.productType) && ($0.product.dateOpened == self.activeDetailProduct.dateOpened) && ($0.product.strain.name == self.activeDetailProduct.strain.name) })
 						print("saved DoseController array after completing dose query from DoseLog zone")
 					} else { print("record were not retrieved by query") }
-					
+
 					if self.doseCKRecords.count > self.activeDetailProduct.numberOfDosesTakenFromProduct {
 						self.activeDetailProduct.numberOfDosesTakenFromProduct = self.doseCKRecords.count
 						self.saveChangesToProduct(product: self.activeDetailProduct)
 					}
 					self.productDoseLogTableView.reloadData()
-					print("dose records loaded: # \(recordsRetrieved?.count ?? 0) | Filtered: \(self.doseCKRecords.count)")
+					print("dose records loaded: # \(recordsRetrieved?.count ?? 0) | Filtered: \(self.doseCKRecords.count) : doseArray \(self.doseArray.count)")
 				}
 
 

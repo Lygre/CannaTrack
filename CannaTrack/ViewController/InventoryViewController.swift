@@ -132,7 +132,7 @@ final class InventoryViewController: UIViewController {
 		//activity view setup and CKQuery, other
 		setupActivityView()
 
-		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
+
 
 		masterProductArray = []
 
@@ -194,7 +194,7 @@ final class InventoryViewController: UIViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		CloudKitManager.shared.setupProductCKQuerySubscription()
+		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
 		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 
 //		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {

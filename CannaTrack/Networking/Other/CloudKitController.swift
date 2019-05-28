@@ -121,6 +121,8 @@ struct CloudKitManager {
 
 
 	static var privateDatabaseTokenKey = "private"
+	static var publicDatabaseTokenKey = "public"
+
 
 	static var privateDatabaseChangeToken: CKServerChangeToken? {
 		get {
@@ -140,6 +142,45 @@ struct CloudKitManager {
 			print("server change token saved and written to user defaults")
 		}
 	}
+
+	static var doseZoneChangeToken: CKServerChangeToken? {
+		get {
+			guard let storedDoseZoneTokenData = UserDefaults.standard.data(forKey: CloudKitManager.serverChangeTokenKeyForDoses) else { return nil }
+			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: storedDoseZoneTokenData) else { return nil }
+			decoder.requiresSecureCoding = true
+			guard let serverChangeTokenForDoseLogZoneFromDecoder = CKServerChangeToken(coder: decoder) else { return nil }
+			print("change token for dose log zone read from user defaults")
+			return serverChangeTokenForDoseLogZoneFromDecoder
+		}
+		set(updatedDoseZoneChangeToken) {
+			let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+			updatedDoseZoneChangeToken?.encode(with: coder)
+			coder.finishEncoding()
+
+			UserDefaults.standard.set(object: coder.encodedData, forKey: CloudKitManager.serverChangeTokenKeyForDoses)
+			print("change token for dose log zone updated in user defaults")
+		}
+	}
+	/*
+	static var inventoryZoneChangeToken: CKServerChangeToken? {
+		get {
+			guard let inventoryZoneTokenData = UserDefaults.standard.data(forKey: CloudKitManager.) else { return nil }
+			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: inventoryZoneTokenData) else { return nil }
+			decoder.requiresSecureCoding = true
+			guard let serverChangeTokenForDoseLogZoneFromDecoder = CKServerChangeToken(coder: decoder) else { return nil }
+			print("change token for dose log zone read from user defaults")
+			return serverChangeTokenForDoseLogZoneFromDecoder
+		}
+		set(updatedDoseZoneChangeToken) {
+			let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+			updatedDoseZoneChangeToken?.encode(with: coder)
+			coder.finishEncoding()
+			UserDefaults.standard.set(object: coder.encodedData, forKey: CloudKitManager.serverChangeTokenKeyForDoses)
+			print("change token for dose log zone updated in user defaults")
+		}
+	}
+	*/
+
 	//MARK: -- Constants
 
 
@@ -246,7 +287,7 @@ struct CloudKitManager {
 
 			createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIDs, error) in
 				if let error = error {
-					let alertView = UIAlertController(title: "Product Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					let alertView = UIAlertController(title: "ModifyDoseLog Sub Fail", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 					DispatchQueue.main.async {
 						print(error)
 						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
@@ -265,7 +306,6 @@ struct CloudKitManager {
 				CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {  }
 			}
 		}
-
 	}
 
 	//MARK: -- Method to create the Database Subscription from Sub ID
@@ -349,16 +389,16 @@ struct CloudKitManager {
 
 		// Look up the previous change token for each zone
 		var needsUpdatingZoneIDs: [CKRecordZone.ID] = []
-		var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
+		var optionsByRecordZoneID = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration]()
 		for zoneID in zoneIDs {
-			let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
+			let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
 			//			options.previousServerChangeToken =
 			options.previousServerChangeToken = CloudKitManager.privateDatabaseChangeToken
 			// Read change token from disk
 			optionsByRecordZoneID[zoneID] = options
 			print(options.debugDescription)
 		}
-		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, optionsByRecordZoneID: optionsByRecordZoneID)
+		let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
 
 		struct ChangedRecord {
 			var changedRecords: [CKRecord] = []
@@ -370,6 +410,9 @@ struct CloudKitManager {
 		operation.recordChangedBlock = { (record) in
 			print("Record changed:", record)
 			recordChanges.changedRecords.append(record)
+			if !needsUpdatingZoneIDs.contains(record.recordID.zoneID) {
+				needsUpdatingZoneIDs.append(record.recordID.zoneID)
+			}
 			// Write this record change to memory
 		}
 
@@ -377,6 +420,9 @@ struct CloudKitManager {
 			print("Record deleted:", recordId, recordType)
 			if recordType == "Dose" {
 				recordChanges.deleteRecordIDs.append(recordId)
+				if !needsUpdatingZoneIDs.contains(recordId.zoneID) {
+					needsUpdatingZoneIDs.append(recordId.zoneID)
+				}
 //				DoseController.shared.delete(dose: <#T##Dose#>)
 			}
 			// Write this record deletion to memory
@@ -385,6 +431,10 @@ struct CloudKitManager {
 		operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
 			// Flush record changes and deletions for this zone to disk
 			// Write this new zone change token to disk
+			if zoneId == CloudKitManager.doseZoneID {
+				CloudKitManager.doseZoneChangeToken = token
+				print("dose zone change token has been updated")
+			} else { print("the updated zone token was not the dose zone; doing nothing") }
 			//MARK: -- need to make a new constant to track the individual zone changes and a token for them
 //			CloudKitManager.privateDatabase
 			needsUpdatingZoneIDs.append(zoneId)
@@ -401,6 +451,9 @@ struct CloudKitManager {
 				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
 				return
 			} else {
+				if zoneId == CloudKitManager.doseZoneID {
+					CloudKitManager.doseZoneChangeToken = changeToken
+				}
 				print("record zone fetch completed", needsUpdatingZoneIDs, "need updating")
 
 
@@ -442,8 +495,6 @@ struct CloudKitManager {
 
 //MARK: -- Handling Database changes the correct way
 extension CloudKitManager {
-
-
 
 
 
