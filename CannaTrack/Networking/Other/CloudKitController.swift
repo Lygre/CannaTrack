@@ -756,6 +756,7 @@ extension CloudKitManager {
 					if let subscriptions = subscriptions {
 						if subscriptions.isEmpty {
 							self.setupProductCKQuerySubscription()
+//							self.setupDoseCKQuerySubscription()
 						} else {
 							print("\(subscriptions.debugDescription) retrieved by CloudKitManager")
 						}
@@ -773,7 +774,7 @@ extension CloudKitManager {
 	//MARK: -- Setup Product CKModifySubscriptionsOperation
 	func setupProductCKQuerySubscription() {
 		let predicate = NSPredicate(value: true)
-		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: "product-changes", options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
+		let subscription = CKQuerySubscription(recordType: "Product", predicate: predicate, subscriptionID: CloudKitManager.subscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
 
 
 		let config = CKModifySubscriptionsOperation.Configuration()
@@ -1107,29 +1108,54 @@ extension CloudKitManager {
 		let subscription = CKQuerySubscription(recordType: "Dose", predicate: predicate, subscriptionID: CloudKitManager.dosesSubscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
 
 
-		let config = CKModifySubscriptionsOperation.Configuration()
-		config.timeoutIntervalForRequest = 20
-		config.timeoutIntervalForResource = 20
-
 
 		let notification = CKSubscription.NotificationInfo()
 		notification.alertBody = "There's a new dose in Inventory"
-		notification.soundName = "default"
+		//		notification.soundName = "default"
 		notification.shouldSendContentAvailable = true
 		notification.shouldBadge = false
 
 		subscription.notificationInfo = notification
+
+		let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
+		let config = CKModifySubscriptionsOperation.Configuration()
+		config.timeoutIntervalForRequest = 20
+		config.timeoutIntervalForResource = 20
 		config.qualityOfService = .userInitiated
 
+		operation.configuration = config
+
+		/*
 		CloudKitManager.privateDatabase.save(subscription) { (subscription, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error.localizedDescription)
 				} else {
+					CloudKitManager.subscribedToDoseChanges = true
 					print("Dose Subscription Saved to Server from CloudKitManager!")
 				}
 			}
 		}
+		*/
+		operation.modifySubscriptionsCompletionBlock = { (savedSubscriptions, deletedSubscriptionIDs, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					print(error.localizedDescription)
+					let alertView = UIAlertController(title: "Modify Dose Sub Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+
+				} else {
+					CloudKitManager.subscribedToDoseChanges = true
+					print("Dose Subscription Saved to Server from CloudKitManager!")
+				}
+			}
+
+		}
+
+
+		CloudKitManager.privateDatabase.add(operation)
 	}
 
 
@@ -1138,6 +1164,7 @@ extension CloudKitManager {
 			if let error = error {
 				print(error)
 			} else {
+				CloudKitManager.subscribedToDoseChanges = false
 				print(subscription, "saved unsubscription")
 			}
 		}
