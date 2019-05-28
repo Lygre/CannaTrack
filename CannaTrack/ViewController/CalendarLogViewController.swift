@@ -193,6 +193,11 @@ class CalendarLogViewController: UIViewController {
 		guard let dynamicAnimator = self.dynamicAnimator else { return }
 		snapAddButtonToInitialPosition(button: addButton, animator: addButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		masterDoseArray = DoseController.doses
+		self.doseTableView?.reloadData()
+		self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: {
+			self.activityView.stopAnimating()
+		})
 		fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
 			DispatchQueue.main.async {
 				self.doseTableView.reloadData()
