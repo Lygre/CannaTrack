@@ -47,7 +47,25 @@ struct DoseController {
 		print("deleted dose \(dose) locally")
 	}
 
+	func convertRecordSystemMetadataToData(record: CKRecord) -> Data {
+//		let archivedData = NSMutableData()
+		let archiver = NSKeyedArchiver(requiringSecureCoding: true)
+		record.encodeSystemFields(with: archiver)
+		archiver.finishEncoding()
+		return archiver.encodedData
+	}
 
+	func unarchiveBaseRecordFromLocalStorage(recordData: Data) -> CKRecord? {
+		let archivedData = recordData
+		guard let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: recordData) else {
+			print("failed to initialize unarchiver in DoseController")
+			return nil
+		}
+		unarchiver.requiresSecureCoding = true
+		let record = CKRecord(coder: unarchiver)
+		return record
+
+	}
 
 	
 }

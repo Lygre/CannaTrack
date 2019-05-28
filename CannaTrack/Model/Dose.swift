@@ -23,6 +23,7 @@ class Dose: Codable {
 	var otherProducts: [Product: Double]!
 	var doseImage: UIImage?
 	var recordID: CKRecord.ID?
+	var encodedSystemFields: Data?
 
 	init(timestamp: Date, product: Product, mass: Double, route: AdministrationRoute?) {
 		self.timestamp = timestamp
@@ -56,6 +57,7 @@ class Dose: Codable {
 		mass = try values.decode(Double.self, forKey: .mass)
 		administrationRoute = try values.decode(AdministrationRoute.self, forKey: .administrationRoute)
 		otherProducts = try values.decode([Product: Double].self, forKey: .otherProducts)
+
 		/*
 		let imgURL = try values.decode(URL.self, forKey: .doseImage)
 		let imgPath = imgURL.path
@@ -144,12 +146,31 @@ extension Dose {
 
 
 	func toCKRecord() -> CKRecord {
+
 		var record: CKRecord!
-		if let doseRecordID = self.recordID {
-			record = CKRecord(recordType: "Dose", recordID: doseRecordID)
+
+		if let encodedSystemFields = self.encodedSystemFields {
+			guard let coder = try? NSKeyedUnarchiver(forReadingFrom: encodedSystemFields) else { fatalError("could not create keyed unarchiver") }
+			coder.requiresSecureCoding = true
+
+			if let recordFromSystemFields = CKRecord(coder: coder) {
+				record = recordFromSystemFields
+			} else { print("could not create record with system fields in toCKRecord method of Dose.") }
 		} else {
-			record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
+			if let doseRecordID = self.recordID {
+				record = CKRecord(recordType: "Dose", recordID: doseRecordID)
+			} else {
+				record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
+			}
 		}
+
+
+//		var record: CKRecord!
+//		if let doseRecordID = self.recordID {
+//			record = CKRecord(recordType: "Dose", recordID: doseRecordID)
+//		} else {
+//			record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
+//		}
 
 
 		if let recordValue = self.encodeDoseAsCKRecordValue() {
@@ -199,6 +220,13 @@ extension Dose {
 		}
 		let image = UIImage(data: imageData as Data)
 		decodedDose.doseImage = image
+
+		//encoding system fields locally upon receiving newRecord
+		let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+		record.encodeSystemFields(with: coder)
+		coder.finishEncoding()
+		decodedDose.encodedSystemFields = coder.encodedData
+		//end of encoding system fields
 		decodedDose.recordID = record.recordID
 		print("success decoding dose from record in Dose.swift fromCKRecord method")
 		return decodedDose
