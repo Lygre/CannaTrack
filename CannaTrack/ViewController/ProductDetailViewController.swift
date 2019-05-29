@@ -66,7 +66,21 @@ class ProductDetailViewController: UIViewController {
 
 	let tableCellIdentifier = "DoseCell"
 
-	var doseArray: [Dose] = []
+	var doseArray: [Dose] {
+		get {
+			let productDoseArray = DoseController.doses.filter({ (someDose) -> Bool in
+				return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
+			}).sorted(by: { (doseOne, doseTwo) -> Bool in
+				return doseOne.timestamp < doseTwo.timestamp
+			})
+			return productDoseArray
+		}
+		set {
+			DispatchQueue.main.async {
+				self.productDoseLogTableView.reloadSections(IndexSet(integer: 0), with: .bottom)
+			}
+		}
+	}
 
 	unowned var editMassDelegate: EditMassDelegate!
 	var inventoryManagerDelegate: InventoryManagerDelegate?
@@ -119,6 +133,8 @@ class ProductDetailViewController: UIViewController {
 		//this was doseLogDictionaryGLOBAL
 		doseArray = DoseController.doses.filter({ (someDose) -> Bool in
 			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
+		}).sorted(by: { (doseOne, doseTwo) -> Bool in
+			return doseOne.timestamp < doseTwo.timestamp
 		})
 
 		queryCloudForDoseRecords()
