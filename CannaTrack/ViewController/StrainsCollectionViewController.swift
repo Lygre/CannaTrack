@@ -47,7 +47,7 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 				strainsToDisplay.append(strainToAppend)
 
 			}
-			masterStrainDatabase = strainsToDisplay
+//			masterStrainDatabase = strainsToDisplay
 			DispatchQueue.main.async {
 				self.loadViewIfNeeded()
 				self.collectionViewLayout.invalidateLayout()
@@ -55,9 +55,16 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 			}
 		}
 	}
-	var strainsToDisplay: [Strain] = [] {
-		didSet {
-//			refreshUI()
+	var strainsToDisplay: [Strain] = UserDefaults.standard.object([Strain].self, with: "localStrains") ?? [] {
+//		get {
+//			guard let localStrains = UserDefaults.standard.object([Strain].self, with: "localStrains") else { print("no saved strains; performing network call"); return [] }
+//			return localStrains
+//		}
+		willSet(newStrainArray) {
+			print("setting new local strain array")
+			UserDefaults.standard.set(object: newStrainArray, forKey: "localStrains")
+			masterStrainDatabase = newStrainArray
+
 		}
 	}
 
@@ -113,12 +120,12 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if strainsToDisplay.isEmpty {
-			strainsToDisplay = masterStrainDatabase
-		} else {
-			print("strain db isn't empty")
-			refreshUI()
-		}
+//		if strainsToDisplay.isEmpty {
+//			strainsToDisplay = masterStrainDatabase
+//		} else {
+//			print("strain db isn't empty")
+		refreshUI()
+
 	}
 
     // MARK: - Navigation
