@@ -179,7 +179,39 @@ class Strain: Codable {
 
 	}
 
+	required init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		id = try values.decode(Int.self, forKey: .id)
+		name = try values.decode(String.self, forKey: .name)
+		race = try values.decode(StrainVariety.self, forKey: .race)
+		desc = try values.decode(String.self, forKey: .desc)
+		favorite = try values.decode(Bool.self, forKey: .favorite)
+		effects = try values.decode(Effects.self, forKey: .effects)
+		flavors = try values.decode([String].self, forKey: .flavors)
+	}
 
+
+	func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+
+		try container.encode(id, forKey: .id)
+		try container.encode(name, forKey: .name)
+		try container.encode(race, forKey: .race)
+		try container.encode(desc, forKey: .desc)
+		try container.encode(favorite, forKey: .favorite)
+		try container.encode(effects, forKey: .effects)
+		try container.encode(flavors, forKey: .flavors)
+	}
+
+	enum CodingKeys: String, CodingKey {
+		case id
+		case name
+		case race
+		case desc
+		case favorite
+		case effects
+		case flavors
+	}
 
 
 }
