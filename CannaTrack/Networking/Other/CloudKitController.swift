@@ -61,7 +61,7 @@ struct CloudKitManager {
 	static let productZoneID = CKRecordZone.ID(zoneName: "Inventory", ownerName: CKCurrentUserDefaultName)
 	//only working with productZoneID for now
 	static let doseZoneID = CKRecordZone.ID(zoneName: "DoseLogs", ownerName: CKCurrentUserDefaultName)
-
+	static let strainsZoneID = CKRecordZone.ID.init(zoneName: "Strains", ownerName: CKCurrentUserDefaultName)
 
 
 	//MARK: -- Variables
@@ -89,6 +89,18 @@ struct CloudKitManager {
 		}
 		set(newValue) {
 			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.doseZoneID.zoneName)
+		}
+	}
+
+	static var createdCustomStrainsZone: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.strainsZoneID.zoneName) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.strainsZoneID.zoneName)
 		}
 	}
 
@@ -161,6 +173,8 @@ struct CloudKitManager {
 			print("change token for dose log zone updated in user defaults")
 		}
 	}
+
+
 	/*
 	static var inventoryZoneChangeToken: CKServerChangeToken? {
 		get {
@@ -238,6 +252,36 @@ struct CloudKitManager {
 					if let _ = saved {
 						CloudKitManager.createdCustomDoseLogZone = true
 						print("Custom Zone for Doses was saved to Server")
+					}
+				}
+				CloudKitManager.createZoneGroup.leave()
+			}
+
+			createZoneOperation.qualityOfService = .userInitiated
+
+			CloudKitManager.privateDatabase.add(createZoneOperation)
+		}
+	}
+
+	//MARK: -- Creating Custom Zone 2 for Doses
+	func createCustomStrainsZone() {
+		if !CloudKitManager.createdCustomStrainsZone {
+			CloudKitManager.createZoneGroup.enter()
+
+			let customZone = CKRecordZone(zoneID: CloudKitManager.strainsZoneID)
+
+			let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+
+			createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Custom Strains Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					if let _ = saved {
+						CloudKitManager.createdCustomStrainsZone = true
+						print("Custom Zone for Strains was saved to Server")
 					}
 				}
 				CloudKitManager.createZoneGroup.leave()
