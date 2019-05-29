@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 
 var masterStrainDatabase: [Strain] = [] {
@@ -164,6 +165,8 @@ class Strain: Codable {
 	var favorite: Bool
 	var effects: Effects?
 	var flavors: [String]?
+	var encodedSystemFields: Data?
+	var recordID: CKRecord.ID?
 
 	init(id: Int, name: String, race: StrainVariety, description: String?) {
 		self.id = id
@@ -225,5 +228,57 @@ struct StrainInformation: Codable {
 }
 
 struct StrainTestStruct: Codable {
+
+}
+
+
+extension Strain {
+
+	func encodeStrainAsCKRecordValue() -> CKRecordValue? {
+		let plistEncoder = PropertyListEncoder()
+		let data = try? plistEncoder.encode(self)
+		return data as CKRecordValue?
+	}
+
+	func toCKRecord() -> CKRecord {
+		var record: CKRecord!
+
+		if let encodedSystemFields = self.encodedSystemFields {
+			guard let coder = try? NSKeyedUnarchiver(forReadingFrom: encodedSystemFields) else { fatalError("could not created keyed unarchiver for Strain.self") }
+			coder.requiresSecureCoding = true
+			if let recordFromSystemFields = CKRecord(coder: coder) {
+				record = recordFromSystemFields
+				print("decoded strain record from system fields")
+			} else { print("could not create record with system fields in toCKRecord method of Strain") }
+		} else {
+			if let strainRecordID = self.recordID {
+				record = CKRecord(recordType: "Strain", recordID: strainRecordID)
+			} else {
+				record = CKRecord(recordType: "Strain", zoneID: CloudKitManager.strainsZoneID)
+			}
+		}
+
+		if let recordValue = self.encodeStrainAsCKRecordValue() {
+			record.setObject(recordValue, forKey: "StrainData")
+		}
+		print("encoded strain as a CKRecord from Strain method toCKRecord")
+		return record
+	}
+
+	static func fromCKRecord(record: CKRecord) -> Strain? {
+		let plistDecoder = PropertyListDecoder()
+		guard let strainData = record["StrainData"] as? Data else {
+			return nil
+		}
+		guard let decodedStrain = try? plistDecoder.decode(Strain.self, from: strainData) else { return nil }
+		let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+		record.encodeSystemFields(with: coder)
+		coder.finishEncoding()
+		decodedStrain.encodedSystemFields = coder.encodedData
+		decodedStrain.recordID = record.recordID
+		print("success decoding strain from record in Strains.swift fromCKREcord method")
+		return decodedStrain
+
+	}
 
 }
