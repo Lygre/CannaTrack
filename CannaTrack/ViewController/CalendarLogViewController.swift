@@ -128,7 +128,8 @@ class CalendarLogViewController: UIViewController {
 
 //		CloudKitManager.shared.fetchDoseCKQuerySubscriptions()
 //		masterDoseArray = []
-
+		configureRefreshControl()
+		
 		CloudKitManager.shared.retrieveAllDoses { (dose, shouldStopAnimating) in
 			DispatchQueue.main.async {
 				if let dose = dose {
@@ -154,6 +155,24 @@ class CalendarLogViewController: UIViewController {
 
 
     }
+
+	func configureRefreshControl () {
+		// Add the refresh control to your UIScrollView object.
+		doseTableView.refreshControl = UIRefreshControl()
+		doseTableView.refreshControl?.addTarget(self, action:
+			#selector(handleRefreshControl), for: .valueChanged)
+	}
+
+	@objc func handleRefreshControl() {
+		// Update your content…
+		masterDoseArray = DoseController.doses
+
+		// Dismiss the refresh control.
+		DispatchQueue.main.async {
+			self.doseTableView.refreshControl?.endRefreshing()
+		}
+	}
+
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

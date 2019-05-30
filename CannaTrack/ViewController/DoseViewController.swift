@@ -122,14 +122,33 @@ class DoseViewController: UIViewController {
 		CloudKitManager.shared.createCKRecord(for: dose) { (success, doseCreated, error) in
 			DispatchQueue.main.async {
 				if let error = error {
+					let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						self.present(alertView, animated: true, completion:nil)
+					}
+
 					print(error)
 				} else {
+					guard let doseCreated = doseCreated else { return }
+					DoseController.shared.log(dose: doseCreated)
 					print(success, doseCreated, "dose saved by CKManager")
 				}
 			}
 		}
-		dose.logDoseToCalendar(dose)
+//		dose.logDoseToCalendar(dose)
 		productForDose.numberOfDosesTakenFromProduct += 1
+//		CloudKitManager.shared.updateProduct(product: productForDose) { (success, updatedProduct, error) in
+//			DispatchQueue.main.async {
+//				if let error = error {
+//					let alertView = UIAlertController(title: "Product Update Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+//					DispatchQueue.main.async {
+//						self.present(alertView, animated: true, completion:nil)
+//					}
+//				} else {
+//
+//				}
+//			}
+//		}
 		print("dose saved")
 
 		self.navigationController?.popViewController(animated: true)

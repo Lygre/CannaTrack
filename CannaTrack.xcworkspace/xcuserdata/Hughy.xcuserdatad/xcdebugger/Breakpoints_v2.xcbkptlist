@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/Model/Dose.swift"
-            timestampString = "580765008.598714"
+            timestampString = "580920975.639155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "202"
@@ -98,13 +98,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580765008.599043"
+            timestampString = "580843023.354479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "971"
-            endingLineNumber = "971"
-            landmarkName = "createCKRecord(for:completion:)"
-            landmarkType = "7">
+            startingLineNumber = "1049"
+            endingLineNumber = "1049"
+            landmarkName = "CloudKitManager"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -114,13 +114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580765008.5993"
+            timestampString = "580843023.354913"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1216"
-            endingLineNumber = "1216"
-            landmarkName = "setupFetchOperationForDoses(with:completion:)"
-            landmarkType = "7">
+            startingLineNumber = "1246"
+            endingLineNumber = "1246">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -130,12 +128,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580765008.599394"
+            timestampString = "580843023.3551641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
-            landmarkName = "fetchDatabaseChanges(database:databaseTokenKey:completion:)"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "fetchZoneChanges(database:databaseTokenKey:zoneIDs:completion:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy

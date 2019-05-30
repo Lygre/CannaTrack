@@ -35,14 +35,6 @@ class ProductDetailViewController: UIViewController {
 	override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
 
-		//establish 2 constants for label and container height
-		/*
-		let labelHeight = label.frame.size.height
-		let containerHeight = labelHeight + 40.0
-		self.containerView.frame = CGRect(x: containerView.frame.origin.x, y: containerView.frame.origin.y, width: containerView.frame.size.width, height: containerHeight)
-		*/
-
-
 		// Part 2
 		self.preferredContentSize = CGSize(width: self.view.frame.size.width, height: 120 + (5 * 60))
 
@@ -174,11 +166,32 @@ class ProductDetailViewController: UIViewController {
 		self.productDoseLogTableView.delegate = self
 		self.productDoseLogTableView.dataSource = self
 
-
+		configureRefreshControl()
 
 
     }
-    
+
+
+	func configureRefreshControl () {
+		// Add the refresh control to your UIScrollView object.
+		productDoseLogTableView.refreshControl = UIRefreshControl()
+		productDoseLogTableView.refreshControl?.addTarget(self, action:
+			#selector(handleRefreshControl), for: .valueChanged)
+	}
+
+	@objc func handleRefreshControl() {
+		// Update your content…
+		doseArray = DoseController.doses.filter({ (someDose) -> Bool in
+			return (someDose.product.productType == activeDetailProduct.productType) && (someDose.product.dateOpened == activeDetailProduct.dateOpened) && (someDose.product.strain.name == activeDetailProduct.strain.name)
+		}).sorted(by: { (doseOne, doseTwo) -> Bool in
+			return doseOne.timestamp < doseTwo.timestamp
+		})
+
+		// Dismiss the refresh control.
+		DispatchQueue.main.async {
+			self.productDoseLogTableView.refreshControl?.endRefreshing()
+		}
+	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -311,33 +324,6 @@ class ProductDetailViewController: UIViewController {
 			return doseActionForAdministrationRoute
 		}
 		let doseActionGroup = UIPreviewActionGroup(title: "Dose with Product", style: .default, actions: arrayOfPreviewActionsForProduct)
-
-//		let doseAction = UIPreviewAction(title: "Dose with Product", style: .default, handler: { [unowned self] (_, _) in
-//			guard let product = self.activeDetailProduct
-//				else { preconditionFailure("Expected a product item") }
-//			guard let _ = product.dateOpened else { return }
-//
-//			let dose = Dose(timestamp: Date(), product: product, mass: 0.0, route: .inhalation)
-//			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
-//				DispatchQueue.main.async {
-//					if let error = error {
-//						print(error)
-//					} else {
-//						if success {
-//							doseLogDictionaryGLOBAL.append(dose)
-//							print("Dose Record saved from PReview action in ProductDetailViewController")
-//						} else {
-//							print("Dose record could not be saved, but didn't throw error")
-//						}
-//					}
-//				}
-//			})
-//			dose.logDoseToCalendar(dose)
-//			//perform action to detail item in quick action
-//			product.numberOfDosesTakenFromProduct += 1
-//			self.saveChangesToProduct(product: product)
-//			masterInventory.writeInventoryToUserData()
-//		})
 
 		let openProductAction = UIPreviewAction(title: "Open Product", style: .default, handler: { [unowned self] (_, _) in
 			guard let product = self.activeDetailProduct
