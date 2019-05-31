@@ -961,6 +961,14 @@ extension CloudKitManager {
 		let record = dose.toCKRecord()
 
 		CloudKitManager.privateDatabase.save(record) { (serverRecord, error) in
+			if let error = error {
+				let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+				DispatchQueue.main.async {
+					UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+				}
+
+			}
+
 			guard let serverRecord = serverRecord else {
 				DispatchQueue.main.async {
 					completion(false, nil, error)

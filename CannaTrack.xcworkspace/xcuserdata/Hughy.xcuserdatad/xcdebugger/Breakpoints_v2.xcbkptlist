@@ -98,11 +98,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580843023.354479"
+            timestampString = "581003191.697799"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1049"
-            endingLineNumber = "1049"
+            startingLineNumber = "1057"
+            endingLineNumber = "1057"
             landmarkName = "CloudKitManager"
             landmarkType = "21">
          </BreakpointContent>
@@ -114,11 +114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580843023.354913"
+            timestampString = "581003191.697874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1246"
-            endingLineNumber = "1246">
+            startingLineNumber = "1254"
+            endingLineNumber = "1254">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -128,7 +128,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "CannaTrack/Networking/Other/CloudKitController.swift"
-            timestampString = "580843023.3551641"
+            timestampString = "581003191.697933"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "424"
