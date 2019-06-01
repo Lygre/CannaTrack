@@ -286,9 +286,10 @@ class CalendarLogViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-		let destinationVC = segue.destination
-		if destinationVC is DoseDetailViewController {
-			guard let doseDetailVC = destinationVC as? DoseDetailViewController else { return }
+		if segue.destination is DoseDetailViewController {
+			guard let selectedDoseTableViewCell = sender as? DoseCalendarTableViewCell, let indexPath = self.doseTableView.indexPath(for: selectedDoseTableViewCell) else { preconditionFailure("Expected sender to be a valid tableview cell") }
+			guard let doseDetailVC = segue.destination as? DoseDetailViewController else { preconditionFailure("Expected a DoseDetailViewController") }
+			doseToPassToDetail = dosesForDate[indexPath.row]
 			doseDetailVC.activeDetailDose = doseToPassToDetail
 		}
 

@@ -108,6 +108,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 						print(error)
 					} else {
 						guard let createdDose = createdDose else { return }
+						createdDose.doseImage = compositeDose.doseImage
 						DoseController.shared.log(dose: createdDose)
 						print(success, createdDose,
 							  "composite dose saved to cloud")
@@ -126,6 +127,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 						print(error)
 					} else {
 						guard let createdDose = createdDose else { return }
+						createdDose.doseImage = compositeDose.doseImage
 						DoseController.shared.log(dose: createdDose)
 						print(success, createdDose,
 							  "composite dose saved to cloud")

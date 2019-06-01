@@ -58,11 +58,11 @@ class Dose: Codable {
 		administrationRoute = try values.decode(AdministrationRoute.self, forKey: .administrationRoute)
 		otherProducts = try values.decode([Product: Double].self, forKey: .otherProducts)
 
-		/*
+
 		let imgURL = try values.decode(URL.self, forKey: .doseImage)
 		let imgPath = imgURL.path
 		doseImage = UIImage(contentsOfFile: imgPath)
-		*/
+
 
 	}
 
@@ -73,7 +73,7 @@ class Dose: Codable {
 		try container.encode(mass, forKey: .mass)
 		try container.encode(administrationRoute, forKey: .administrationRoute)
 		try container.encode(otherProducts, forKey: .otherProducts)
-		/*
+
 		//encode image; going to try handling this separately with the Record encoding; did not do this with product
 		let img = doseImage
 		let manager = FileManager.default
@@ -83,7 +83,7 @@ class Dose: Codable {
 		let imgURL = NSURL.fileURL(withPath: file.path)
 
 		try container.encode(imgURL, forKey: .doseImage)
-		*/
+
 	}
 
 
@@ -144,6 +144,18 @@ extension Dose {
 		return data as CKRecordValue?
 	}
 
+	func encodeDoseAsCKRecordValueUsingArchiver() -> CKRecordValue? {
+		let coder = NSKeyedArchiver(requiringSecureCoding: true)
+		do {
+			try coder.encodeEncodable(self, forKey: "DoseArchiveKey")
+		}
+		catch {
+			print(error)
+		}
+		coder.finishEncoding()
+		return coder.encodedData as CKRecordValue?
+	}
+
 
 	func toCKRecord() -> CKRecord {
 
@@ -164,15 +176,6 @@ extension Dose {
 				record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
 			}
 		}
-
-
-//		var record: CKRecord!
-//		if let doseRecordID = self.recordID {
-//			record = CKRecord(recordType: "Dose", recordID: doseRecordID)
-//		} else {
-//			record = CKRecord(recordType: "Dose", zoneID: CloudKitManager.doseZoneID)
-//		}
-
 
 		if let recordValue = self.encodeDoseAsCKRecordValue() {
 
@@ -220,7 +223,7 @@ extension Dose {
 			return nil
 		}
 		let image = UIImage(data: imageData as Data)
-		decodedDose.doseImage = image
+
 
 		//encoding system fields locally upon receiving newRecord
 		let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
@@ -228,6 +231,7 @@ extension Dose {
 		coder.finishEncoding()
 		decodedDose.encodedSystemFields = coder.encodedData
 		//end of encoding system fields
+		decodedDose.doseImage = image
 		decodedDose.recordID = record.recordID
 		print("success decoding dose from record in Dose.swift fromCKRecord method")
 		return decodedDose
