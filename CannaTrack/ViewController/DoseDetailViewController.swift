@@ -11,6 +11,8 @@ import UIKit
 class DoseDetailViewController: UIViewController {
 
 
+	var activeDetailDose: Dose!
+
 
 
     override func viewDidLoad() {
