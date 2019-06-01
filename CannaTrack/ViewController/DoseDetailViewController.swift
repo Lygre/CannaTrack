@@ -80,9 +80,11 @@ class DoseDetailViewController: UIViewController {
 	@IBAction func editDoseDetaiTapped(_ sender: UIBarButtonItem) {
 		doseDetailTextFieldCollection = doseDetailTextFieldCollection.compactMap { (textField) -> UITextField in
 			if !textField.isEnabled {
+				textField.backgroundColor = .GreenWebColor()
 				textField.isEnabled = true
 				textField.isUserInteractionEnabled = true
 			} else {
+				textField.backgroundColor = UIColor(named: "sativaColor")
 				textField.isEnabled = false
 				textField.isUserInteractionEnabled = false
 			}
