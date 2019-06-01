@@ -37,6 +37,7 @@
 		9F2FDF6D225A82FC00ECC26B /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF6C225A82FC00ECC26B /* ProductTableViewCell.swift */; };
 		9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */; };
 		9F35FBCB22A29A1800E18943 /* DoseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F35FBCA22A29A1800E18943 /* DoseDetailViewController.swift */; };
+		9F35FBCD22A31D2300E18943 /* OCR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9F35FBCC22A31D2200E18943 /* OCR.mlmodel */; };
 		9F3B809D224E96610059294B /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809C224E96610059294B /* Dose.swift */; };
 		9F3B809F224E96DE0059294B /* DoseCalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */; };
 		9F3D5B13221F52E500D7B705 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D5B12221F52E500D7B705 /* Product.swift */; };
@@ -64,6 +65,7 @@
 		9F825C2A2214A2C300FC2327 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F825C282214A2C300FC2327 /* LaunchScreen.storyboard */; };
 		9F825C342214A2F200FC2327 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C312214A2F200FC2327 /* Extensions.swift */; };
 		9F825C352214A2F200FC2327 /* Strains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F825C322214A2F200FC2327 /* Strains.swift */; };
+		9F868BF722A345D500E90766 /* Alphanum_28x28.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9F868BF622A345D400E90766 /* Alphanum_28x28.mlmodel */; };
 		9F877FA422317FDF002E7D0D /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */; };
 		9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */; };
 		9F922A4E222480E0001407D8 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */; };
@@ -117,6 +119,7 @@
 		9F2FDF6C225A82FC00ECC26B /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		9F2FDF6E225A83C500ECC26B /* ProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsTableViewController.swift; sourceTree = "<group>"; };
 		9F35FBCA22A29A1800E18943 /* DoseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseDetailViewController.swift; sourceTree = "<group>"; };
+		9F35FBCC22A31D2200E18943 /* OCR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = OCR.mlmodel; sourceTree = "<group>"; };
 		9F3B809C224E96610059294B /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		9F3B809E224E96DE0059294B /* DoseCalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9F3D5B12221F52E500D7B705 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		9F825C2B2214A2C300FC2327 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F825C312214A2F200FC2327 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9F825C322214A2F200FC2327 /* Strains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strains.swift; sourceTree = "<group>"; };
+		9F868BF622A345D400E90766 /* Alphanum_28x28.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Alphanum_28x28.mlmodel; sourceTree = "<group>"; };
 		9F877FA322317FDF002E7D0D /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		9F922A4B222480CC001407D8 /* ProductCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F922A4D222480E0001407D8 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -384,6 +388,8 @@
 			children = (
 				9FAB54D2226610D20012248F /* CannaTrack.entitlements */,
 				9F825C2B2214A2C300FC2327 /* Info.plist */,
+				9F35FBCC22A31D2200E18943 /* OCR.mlmodel */,
+				9F868BF622A345D400E90766 /* Alphanum_28x28.mlmodel */,
 				9F0F0BD12284E46900DFFFC4 /* Application */,
 				9F08220A226A265300E8C1DC /* Networking */,
 				9F7207BC22372D96009D6375 /* Protocols */,
@@ -577,6 +583,7 @@
 				9FF5BBD1229590CC00ED18A5 /* StrainCollectionDelegate.swift in Sources */,
 				9F0F0BE82284ED1B00DFFFC4 /* JSONParameterEncoder.swift in Sources */,
 				9F0F0BDC2284E62800DFFFC4 /* InventoryFilterDelegate.swift in Sources */,
+				9F35FBCD22A31D2300E18943 /* OCR.mlmodel in Sources */,
 				9F0F0BD82284E5C300DFFFC4 /* EditMassDelegate.swift in Sources */,
 				9F3D5B13221F52E500D7B705 /* Product.swift in Sources */,
 				9F7207BB2236C6AC009D6375 /* DoseViewController.swift in Sources */,
@@ -594,6 +601,7 @@
 				9F922A4C222480CC001407D8 /* ProductCategoryCollectionViewCell.swift in Sources */,
 				9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */,
 				9F2FDF6F225A83C500ECC26B /* ProductsTableViewController.swift in Sources */,
+				9F868BF722A345D500E90766 /* Alphanum_28x28.mlmodel in Sources */,
 				9F5BED5E22999EA7009CC17F /* OrientedImageExtension.swift in Sources */,
 				9F0F0BE42284EA6600DFFFC4 /* ParameterEncoding.swift in Sources */,
 				9F52F035221DC335007E6330 /* InventoryViewController.swift in Sources */,

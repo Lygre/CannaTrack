@@ -9,6 +9,7 @@
 import UIKit
 import Vision
 import AVKit
+import CoreML
 
 
 
@@ -275,13 +276,18 @@ extension AddProductViewController {
 
 				self.highlightWord(box: rg)
 				if let boxes = region?.characterBoxes {
-					for characterBox in boxes {
-						self.highlightLetters(box: characterBox)
+					for box in boxes {
+
+						self.highlightLetters(box: box)
+
 					}
 				}
+
 			}
+
 		}
 	}
+
 
 
 	func highlightWord(box: VNTextObservation) {
@@ -363,6 +369,7 @@ extension AddProductViewController: AVCaptureVideoDataOutputSampleBufferDelegate
 		}
 	}
 
+
 }
 
 
@@ -378,52 +385,6 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 
 		dismiss(animated: true, completion: nil)
 
-	}
-
-
-	func show(_ image: UIImage) {
-
-		// Remove previous paths & image
-		pathLayer?.removeFromSuperlayer()
-		pathLayer = nil
-		productImageToAdd.image = nil
-
-		// Account for image orientation by transforming view.
-		let correctedImage = scaleAndOrient(image: image)
-
-		// Place photo inside imageView.
-		productImageToAdd.image = correctedImage
-
-		// Transform image to fit screen.
-		guard let cgImage = correctedImage.cgImage else {
-			print("Trying to show an image not backed by CGImage!")
-			return
-		}
-
-		let fullImageWidth = CGFloat(cgImage.width)
-		let fullImageHeight = CGFloat(cgImage.height)
-
-		let imageFrame = productImageToAdd.frame
-		let widthRatio = fullImageWidth / imageFrame.width
-		let heightRatio = fullImageHeight / imageFrame.height
-
-		// ScaleAspectFit: The image will be scaled down according to the stricter dimension.
-		let scaleDownRatio = max(widthRatio, heightRatio)
-
-		// Cache image dimensions to reference when drawing CALayer paths.
-		imageWidth = fullImageWidth / scaleDownRatio
-		imageHeight = fullImageHeight / scaleDownRatio
-
-		// Prepare pathLayer to hold Vision results.
-		let xLayer = (imageFrame.width - imageWidth) / 2
-		let yLayer = productImageToAdd.frame.minY + (imageFrame.height - imageHeight) / 2
-		let drawingLayer = CALayer()
-		drawingLayer.bounds = CGRect(x: xLayer, y: yLayer, width: imageWidth, height: imageHeight)
-		drawingLayer.anchorPoint = CGPoint.zero
-		drawingLayer.position = CGPoint(x: xLayer, y: yLayer)
-		drawingLayer.opacity = 0.5
-		pathLayer = drawingLayer
-		self.view.layer.addSublayer(pathLayer!)
 	}
 
 }
