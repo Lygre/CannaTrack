@@ -1285,7 +1285,7 @@
             </objects>
             <point key="canvasLocation" x="2289.8550724637685" y="1800.6696428571427"/>
         </scene>
-        <!--Dose Detail View Controller-->
+        <!--Title-->
         <scene sceneID="HGZ-Uo-k5x">
             <objects>
                 <viewController id="m0Y-HM-7zb" customClass="DoseDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
@@ -1401,6 +1401,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ujv-eW-2t7"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="cqw-SU-AAQ">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Zgc-Pw-PFT">
+                            <connections>
+                                <action selector="editDoseDetaiTapped:" destination="m0Y-HM-7zb" id="6Lq-mm-Ub4"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <connections>
                         <outlet property="administrationRouteTextField" destination="WcF-yh-3Pr" id="fle-Yf-oeI"/>
@@ -1409,6 +1416,11 @@
                         <outlet property="otherProductTextField" destination="hv5-Jc-awP" id="iII-xp-s48"/>
                         <outlet property="productTextField" destination="Ki9-c0-VBx" id="yNE-9E-Gn7"/>
                         <outlet property="timestampTextField" destination="zMJ-HL-cf2" id="dwD-NB-HXA"/>
+                        <outletCollection property="doseDetailTextFieldCollection" destination="zMJ-HL-cf2" collectionClass="NSMutableArray" id="KTq-RY-TIG"/>
+                        <outletCollection property="doseDetailTextFieldCollection" destination="Ki9-c0-VBx" collectionClass="NSMutableArray" id="vji-Mu-HpM"/>
+                        <outletCollection property="doseDetailTextFieldCollection" destination="iZ1-2F-Dcf" collectionClass="NSMutableArray" id="9z6-de-lyU"/>
+                        <outletCollection property="doseDetailTextFieldCollection" destination="WcF-yh-3Pr" collectionClass="NSMutableArray" id="wqx-Ua-Pq8"/>
+                        <outletCollection property="doseDetailTextFieldCollection" destination="hv5-Jc-awP" collectionClass="NSMutableArray" id="iWx-Pg-CEt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OBk-Cy-Ixk" userLabel="First Responder" sceneMemberID="firstResponder"/>

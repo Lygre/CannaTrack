@@ -23,8 +23,7 @@ class DoseDetailViewController: UIViewController {
 	@IBOutlet var administrationRouteTextField: UITextField!
 	@IBOutlet var otherProductTextField: UITextField!
 
-	
-
+	@IBOutlet var doseDetailTextFieldCollection: [UITextField]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +76,21 @@ class DoseDetailViewController: UIViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+
+	@IBAction func editDoseDetaiTapped(_ sender: UIBarButtonItem) {
+		doseDetailTextFieldCollection = doseDetailTextFieldCollection.compactMap { (textField) -> UITextField in
+			if !textField.isEnabled {
+				textField.isEnabled = true
+				textField.isUserInteractionEnabled = true
+			} else {
+				textField.isEnabled = false
+				textField.isUserInteractionEnabled = false
+			}
+			return textField
+		}
+
+	}
+
 
 
 }
