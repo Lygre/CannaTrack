@@ -13,17 +13,33 @@ class DoseDetailViewController: UIViewController {
 
 	var activeDetailDose: Dose!
 
+	let dateFormatter = DateFormatter()
 
 	@IBOutlet var doseImageView: UIImageView!
 
+	@IBOutlet var timestampTextField: UITextField!
+	@IBOutlet var productTextField: UITextField!
+	@IBOutlet var massTextField: UITextField!
+	@IBOutlet var administrationRouteTextField: UITextField!
+	@IBOutlet var otherProductTextField: UITextField!
+
+	
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		dateFormatter.dateFormat = "yyy MM dd"
+		dateFormatter.timeZone = Calendar.current.timeZone
+		dateFormatter.calendar = .current
+		dateFormatter.locale = .current
 
 		loadViewIfNeeded()
 
+		timestampTextField.text = dateFormatter.string(from: activeDetailDose.timestamp)
+		productTextField.text = activeDetailDose.product.strain.name + " " + activeDetailDose.product.productType.rawValue
+		massTextField.text = "\(activeDetailDose.mass ?? 0.0) g"
+		administrationRouteTextField.text = activeDetailDose.administrationRoute.map { $0.rawValue }
         // Do any additional setup after loading the view.
 		guard let doseImage = activeDetailDose.doseImage else {
 			print("no image for dose")
