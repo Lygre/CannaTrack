@@ -165,6 +165,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="m0Y-HM-7zb" kind="show" id="O2o-RE-LRp">
+                                                <segue key="commit" inheritsFrom="parent" id="5dA-aQ-BmF"/>
+                                                <segue key="preview" inheritsFrom="commit" id="Mez-lO-HWm"/>
+                                            </segue>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -1753,7 +1759,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3zQ-9u-F0C"/>
-        <segue reference="gNx-b0-rRu"/>
-        <segue reference="Yn3-p8-KVM"/>
+        <segue reference="O2o-RE-LRp"/>
+        <segue reference="C0G-LS-hNd"/>
     </inferredMetricsTieBreakers>
 </document>

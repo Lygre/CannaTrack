@@ -252,7 +252,7 @@ class ProductDetailViewController: UIViewController {
 				imageToReturn = correctedUIImage
 				self.activeDetailProduct.productLabelImage = correctedUIImage
 			} else {
-				imageToReturn = UIImage(imageLiteralResourceName: "cannaleaf")
+				imageToReturn = UIImage(imageLiteralResourceName: "cannaleaf.png")
 			}
 			return imageToReturn
 		}()
@@ -269,6 +269,11 @@ class ProductDetailViewController: UIViewController {
 		} else if segue.destination is StrainDetailViewController {
 			guard let strainDetailVC = segue.destination as? StrainDetailViewController else { return }
 			strainDetailVC.activeDetailStrain = self.activeDetailProduct.strain
+		} else if segue.destination is DoseDetailViewController {
+			guard let doseDetailVC = segue.destination as? DoseDetailViewController else { return }
+			guard let cell = sender as? DoseCalendarTableViewCell, let indexPath = productDoseLogTableView.indexPath(for: cell) else { preconditionFailure("could not get sender as DoseCalendartableViewCell") }
+			doseDetailVC.activeDetailDose = doseArray[indexPath.row]
+
 		}
 	}
 

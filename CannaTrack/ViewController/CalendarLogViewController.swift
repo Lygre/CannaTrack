@@ -226,6 +226,7 @@ class CalendarLogViewController: UIViewController {
 				self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: {
 					self.activityView.stopAnimating()
 				})
+				self.activityView.stopAnimating()
 			}
 		}
 

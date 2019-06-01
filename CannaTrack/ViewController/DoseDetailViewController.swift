@@ -57,9 +57,26 @@ class DoseDetailViewController: UIViewController {
 			print("no image for dose")
 			return
 		}
-		doseImageView.image = doseImage
+		doseImageView.image = {
+			var imageToReturn: UIImage?
+			if let doseImage = self.activeDetailDose.doseImage {
+				imageToReturn = doseImage
 
-    }
+				let cgImageToGetOrientedUIImage: CGImage? = doseImage.cgImage
+				let orientedCGImage: CGImage? = createMatchingBackingDataWithImage(imageRef: cgImageToGetOrientedUIImage, orienation: .up)
+				guard let orientedCGImageUnwrapped = orientedCGImage else {
+					return imageToReturn
+				}
+				let correctedUIImage: UIImage = UIImage(cgImage: orientedCGImageUnwrapped, scale: 1.0, orientation: .right)
+				imageToReturn = correctedUIImage
+				self.activeDetailDose.doseImage = correctedUIImage
+			} else {
+				imageToReturn = UIImage(imageLiteralResourceName: "cannaleaf.png")
+			}
+			return imageToReturn
+		}()
+
+	}
     
 
 
@@ -120,6 +137,7 @@ extension DoseDetailViewController {
 		productPickerView.tag = 1
 		productPickerView.delegate = self
 		productPickerView.dataSource = self
+		productPickerView.showsSelectionIndicator = true
 
 		productTextField.inputView = productPickerView
 
@@ -129,6 +147,7 @@ extension DoseDetailViewController {
 		administrationRoutePickerView.tag = 2
 		administrationRoutePickerView.delegate = self
 		administrationRoutePickerView.dataSource = self
+		administrationRoutePickerView.showsSelectionIndicator = true
 		administrationRouteTextField.inputView = administrationRoutePickerView
 	}
 
