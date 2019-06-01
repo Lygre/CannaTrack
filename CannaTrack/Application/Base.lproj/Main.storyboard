@@ -1224,6 +1224,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="m0Y-HM-7zb" kind="show" id="gNx-b0-rRu">
+                                                <segue key="commit" inheritsFrom="parent" id="flT-Dw-oFx"/>
+                                                <segue key="preview" inheritsFrom="commit" id="po3-PW-vJv"/>
+                                            </segue>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -1261,6 +1267,7 @@
                         <viewLayoutGuide key="safeArea" id="RQH-vf-3YV"/>
                     </view>
                     <navigationItem key="navigationItem" id="tNb-gC-NIf">
+                        <barButtonItem key="backBarButtonItem" title="Calendar" id="4NP-wx-QSe"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="sDr-BV-U6J">
                             <connections>
                                 <segue destination="Xss-jA-LBU" kind="presentation" identifier="LogDoseFromCalendarSegue" modalPresentationStyle="pageSheet" id="cGB-W6-WAb"/>
@@ -1277,6 +1284,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BlL-7N-CYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2289.8550724637685" y="1800.6696428571427"/>
+        </scene>
+        <!--Dose Detail View Controller-->
+        <scene sceneID="HGZ-Uo-k5x">
+            <objects>
+                <viewController id="m0Y-HM-7zb" customClass="DoseDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OF6-8l-aQd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannaleaf" translatesAutoresizingMaskIntoConstraints="NO" id="vgz-iQ-jd7">
+                                <rect key="frame" x="0.0" y="88" width="414" height="200.5"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="vgz-iQ-jd7" firstAttribute="height" secondItem="OF6-8l-aQd" secondAttribute="height" multiplier="0.224" id="3Lf-bw-2Kr"/>
+                            <constraint firstItem="vgz-iQ-jd7" firstAttribute="top" secondItem="ujv-eW-2t7" secondAttribute="top" id="3My-n7-C3X"/>
+                            <constraint firstItem="vgz-iQ-jd7" firstAttribute="trailing" secondItem="ujv-eW-2t7" secondAttribute="trailing" id="ssF-jd-ahB"/>
+                            <constraint firstItem="vgz-iQ-jd7" firstAttribute="leading" secondItem="ujv-eW-2t7" secondAttribute="leading" id="xoe-8l-bk9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ujv-eW-2t7"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
+                    <connections>
+                        <outlet property="doseImageView" destination="vgz-iQ-jd7" id="w48-XX-mPQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OBk-Cy-Ixk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2289.8550724637685" y="2625.6696428571427"/>
         </scene>
         <!--ChooseProducts-->
         <scene sceneID="tkX-oq-IfB">
@@ -1604,6 +1641,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3zQ-9u-F0C"/>
-        <segue reference="C0G-LS-hNd"/>
+        <segue reference="gNx-b0-rRu"/>
+        <segue reference="Yn3-p8-KVM"/>
     </inferredMetricsTieBreakers>
 </document>

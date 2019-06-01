@@ -47,6 +47,8 @@ class CalendarLogViewController: UIViewController {
 
 	let logDoseFromCalendarSegueIdentifier = "LogDoseFromCalendarSegue"
 
+	var doseToPassToDetail: Dose?
+
 	var masterDoseArray: [Dose] = DoseController.doses {
 		willSet(newArray) {
 			DoseController.doses = newArray
@@ -296,15 +298,22 @@ class CalendarLogViewController: UIViewController {
 
 	}
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-    }
-    */
+		if segue.destination is DoseDetailViewController {
+			guard let selectedDoseTableViewCell = sender as? DoseCalendarTableViewCell, let indexPath = self.doseTableView.indexPath(for: selectedDoseTableViewCell) else { preconditionFailure("Expected sender to be a valid tableview cell") }
+			guard let doseDetailVC = segue.destination as? DoseDetailViewController else { preconditionFailure("Expected a DoseDetailViewController") }
+			doseToPassToDetail = dosesForDate[indexPath.row]
+			doseDetailVC.activeDetailDose = doseToPassToDetail
+		}
+
+	}
+
 
 }
 
@@ -654,7 +663,8 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let cell = tableView.cellForRow(at: indexPath) as? DoseCalendarTableViewCell else { return }
-
+		let doseForIndexPath = dosesForDate[indexPath.row]
+		doseToPassToDetail = doseForIndexPath
 		print(cell.frame)
 
 	}
