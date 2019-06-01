@@ -11,14 +11,22 @@ import Vision
 import AVKit
 
 
+
 class AddProductViewController: UIViewController {
 
 	@IBOutlet var productCategoryScanResultText: UITextView!
 
+	//MARK: -- VISION WORK
 
 	@IBOutlet var scannedProductTextField: UITextView!
 
 	@IBOutlet var productImageToAdd: UIImageView!
+
+	var session = AVCaptureSession()
+
+	var requests = [VNRequest]()
+
+
 
 	var productToAdd: Product?
 
@@ -40,11 +48,15 @@ class AddProductViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		if productImageToAdd.image == nil {
-			promptPhoto()
-		}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		startLiveVideo()
+		startTextDetection()
+	}
+
+	override func viewDidLayoutSubviews() {
+		productImageToAdd.layer.sublayers?[0].frame = productImageToAdd.bounds
 	}
 
 	@objc func promptPhoto() {
@@ -57,9 +69,7 @@ class AddProductViewController: UIViewController {
 	}
 
 	// MARK: - Tesseract Helpers
-//	func progressImageRecognition(for tesseract: G8Tesseract!) {
-//		print("Recognition progress for image \(tesseract.progress)")
-//	}
+
 
 	// MARK: - Helper Methods
 
@@ -200,10 +210,7 @@ class AddProductViewController: UIViewController {
 		saveProductToInventory(product: product)
 	}
 
-	@IBAction func addNewProductToInventory(_ sender: Any) {
-		guard let product = productToAdd else { return }
-		saveProductToInventory(product: product)
-	}
+
 
 
 
@@ -215,44 +222,156 @@ class AddProductViewController: UIViewController {
 extension AddProductViewController {
 
 	func refreshUI() {
-		guard let image = productToAdd?.currentProductImage else { return }
+		guard let image = productToAdd?.productLabelImage else { return }
 		productImageToAdd.image = image
+	}
+}
+
+
+//MARK: -- AV Methods
+extension AddProductViewController {
+	func startLiveVideo() {
+		//1
+		session.sessionPreset = AVCaptureSession.Preset.photo
+		let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+
+		//2
+		let deviceInput = try! AVCaptureDeviceInput(device: captureDevice!)
+		let deviceOutput = AVCaptureVideoDataOutput()
+		deviceOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
+		deviceOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
+		session.addInput(deviceInput)
+		session.addOutput(deviceOutput)
+
+		//3
+		let imageLayer = AVCaptureVideoPreviewLayer(session: session)
+		imageLayer.frame = productImageToAdd.bounds
+		productImageToAdd.layer.addSublayer(imageLayer)
+
+		session.startRunning()
+	}
+
+
+	func startTextDetection() {
+		let textRequest = VNDetectTextRectanglesRequest(completionHandler: self.detectTextHandler)
+		textRequest.reportCharacterBoxes = true
+		self.requests = [textRequest]
+	}
+
+	func detectTextHandler(request: VNRequest, error: Error?) {
+		guard let observations = request.results else {
+			print("no result")
+			return
+		}
+
+		let result = observations.map({$0 as? VNTextObservation})
+
+		DispatchQueue.main.async {
+			self.productImageToAdd.layer.sublayers?.removeSubrange(1...)
+			for region in result {
+				guard let rg = region else {
+					continue
+				}
+
+				self.highlightWord(box: rg)
+				if let boxes = region?.characterBoxes {
+					for characterBox in boxes {
+						self.highlightLetters(box: characterBox)
+					}
+				}
+			}
+		}
+	}
+
+
+	func highlightWord(box: VNTextObservation) {
+		guard let boxes = box.characterBoxes else {
+			return
+		}
+
+		var maxX: CGFloat = 9999.0
+		var minX: CGFloat = 0.0
+		var maxY: CGFloat = 9999.0
+		var minY: CGFloat = 0.0
+
+		for char in boxes {
+			if char.bottomLeft.x < maxX {
+				maxX = char.bottomLeft.x
+			}
+			if char.bottomRight.x > minX {
+				minX = char.bottomRight.x
+			}
+			if char.bottomRight.y < maxY {
+				maxY = char.bottomRight.y
+			}
+			if char.topRight.y > minY {
+				minY = char.topRight.y
+			}
+		}
+
+		let xCord = maxX * productImageToAdd.frame.size.width
+		let yCord = (1 - minY) * productImageToAdd.frame.size.height
+		let width = (minX - maxX) * productImageToAdd.frame.size.width
+		let height = (minY - maxY) * productImageToAdd.frame.size.height
+
+		let outline = CALayer()
+		outline.frame = CGRect(x: xCord, y: yCord, width: width, height: height)
+		outline.borderWidth = 2.0
+		outline.borderColor = UIColor.red.cgColor
+
+		productImageToAdd.layer.addSublayer(outline)
+	}
+
+	func highlightLetters(box: VNRectangleObservation) {
+		let xCord = box.topLeft.x * productImageToAdd.frame.size.width
+		let yCord = (1 - box.topLeft.y) * productImageToAdd.frame.size.height
+		let width = (box.topRight.x - box.bottomLeft.x) * productImageToAdd.frame.size.width
+		let height = (box.topLeft.y - box.bottomLeft.y) * productImageToAdd.frame.size.height
+
+		let outline = CALayer()
+		outline.frame = CGRect(x: xCord, y: yCord, width: width, height: height)
+		outline.borderWidth = 1.0
+		outline.borderColor = UIColor.blue.cgColor
+
+		productImageToAdd.layer.addSublayer(outline)
 	}
 
 
 
 }
 
+
+extension AddProductViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+
+	func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+		guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+			return
+		}
+
+		var requestOptions:[VNImageOption : Any] = [:]
+
+		if let camData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
+			requestOptions = [.cameraIntrinsics:camData]
+		}
+
+		let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation(rawValue: 6) ?? .up, options: requestOptions)
+
+		do {
+			try imageRequestHandler.perform(self.requests)
+		} catch {
+			print(error)
+		}
+	}
+
+}
+
+
+
 extension AddProductViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
 		let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-
-//		if let tesseract = G8Tesseract(language: "eng") {
-//			tesseract.engineMode = .tesseractOnly
-//			tesseract.delegate = self
-//			tesseract.image = originalImage.g8_blackAndWhite()
-//			tesseract.recognize()
-//
-//			self.productImageToAdd.image = originalImage
-//			self.scannedProductTextField.text = tesseract.recognizedText
-//			if tesseract.recognizedText.lowercased().contains("trushatter") {
-//				self.productCategoryScanResultText.text = "truShatter"
-//				self.productToAdd = Product(typeOfProduct: .truShatter, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-//			} else if tesseract.recognizedText.lowercased().contains("truflower") {
-//				self.productCategoryScanResultText.text = "truFlower"
-//				self.productToAdd = Product(typeOfProduct: .truFlower, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-//			} else if tesseract.recognizedText.lowercased().contains("trucrmbl") {
-//				self.productCategoryScanResultText.text = "truCRMBL"
-//				self.productToAdd = Product(typeOfProduct: .truCrmbl, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-//			} else if tesseract.recognizedText.lowercased().contains("truclear") {
-//				self.productCategoryScanResultText.text = "truClear"
-//				self.productToAdd = Product(typeOfProduct: .truClear, strainForProduct: Strain(id: 2, name: "no", race: .hybrid, description: "no"), inGrams: 1.0)
-//			}
-//
-//		} else { print("not able to instantiate tesseract") }
-
 
 		self.productToAdd?.currentProductImage = originalImage
 		self.productToAdd?.productLabelImage = originalImage
@@ -309,11 +428,6 @@ extension AddProductViewController: UINavigationControllerDelegate, UIImagePicke
 
 }
 
-extension AddProductViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
-
-
-
-}
 
 
 
