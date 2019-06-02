@@ -64,6 +64,7 @@ struct CloudKitManager {
 	//only working with productZoneID for now
 	static let doseZoneID = CKRecordZone.ID(zoneName: "DoseLogs", ownerName: CKCurrentUserDefaultName)
 
+	static let sharedZoneID = CKRecordZone.ID(zoneName: "SharedZone", ownerName: CKCurrentUserDefaultName)
 
 
 	//MARK: -- Variables
@@ -91,6 +92,18 @@ struct CloudKitManager {
 		}
 		set(newValue) {
 			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.doseZoneID.zoneName)
+		}
+	}
+
+	static var createdCustomSharedZone: Bool {
+		get {
+			guard let bool = UserDefaults.standard.value(forKey: CloudKitManager.sharedZoneID.zoneName) as? Bool else {
+				return false
+			}
+			return bool
+		}
+		set(newValue) {
+			UserDefaults.standard.setValue(newValue, forKey: CloudKitManager.sharedZoneID.zoneName)
 		}
 	}
 
@@ -190,6 +203,18 @@ struct CloudKitManager {
 	//MARK: -- Authentication
 	func requestCloudKitPermission(completion: @escaping RequestCKPermissionCompletion) {
 		CKContainer.default().accountStatus(completionHandler: completion)
+		CKContainer.default().requestApplicationPermission(CKContainer_Application_Permissions.userDiscoverability) { (status, error) in
+			switch status {
+			case .granted:
+				print("granted")
+			case .denied:
+				print("denied")
+			case .initialState:
+				print("initial state")
+			case .couldNotComplete:
+				print("an error occurred", error ?? "Unknown Error")
+			}
+		}
 	}
 
 	//MARK: -- Creation of Custom Zone 1 for Products
@@ -1301,6 +1326,38 @@ extension CloudKitManager {
 
 //MARK: -- CKShare
 extension CloudKitManager {
+
+
+	func createSharedZone(completionHandler:@escaping (CKRecordZone?, Error?)->Void) {
+		if !CloudKitManager.createdCustomSharedZone {
+			CloudKitManager.createZoneGroup.enter()
+
+			let customZone = CKRecordZone(zoneID: CloudKitManager.sharedZoneID)
+
+			let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [])
+
+			createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+				if let error = error {
+					let alertView = UIAlertController(title: "Custom Shared Zone Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					if let _ = saved {
+						CloudKitManager.createdCustomSharedZone = true
+						print("Custom Zone for Shared Records was saved to Server")
+					}
+				}
+				CloudKitManager.createZoneGroup.leave()
+			}
+
+			createZoneOperation.qualityOfService = .userInitiated
+
+			CloudKitManager.privateDatabase.add(createZoneOperation)
+		}
+	}
+
+
 	func shareProductRecord(product: Product, completion: @escaping (CKShare?, CKContainer?, Error?)->Void) {
 		let record = product.toCKRecord()
 		let share = CKShare(rootRecord: record)
@@ -1339,8 +1396,10 @@ extension CloudKitManager {
 		}
 
 		CloudKitManager.privateDatabase.add(modifyRecordsOperation)
+	}
 
 
+	func createPublicSharedRecord() {
 
 	}
 
