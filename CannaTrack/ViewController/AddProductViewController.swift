@@ -10,7 +10,28 @@ import UIKit
 import Vision
 import AVKit
 import CoreML
+import VideoToolbox
 
+precedencegroup ForwardPipe {
+	associativity: left
+	higherThan: LogicalConjunctionPrecedence
+}
+
+infix operator |> : ForwardPipe
+
+public func |> <T, U>(value: T, function: ((T) -> U)) -> U {
+	return function(value)
+}
+
+extension UIImage {
+	public convenience init?(pixelBuffer: CVPixelBuffer) {
+		var cgImage: CGImage?
+		VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &cgImage)
+		if let cgImage = cgImage {
+			self.init(cgImage: cgImage)
+		} else { return nil }
+	}
+}
 
 
 class AddProductViewController: UIViewController {
@@ -27,6 +48,13 @@ class AddProductViewController: UIViewController {
 
 	var requests = [VNRequest]()
 
+	var model: VNCoreMLModel!
+
+	var textMetadata = [Int: [Int: String]]()
+
+	private func loadModel() {
+		model = try? VNCoreMLModel(for: Alphanum_28x28().model)
+	}
 
 
 	var productToAdd: Product?
@@ -39,7 +67,7 @@ class AddProductViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-
+		loadModel()
 		let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
 		self.productImageToAdd.addGestureRecognizer(photoTap)
 
@@ -194,7 +222,16 @@ class AddProductViewController: UIViewController {
 	}
 
 	@IBAction func scanToAddProductTapped(_ sender: Any) {
-		promptPhoto()
+//		promptPhoto()
+		if session.isRunning {
+			session.stopRunning()
+			clearOldData()
+			detectText(image: productImageToAdd.image!)
+
+		} else {
+			session.startRunning()
+		}
+
 	}
 
 	@IBAction func scanProductToAddImageForData(_ sender: UIButton) {
@@ -252,6 +289,7 @@ extension AddProductViewController {
 		session.startRunning()
 	}
 
+	
 
 	func startTextDetection() {
 		let textRequest = VNDetectTextRectanglesRequest(completionHandler: self.detectTextHandler)
@@ -267,27 +305,76 @@ extension AddProductViewController {
 
 		let result = observations.map({$0 as? VNTextObservation})
 
+		if result.count == 0 {
+			self.handleEmptyResults()
+			return
+		}
+
 		DispatchQueue.main.async {
 			self.productImageToAdd.layer.sublayers?.removeSubrange(1...)
+			var numberOfWords = 0
 			for region in result {
 				guard let rg = region else {
 					continue
 				}
 
 				self.highlightWord(box: rg)
+				var numberOfCharacters = 0
 				if let boxes = region?.characterBoxes {
 					for box in boxes {
-
+						//highlight letters
 						self.highlightLetters(box: box)
 
 					}
 				}
-
+				numberOfWords += 1
 			}
 
 		}
 	}
 
+	// MARK: text detection
+
+	func detectText(image: UIImage) {
+		let convertedImage = image |> adjustColors |> convertToGrayscale
+		let correctedImage = createMatchingBackingDataWithImage(imageRef: convertedImage.cgImage, orienation: .up)
+		let handler = VNImageRequestHandler(cgImage: correctedImage!)
+		let request: VNDetectTextRectanglesRequest =
+			VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
+				if (error != nil) {
+					print("Got Error In Run Text Dectect Request :(")
+				} else {
+					guard let results = request.results as? Array<VNTextObservation> else {
+						fatalError("Unexpected result type from VNDetectTextRectanglesRequest")
+					}
+					if (results.count == 0) {
+						self.handleEmptyResults()
+						return
+					}
+					var numberOfWords = 0
+					for textObservation in results {
+						var numberOfCharacters = 0
+						for rectangleObservation in textObservation.characterBoxes! {
+							let croppedImage = crop(image: image, rectangle: rectangleObservation)
+							if let croppedImage = croppedImage {
+								let processedImage = preProcess(image: croppedImage)
+								self.classifyImage(image: processedImage,
+												   wordNumber: numberOfWords,
+												   characterNumber: numberOfCharacters)
+								numberOfCharacters += 1
+							}
+						}
+						numberOfWords += 1
+					}
+				}
+			})
+		request.reportCharacterBoxes = true
+		do {
+			try handler.perform([request])
+		} catch {
+			print(error)
+		}
+	}
 
 
 	func highlightWord(box: VNTextObservation) {
@@ -343,7 +430,91 @@ extension AddProductViewController {
 	}
 
 
+	func handleEmptyResults() {
+		DispatchQueue.main.async {
+			self.scannedProductTextField.text = "The image does not contain any text"
+		}
+	}
 
+	private func clearOldData() {
+		scannedProductTextField.text = ""
+		textMetadata = [:]
+	}
+
+	func classifyImage(image: UIImage, wordNumber: Int, characterNumber: Int) {
+		let request = VNCoreMLRequest(model: model) { (request, error) in
+			guard let results = request.results as? [VNClassificationObservation],
+				let topResult = results.first else {
+				fatalError("Unexpected result type from VNCoreMLRequest")
+			}
+			let result = topResult.identifier
+			let classificationInfo: [String: Any] = ["wordNumber": wordNumber,
+													 "characterNumber": characterNumber,
+													 "class": result]
+			self.handleResult(classificationInfo)
+		}
+		guard let ciImage = CIImage(image: image) else { fatalError("could not convert uiimage to ciimage")}
+		let handler = VNImageRequestHandler(ciImage: ciImage)
+		DispatchQueue.global(qos: .userInteractive).async {
+			do {
+				try handler.perform([request])
+			} catch {
+				print(error)
+			}
+		}
+	}
+
+	func handleResult(_ result: [String: Any]) {
+		objc_sync_enter(self)
+
+		guard let wordNumber = result["wordNumber"] as? Int else {
+			return
+		}
+		guard let characterNumber = result["characterNumber"] as? Int else {
+			return
+		}
+		guard let characterClass = result["class"] as? String else {
+			return
+		}
+
+		if (textMetadata[wordNumber] == nil) {
+			let tmp: [Int: String] = [characterNumber: characterClass]
+			textMetadata[wordNumber] = tmp
+		} else {
+			var tmp = textMetadata[wordNumber]!
+			tmp[characterNumber] = characterClass
+			textMetadata[wordNumber] = tmp
+		}
+		objc_sync_exit(self)
+		DispatchQueue.main.async {
+			self.showDetectedText()
+		}
+
+	}
+
+	func showDetectedText() {
+		var result: String = ""
+		if (textMetadata.isEmpty) {
+			scannedProductTextField.text = "The image does not contain any text"
+			return
+		}
+		let sortedKeys = textMetadata.keys.sorted()
+		for sortedKey in sortedKeys {
+			result += word(fromDictionary: textMetadata[sortedKey]!) + " "
+		}
+		scannedProductTextField.text = result
+	}
+
+
+	func word(fromDictionary dictionary: [Int: String]) -> String {
+		let sortedKeys = dictionary.keys.sorted()
+		var word: String = ""
+		for sortedKey in sortedKeys {
+			let char: String = dictionary[sortedKey]!
+			word += char
+		}
+		return word
+	}
 }
 
 
@@ -353,7 +524,12 @@ extension AddProductViewController: AVCaptureVideoDataOutputSampleBufferDelegate
 		guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
 			return
 		}
-
+		guard let image = UIImage(pixelBuffer: pixelBuffer) else { return }
+		guard let cgImage = image.cgImage else { return }
+		guard let correctedCGImage = createMatchingBackingDataWithImage(imageRef: cgImage, orienation: .up) else { return }
+		DispatchQueue.main.async {
+			self.productImageToAdd.image = UIImage(cgImage: correctedCGImage)
+		}
 		var requestOptions:[VNImageOption : Any] = [:]
 
 		if let camData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
@@ -367,7 +543,9 @@ extension AddProductViewController: AVCaptureVideoDataOutputSampleBufferDelegate
 		} catch {
 			print(error)
 		}
+
 	}
+
 
 
 }
