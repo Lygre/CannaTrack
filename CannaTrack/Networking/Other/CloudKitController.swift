@@ -435,17 +435,37 @@ struct CloudKitManager {
 		operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
 			// Flush record changes and deletions for this zone to disk
 			// Write this new zone change token to disk
-			if zoneId == CloudKitManager.doseZoneID {
-				CloudKitManager.doseZoneChangeToken = token
-				print("dose zone change token has been updated")
-			} else { print("the updated zone token was not the dose zone; doing nothing") }
+
+			if let changeToken = token {
+				if let data = data {
+					guard let decoder = try? NSKeyedUnarchiver.init(forReadingFrom: data) else { return }
+					if changeToken != CKServerChangeToken(coder: decoder) {
+						print("new change token is not the same as last from device")
+						CloudKitManager.privateDatabaseChangeToken = changeToken
+						CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope, completion: {
+							print("fetching changes after receiving record zone change tokens updated block")
+						})
+					} else {
+						print("new change token is the same as last from device")
+					}
+				}
+//				CloudKitManager.privateDatabaseChangeToken = changeToken
+				print("set new change token in record zone change tokens updated block")
+			} else {
+				print("no change token in record zone change tokens updated block")
+			}
+//			if zoneId == CloudKitManager.doseZoneID {
+//				CloudKitManager.doseZoneChangeToken = token
+//				print("dose zone change token has been updated")
+//			} else { print("the updated zone token was not the dose zone; doing nothing") }
+
 			//MARK: -- need to make a new constant to track the individual zone changes and a token for them
 //			CloudKitManager.privateDatabase
 			needsUpdatingZoneIDs.append(zoneId)
 			print("Record zone with id \(zoneId) and token \(token)")
 		}
 
-		operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
+		operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, data, _, error) in
 			if let error = error {
 				let alertView = UIAlertController(title: "Record Zone Fetch Completion", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 				DispatchQueue.main.async {
@@ -455,11 +475,27 @@ struct CloudKitManager {
 				print("Error fetching zone changes for \(databaseTokenKey) database:", error)
 				return
 			} else {
-				if zoneId == CloudKitManager.doseZoneID {
-					CloudKitManager.doseZoneChangeToken = changeToken
+				if let changeToken = changeToken {
+//					CloudKitManager.privateDatabaseChangeToken = changeToken
+					if let data = data {
+						guard let decoder = try? NSKeyedUnarchiver.init(forReadingFrom: data) else { return }
+						if changeToken != CKServerChangeToken(coder: decoder) {
+							print("new change token is not the same as last from device")
+							CloudKitManager.privateDatabaseChangeToken = changeToken
+							CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope, completion: {
+								print("fetching changes after receiving record zone change tokens updated block")
+							})
+						} else {
+							print("new change token is the same as last from device")
+						}
+					}
+					print("updating server change token")
+				} else {
+					//				if zoneId == CloudKitManager.doseZoneID {
+					//					CloudKitManager.doseZoneChangeToken = changeToken
+					//				}
+					print("record zone fetch completed", needsUpdatingZoneIDs, "need updating")
 				}
-				print("record zone fetch completed", needsUpdatingZoneIDs, "need updating")
-
 
 			}
 

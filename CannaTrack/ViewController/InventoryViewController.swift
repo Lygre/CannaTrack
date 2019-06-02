@@ -147,6 +147,9 @@ final class InventoryViewController: UIViewController {
 
 						self.masterProductArray?.append(product)
 						self.updateInventoryCollectionView()
+					} else {
+						self.masterProductArray?.removeAll(product)
+						self.masterProductArray?.append(product)
 					}
 				}
 				if let stopAnimating = shouldStopAnimating {
@@ -171,6 +174,8 @@ final class InventoryViewController: UIViewController {
 		view.bringSubviewToFront(addProductButton)
 		snapAddButtonToInitialPosition(button: addProductButton, animator: addProductButton.propertyAnimator, dynamicAnimator: dynamicAnimator)
 
+		fetchProductDatabaseChanges(CloudKitManager.privateDatabaseChangeToken)
+		/*
 		CloudKitManager.shared.setupFetchOperation(with: self.masterProductArray?.compactMap({$0.toCKRecord().recordID}) ?? [], completion: { (fetchedProductArray, error) in
 			if let error = error {
 				let alertView = UIAlertController(title: "Fetch Operation Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
@@ -188,6 +193,7 @@ final class InventoryViewController: UIViewController {
 				print("wut happened")
 			}
 		})
+		*/
 
 	}
 
@@ -578,7 +584,8 @@ extension InventoryViewController {
 				if let error = error {
 					print(error)
 				} else if let changeToken = changeToken {
-					print("database changes fetched")
+					CloudKitManager.privateDatabaseChangeToken = changeToken
+					print("database changes fetched", changeToken)
 
 				}
 			}
@@ -587,7 +594,7 @@ extension InventoryViewController {
 		operation.changeTokenUpdatedBlock = { changeToken in
 			DispatchQueue.main.async {
 				print("database change token value updated through changeToken completionblock; new: \(changeToken.debugDescription)")
-				self.inventoryDatabaseChangeToken = changeToken
+				CloudKitManager.privateDatabaseChangeToken = changeToken
 			}
 		}
 
@@ -599,8 +606,8 @@ extension InventoryViewController {
 
 		let config = CKFetchDatabaseChangesOperation.Configuration()
 		config.qualityOfService = .userInitiated
-		config.timeoutIntervalForRequest = 10
-		config.timeoutIntervalForResource = 10
+		config.timeoutIntervalForRequest = 12
+		config.timeoutIntervalForResource = 12
 		operation.configuration = config
 
 		privateDatabase.add(operation)
