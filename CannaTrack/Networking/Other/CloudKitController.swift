@@ -43,6 +43,7 @@ struct CloudKitManager {
 
 	static let privateDatabase = CKContainer.default().privateCloudDatabase
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
+	static let sharedDatabase = CKContainer.default().sharedCloudDatabase
 
 	static let productsFetchOperation = CKFetchRecordsOperation()
 	static let doseFetchOperation = CKFetchRecordsOperation()
@@ -1255,20 +1256,21 @@ extension CloudKitManager {
 	func shareProductRecord(product: Product) {
 		let record = product.toCKRecord()
 		let share = CKShare(rootRecord: record)
-		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared"
-		share.publicPermission = .readWrite
+		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared" as CKRecordValue
+		share.publicPermission = .readOnly
 
 		let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record, share], recordIDsToDelete: nil)
 		let config = CKModifyRecordsOperation.Configuration()
-		config.timeoutIntervalForRequest = 12
-		config.timeoutIntervalForResource = 12
+		config.timeoutIntervalForRequest = 20
+		config.timeoutIntervalForResource = 20
+		config.qualityOfService = .userInteractive
 
 		modifyRecordsOperation.modifyRecordsCompletionBlock = { records, recordIDs, error in
 			DispatchQueue.main.async {
 				if let error = error {
 					let alertView = UIAlertController(title: "Product Share Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 					DispatchQueue.main.async {
-						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+						UIApplication.shared.windows[0].rootViewController?.presentedViewController?.present(alertView, animated: true, completion:nil)
 					}
 
 				} else {

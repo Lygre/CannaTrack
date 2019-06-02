@@ -403,7 +403,7 @@ class ProductDetailViewController: UIViewController {
 		let controller = UICloudSharingController { (controller, preparationCompletionHandler) in
 			CloudKitManager.shared.shareProductRecord(product: self.activeDetailProduct)
 		}
-		controller.availablePermissions = [.allowReadWrite, .allowPrivate]
+		controller.availablePermissions = [.allowReadOnly, .allowPublic]
 		controller.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
 
 		present(controller, animated: true)

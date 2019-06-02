@@ -85,6 +85,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 	}
 
+	func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+		let acceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [cloudKitShareMetadata])
+		acceptSharesOperation.perShareCompletionBlock = { metadata, share, error in
+			DispatchQueue.main.async {
+				if let error = error {
+					let alertView = UIAlertController(title: "Share Accept Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						application.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+				} else {
+					let operation = CKFetchRecordsOperation(recordIDs: [cloudKitShareMetadata.rootRecordID])
+					operation.perRecordCompletionBlock = { record, _, error in
+						DispatchQueue.main.async {
+							if let error = error {
+								let alertView = UIAlertController(title: "ShareProduct Fetch Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+								DispatchQueue.main.async {
+									application.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+								}
+							} else {
+								if let shareRecord = record {
+									//This is where ProductController needs to come into play
+									print("accepted and fetched",shareRecord)
+								}
+							}
+						}
+					}
+
+					operation.fetchRecordsCompletionBlock = { _, error in
+						if let error = error {
+							let alertView = UIAlertController(title: "SharedProduct Fetch Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+							DispatchQueue.main.async {
+								application.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+							}
+
+						}
+					}
+
+					CloudKitManager.sharedDatabase.add(operation)
+
+				}
+			}
+		}
+
+		CKContainer(identifier: cloudKitShareMetadata.containerIdentifier).add(acceptSharesOperation)
+
+	}
+
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
