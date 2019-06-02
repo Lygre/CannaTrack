@@ -1361,14 +1361,15 @@ extension CloudKitManager {
 	func shareProductRecord(product: Product, completion: @escaping (CKShare?, CKContainer?, Error?)->Void) {
 		let record = product.toCKRecord()
 		let share = CKShare(rootRecord: record)
-		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared" as CKRecordValue
+//		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared" as CKRecordValue
 		share.publicPermission = .readOnly
 
 		let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record, share], recordIDsToDelete: nil)
 		let config = CKModifyRecordsOperation.Configuration()
-		config.timeoutIntervalForRequest = 20
-		config.timeoutIntervalForResource = 20
-		config.qualityOfService = .userInteractive
+		config.timeoutIntervalForRequest = 15
+		config.timeoutIntervalForResource = 15
+		config.qualityOfService = .userInitiated
+		modifyRecordsOperation.savePolicy = .allKeys
 
 		modifyRecordsOperation.perRecordCompletionBlock = { record, error in
 			if let error = error {

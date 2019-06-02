@@ -201,11 +201,15 @@ final class InventoryViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 //		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
+
+		/*
 		fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
 			DispatchQueue.main.async {
 				self.updateInventoryCollectionView()
 			}
 		}
+		*/
+
 		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 
 //		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
@@ -583,11 +587,22 @@ extension InventoryViewController {
 			DispatchQueue.main.async {
 				if let error = error {
 					print(error)
-				} else if let changeToken = changeToken {
+				}
+				if let changeToken = changeToken {
 					CloudKitManager.privateDatabaseChangeToken = changeToken
 					print("database changes fetched", changeToken)
 
 				}
+
+				if moreComing {
+					print("more records coming, creating a new fetch with last change token")
+					self.updateInventoryCollectionView()
+					self.fetchProductDatabaseChanges(CloudKitManager.privateDatabaseChangeToken)
+				} else {
+					print("no more records coming from inventoryVC fetchProductDatabaseChanges method")
+					self.updateInventoryCollectionView()
+				}
+
 			}
 		}
 
