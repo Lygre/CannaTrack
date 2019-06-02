@@ -90,11 +90,15 @@ extension Product {
 
 extension Product {
 
+
+	//How to break up this classification? Measurements? Volumetric or massive?
+
 	enum ProductType: String, Codable, CaseIterable {
 		case truFlower = "truFlower"
 		case truCrmbl = "truCRMBL"
 		case truClear = "truClear"
 		case truPod = "truPod"
+		case rosin = "Rosin"
 		case truShatter = "truShatter"
 		case vapePenCartridge = "Vape Pen Cartridge"
 		case co2VapePenCartridge = "CO2 Vape Pen Cartridge"
