@@ -13,6 +13,8 @@ class DoseDetailViewController: UIViewController {
 
 	var activeDetailDose: Dose!
 
+	var isEditingDose: Bool = false
+
 	let dateFormatter = DateFormatter()
 
 	@IBOutlet var doseImageView: UIImageView!
@@ -89,26 +91,33 @@ class DoseDetailViewController: UIViewController {
     }
 
 	@IBAction func editDoseDetaiTapped(_ sender: UIBarButtonItem) {
-		doseDetailTextFieldCollection = doseDetailTextFieldCollection.compactMap { (textField) -> UITextField in
-			if !textField.isEnabled {
-				UIView.animate(withDuration: 1, animations: {
-					textField.backgroundColor = .GreenWebColor()
-					textField.borderColor = UIColor(named: "sativaColor")
-				})
-				textField.isEnabled = true
-				textField.isUserInteractionEnabled = true
-				textField.clearButtonMode = .whileEditing
-			} else {
-				UIView.animate(withDuration: 1, animations: {
-					textField.backgroundColor = UIColor(named: "sativaColor")
-					textField.borderColor = .clear
-				})
-				textField.isEnabled = false
-				textField.isUserInteractionEnabled = false
-				textField.clearButtonMode = .never
+
+
+			doseDetailTextFieldCollection = doseDetailTextFieldCollection.compactMap { (textField) -> UITextField in
+				if !isEditingDose {
+					UIView.animate(withDuration: 1, animations: {
+						textField.backgroundColor = .GreenWebColor()
+						textField.borderColor = UIColor(named: "sativaColor")
+					})
+					textField.isEnabled = true
+					textField.isUserInteractionEnabled = true
+					textField.clearButtonMode = .whileEditing
+				} else {
+					UIView.animate(withDuration: 1, animations: {
+						textField.backgroundColor = UIColor(named: "sativaColor")
+						textField.borderColor = .clear
+					})
+					textField.isEnabled = false
+					textField.isUserInteractionEnabled = false
+					textField.clearButtonMode = .never
+				}
+				return textField
 			}
-			return textField
-		}
+		self.navigationItem.hidesBackButton = isEditingDose ? false : true
+
+			isEditingDose = isEditingDose ? false : true
+
+
 
 	}
 

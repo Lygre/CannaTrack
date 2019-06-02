@@ -1278,7 +1278,7 @@
             </objects>
             <point key="canvasLocation" x="2289.8550724637685" y="1800.6696428571427"/>
         </scene>
-        <!--Title-->
+        <!--Dose Detail-->
         <scene sceneID="HGZ-Uo-k5x">
             <objects>
                 <viewController id="m0Y-HM-7zb" customClass="DoseDetailViewController" customModule="CannaTrackSpecial" customModuleProvider="target" sceneMemberID="viewController">
@@ -1394,7 +1394,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ujv-eW-2t7"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="cqw-SU-AAQ">
+                    <navigationItem key="navigationItem" title="Dose Detail" id="cqw-SU-AAQ">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Zgc-Pw-PFT">
                             <connections>
                                 <action selector="editDoseDetaiTapped:" destination="m0Y-HM-7zb" id="6Lq-mm-Ub4"/>
@@ -1697,7 +1697,7 @@
         <!--Navigation Controller-->
         <scene sceneID="NWS-fX-43d">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dtm-Pu-caa" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" hidesBarsWhenVerticallyCompact="YES" id="dtm-Pu-caa" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="mostRecent" id="Oi1-fW-sGS"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SsM-8s-dnX">
@@ -1705,6 +1705,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3X4-xV-HS9">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="2LI-yC-dew" kind="relationship" relationship="rootViewController" id="N1e-WE-emV"/>
                     </connections>
