@@ -351,6 +351,64 @@ struct CloudKitManager {
 
 	}
 
+	func fetchProductDatabaseChanges(_ previousChangeToken: CKServerChangeToken?, completion: @escaping ()->Void) {
+		//client is responsible for saving the change token at the end of the operation and passing it into the next call to CKFetchDatabaseChangesOperation
+
+		let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: previousChangeToken)
+
+		operation.fetchAllChanges = true
+		operation.resultsLimit = 20
+		operation.fetchDatabaseChangesCompletionBlock = { (changeToken, moreComing, error) in
+			DispatchQueue.main.async {
+				if let error = error {
+					let alertView = UIAlertController(title: "Fetch Database Changes Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+					print(error)
+				}
+				if let changeToken = changeToken {
+					CloudKitManager.privateDatabaseChangeToken = changeToken
+					print("database changes fetched", changeToken)
+
+				}
+
+				if moreComing {
+					print("more records coming, creating a new fetch with last change token")
+					completion()
+					self.fetchProductDatabaseChanges(CloudKitManager.privateDatabaseChangeToken, completion: completion)
+				} else {
+					print("no more records coming from inventoryVC fetchProductDatabaseChanges method")
+					completion()
+					//					self.updateInventoryCollectionView()
+				}
+
+			}
+		}
+
+		operation.changeTokenUpdatedBlock = { changeToken in
+			DispatchQueue.main.async {
+				print("database change token value updated through changeToken completionblock; new: \(changeToken.debugDescription)")
+				CloudKitManager.privateDatabaseChangeToken = changeToken
+			}
+		}
+
+		operation.recordZoneWithIDChangedBlock = { zoneID in
+			DispatchQueue.main.async {
+				print("\(zoneID.debugDescription) ID of zone was changed")
+			}
+		}
+
+		let config = CKFetchDatabaseChangesOperation.Configuration()
+		config.qualityOfService = .userInitiated
+		config.timeoutIntervalForRequest = 12
+		config.timeoutIntervalForResource = 12
+		operation.configuration = config
+
+		CloudKitManager.privateDatabase.add(operation)
+
+	}
+
 	//MARK: -- Fetch Changes
 
 	func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {

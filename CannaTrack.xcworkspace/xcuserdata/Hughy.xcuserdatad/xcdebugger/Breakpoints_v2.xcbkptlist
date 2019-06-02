@@ -103,7 +103,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1290"
             endingLineNumber = "1290"
-            landmarkName = "setupFetchOperationForDoses(with:completion:)"
+            landmarkName = "setupDoseCKQuerySubscription()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -119,7 +119,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "400"
             endingLineNumber = "400"
-            landmarkName = "fetchDatabaseChanges(database:databaseTokenKey:completion:)"
+            landmarkName = "fetchProductDatabaseChanges(_:completion:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy
@@ -143,8 +143,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1385"
             endingLineNumber = "1385"
-            landmarkName = "shareProductRecord(product:completion:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
