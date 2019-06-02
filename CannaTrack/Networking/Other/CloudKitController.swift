@@ -1250,4 +1250,41 @@ extension CloudKitManager {
 }
 
 
+//MARK: -- CKShare
+extension CloudKitManager {
+	func shareProductRecord(product: Product) {
+		let record = product.toCKRecord()
+		let share = CKShare(rootRecord: record)
+		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared"
+		share.publicPermission = .readWrite
+
+		let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record, share], recordIDsToDelete: nil)
+		let config = CKModifyRecordsOperation.Configuration()
+		config.timeoutIntervalForRequest = 12
+		config.timeoutIntervalForResource = 12
+
+		modifyRecordsOperation.modifyRecordsCompletionBlock = { records, recordIDs, error in
+			DispatchQueue.main.async {
+				if let error = error {
+					let alertView = UIAlertController(title: "Product Share Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+					DispatchQueue.main.async {
+						UIApplication.shared.windows[0].rootViewController?.present(alertView, animated: true, completion:nil)
+					}
+
+				} else {
+					guard let savedRecords = records else { return }
+
+				}
+			}
+
+		}
+
+		CloudKitManager.privateDatabase.add(modifyRecordsOperation)
+
+
+
+	}
+
+}
+
 

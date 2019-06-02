@@ -17,19 +17,19 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.5</string>
 	<key>CFBundleVersion</key>
-	<string>25</string>
+	<string>26</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>"Need media library"</string>
+	<string>&quot;Need media library&quot;</string>
 	<key>NSCameraUsageDescription</key>
-	<string>"Need camera to scan and detect 3D product objects"</string>
+	<string>&quot;Need camera to scan and detect 3D product objects&quot;</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>"Need location always?"</string>
+	<string>&quot;Need location always?&quot;</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>"Need Location when in use"</string>
+	<string>&quot;Need Location when in use&quot;</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>"Need to use photo library"</string>
+	<string>&quot;Need to use photo library&quot;</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
@@ -79,5 +79,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CKSharingSupported</key>
+	<true/>
 </dict>
 </plist>
