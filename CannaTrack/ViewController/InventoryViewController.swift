@@ -114,6 +114,7 @@ final class InventoryViewController: UIViewController {
 
 		self.inventoryFilterOption = .none
 
+		self.view.backgroundColor = .LawnGreenWebColor()
 		setupInventoryCollectionView()
 
 		setupAddButtonForViewController()
@@ -647,6 +648,8 @@ extension InventoryViewController {
 		//assign collection delegates and datasource
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
+		self.productsCollectionView.backgroundColor = .LawnGreenWebColor()
+
 	}
 
 	fileprivate func setupAddButtonForViewController() {

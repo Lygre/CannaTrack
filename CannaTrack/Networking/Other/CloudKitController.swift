@@ -386,6 +386,8 @@ struct CloudKitManager {
 			}
 		}
 
+
+
 		operation.changeTokenUpdatedBlock = { changeToken in
 			DispatchQueue.main.async {
 				print("database change token value updated through changeToken completionblock; new: \(changeToken.debugDescription)")
@@ -395,6 +397,7 @@ struct CloudKitManager {
 
 		operation.recordZoneWithIDChangedBlock = { zoneID in
 			DispatchQueue.main.async {
+				//mabye should append these IDs into an array? meh
 				print("\(zoneID.debugDescription) ID of zone was changed")
 			}
 		}

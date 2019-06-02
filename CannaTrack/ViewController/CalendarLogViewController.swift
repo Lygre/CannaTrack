@@ -219,6 +219,7 @@ class CalendarLogViewController: UIViewController {
 		self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: {
 			self.activityView.stopAnimating()
 		})
+		/*
 		fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
 			DispatchQueue.main.async {
 				self.doseTableView.reloadData()
@@ -227,6 +228,17 @@ class CalendarLogViewController: UIViewController {
 					self.activityView.stopAnimating()
 				})
 				self.activityView.stopAnimating()
+			}
+		}
+		*/
+
+		CloudKitManager.shared.fetchProductDatabaseChanges(CloudKitManager.privateDatabaseChangeToken) {
+			DispatchQueue.main.async {
+				self.doseTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+				self.calendarCollectionView.collectionViewLayout.invalidateLayout()
+				self.calendarCollectionView.reloadData(withanchor: self.selectedDate, completionHandler: { })
+				self.activityView.stopAnimating()
+				print("finished fetching database changes and updating the UI back through the main thread")
 			}
 		}
 

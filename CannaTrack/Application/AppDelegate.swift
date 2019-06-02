@@ -36,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 		}
 		application.isNetworkActivityIndicatorVisible = true
 
+		UINavigationBar.appearance().backgroundColor = .LawnGreenWebColor()
+		
+
 		return true
 	}
 
