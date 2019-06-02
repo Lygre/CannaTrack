@@ -114,7 +114,8 @@ final class InventoryViewController: UIViewController {
 
 		self.inventoryFilterOption = .none
 
-		self.view.backgroundColor = .LawnGreenWebColor()
+		self.view.backgroundColor = UIColor(named: "InventoryBackgroundColor")
+		self.productsCollectionView.backgroundColor = UIColor(named: "InventoryBackgroundColor")
 		setupInventoryCollectionView()
 
 		setupAddButtonForViewController()
@@ -322,7 +323,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 
 			//!MARK: - Generalized Cell Setup perform here
-			cell.backgroundColor = .lightGray
+			cell.backgroundColor = UIColor(named: "PerfectPurpleHaze")
 			cell.layer.cornerRadius = 12
 			cell.layer.masksToBounds = true
 
@@ -377,7 +378,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 		guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as? ProductHeaderCollectionReusableView else { fatalError("could not cast header as ProductHeaderCollectionReusableView")}
 
 		//!MARK: - Generalized Cell Setup perform here
-		supplementaryView.backgroundColor = .cyan
+		supplementaryView.backgroundColor = UIColor(named: "KindCrapGreen")
 		supplementaryView.layer.cornerRadius = 12
 		supplementaryView.layer.masksToBounds = true
 
@@ -648,7 +649,7 @@ extension InventoryViewController {
 		//assign collection delegates and datasource
 		self.productsCollectionView.delegate = self
 		self.productsCollectionView.dataSource = self
-		self.productsCollectionView.backgroundColor = .LawnGreenWebColor()
+
 
 	}
 
