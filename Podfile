@@ -9,7 +9,7 @@ target 'CannaTrack' do
 	
 	pod 'JTAppleCalendar', '~> 7.0'
 	pod 'SwifterSwift'
-	pod "ViewAnimator"
+	#pod "ViewAnimator"
 end
 
 #post_install do |installer|

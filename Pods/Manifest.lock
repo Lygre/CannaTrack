@@ -17,24 +17,20 @@ PODS:
   - SwifterSwift/SpriteKit (4.6.0)
   - SwifterSwift/SwiftStdlib (4.6.0)
   - SwifterSwift/UIKit (4.6.0)
-  - ViewAnimator (2.2.2)
 
 DEPENDENCIES:
   - JTAppleCalendar (~> 7.0)
   - SwifterSwift
-  - ViewAnimator
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - JTAppleCalendar
     - SwifterSwift
-    - ViewAnimator
 
 SPEC CHECKSUMS:
   JTAppleCalendar: 96da4d8388fa6dc82d6a60d41ef36a015e167e2f
   SwifterSwift: 812ffec6f301922f5430e75be3f2939ea3a80024
-  ViewAnimator: 6eaa112663b6a2d9e6b2573df65b416dd051cbe4
 
-PODFILE CHECKSUM: 97037c3f6139399d283fa3b101d00a2030313524
+PODFILE CHECKSUM: 4e6950c62afecc413eaa5296f1e59391d151b164
 
 COCOAPODS: 1.5.3
