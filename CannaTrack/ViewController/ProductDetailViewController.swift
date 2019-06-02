@@ -400,13 +400,22 @@ class ProductDetailViewController: UIViewController {
 	}
 
 	@IBAction func shareProduct(_ sender: Any) {
-		let controller = UICloudSharingController { (controller, preparationCompletionHandler) in
-			CloudKitManager.shared.shareProductRecord(product: self.activeDetailProduct)
+		let controller = UICloudSharingController { [weak self] (controller, completion: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
+			guard let `self` = self else {
+				return
+			}
+			CloudKitManager.shared.shareProductRecord(product: self.activeDetailProduct, completion: { (share, container, error) in
+				DispatchQueue.main.async {
+					
+				}
+			})
 		}
+
+
 		controller.availablePermissions = [.allowReadOnly, .allowPublic]
 		controller.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
 
-		present(controller, animated: true)
+		self.present(controller, animated: true)
 
 
 	}

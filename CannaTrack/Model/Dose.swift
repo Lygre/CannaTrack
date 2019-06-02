@@ -167,7 +167,7 @@ extension Dose {
 
 			if let recordFromSystemFields = CKRecord(coder: coder) {
 				record = recordFromSystemFields
-				print("decoded record from system fields")
+				print("decoded dose record from system fields")
 			} else { print("could not create record with system fields in toCKRecord method of Dose.") }
 		} else {
 			if let doseRecordID = self.recordID {

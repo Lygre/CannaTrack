@@ -23,6 +23,7 @@ class Product: Codable {
 	var dateOpened: Date?
 	var numberOfDosesTakenFromProduct: Int
 	var recordID: CKRecord.ID?
+	var encodedSystemFields: Data?
 
 	init(typeOfProduct: ProductType, strainForProduct: Strain, inGrams massOfProduct: Double) {
 		self.productType = typeOfProduct
@@ -219,10 +220,20 @@ extension Product {
 
 	func toCKRecord() -> CKRecord {
 		var record: CKRecord!
-		if let productRecordID = self.recordID {
-			record = CKRecord(recordType: "Product", recordID: productRecordID)
+
+		if let encodedSystemFields = self.encodedSystemFields {
+			guard let coder = try? NSKeyedUnarchiver(forReadingFrom: encodedSystemFields) else { fatalError("could not created keyed unarchiver") }
+			coder.requiresSecureCoding = true
+			if let recordFromSystemFields = CKRecord(coder: coder) {
+				record = recordFromSystemFields
+				print("decoded product record from system fields")
+			} else { print("could not create record with systemFields in toCKRecord method ot Product" )}
 		} else {
-			record = CKRecord(recordType: "Product", zoneID: CloudKitManager.productZoneID)
+			if let productRecordID = self.recordID {
+				record = CKRecord(recordType: "Product", recordID: productRecordID)
+			} else {
+				record = CKRecord(recordType: "Product", zoneID: CloudKitManager.productZoneID)
+			}
 		}
 //		let record = CKRecord(recordType: "Product")
 		if let recordValue = self.encodeProductAsCKRecordValue() {
@@ -269,6 +280,12 @@ extension Product {
 			return nil
 		}
 		let image = UIImage(data: imageData as Data)
+
+		let coder = NSKeyedArchiver.init(requiringSecureCoding: true)
+		record.encodeSystemFields(with: coder)
+		coder.finishEncoding()
+		decodedProduct.encodedSystemFields = coder.encodedData
+
 		decodedProduct.productLabelImage = image
 		decodedProduct.recordID = record.recordID
 		print("success decoding product from record in Product.swift fromCKRecord method")

@@ -194,7 +194,12 @@ final class InventoryViewController: UIViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
+//		CloudKitManager.shared.fetchProductCKQuerySubscriptions()
+		fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {
+			DispatchQueue.main.async {
+				self.updateInventoryCollectionView()
+			}
+		}
 		NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationForInventoryChanges), name: NSNotification.Name(rawValue: CloudKitNotifications.ProductChange), object: nil)
 
 //		CloudKitManager.shared.fetchChanges(in: CloudKitManager.privateDatabase.databaseScope) {

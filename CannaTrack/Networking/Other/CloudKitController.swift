@@ -40,6 +40,7 @@ struct CloudKitManager {
 	//MARK: -- Static Constants
 	static let shared = CloudKitManager()
 	static let createZoneGroup = DispatchGroup()
+	static let container = CKContainer.default()
 
 	static let privateDatabase = CKContainer.default().privateCloudDatabase
 	static let publicDatabase = CKContainer.default().publicCloudDatabase
@@ -139,8 +140,9 @@ struct CloudKitManager {
 //			guard let newTokenData = try? NSKeyedArchiver.archivedData(withRootObject: CKServerChangeToken.self, requiringSecureCoding: true) else { return }
 			coder.finishEncoding()
 
-			UserDefaults.standard.set(object: coder.encodedData, forKey: CloudKitManager.privateDatabaseTokenKey)
-			print("server change token saved and written to user defaults")
+			UserDefaults.standard.set(coder.encodedData, forKey: CloudKitManager.privateDatabaseTokenKey)
+
+			print("server change token saved and written to user defaults", updatedServerChangeToken)
 		}
 	}
 
@@ -150,7 +152,7 @@ struct CloudKitManager {
 			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: storedDoseZoneTokenData) else { return nil }
 			decoder.requiresSecureCoding = true
 			guard let serverChangeTokenForDoseLogZoneFromDecoder = CKServerChangeToken(coder: decoder) else { return nil }
-			print("change token for dose log zone read from user defaults")
+			print("change token for dose log zone read from user defaults", serverChangeTokenForDoseLogZoneFromDecoder)
 			return serverChangeTokenForDoseLogZoneFromDecoder
 		}
 		set(updatedDoseZoneChangeToken) {
@@ -158,8 +160,8 @@ struct CloudKitManager {
 			updatedDoseZoneChangeToken?.encode(with: coder)
 			coder.finishEncoding()
 
-			UserDefaults.standard.set(object: coder.encodedData, forKey: CloudKitManager.serverChangeTokenKeyForDoses)
-			print("change token for dose log zone updated in user defaults")
+			UserDefaults.standard.set(coder.encodedData, forKey: CloudKitManager.serverChangeTokenKeyForDoses)
+			print("change token for dose log zone updated in user defaults", updatedDoseZoneChangeToken)
 		}
 	}
 	/*
@@ -823,7 +825,8 @@ extension CloudKitManager {
 		var changeToken: CKServerChangeToken? = nil
 		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.serverChangeTokenKey)
 		if changeTokenData != nil {
-			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
+			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: changeTokenData!) else { return }
+			changeToken = CKServerChangeToken(coder: decoder)
 		}
 		let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
 		options.previousServerChangeToken = changeToken
@@ -840,9 +843,12 @@ extension CloudKitManager {
 				return
 			}
 
-			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
-			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
-			print("change token set in user defaults")
+//			let coder = NSKeyedArchiver(requiringSecureCoding: true)
+//			changeToken.encode(with: coder)
+//			coder.finishEncoding()
+//
+//			UserDefaults.standard.set(coder.encodedData, forKey: CloudKitManager.serverChangeTokenKey)
+//			print("change token set in user defaults")
 		}
 		operation.recordZoneFetchCompletionBlock = { zoneID, changeToken, data, more, error in
 			guard error == nil else {
@@ -852,8 +858,12 @@ extension CloudKitManager {
 				return
 			}
 
-			let changeTokenData = NSKeyedArchiver.archivedData(withRootObject: changeToken)
-			UserDefaults.standard.set(changeTokenData, forKey: CloudKitManager.serverChangeTokenKey)
+			let coder = NSKeyedArchiver(requiringSecureCoding: true)
+			changeToken.encode(with: coder)
+			coder.finishEncoding()
+
+			UserDefaults.standard.set(coder.encodedData, forKey: CloudKitManager.serverChangeTokenKey)
+			print("change token set in user defaults")
 			print(zoneID, "changed fetch completed: CKManager: handlenotification")
 		}
 		operation.fetchRecordZoneChangesCompletionBlock = { error in
@@ -875,7 +885,8 @@ extension CloudKitManager {
 		var changeToken: CKServerChangeToken? = nil
 		let changeTokenData = UserDefaults.standard.data(forKey: CloudKitManager.serverChangeTokenKey)
 		if changeTokenData != nil {
-			changeToken = NSKeyedUnarchiver.unarchiveObject(with: changeTokenData!) as! CKServerChangeToken?
+			guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: changeTokenData!) else { return }
+			changeToken = CKServerChangeToken(coder: decoder)
 		}
 		let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
 		options.previousServerChangeToken = changeToken
@@ -1253,7 +1264,7 @@ extension CloudKitManager {
 
 //MARK: -- CKShare
 extension CloudKitManager {
-	func shareProductRecord(product: Product) {
+	func shareProductRecord(product: Product, completion: @escaping (CKShare?, CKContainer?, Error?)->Void) {
 		let record = product.toCKRecord()
 		let share = CKShare(rootRecord: record)
 		share[CKShare.SystemFieldKey.title] = "\(product.strain.name + product.productType.rawValue) Shared" as CKRecordValue
@@ -1265,15 +1276,24 @@ extension CloudKitManager {
 		config.timeoutIntervalForResource = 20
 		config.qualityOfService = .userInteractive
 
+		modifyRecordsOperation.perRecordCompletionBlock = { record, error in
+			if let error = error {
+				print(error.localizedDescription)
+			}
+
+		}
+
 		modifyRecordsOperation.modifyRecordsCompletionBlock = { records, recordIDs, error in
 			DispatchQueue.main.async {
 				if let error = error {
+					completion(nil, nil, error)
 					let alertView = UIAlertController(title: "Product Share Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 					DispatchQueue.main.async {
 						UIApplication.shared.windows[0].rootViewController?.presentedViewController?.present(alertView, animated: true, completion:nil)
 					}
 
 				} else {
+					completion(share, CloudKitManager.container, nil)
 					guard let savedRecords = records else { return }
 					print(savedRecords)
 				}
