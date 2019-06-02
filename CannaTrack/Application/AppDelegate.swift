@@ -31,6 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 		}
 		UNUserNotificationCenter.current().delegate = self
 
+		//attempting to create/check for custom Zone creation here
+		CloudKitManager.shared.createCustomProductsZone()
+		CloudKitManager.shared.createCustomDoseLogZone()
+
 		if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
 			shortcutItemToProcess = shortcutItem
 		}
