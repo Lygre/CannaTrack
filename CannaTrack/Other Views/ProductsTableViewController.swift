@@ -99,6 +99,8 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 	func saveCompositeDose() {
 		guard let firstProductEntry = dictionaryForProductsInDose.popFirst() else { return }
 
+		self.navigationItem.hidesBackButton = true
+
 		if let doseImage = imageForDose {
 			let compositeDose = Dose(timestamp: Date(), product: firstProductEntry.key, mass: firstProductEntry.value, route: administrationRouteForDose, imageForDose: doseImage, otherProductDictionary: dictionaryForProductsInDose)
 			CloudKitManager.shared.createCustomDoseLogZone()
@@ -106,6 +108,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 				DispatchQueue.main.async {
 					if let error = error {
 						print(error)
+						self.navigationItem.hidesBackButton = false
 					} else {
 						guard let createdDose = createdDose else { return }
 						createdDose.doseImage = compositeDose.doseImage
@@ -113,6 +116,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 						print(success, createdDose,
 							  "composite dose saved to cloud")
 						if success {
+							self.navigationItem.hidesBackButton = false
 							self.dismiss(animated: true, completion: nil)
 						}
 					}
@@ -124,6 +128,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 			CloudKitManager.shared.createCKRecord(for: compositeDose) { [unowned self] (success, createdDose, error) in
 				DispatchQueue.main.async {
 					if let error = error {
+						self.navigationItem.hidesBackButton = false
 						print(error)
 					} else {
 						guard let createdDose = createdDose else { return }
@@ -132,6 +137,7 @@ class ProductsTableViewController: UIViewController, UITableViewDelegate, UITabl
 						print(success, createdDose,
 							  "composite dose saved to cloud")
 						if success {
+							self.navigationItem.hidesBackButton = false
 							self.dismiss(animated: true, completion: nil)
 						}
 					}

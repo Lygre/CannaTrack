@@ -127,10 +127,10 @@ extension Dose {
 	}
 
 	static func replicateDoseWithCurrentTime(using referenceDose: Dose) -> Dose {
-		referenceDose.timestamp = Date()
-		referenceDose.recordID = nil
-		referenceDose.doseImage = nil
-		return referenceDose
+		let dose = Dose(timestamp: Date(), product: referenceDose.product, mass: referenceDose.mass, route: referenceDose.administrationRoute, otherProductDictionary: referenceDose.otherProducts)
+		dose.recordID = nil
+		dose.doseImage = nil
+		return dose
 	}
 
 }

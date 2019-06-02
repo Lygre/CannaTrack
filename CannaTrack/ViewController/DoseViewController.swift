@@ -119,11 +119,13 @@ class DoseViewController: UIViewController {
 
 //		saveDoseInformation(product: productForDose, doseDate: Date(), updatedMass: doseMassToUpdate, updatedProductImage: productDoseImage.image)
 		let dose = Dose(timestamp: Date(), product: productForDose, mass: doseMassToUpdate ?? 0.0, route: .inhalation, otherProductDictionary: [:])
+		self.navigationItem.hidesBackButton = true
 		CloudKitManager.shared.createCKRecord(for: dose) { (success, doseCreated, error) in
 			DispatchQueue.main.async {
 				if let error = error {
 					let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 					DispatchQueue.main.async {
+						self.navigationItem.hidesBackButton = false
 						self.present(alertView, animated: true, completion:nil)
 					}
 
@@ -131,6 +133,7 @@ class DoseViewController: UIViewController {
 				} else {
 					guard let doseCreated = doseCreated else { return }
 					DoseController.shared.log(dose: doseCreated)
+					self.navigationItem.hidesBackButton = false
 					print(success, doseCreated, "dose saved by CKManager")
 				}
 			}

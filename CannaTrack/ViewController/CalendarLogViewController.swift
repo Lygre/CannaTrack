@@ -592,12 +592,13 @@ extension CalendarLogViewController {
 		let action = UIContextualAction(style: .normal, title: "Dose again!") { (action, view, completion) in
 
 			let dose = Dose.replicateDoseWithCurrentTime(using: doseToReplicate)
-
+			self.navigationItem.hidesBackButton = true
 			CloudKitManager.shared.createCKRecord(for: dose, completion: { (success, createdDose, error) in
 				DispatchQueue.main.async {
 					if let error = error {
 						let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
 						DispatchQueue.main.async {
+							self.navigationItem.hidesBackButton = false
 							self.present(alertView, animated: true, completion:nil)
 						}
 						print(error)
@@ -605,6 +606,7 @@ extension CalendarLogViewController {
 						guard let createdDose = createdDose else { return }
 						self.masterDoseArray.append(createdDose)
 						DispatchQueue.main.async {
+							self.navigationItem.hidesBackButton = false
 							self.doseTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
 						}
 					}

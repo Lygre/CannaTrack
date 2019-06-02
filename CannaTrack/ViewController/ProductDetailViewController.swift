@@ -452,9 +452,10 @@ extension ProductDetailViewController {
 						print(error)
 					} else {
 						guard let createdDose = createdDose else { return }
-						self.doseArray.append(createdDose)
+//						self.doseArray.append(createdDose)
+						DoseController.shared.log(dose: createdDose)
 						DispatchQueue.main.async {
-							self.productDoseLogTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+							self.productDoseLogTableView?.reloadSections(IndexSet(integer: 0), with: .automatic)
 						}
 					}
 				}
