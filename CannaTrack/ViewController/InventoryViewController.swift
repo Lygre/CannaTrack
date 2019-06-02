@@ -1125,6 +1125,7 @@ extension InventoryViewController: UIViewControllerPreviewingDelegate {
 
 		guard let viewController = storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as? ProductDetailViewController else { return nil }
 		viewController.inventoryManagerDelegate = self
+		viewController.editMassDelegate = self
 		viewController.activeDetailProduct = product
 
 		return viewController
@@ -1133,6 +1134,7 @@ extension InventoryViewController: UIViewControllerPreviewingDelegate {
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
 		guard let vcAsDetailVC = viewControllerToCommit as? ProductDetailViewController else { return }
 		vcAsDetailVC.inventoryManagerDelegate = self
+		vcAsDetailVC.editMassDelegate = self
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 

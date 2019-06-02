@@ -373,11 +373,12 @@ struct CloudKitManager {
 			// Flush zone deletions for this database to disk
 			// Write this new database change token to memory
 			CloudKitManager.privateDatabaseChangeToken = token
-
-			self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs) {
-				// Flush in-memory database change token to disk
-				completion()
-			}
+			if !changedZoneIDs.isEmpty {
+				self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs) {
+					// Flush in-memory database change token to disk
+					completion()
+				}
+			} else { print("no changed zone IDs to process") }
 		}
 		operation.qualityOfService = .userInitiated
 

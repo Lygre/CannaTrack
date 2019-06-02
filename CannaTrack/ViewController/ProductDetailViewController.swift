@@ -296,6 +296,8 @@ class ProductDetailViewController: UIViewController {
 
 
 		let arrayOfAdministrationRoutes: [Dose.AdministrationRoute] = Dose.AdministrationRoute.allCases
+
+
 		let arrayOfPreviewActionsForProduct: [UIPreviewAction] = arrayOfAdministrationRoutes.map { (administrationRoute: Dose.AdministrationRoute) -> UIPreviewAction in
 			var doseActionForAdministrationRoute = UIPreviewAction(title: administrationRoute.rawValue, style: .default, handler: { [unowned self] (_, _) in
 				guard let product = self.activeDetailProduct
@@ -406,7 +408,7 @@ class ProductDetailViewController: UIViewController {
 			}
 			CloudKitManager.shared.shareProductRecord(product: self.activeDetailProduct, completion: { (share, container, error) in
 				DispatchQueue.main.async {
-					
+
 				}
 			})
 		}
