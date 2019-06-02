@@ -44,7 +44,7 @@ class AddProductUsingTextViewController: UIViewController {
 
 	var productComponentsDictionary: [String: AnyObject] = [:]
 
-	let typeCases: [Product.ProductType] = [.capsuleBottle, .co2VapePenCartridge, .nasalSpray, .oralSyringe, .rsoSyringe, .tinctureDropletBottle, .topicalCream, .topicalLotion, .topicalSunscreen, .truClear, .truCrmbl, .truFlower, .truPod, .truShatter, .vapePenCartridge]
+	let typeCases: [Product.ProductType] = Product.ProductType.allCases
 
 
 	//view related things
