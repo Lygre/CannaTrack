@@ -1273,7 +1273,7 @@ extension CloudKitManager {
 
 				} else {
 					guard let savedRecords = records else { return }
-
+					print(savedRecords)
 				}
 			}
 

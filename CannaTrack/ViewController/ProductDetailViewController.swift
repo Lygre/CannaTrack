@@ -399,6 +399,18 @@ class ProductDetailViewController: UIViewController {
 		openDetailProduct()
 	}
 
+	@IBAction func shareProduct(_ sender: Any) {
+		let controller = UICloudSharingController { (controller, preparationCompletionHandler) in
+			CloudKitManager.shared.shareProductRecord(product: self.activeDetailProduct)
+		}
+		controller.availablePermissions = [.allowReadWrite, .allowPrivate]
+		controller.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
+
+		present(controller, animated: true)
+
+
+	}
+
 
 
 }

@@ -328,7 +328,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Product Info" prompt="Detailed Product Information" id="ulR-mw-Vqk">
                         <barButtonItem key="backBarButtonItem" title="Product" id="K3c-pA-G9a"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="tvw-sC-uX3"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="tvw-sC-uX3">
+                            <connections>
+                                <action selector="shareProduct:" destination="ZKP-z6-ymb" id="wYz-lC-Q1y"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="0.0" height="500"/>
                     <connections>
