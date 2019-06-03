@@ -28,7 +28,7 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 	let searchController = UISearchController(searchResultsController: nil)
 	var searchActive: Bool = false
 
-	var networkManager: NetworkManager!
+	var networkManager: NetworkController!
 
 	var allStrains: [String: StrainInformation] {
 		get {
@@ -43,8 +43,19 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 				let strainToAppend = Strain(id: strainInformation.id, name: strainName, race: StrainVariety.init(rawValue: strainInformation.race)!, description: nil)
 				strainToAppend.flavors = strainInformation.flavors
 				//				strainToAppend.effects = strainInformation.effects
+				StrainController.shared.add(toDatabase: [strainToAppend]) { strainsAdded in
+					if let strainsForViewControllerToAdd = strainsAdded {
+						DispatchQueue.main.async {
+							print("appended strain to database from StrainsCollection: 'allStrains' setter")
+							self.strainsToDisplay.append(contentsOf: strainsForViewControllerToAdd)
 
-				strainsToDisplay.append(strainToAppend)
+							self.loadViewIfNeeded()
+							self.collectionViewLayout.invalidateLayout()
+							self.collectionView.reloadData()
+						}
+					}
+				}
+//				strainsToDisplay.append(strainToAppend)
 
 			}
 //			masterStrainDatabase = strainsToDisplay
@@ -55,11 +66,26 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 			}
 		}
 	}
-	var strainsToDisplay: [Strain] = UserDefaults.standard.object([Strain].self, with: "localStrains") ?? [] {
-//		get {
-//			guard let localStrains = UserDefaults.standard.object([Strain].self, with: "localStrains") else { print("no saved strains; performing network call"); return [] }
-//			return localStrains
-//		}
+	var strainsToDisplay: [Strain] = StrainController.strains
+		/*
+		{
+		willSet(newStrainArray) {
+			if newStrainArray != StrainController.strains {
+				let strainsToWriteLocally: [Strain] = newStrainArray.filter({ return !StrainController.strains.contains($0) })
+				if !strainsToWriteLocally.isEmpty {
+					StrainController.shared.add(toDatabase: strainsToWriteLocally) { _ in
+						print("added new strains: \(strainsToWriteLocally) to database locally from StrainsVC: 'strainsToDisplay' willSet")
+
+					}
+				}
+			}
+		}
+	}
+
+		*/
+
+		/*
+		UserDefaults.standard.object([Strain].self, with: "localStrains") ?? [] {
 		willSet(newStrainArray) {
 			print("setting new local strain array")
 			UserDefaults.standard.set(object: newStrainArray, forKey: "localStrains")
@@ -67,15 +93,16 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 		}
 	}
+		*/
 
 	var strainToPassToDetail: Strain?
 
 	init() {
-		self.networkManager = NetworkManager()
+		self.networkManager = NetworkController()
 		super.init(nibName: nil, bundle: nil)
 	}
 	required init?(coder aDecoder: NSCoder) {
-		self.networkManager = NetworkManager()
+		self.networkManager = NetworkController()
 		super.init(coder: aDecoder)
 	}
 
@@ -120,12 +147,20 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-//		if strainsToDisplay.isEmpty {
-//			strainsToDisplay = masterStrainDatabase
-//		} else {
-//			print("strain db isn't empty")
-		refreshUI()
-
+		if strainsToDisplay.isEmpty {
+//			strainsToDisplay = StrainController.strains
+			StrainController.shared.fetchLocalStrains(using: strainsToDisplay, completion: { (fetchedLocalStrains) in
+				DispatchQueue.main.async {
+					self.strainsToDisplay.append(contentsOf: fetchedLocalStrains)
+					self.loadViewIfNeeded()
+					self.collectionViewLayout.invalidateLayout()
+					self.collectionView.reloadData()
+				}
+			})
+		} else {
+			print("strain db isn't empty")
+			refreshUI()
+		}
 	}
 
     // MARK: - Navigation
@@ -162,8 +197,8 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? StrainCollectionViewCell else { fatalError("could not cast cell as StrainCollectionViewCell") }
 
 		guard let strainForIndexPath = strainsToDisplay[indexPath.item] as? Strain else { fatalError("something went terribly wrong getting the strain for specified indexPath")}
-
-		cell.strainAbbreviation.text = String(strainForIndexPath.name.first!)
+		guard let abbr = strainForIndexPath.name.firstCharacterAsString else { fatalError("could not get abbreviation for strain cell ") }
+		cell.strainAbbreviation.text = abbr
 		cell.strainName.text = strainForIndexPath.name
 		cell.varietyLabel.text = strainForIndexPath.race.rawValue
         // Configure the cell
@@ -248,17 +283,37 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 
 //		guard let searchString = searchController.searchBar.text else { return }
 		let searchString = searchController.searchBar.text
-		let searchResults = searchStrains(using: searchString!)
-//		print(searchResults)
+		let searchResults = StrainController.shared.searchStrains(using: searchString!)
+
 		strainsToDisplay = searchResults
 		print(searchString ?? "No search string established, or is empty.")
 		if (searchString == "") {
-			strainsToDisplay = masterStrainDatabase
+			strainsToDisplay = StrainController.strains
 		}
 		print("Updating Search Results")
 		self.collectionView?.reloadData()
 	}
 
+	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+		searchController.searchBar.showsCancelButton = true
+		searchActive = true
+	}
+
+	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+//		searchController.searchBar.showsCancelButton = false
+		searchActive = false
+	}
+
+	/*
+	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+		if searchActive { return true }
+	}
+	*/
+
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		searchBar.endEditing(true)
+		print("end search bar editing")
+	}
 
 }
 
