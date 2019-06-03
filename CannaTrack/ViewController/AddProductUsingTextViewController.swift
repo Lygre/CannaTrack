@@ -151,6 +151,7 @@ class AddProductUsingTextViewController: UIViewController {
 						}
 					} else {
 						guard let productCreated = productCreated else {
+							print("product not created?")
 							return
 						}
 						StrainController.shared.add(toDatabase: [strain], completion: { (strainsAdded) in
@@ -175,6 +176,7 @@ class AddProductUsingTextViewController: UIViewController {
 						print(error)
 					} else {
 						guard let productCreated = productCreated else {
+							print("product not created?")
 							return
 						}
 						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)

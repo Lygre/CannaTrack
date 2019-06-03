@@ -73,16 +73,7 @@ extension StrainController {
 
 
 	func searchStrains(using strainName: String) -> [Strain] {
-		var strainSearchResults: [Strain] = []
-
-		for strain in StrainController.strains {
-			if strain.name.lowercased().contains(strainName.lowercased()) {
-				strainSearchResults.append(strain)
-			}
-		}
-
-
-		return strainSearchResults
+		return StrainController.strains.filter({ $0.name.lowercased().replacingOccurrences(of: " ", with: "").contains(strainName.lowercased().replacingOccurrences(of: " ", with: "")) })
 	}
 
 }

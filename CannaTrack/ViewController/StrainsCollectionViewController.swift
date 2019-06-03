@@ -281,17 +281,28 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
 	func updateSearchResults(for searchController: UISearchController) {
 
-//		guard let searchString = searchController.searchBar.text else { return }
-		let searchString = searchController.searchBar.text
-		let searchResults = StrainController.shared.searchStrains(using: searchString!)
+//		guard let searchString = searchController.searchBar.text else {
+//			print("there is no search string in search bar")
+//			return
+//		}
+		let stringInSearchBar = searchController.searchBar.text
+
+		guard let searchString = stringInSearchBar else {
+			print("string in search bar was nil; returning")
+			strainsToDisplay = StrainController.strains
+			self.collectionView?.reloadData()
+			return
+		}
+
+		let searchResults = StrainController.shared.searchStrains(using: searchString)
 
 		strainsToDisplay = searchResults
-		print(searchString ?? "No search string established, or is empty.")
+
 		if (searchString == "") {
 			strainsToDisplay = StrainController.strains
 		}
-		print("Updating Search Results")
 		self.collectionView?.reloadData()
+		print(stringInSearchBar ?? "No search string established, or is empty.")
 	}
 
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

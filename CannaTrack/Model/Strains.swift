@@ -146,10 +146,10 @@ class Strain: Codable {
 		id = try values.decode(Int.self, forKey: .id)
 		name = try values.decode(String.self, forKey: .name)
 		race = try values.decode(StrainVariety.self, forKey: .race)
-		desc = try values.decode(String.self, forKey: .desc)
+		desc = try? values.decode(String.self, forKey: .desc)
 		favorite = try values.decode(Bool.self, forKey: .favorite)
-		effects = try values.decode(Effects.self, forKey: .effects)
-		flavors = try values.decode([String].self, forKey: .flavors)
+		effects = try? values.decode(Effects.self, forKey: .effects)
+		flavors = try? values.decode([String].self, forKey: .flavors)
 
 	}
 
