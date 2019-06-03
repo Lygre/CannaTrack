@@ -69,6 +69,10 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 	let searchController: UISearchController! = UISearchController(searchResultsController: nil)
 
 
+
+
+
+
 	//MARK: -- INITIALIZER METHODS
 	init() {
 		self.networkManager = NetworkController()

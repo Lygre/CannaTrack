@@ -82,6 +82,7 @@
 		9FBF4A932293774B008F9D3E /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */; };
 		9FBF4A942293774B008F9D3E /* UIControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBF4A8E2293774B008F9D3E /* UIControlExtensions.swift */; };
 		9FEAC90222A577B600F7EF68 /* StrainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEAC90122A577B600F7EF68 /* StrainController.swift */; };
+		9FEAC90622A5DD7600F7EF68 /* NewStrainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEAC90522A5DD7600F7EF68 /* NewStrainTableViewController.swift */; };
 		9FEB70A3229C44EB00562B90 /* DoseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEB70A2229C44EB00562B90 /* DoseController.swift */; };
 		9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */; };
 		9FF3DCD8226CD00600C2C517 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3DCD7226CD00600C2C517 /* Constants.swift */; };
@@ -169,6 +170,7 @@
 		9FBF4A8D2293774B008F9D3E /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		9FBF4A8E2293774B008F9D3E /* UIControlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlExtensions.swift; sourceTree = "<group>"; };
 		9FEAC90122A577B600F7EF68 /* StrainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainController.swift; sourceTree = "<group>"; };
+		9FEAC90522A5DD7600F7EF68 /* NewStrainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStrainTableViewController.swift; sourceTree = "<group>"; };
 		9FEB70A2229C44EB00562B90 /* DoseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseController.swift; sourceTree = "<group>"; };
 		9FF2E2E02282651000FAEE32 /* AddButtonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonProtocol.swift; sourceTree = "<group>"; };
 		9FF3DCD7226CD00600C2C517 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				9F7207BA2236C6AC009D6375 /* DoseViewController.swift */,
 				9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */,
 				9F35FBCA22A29A1800E18943 /* DoseDetailViewController.swift */,
+				9FEAC90522A5DD7600F7EF68 /* NewStrainTableViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				9F0F0BDE2284E74500DFFFC4 /* EndPointType.swift in Sources */,
 				9FF2E2E12282651100FAEE32 /* AddButtonProtocol.swift in Sources */,
 				9FEAC90222A577B600F7EF68 /* StrainController.swift in Sources */,
+				9FEAC90622A5DD7600F7EF68 /* NewStrainTableViewController.swift in Sources */,
 				9FBF4A932293774B008F9D3E /* UIImageExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

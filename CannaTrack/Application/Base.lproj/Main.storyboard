@@ -11,6 +11,34 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Table View Controller-->
+        <scene sceneID="xfD-4Y-zZK">
+            <objects>
+                <tableViewController id="Qbw-zu-npR" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aRB-a5-CyA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cFu-Zj-73x">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cFu-Zj-73x" id="4xM-x3-udg">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Qbw-zu-npR" id="Ru2-ZP-Mpa"/>
+                            <outlet property="delegate" destination="Qbw-zu-npR" id="E5M-As-JNU"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TPC-Cm-eOp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1398" y="2624"/>
+        </scene>
         <!--StrainDetailVC-->
         <scene sceneID="BXQ-3M-r7a">
             <objects>
@@ -768,7 +796,13 @@
                             <outlet property="delegate" destination="woJ-6M-BYj" id="qPF-s9-mTt"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="mKQ-lw-Jkr"/>
+                    <navigationItem key="navigationItem" id="mKQ-lw-Jkr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="xub-c0-2X3">
+                            <connections>
+                                <segue destination="Qbw-zu-npR" kind="presentation" id="jVq-GH-e06"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="5hv-qE-TOa" id="RYy-Jl-Xc3"/>
                     </connections>
@@ -1763,7 +1797,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3zQ-9u-F0C"/>
-        <segue reference="O2o-RE-LRp"/>
-        <segue reference="C0G-LS-hNd"/>
+        <segue reference="po3-PW-vJv"/>
+        <segue reference="Sf6-JO-dEj"/>
     </inferredMetricsTieBreakers>
 </document>
