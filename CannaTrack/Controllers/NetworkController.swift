@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct NetworkManager {
+struct NetworkController {
 	static let environment: NetworkEnvironment = .production
 	static let strainAPIKey = "oJ5GvWc"
 	private let router = Router<StrainApi>()

@@ -10,43 +10,7 @@ import Foundation
 import UIKit
 
 
-var masterStrainDatabase: [Strain] = [] {
-	willSet(updatedDatabase) {
-		saveStrainDatabaseData(strainDB: updatedDatabase)
-	}
-}
 
-func saveStrainDatabaseData(strainDB: [Strain]) {
-
-	let propertyListEncoder = PropertyListEncoder()
-
-	do {
-		let strainData: [Strain] = masterStrainDatabase
-		let data = try propertyListEncoder.encode(strainData)
-		UserDefaults.standard.set(data, forKey: "strainDatabase")
-	}
-	catch {
-		print(error)
-	}
-
-}
-
-func loadSavedStrainDatabase() {
-
-	let propertyListDecoder = PropertyListDecoder()
-
-	do {
-		if let da = UserDefaults.standard.data(forKey: "strainDatabase") {
-			let stored = try propertyListDecoder.decode([Strain].self, from: da)
-			masterStrainDatabase = stored
-		}
-	}
-	catch {
-		print(error)
-	}
-
-
-}
 
 struct BaseStrain: Decodable, Hashable {
 
@@ -176,10 +140,45 @@ class Strain: Codable {
 
 	}
 
+	required init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
 
+		id = try values.decode(Int.self, forKey: .id)
+		name = try values.decode(String.self, forKey: .name)
+		race = try values.decode(StrainVariety.self, forKey: .race)
+		desc = try values.decode(String.self, forKey: .desc)
+		favorite = try values.decode(Bool.self, forKey: .favorite)
+		effects = try values.decode(Effects.self, forKey: .effects)
+		flavors = try values.decode([String].self, forKey: .flavors)
+
+	}
+
+
+	func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(id, forKey: .id)
+		try container.encode(name, forKey: .name)
+		try container.encode(race, forKey: .race)
+		try container.encode(desc, forKey: .desc)
+		try container.encode(favorite, forKey: .favorite)
+		try container.encode(effects, forKey: .effects)
+		try container.encode(flavors, forKey: .flavors)
+
+	}
+
+	enum CodingKeys: String, CodingKey {
+		case id
+		case name
+		case race
+		case desc
+		case favorite
+		case effects
+		case flavors
+	}
 
 
 }
+
 
 
 extension Strain: Equatable {
@@ -199,19 +198,8 @@ extension Strain: Hashable {
 	}
 }
 
-func searchStrains(using strainName: String) -> [Strain] {
-	var strainSearchResults: [Strain] = []
-
-	let strainDatabase = masterStrainDatabase
-	for strain in strainDatabase {
-		if strain.name.lowercased().contains(strainName.lowercased()) {
-			strainSearchResults.append(strain)
-		}
-	}
 
 
-	return strainSearchResults
-}
 
 
 //----playing around with something here

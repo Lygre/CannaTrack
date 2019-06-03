@@ -18,7 +18,7 @@ class StrainDetailViewController: UIViewController {
 
 	weak var strainCollectionDelegate: StrainCollectionDelegate?
 
-	var networkManager: NetworkManager!
+	var networkManager: NetworkController!
 
 	@IBOutlet var strainAbbreviation: UILabel!
 
@@ -35,7 +35,7 @@ class StrainDetailViewController: UIViewController {
 
 
 	init() {
-		self.networkManager = NetworkManager()
+		self.networkManager = NetworkController()
 		super.init(nibName: nil, bundle: nil)
 	}
 

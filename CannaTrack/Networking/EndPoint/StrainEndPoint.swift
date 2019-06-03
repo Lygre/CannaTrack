@@ -26,8 +26,8 @@ extension StrainApi: EndPointType {
 
 
 	var environmentBaseURL: String {
-		let urlString = "https://strainapi.evanbusse.com/\(NetworkManager.strainAPIKey)/"
-		switch NetworkManager.environment {
+		let urlString = "https://strainapi.evanbusse.com/\(NetworkController.strainAPIKey)/"
+		switch NetworkController.environment {
 		case .production: return urlString
 		case .qa: return urlString
 		case .staging: return urlString

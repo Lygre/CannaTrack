@@ -134,10 +134,9 @@ class AddProductUsingTextViewController: UIViewController {
 
 	@IBAction func saveProductTapped(_ sender: UIBarButtonItem) {
 
-		let strainNameResults = searchStrains(using: productComponentsDictionary["strain"] as! String)
+		let strainNameResults = StrainController.shared.searchStrains(using: productComponentsDictionary["strain"] as! String)
 		if strainNameResults.isEmpty {
-			loadSavedStrainDatabase()
-			let globalStrainCount = masterStrainDatabase.count
+			let globalStrainCount = StrainController.strains.count
 			let strain = Strain(id: (globalStrainCount + 1), name: productComponentsDictionary["strain"] as! String, race: productComponentsDictionary["strainVariety"] as! StrainVariety, description: nil)
 
 			let product = Product(typeOfProduct: productComponentsDictionary["productType"] as! Product.ProductType, strainForProduct: strain, inGrams: productComponentsDictionary["productMass"] as? Double ?? 0.0)
@@ -154,6 +153,9 @@ class AddProductUsingTextViewController: UIViewController {
 						guard let productCreated = productCreated else {
 							return
 						}
+						StrainController.shared.add(toDatabase: [strain], completion: { (strainsAdded) in
+							print(strainsAdded, "strains added to StrainsController database after creating new Strain in saveProductTapped")
+						})
 						self.inventoryManagerDelegate?.addProductToInventory(product: productCreated)
 						print("created ck record")
 						self.navigationController?.popViewController(animated: true)
