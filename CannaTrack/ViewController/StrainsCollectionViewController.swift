@@ -111,11 +111,8 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if self.searchController.searchResultsController == nil {
-			self.setupSearchController()
-		} else {
-			self.definesPresentationContext = true
-		}
+
+		self.definesPresentationContext = true
 
 		if strainsToDisplay.isEmpty {
 			StrainController.shared.fetchLocalStrains(using: strainsToDisplay, completion: { (fetchedLocalStrains) in
@@ -133,7 +130,7 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 
 	override func viewWillDisappear(_ animated: Bool) {
-		self.searchController!.isActive = false
+		self.searchActive = false
 		self.definesPresentationContext = false
 		super.viewWillDisappear(animated)
 	}
@@ -142,16 +139,19 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-		guard let selectedCollectionViewCell = sender as? StrainCollectionViewCell, let indexPath = collectionView.indexPath(for: selectedCollectionViewCell) else { preconditionFailure("could not get selected cell and indexPath")}
-		guard let detailVC = segue.destination as? StrainDetailViewController else { preconditionFailure("could not get segue destination as StrainDetailVC")}
-		self.selectedIndexPaths = [indexPath]
-		detailVC.strainCollectionDelegate = self
-		detailVC.networkManager = self.networkManager
-		detailVC.activeDetailStrain = strainsToDisplay[indexPath.item]
-
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		// Get the new view controller using [segue destinationViewController].
+		// Pass the selected object to the new view controller.
+		if segue.destination is StrainDetailViewController {
+			guard let selectedCollectionViewCell = sender as? StrainCollectionViewCell, let indexPath = collectionView.indexPath(for: selectedCollectionViewCell) else { preconditionFailure("could not get selected cell and indexPath")}
+			guard let detailVC = segue.destination as? StrainDetailViewController else { preconditionFailure("could not get segue destination as StrainDetailVC")}
+			self.selectedIndexPaths = [indexPath]
+			detailVC.strainCollectionDelegate = self
+			detailVC.networkManager = self.networkManager
+			detailVC.activeDetailStrain = strainsToDisplay[indexPath.item]
+		} else if segue.destination is NewStrainTableViewController {
+			//do nothing right now
+		}
 	}
 
 
@@ -235,7 +235,10 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 
 
+	//MARK: -- IBACTION METHODS
+	@IBAction func unwindToStrainsCollection(segue: UIStoryboardSegue) {
 
+	}
 
 
 
