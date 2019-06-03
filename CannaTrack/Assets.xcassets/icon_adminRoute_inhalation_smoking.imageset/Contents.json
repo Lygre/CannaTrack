@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "IMG_0713.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "icon_inhalation_dose.png",
       "scale" : "2x"
     },
     {

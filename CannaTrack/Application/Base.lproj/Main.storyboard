@@ -151,7 +151,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zZF-Lt-sNk">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zZF-Lt-sNk">
                                 <rect key="frame" x="0.0" y="289" width="414" height="480"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -303,7 +303,8 @@
                                             <action selector="openProductTapped:" destination="ZKP-z6-ymb" id="ry4-jc-LjQ"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Dose" width="90" id="bsZ-JN-P6N">
+                                    <barButtonItem title="Dose" image="icon_adminRoute_inhalation_smoking" width="90" id="bsZ-JN-P6N">
+                                        <inset key="imageInsets" minX="0.0" minY="-6" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <segue destination="EV4-ts-PP5" kind="show" id="Hib-YL-kuS"/>
                                         </connections>
@@ -1708,7 +1709,7 @@
         <scene sceneID="NWS-fX-43d">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" hidesBarsWhenVerticallyCompact="YES" id="dtm-Pu-caa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Dose Calendar" image="icon_appwide_calendar" id="Oi1-fW-sGS"/>
+                    <tabBarItem key="tabBarItem" title="Dose Calendar" image="tabBar_calendarGlyph" id="Oi1-fW-sGS"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SsM-8s-dnX">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -1748,9 +1749,10 @@
     <resources>
         <image name="cannaleaf" width="72" height="72"/>
         <image name="greenCheck" width="32" height="32"/>
-        <image name="icon_appwide_calendar" width="23" height="23"/>
+        <image name="icon_adminRoute_inhalation_smoking" width="24" height="24"/>
         <image name="icon_cannabis_filter" width="24" height="24"/>
         <image name="icon_product_documentation" width="24" height="24"/>
+        <image name="tabBar_calendarGlyph" width="25" height="25"/>
         <image name="unknown" width="48" height="48"/>
         <namedColor name="indicaColor">
             <color red="0.96470588235294119" green="0.24313725490196078" blue="0.27843137254901962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
