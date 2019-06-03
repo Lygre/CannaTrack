@@ -12,24 +12,13 @@ private let reuseIdentifier = "StrainCell"
 
 class StrainsCollectionViewController: UICollectionViewController, StrainCollectionDelegate {
 
-	func updateItems() {
-		guard let indexPaths = self.selectedIndexPaths else {
-			print("no indexPaths to update")
-			return
-		}
-		print("updating item in strains collection from delegate method for preview action")
-		self.collectionView.reloadItems(at: indexPaths)
-	}
-
+	//MARK: -- VARIABLES
 	var selectedIndexPaths: [IndexPath]?
-
-	let detailSegueIdentifier = "strainDetailSegue"
-
-	let searchController: UISearchController! = UISearchController(searchResultsController: nil)
 
 	var searchActive: Bool = false {
 		didSet {
 			self.searchController.isActive = self.searchActive
+			self.searchController.searchBar.showsCancelButton = self.searchActive ? true : false
 		}
 	}
 
@@ -47,7 +36,6 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 			for (strainName, strainInformation) in newValue {
 				let strainToAppend = Strain(id: strainInformation.id, name: strainName, race: StrainVariety.init(rawValue: strainInformation.race)!, description: nil)
 				strainToAppend.flavors = strainInformation.flavors
-				//				strainToAppend.effects = strainInformation.effects
 				StrainController.shared.add(toDatabase: [strainToAppend]) { strainsAdded in
 					if let strainsForViewControllerToAdd = strainsAdded {
 						DispatchQueue.main.async {
@@ -60,10 +48,7 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 						}
 					}
 				}
-//				strainsToDisplay.append(strainToAppend)
-
 			}
-//			masterStrainDatabase = strainsToDisplay
 			DispatchQueue.main.async {
 				self.loadViewIfNeeded()
 				self.collectionViewLayout.invalidateLayout()
@@ -71,63 +56,33 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 			}
 		}
 	}
+
 	var strainsToDisplay: [Strain] = StrainController.strains
-		/*
-		{
-		willSet(newStrainArray) {
-			if newStrainArray != StrainController.strains {
-				let strainsToWriteLocally: [Strain] = newStrainArray.filter({ return !StrainController.strains.contains($0) })
-				if !strainsToWriteLocally.isEmpty {
-					StrainController.shared.add(toDatabase: strainsToWriteLocally) { _ in
-						print("added new strains: \(strainsToWriteLocally) to database locally from StrainsVC: 'strainsToDisplay' willSet")
-
-					}
-				}
-			}
-		}
-	}
-
-		*/
-
-		/*
-		UserDefaults.standard.object([Strain].self, with: "localStrains") ?? [] {
-		willSet(newStrainArray) {
-			print("setting new local strain array")
-			UserDefaults.standard.set(object: newStrainArray, forKey: "localStrains")
-			masterStrainDatabase = newStrainArray
-
-		}
-	}
-		*/
 
 	var strainToPassToDetail: Strain?
 
+
+	//MARK: -- CONSTANTS
+
+	let detailSegueIdentifier = "strainDetailSegue"
+
+	let searchController: UISearchController! = UISearchController(searchResultsController: nil)
+
+
+	//MARK: -- INITIALIZER METHODS
 	init() {
 		self.networkManager = NetworkController()
 		super.init(nibName: nil, bundle: nil)
 	}
+
 	required init?(coder aDecoder: NSCoder) {
 		self.networkManager = NetworkController()
 		super.init(coder: aDecoder)
 	}
 
-	fileprivate func setupSearchController() {
-		self.searchController.searchResultsUpdater = self
-		self.searchController.delegate = self
-		self.searchController.searchBar.delegate = self
 
-		self.searchController.hidesNavigationBarDuringPresentation = false
-		self.searchController.dimsBackgroundDuringPresentation = false
-		self.searchController.obscuresBackgroundDuringPresentation = false
 
-		searchController.searchBar.placeholder = "Can search strain name"
-		searchController.searchBar.sizeToFit()
-		searchController.searchBar.becomeFirstResponder()
-		searchController.searchBar.showsCancelButton = true
-
-		self.navigationItem.titleView = searchController.searchBar
-		self.searchActive = false
-	}
+	//MARK -- VIEW CONTROLLER LIFE CYCLE EVENTS
 
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,17 +97,12 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 				}
 			}
 
-//			strainsToDisplay = masterStrainDatabase
 		}
 
 		setupSearchController()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-
-        // Do any additional setup after loading the view.
     }
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -164,7 +114,6 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 		}
 
 		if strainsToDisplay.isEmpty {
-//			strainsToDisplay = StrainController.strains
 			StrainController.shared.fetchLocalStrains(using: strainsToDisplay, completion: { (fetchedLocalStrains) in
 				DispatchQueue.main.async {
 					self.strainsToDisplay.append(contentsOf: fetchedLocalStrains)
@@ -174,7 +123,6 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 				}
 			})
 		} else {
-			print("strain db isn't empty")
 			refreshUI()
 		}
 	}
@@ -185,6 +133,8 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 		self.definesPresentationContext = false
 		super.viewWillDisappear(animated)
 	}
+
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -280,6 +230,45 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
     */
 
 
+
+
+
+
+
+
+}
+
+//MARK: -- HELPER METHODS FOR STRAINSVIEWCONTROLLER
+extension StrainsCollectionViewController {
+
+	fileprivate func setupSearchController() {
+		self.searchController.searchResultsUpdater = self
+		self.searchController.delegate = self
+		self.searchController.searchBar.delegate = self
+
+		self.searchController.hidesNavigationBarDuringPresentation = false
+		self.searchController.dimsBackgroundDuringPresentation = false
+		self.searchController.obscuresBackgroundDuringPresentation = false
+
+		searchController.searchBar.placeholder = "Can search strain name"
+		searchController.searchBar.sizeToFit()
+		searchController.searchBar.becomeFirstResponder()
+		searchController.searchBar.showsCancelButton = false
+
+		self.navigationItem.titleView = searchController.searchBar
+		self.searchActive = false
+	}
+
+	func updateItems() {
+		guard let indexPaths = self.selectedIndexPaths else {
+			print("no indexPaths to update")
+			return
+		}
+		print("updating item in strains collection from delegate method for preview action")
+		self.collectionView.reloadItems(at: indexPaths)
+	}
+
+
 	func getStrainForIndexPath(indexPath: IndexPath) -> Strain {
 		guard let strain = strainsToDisplay[indexPath.item] as? Strain else { return Strain(id: 0, name: "Null Placeholder", race: .hybrid, description: "Placeholder Strain") }
 
@@ -293,20 +282,12 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 	}
 
 
-
-
-
-
 }
 
 
 extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
 	func updateSearchResults(for searchController: UISearchController) {
 
-//		guard let searchString = searchController.searchBar.text else {
-//			print("there is no search string in search bar")
-//			return
-//		}
 		let stringInSearchBar = searchController.searchBar.text
 
 		guard let searchString = stringInSearchBar else {
@@ -328,25 +309,28 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 	}
 
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-		searchController.searchBar.showsCancelButton = true
 		searchActive = true
 	}
 
 	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//		searchController.searchBar.showsCancelButton = false
 		searchActive = false
 	}
-
-	/*
-	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-		if searchActive { return true }
-	}
-	*/
 
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		self.view.endEditing(true)
 		print("end search bar editing")
 	}
+
+	/*
+	//MARK: -- SearchBar ShouldEditing delegate methods
+	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+
+	}
+	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+		if searchActive { return true }
+	}
+	*/
+
 
 }
 
