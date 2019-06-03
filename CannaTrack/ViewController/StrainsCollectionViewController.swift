@@ -25,8 +25,13 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	let detailSegueIdentifier = "strainDetailSegue"
 
-	let searchController = UISearchController(searchResultsController: nil)
-	var searchActive: Bool = false
+	let searchController: UISearchController! = UISearchController(searchResultsController: nil)
+
+	var searchActive: Bool = false {
+		didSet {
+			self.searchController.isActive = self.searchActive
+		}
+	}
 
 	var networkManager: NetworkController!
 
@@ -106,7 +111,25 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 		super.init(coder: aDecoder)
 	}
 
-    override func viewDidLoad() {
+	fileprivate func setupSearchController() {
+		self.searchController.searchResultsUpdater = self
+		self.searchController.delegate = self
+		self.searchController.searchBar.delegate = self
+
+		self.searchController.hidesNavigationBarDuringPresentation = false
+		self.searchController.dimsBackgroundDuringPresentation = false
+		self.searchController.obscuresBackgroundDuringPresentation = false
+
+		searchController.searchBar.placeholder = "Can search strain name"
+		searchController.searchBar.sizeToFit()
+		searchController.searchBar.becomeFirstResponder()
+		searchController.searchBar.showsCancelButton = true
+
+		self.navigationItem.titleView = searchController.searchBar
+		self.searchActive = false
+	}
+
+	override func viewDidLoad() {
         super.viewDidLoad()
 		if strainsToDisplay.isEmpty {
 			networkManager.getNewStrains { (allStrainsDict, error) in
@@ -122,20 +145,7 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 //			strainsToDisplay = masterStrainDatabase
 		}
 
-		self.searchController.searchResultsUpdater = self
-		self.searchController.delegate = self
-		self.searchController.searchBar.delegate = self
-
-		self.searchController.hidesNavigationBarDuringPresentation = false
-		self.searchController.dimsBackgroundDuringPresentation = false
-		self.searchController.obscuresBackgroundDuringPresentation = false
-
-		searchController.searchBar.placeholder = "Can search strain name"
-		searchController.searchBar.sizeToFit()
-		searchController.searchBar.becomeFirstResponder()
-		searchController.searchBar.showsCancelButton = true
-
-		self.navigationItem.titleView = searchController.searchBar
+		setupSearchController()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -147,6 +157,12 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		if self.searchController.searchResultsController == nil {
+			self.setupSearchController()
+		} else {
+			self.definesPresentationContext = true
+		}
+
 		if strainsToDisplay.isEmpty {
 //			strainsToDisplay = StrainController.strains
 			StrainController.shared.fetchLocalStrains(using: strainsToDisplay, completion: { (fetchedLocalStrains) in
@@ -163,6 +179,12 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 		}
 	}
 
+
+	override func viewWillDisappear(_ animated: Bool) {
+		self.searchController!.isActive = false
+		self.definesPresentationContext = false
+		super.viewWillDisappear(animated)
+	}
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -322,7 +344,7 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 	*/
 
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		searchBar.endEditing(true)
+		self.view.endEditing(true)
 		print("end search bar editing")
 	}
 
