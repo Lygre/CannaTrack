@@ -982,7 +982,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Inventory" id="pFP-Bp-r1i">
                         <barButtonItem key="backBarButtonItem" title="Inventory" id="spa-IT-gcf"/>
-                        <barButtonItem key="leftBarButtonItem" title="Filter" image="filterIcon" id="aCX-cy-zNL">
+                        <barButtonItem key="leftBarButtonItem" title="Filter" image="icon_cannabis_filter" id="aCX-cy-zNL">
                             <connections>
                                 <action selector="filterInventoryButtonTapped:" destination="2sp-3f-4Lb" id="2j9-LG-xeR"/>
                             </connections>
@@ -1073,11 +1073,11 @@
             </objects>
             <point key="canvasLocation" x="-542" y="980"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Inventory-->
         <scene sceneID="TYd-pg-2Yv">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5bV-5a-mpT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" selectedImage="unknown" systemItem="bookmarks" id="AKj-zf-Tim"/>
+                    <tabBarItem key="tabBarItem" title="Inventory" image="icon_product_documentation" id="AKj-zf-Tim"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dMt-ZE-Yec">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -1704,11 +1704,11 @@
             </objects>
             <point key="canvasLocation" x="4053.6231884057975" y="3349.5535714285711"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Dose Calendar-->
         <scene sceneID="NWS-fX-43d">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" hidesBarsWhenVerticallyCompact="YES" id="dtm-Pu-caa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="mostRecent" id="Oi1-fW-sGS"/>
+                    <tabBarItem key="tabBarItem" title="Dose Calendar" image="icon_appwide_calendar" id="Oi1-fW-sGS"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SsM-8s-dnX">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -1747,8 +1747,10 @@
     </scenes>
     <resources>
         <image name="cannaleaf" width="72" height="72"/>
-        <image name="filterIcon" width="30" height="30"/>
         <image name="greenCheck" width="32" height="32"/>
+        <image name="icon_appwide_calendar" width="23" height="23"/>
+        <image name="icon_cannabis_filter" width="24" height="24"/>
+        <image name="icon_product_documentation" width="24" height="24"/>
         <image name="unknown" width="48" height="48"/>
         <namedColor name="indicaColor">
             <color red="0.96470588235294119" green="0.24313725490196078" blue="0.27843137254901962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
