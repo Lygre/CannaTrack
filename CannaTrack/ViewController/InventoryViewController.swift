@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 import Foundation
-
+import SwiftUI
 
 
 
@@ -163,6 +163,10 @@ final class InventoryViewController: UIViewController {
 		}
 		setupAnimatorForButtonPreviewInteraction()
 		setupAnimatorForProductChangeConfirmation()
+
+		let interaction = UIContextMenuInteraction(delegate: self)
+		//add interaction to a view here
+		self.productsCollectionView.addInteraction(interaction)
 
     }
 
@@ -420,6 +424,12 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 	}
 
+
+	func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (suggestedActions) -> UIMenu<UIAction>? in
+			return self.makeContextMenu()
+		}
+	}
 
 	enum InventoryCollectionSection: Int {
 		case category = 0
@@ -899,7 +909,7 @@ extension InventoryViewController: InventoryFilterDelegate {
 			self.currentInventory?.sort(by: { (productOne, productTwo) -> Bool in
 				return productOne.dateOpened! < productTwo.dateOpened!
 			})
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 			print("sorting by date Opened")
 		case .lastDoseTime:
 			//				self.currentInventory?.filter(<#T##isIncluded: (Product) throws -> Bool##(Product) throws -> Bool#>)
@@ -910,14 +920,14 @@ extension InventoryViewController: InventoryFilterDelegate {
 			})
 			self.currentInventory = masterInventory
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 			print("filtering based on remaining mass")
 		case .numberOfDoses:
 			self.currentInventory = masterInventory.sorted { (productOne, productTwo) -> Bool in
 				return productOne.numberOfDosesTakenFromProduct < productTwo.numberOfDosesTakenFromProduct
 			}
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 			print("Sorting based on Number of Doses")
 		case .openedStatus:
 
@@ -926,14 +936,14 @@ extension InventoryViewController: InventoryFilterDelegate {
 				return true
 			})
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 			print("filtered based on open status")
 		case .strainVarietyIndica:
 			self.currentInventory = masterInventory.filter({ (someProduct) -> Bool in
 				return someProduct.strain.race == .indica
 			})
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 
 			print("filtering to show only indica products")
 		case .strainVarietySativa:
@@ -941,7 +951,7 @@ extension InventoryViewController: InventoryFilterDelegate {
 				return someProduct.strain.race == .sativa
 			})
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 
 			print("filtering to show only indica products")
 		case .strainVarietyHybrid:
@@ -949,13 +959,13 @@ extension InventoryViewController: InventoryFilterDelegate {
 				return someProduct.strain.race == .hybrid
 			})
 
-			filterButton?.tintColor = .red
+			filterButton?.tintColor = .systemRed
 
 			print("filtering to show only indica products")
 		case .none:
 			self.currentInventory = masterInventory
 
-			filterButton?.tintColor = .blue
+			filterButton?.tintColor = .systemBlue
 			print("Filtering with None")
 
 		}
@@ -1211,5 +1221,23 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 	}
 
 
+
+}
+
+
+extension InventoryViewController: UIContextMenuInteractionDelegate {
+	func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (suggestedActions) -> UIMenu<UIAction>? in
+			return self.makeContextMenu()
+		}
+	}
+
+	func makeContextMenu() -> UIMenu<UIAction> {
+		let dose = UIAction(__title: "Dose with Product", image: UIImage(systemName: "smoke"), options: []) { action in
+			
+		}
+
+		return UIMenu<UIAction>.create(title: "Main Menu", children: [dose])
+	}
 
 }

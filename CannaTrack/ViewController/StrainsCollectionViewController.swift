@@ -249,12 +249,14 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 extension StrainsCollectionViewController {
 
 	fileprivate func setupSearchController() {
+
+
+		let searchController: UISearchController! = UISearchController(searchResultsController: nil)
 		self.searchController.searchResultsUpdater = self
 		self.searchController.delegate = self
 		self.searchController.searchBar.delegate = self
 
 		self.searchController.hidesNavigationBarDuringPresentation = false
-		self.searchController.dimsBackgroundDuringPresentation = false
 		self.searchController.obscuresBackgroundDuringPresentation = false
 
 		searchController.searchBar.placeholder = "Can search strain name"
@@ -262,7 +264,7 @@ extension StrainsCollectionViewController {
 		searchController.searchBar.becomeFirstResponder()
 		searchController.searchBar.showsCancelButton = false
 
-		self.navigationItem.titleView = searchController.searchBar
+		self.navigationItem.searchController = searchController
 		self.searchActive = false
 	}
 
