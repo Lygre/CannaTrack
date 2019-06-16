@@ -684,6 +684,15 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 	}
 
+	func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+		guard let doseForIndex = dosesForDate[indexPath.row] as? Dose else { return nil }
+		return UIContextMenuConfiguration(identifier: nil, previewProvider: {
+			return DosePreviewViewController(dose: doseForIndex)
+		}) { (suggestedActions) -> UIMenu<UIAction>? in
+			return self.makeContextMenu()
+		}
+	}
+
 }
 
 
@@ -886,3 +895,13 @@ extension CalendarLogViewController: UIPreviewInteractionDelegate {
 
 
 
+extension CalendarLogViewController {
+	func makeContextMenu() -> UIMenu<UIAction> {
+		let dose = UIAction(__title: "Duplicate Dose", image: UIImage(systemName: "smoke"), options: []) { action in
+
+		}
+
+		return UIMenu<UIAction>.create(title: "Main Menu", children: [dose])
+	}
+
+}
