@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		575CC80CA3ACF3076471945C /* Pods_CannaTrack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1E70E80FFF53AB4715A91BA /* Pods_CannaTrack.framework */; };
 		9F017E6622163D68001FA6B3 /* StrainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */; };
+		9F06D2BF22B540B700718EEE /* StrainSearchResultsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06D2BE22B540B700718EEE /* StrainSearchResultsCollectionView.swift */; };
 		9F082209226A261000E8C1DC /* CloudKitSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F082208226A261000E8C1DC /* CloudKitSingleton.swift */; };
 		9F08220C226A267100E8C1DC /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */; };
 		9F08220E226A270B00E8C1DC /* CustomCKObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */; };
@@ -93,6 +94,7 @@
 /* Begin PBXFileReference section */
 		4E48B5F0937AEF405ACDD85B /* Pods-CannaTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaTrack.release.xcconfig"; path = "Pods/Target Support Files/Pods-CannaTrack/Pods-CannaTrack.release.xcconfig"; sourceTree = "<group>"; };
 		9F017E6522163D68001FA6B3 /* StrainsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainsTableViewCell.swift; sourceTree = "<group>"; };
+		9F06D2BE22B540B700718EEE /* StrainSearchResultsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainSearchResultsCollectionView.swift; sourceTree = "<group>"; };
 		9F082208226A261000E8C1DC /* CloudKitSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSingleton.swift; sourceTree = "<group>"; };
 		9F08220B226A267100E8C1DC /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
 		9F08220D226A270B00E8C1DC /* CustomCKObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCKObjects.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				9F766E97221B7C1200713CB0 /* StrainsCollectionViewController.swift */,
+				9F06D2BE22B540B700718EEE /* StrainSearchResultsCollectionView.swift */,
 				9F52F034221DC335007E6330 /* InventoryViewController.swift */,
 				9F922A4F2224B584001407D8 /* AddProductViewController.swift */,
 				9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */,
@@ -587,6 +590,7 @@
 				9F22F122224D458700C67D69 /* CustomCell.swift in Sources */,
 				9F0F0BE22284E9B400DFFFC4 /* HTTPTask.swift in Sources */,
 				9F563EC422452BB9003F557A /* UserInfo.swift in Sources */,
+				9F06D2BF22B540B700718EEE /* StrainSearchResultsCollectionView.swift in Sources */,
 				9FF5BBD1229590CC00ED18A5 /* StrainCollectionDelegate.swift in Sources */,
 				9F0F0BE82284ED1B00DFFFC4 /* JSONParameterEncoder.swift in Sources */,
 				9F0F0BDC2284E62800DFFFC4 /* InventoryFilterDelegate.swift in Sources */,
@@ -803,6 +807,7 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = "${inherited}/**";
 				INFOPLIST_FILE = CannaTrack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -827,6 +832,7 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = "${inherited}/**";
 				INFOPLIST_FILE = CannaTrack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

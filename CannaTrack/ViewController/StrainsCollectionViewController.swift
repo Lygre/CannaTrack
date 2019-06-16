@@ -17,8 +17,8 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	var searchActive: Bool = false {
 		didSet {
-			self.searchController.isActive = self.searchActive
-			self.searchController.searchBar.showsCancelButton = self.searchActive ? true : false
+			self.navigationItem.searchController?.isActive = self.searchActive
+			self.navigationItem.searchController?.searchBar.showsCancelButton = self.searchActive ? true : false
 		}
 	}
 
@@ -66,9 +66,9 @@ class StrainsCollectionViewController: UICollectionViewController, StrainCollect
 
 	let detailSegueIdentifier = "strainDetailSegue"
 
-	let searchController: UISearchController! = UISearchController(searchResultsController: nil)
+	var searchController: UISearchController!
 
-
+//	var resultsCollectionViewController: ResultsCollectionViewController!
 
 
 
@@ -251,13 +251,13 @@ extension StrainsCollectionViewController {
 	fileprivate func setupSearchController() {
 
 
-		let searchController: UISearchController! = UISearchController(searchResultsController: nil)
-		self.searchController.searchResultsUpdater = self
-		self.searchController.delegate = self
-		self.searchController.searchBar.delegate = self
+		searchController = UISearchController(searchResultsController: nil)
+		searchController.searchResultsUpdater = self
+		searchController.delegate = self
+		searchController.searchBar.delegate = self
 
-		self.searchController.hidesNavigationBarDuringPresentation = false
-		self.searchController.obscuresBackgroundDuringPresentation = false
+		searchController.hidesNavigationBarDuringPresentation = false
+		searchController.obscuresBackgroundDuringPresentation = false
 
 		searchController.searchBar.placeholder = "Can search strain name"
 		searchController.searchBar.sizeToFit()
@@ -330,6 +330,29 @@ extension StrainsCollectionViewController: UISearchControllerDelegate, UISearchB
 		print("end search bar editing")
 	}
 
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchBar.resignFirstResponder()
+	}
+
+	func presentSearchController(_ searchController: UISearchController) {
+		debugPrint("UISearchControllerDelegate invoked method: \(#function).")
+	}
+
+	func willPresentSearchController(_ searchController: UISearchController) {
+		debugPrint("UISearchControllerDelegate invoked method: \(#function).")
+	}
+
+	func didPresentSearchController(_ searchController: UISearchController) {
+		debugPrint("UISearchControllerDelegate invoked method: \(#function).")
+	}
+
+	func willDismissSearchController(_ searchController: UISearchController) {
+		debugPrint("UISearchControllerDelegate invoked method: \(#function).")
+	}
+
+	func didDismissSearchController(_ searchController: UISearchController) {
+		debugPrint("UISearchControllerDelegate invoked method: \(#function).")
+	}
 	/*
 	//MARK: -- SearchBar ShouldEditing delegate methods
 	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {

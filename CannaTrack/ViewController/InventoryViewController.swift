@@ -164,9 +164,9 @@ final class InventoryViewController: UIViewController {
 		setupAnimatorForButtonPreviewInteraction()
 		setupAnimatorForProductChangeConfirmation()
 
-		let interaction = UIContextMenuInteraction(delegate: self)
-		//add interaction to a view here
-		self.productsCollectionView.addInteraction(interaction)
+//		let interaction = UIContextMenuInteraction(delegate: self)
+//		//add interaction to a view here
+//		self.productsCollectionView.addInteraction(interaction)
 
     }
 
@@ -1225,12 +1225,13 @@ extension InventoryViewController: UIPreviewInteractionDelegate {
 }
 
 
-extension InventoryViewController: UIContextMenuInteractionDelegate {
-	func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (suggestedActions) -> UIMenu<UIAction>? in
-			return self.makeContextMenu()
-		}
-	}
+extension InventoryViewController {
+//: UIContextMenuInteractionDelegate {
+//	func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+//		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (suggestedActions) -> UIMenu<UIAction>? in
+//			return self.makeContextMenu()
+//		}
+//	}
 
 	func makeContextMenu() -> UIMenu<UIAction> {
 		let dose = UIAction(__title: "Dose with Product", image: UIImage(systemName: "smoke"), options: []) { action in

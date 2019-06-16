@@ -808,19 +808,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="5hv-qE-TOa" id="RYy-Jl-Xc3"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yR3-yM-TRh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="5hv-qE-TOa">
-                    <connections>
-                        <outlet property="delegate" destination="woJ-6M-BYj" id="yZM-oG-mMZ"/>
-                        <outlet property="searchContentsController" destination="woJ-6M-BYj" id="m0S-G4-0lO"/>
-                        <outlet property="searchResultsDataSource" destination="woJ-6M-BYj" id="jDe-Ha-Y4p"/>
-                        <outlet property="searchResultsDelegate" destination="woJ-6M-BYj" id="Xkj-CN-NVH"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-541" y="1802"/>
         </scene>

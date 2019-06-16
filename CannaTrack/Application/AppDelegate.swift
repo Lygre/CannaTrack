@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 		if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
 			shortcutItemToProcess = shortcutItem
 		}
-		application.isNetworkActivityIndicatorVisible = true
+//		application.isNetworkActivityIndicatorVisible = true
 
 		UINavigationBar.appearance().backgroundColor = .LawnGreenWebColor()
 		
