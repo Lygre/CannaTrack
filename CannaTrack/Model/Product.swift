@@ -123,61 +123,10 @@ extension Product {
 	func openProduct() {
 		self.dateOpened = Date()
 		saveCurrentProductInventoryToUserData()
-//		saveProductChangesToCloud(product: self)
 	}
 
 	func saveNewProductToCloud() {
-		/*
-		let newProduct = CKRecord(recordType: "Product")
 
-		let encoder = PropertyListEncoder()
-
-		let productData: CKRecordValue = {
-			do {
-				let data = try encoder.encode(self)
-				return data as CKRecordValue
-			}
-			catch { print(error); return Data() as CKRecordValue }
-		}()
-
-		let manager = FileManager.default
-		let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-		let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-
-		let paths = manager.urls(for: nsDocumentDirectory, in: nsUserDomainMask)
-
-		if paths.count > 0 {
-			let dirPath = paths[0]
-			let writePath = dirPath.appendingPathComponent(self.productType.rawValue + self.strain.name + (self.dateOpened?.description(with: .current) ?? "Unopened"))
-			let productImage: UIImage = {
-				let imageToReturn: UIImage = UIImage(imageLiteralResourceName: "cannaleaf.png")
-				guard let image = self.productLabelImage else { return imageToReturn }
-				return image
-			}()
-
-			try? productImage.pngData()?.write(to: writePath)
-			let productImageData: CKAsset? = CKAsset(fileURL: NSURL(fileURLWithPath: writePath.path) as URL)
-			newProduct.setObject(productImageData, forKey: "ProductImageData")
-		}
-
-		newProduct.setObject(productData, forKey: "ProductData")
-
-
-		//assign Product a record ID to fetch and modify it later
-
-
-
-		privateDatabase.save(newProduct) { (record, error) in
-			DispatchQueue.main.async {
-				if let error = error {
-					print(error)
-				} else {
-					self.recordID = newProduct.recordID
-					print("Record was saved in private DB by Product.swift method")
-				}
-			}
-		}
-		*/
 		CloudKitManager.shared.createCKRecord(for: self) { (success, productCreated, error) in
 			DispatchQueue.main.async {
 				if let error = error {

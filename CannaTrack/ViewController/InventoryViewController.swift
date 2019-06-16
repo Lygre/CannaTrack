@@ -426,7 +426,12 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 
 	func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-		return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (suggestedActions) -> UIMenu<UIAction>? in
+
+		guard let productToPreview = currentInventory?[indexPath.row] as? Product else { return nil }
+
+		return UIContextMenuConfiguration(identifier: nil, previewProvider: {
+			return ProductPreviewViewController(product: productToPreview)
+		}) { (suggestedActions) -> UIMenu<UIAction>? in
 			return self.makeContextMenu()
 		}
 	}

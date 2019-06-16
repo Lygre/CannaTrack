@@ -30,6 +30,7 @@
 		9F1052D42227A01800658F62 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F1052D32227A01800658F62 /* CoreImage.framework */; };
 		9F22F11F224D0AAE00C67D69 /* CalendarLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */; };
 		9F22F122224D458700C67D69 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F121224D458700C67D69 /* CustomCell.swift */; };
+		9F24423122B6734A000E8FE1 /* ProductPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F24423022B6734A000E8FE1 /* ProductPreviewViewController.swift */; };
 		9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDB223C092E00EF644D /* ProductView.swift */; };
 		9F27EEDE223C09F400EF644D /* DynamicProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */; };
 		9F2A87B622539F9C00D0086B /* AddProductUsingTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */; };
@@ -116,6 +117,7 @@
 		9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLogViewController.swift; sourceTree = "<group>"; };
 		9F22F120224D10FA00C67D69 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9F22F121224D458700C67D69 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
+		9F24423022B6734A000E8FE1 /* ProductPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPreviewViewController.swift; sourceTree = "<group>"; };
 		9F27EEDB223C092E00EF644D /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 		9F27EEDD223C09F400EF644D /* DynamicProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProductsViewController.swift; sourceTree = "<group>"; };
 		9F2A87B522539F9C00D0086B /* AddProductUsingTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductUsingTextViewController.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				9F22F11E224D0AAE00C67D69 /* CalendarLogViewController.swift */,
 				9F35FBCA22A29A1800E18943 /* DoseDetailViewController.swift */,
 				9FEAC90522A5DD7600F7EF68 /* NewStrainTableViewController.swift */,
+				9F24423022B6734A000E8FE1 /* ProductPreviewViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F24423122B6734A000E8FE1 /* ProductPreviewViewController.swift in Sources */,
 				9FB215FC2289FE58004962A9 /* TouchLocationProtocols.swift in Sources */,
 				9F27EEDC223C092E00EF644D /* ProductView.swift in Sources */,
 				9F825C352214A2F200FC2327 /* Strains.swift in Sources */,
