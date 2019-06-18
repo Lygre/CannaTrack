@@ -431,7 +431,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
 		return UIContextMenuConfiguration(identifier: nil, previewProvider: {
 			return ProductPreviewViewController(product: productToPreview)
-		}) { (suggestedActions) -> UIMenu<UIAction>? in
+		}) { (suggestedActions) -> UIMenu? in
 			return self.makeContextMenu()
 		}
 	}
@@ -1238,12 +1238,14 @@ extension InventoryViewController {
 //		}
 //	}
 
-	func makeContextMenu() -> UIMenu<UIAction> {
+	func makeContextMenu() -> UIMenu {
 		let dose = UIAction(__title: "Dose with Product", image: UIImage(systemName: "smoke"), options: []) { action in
 			
 		}
 
-		return UIMenu<UIAction>.create(title: "Main Menu", children: [dose])
+		var menu = UIMenu(__title: "Product Menu", image: nil, identifier: nil, options: [], children: [dose])
+
+		return menu
 	}
 
 }
