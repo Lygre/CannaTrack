@@ -686,6 +686,7 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 	func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 		guard let doseForIndex = dosesForDate[indexPath.row] as? Dose else { return nil }
+		doseToPassToDetail = doseForIndex
 		return UIContextMenuConfiguration(identifier: nil, previewProvider: {
 			return DosePreviewViewController(dose: doseForIndex)
 		}) { (suggestedActions) -> UIMenu? in
@@ -695,7 +696,7 @@ extension CalendarLogViewController: UITableViewDelegate, UITableViewDataSource 
 
 	func tableView(_ tableView: UITableView, willCommitMenuWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
 		animator.addCompletion {
-			self.show(DoseDetailViewController(), sender: self)
+//			self.show(DoseDetailViewController(dose: self.doseToPassToDetail), sender: self)
 		}
 	}
 
@@ -904,16 +905,58 @@ extension CalendarLogViewController: UIPreviewInteractionDelegate {
 extension CalendarLogViewController {
 	func makeContextMenu(for dose: Dose, at indexPath: IndexPath) -> UIMenu {
 		let doseAgain = UIAction(__title: "Duplicate Dose", image: UIImage(systemName: "smoke"), options: []) { action in
+
+			self.navigationItem.hidesBackButton = true
+
+			let replicatedDose = Dose.replicateDoseWithCurrentTime(using: dose)
+
+			CloudKitManager.shared.createCKRecord(for: replicatedDose, completion: { (success, createdDose, error) in
+
+				DispatchQueue.main.async {
+					if let error = error {
+						let alertView = UIAlertController(title: "Dose Creation Failed", error: error, defaultActionButtonTitle: "Dismiss", preferredStyle: .alert, tintColor: .GreenWebColor())
+						DispatchQueue.main.async {
+							self.navigationItem.hidesBackButton = false
+							self.present(alertView, animated: true, completion:nil)
+						}
+						print(error)
+					} else {
+						guard let createdDose = createdDose else { return }
+						self.masterDoseArray.append(createdDose)
+						DispatchQueue.main.async {
+							self.navigationItem.hidesBackButton = false
+							self.doseTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+						}
+					}
+				}
+
+			})
+
 		}
+
 		let delete = UIAction(__title: "Delete Dose", image: UIImage(systemName: "trash"), options: .destructive) { action in
+			CloudKitManager.shared.deleteDoseUsingModifyRecords(dose: dose, completion: { (success, error) in
+
+				DispatchQueue.main.async {
+					if let error = error {
+						print(error)
+					} else {
+						print(indexPath.description, dose, "deleted dose")
+
+					}
+				}
+				if success {
+					print("success")
+				} else { print("not success") }
+			})
 			DoseController.shared.delete(dose: dose)
 			self.dosesForDate.removeAll(dose)
 			self.masterDoseArray.removeAll(dose)
 
 			DispatchQueue.main.async {
-
 				self.doseTableView.reloadData()
 			}
+
 		}
 
 		let menu = UIMenu(__title: "Dose Menu", image: nil, identifier: nil, options: [], children: [doseAgain, delete])
